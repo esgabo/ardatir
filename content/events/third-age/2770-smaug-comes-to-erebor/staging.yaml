@@ -29,7 +29,7 @@ tracks:
       - { t: 0, x: 1, z: 1, action: talk, thought: { en: "Our halls are deep and our gold is plentiful.", es: "Nuestras salas son profundas y nuestro oro abunda." } }
       - { t: 0.3, x: 1.5, z: 1.5, action: idle }
       - { t: 0.5, x: 1.5, z: 1.5, action: idle, thought: { en: "Something is shaking the Mountain.", es: "Algo está sacudiendo la Montaña." } }
-      - { t: 0.6, x: 1.5, z: 2, action: run }
+      - { t: 0.67, x: 1.5, z: 2, action: run }
       - { t: 0.75, x: 5.5, z: 4, action: run, thought: { en: "The door, quickly, before he finds us.", es: "La puerta, deprisa, antes de que nos encuentre." } }
       - { t: 1, x: 6, z: 3.5, action: idle, thought: { en: "The Mountain is gone, and all our people with it.", es: "La Montaña está perdida, y con ella nuestra gente." } }
   - characterId: thrain
@@ -37,7 +37,7 @@ tracks:
       - { t: 0, x: 2.2, z: 0.2, action: talk }
       - { t: 0.3, x: 2.5, z: 1, action: idle }
       - { t: 0.5, x: 2.5, z: 1, action: idle, thought: { en: "Father, the dragon is at the gates!", es: "¡Padre, el dragón está en las puertas!" } }
-      - { t: 0.6, x: 2.4, z: 2.3, action: run }
+      - { t: 0.67, x: 2.4, z: 2.3, action: run }
       - { t: 0.75, x: 5.3, z: 4.8, action: run }
       - { t: 1, x: 5.2, z: 4.4, action: idle }
   - characterId: thorin

@@ -5,7 +5,7 @@ when:
   start: { age: third-age, year: 2841 }
   precision: year
 place: ered-luin
-characters: [ thrain, balin, dwalin ]
+characters: [ thrain, thorin, balin, dwalin ]
 arcs: [ durins-folk-in-exile ]
 journeys: [  ]
 tags: [ lord-of-the-rings, hobbit ]

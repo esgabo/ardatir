@@ -20,6 +20,10 @@ tracks:
       - { t: 0.65, x: -1, z: 0, action: walk }
       - { t: 0.8, x: 2, z: 3, action: walk, thought: { en: "East, always east.", es: "Al este, siempre al este." } }
       - { t: 1, x: 5.5, z: 5.5, action: walk, thought: { en: "Something is behind us. I can feel it.", es: "Algo viene detrás de nosotros. Lo noto." } }
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: -4.5, z: -2, action: idle }
+      - { t: 1, x: -4.5, z: -2, action: idle }
   - characterId: balin
     keyframes:
       - { t: 0, x: -3, z: -5, action: idle }

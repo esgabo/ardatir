@@ -5,4 +5,5 @@ summary:
   en: The great fire-drake who took the Lonely Mountain and lies upon its treasure.
   es: El gran dragón de fuego que tomó la Montaña Solitaria y yace sobre su tesoro.
 color: "#9a2a1a"
-scale: 8
+# Placeholder: the humanoid stand-in can't show a dragon's length; 8 overflows the frame. True size comes with the glTF model (DESIGN §9).
+scale: 4

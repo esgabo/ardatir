@@ -22,7 +22,7 @@ tracks:
       - { t: 0.52, x: -3.4, z: 4.3, action: walk }
       - { t: 0.6, x: 3.5, z: 1.1, action: hide, thought: { en: "There are no more barrels. Nobody left to pack me!", es: "¡No quedan barriles! ¡Nadie me va a meter a mí!" } }
       - { t: 0.66, x: 3.5, z: 1.1, action: hide }
-      - { t: 0.78, x: 3.9, z: 3.4, action: hide, thought: { en: "Cold, wet, and holding on for dear life.", es: "Frío, empapado y agarrado como puedo." } }
+      - { t: 0.78, x: 4.7, z: 2.6, action: hide, thought: { en: "Cold, wet, and holding on for dear life.", es: "Frío, empapado y agarrado como puedo." } }
       - { t: 0.9, x: 3.9, z: 5.8, action: hide }
   - characterId: thorin
     keyframes:

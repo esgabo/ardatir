@@ -21,7 +21,7 @@ tracks:
       - { t: 0, x: 3.9, z: -4.4, action: idle, thought: { en: "The Arkenstone, in the hands of a thief. Of my own thief.", es: "La Piedra del Arca, en manos de un ladrón. De mi propio ladrón." } }
       - { t: 0.06, x: 3.2, z: -3.7, action: fight }
       - { t: 0.13, x: 3.5, z: -5.2, action: idle, thought: { en: "Behind the gate I stay, whatever they bring.", es: "Tras la puerta me quedo, traigan lo que traigan." } }
-      - { t: 0.38, x: 3.5, z: -5.2, action: idle, thought: { en: "Goblins! Then we fight beside no one, but we fight.", es: "¡Trasgos! Pues peleemos, aunque sea sin nadie al lado." } }
+      - { t: 0.38, x: 3.5, z: -5.2, action: idle, thought: { en: "Goblins at our door. The time for walls is over.", es: "Trasgos a nuestra puerta. Se acabó el tiempo de los muros." } }
       - { t: 0.44, x: 0.5, z: -3.4, action: run }
       - { t: 0.5, x: 0.5, z: -3.4, action: fight, thought: { en: "Back, you filth! This is Durin's house!", es: "¡Atrás, escoria! ¡Esta es la casa de Durin!" } }
       - { t: 0.75, x: 0.5, z: -3.4, action: fight }
@@ -78,19 +78,19 @@ tracks:
       - { t: 0.27, x: -4.5, z: -4.5, action: walk }
       - { t: 0.42, x: -3, z: -3.4, action: fight, thought: { en: "Break their line!", es: "¡Romped su línea!" } }
       - { t: 0.7, x: -2.6, z: -3.2, action: fight }
-      - { t: 0.75, x: -2.6, z: -3.2, action: hide, thought: { en: "A bear... a huge bear...", es: "Un oso... un oso enorme..." } }
+      - { t: 0.78, x: -2.6, z: -3.2, action: hide, thought: { en: "A bear... a huge bear...", es: "Un oso... un oso enorme..." } }
   - characterId: beorn
     keyframes:
       - { t: 0, x: 12, z: -12, action: idle }
-      - { t: 0.6, x: 12, z: -12, action: idle }
-      - { t: 0.72, x: -1.8, z: -2.6, action: run, thought: { en: "The goblins will learn what a bear can do.", es: "Los trasgos van a saber lo que puede hacer un oso." } }
-      - { t: 0.76, x: -1.8, z: -2.6, action: fight }
+      - { t: 0.66, x: 12, z: -12, action: idle }
+      - { t: 0.75, x: -1.8, z: -2.6, action: run, thought: { en: "The goblins will learn what a bear can do.", es: "Los trasgos van a saber lo que puede hacer un oso." } }
+      - { t: 0.78, x: -1.8, z: -2.6, action: fight }
       - { t: 0.88, x: -1.8, z: -2.6, action: idle }
   - characterId: lord-of-the-eagles
     keyframes:
       - { t: 0, x: -12, z: -12, action: idle }
-      - { t: 0.5, x: -12, z: -12, action: idle }
-      - { t: 0.6, x: -5.8, z: -1.2, action: run, thought: { en: "We are not too late. Strike the goblin host from above.", es: "No llegamos tarde. Golpead a la hueste trasga desde el cielo." } }
+      - { t: 0.55, x: -12, z: -12, action: idle }
+      - { t: 0.64, x: -5.8, z: -1.2, action: run, thought: { en: "We are not too late. Strike the goblin host from above.", es: "No llegamos tarde. Golpead a la hueste trasga desde el cielo." } }
       - { t: 0.75, x: -5.2, z: -1.8, action: fight }
       - { t: 0.88, x: -5.2, z: -1.8, action: idle }
   - characterId: balin
