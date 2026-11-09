@@ -1,0 +1,21 @@
+id: the-elves-discover-sauron
+age: second-age
+when:
+  start: { age: second-age, year: 1600 }
+  precision: year
+place: ost-in-edhil
+characters: [ sauron, celebrimbor, galadriel ]
+arcs: [ the-forging-of-the-rings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
+title: { en: "The Elves discover Sauron's deceit", es: "Los Elfos descubren el engaño de Sauron" }
+summary:
+  en: "When Sauron puts on the One Ring, the Elves feel his thought and know they have been betrayed. They take off their rings and hide the Three."
+  es: "Cuando Sauron se pone el Anillo Único, los Elfos perciben su pensamiento y saben que han sido traicionados. Se quitan los anillos y ocultan los Tres."
+links:
+  - to: sauron-forges-the-one-ring
+    type: caused-by
+    note:
+      en: "The Ring betrays him."
+      es: "El Anillo lo delata."

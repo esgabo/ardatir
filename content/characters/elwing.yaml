@@ -1,0 +1,8 @@
+id: elwing
+name: { en: "Elwing", es: "Elwing" }
+kind: elf
+summary:
+  en: "Granddaughter of Beren and Lúthien, bearer of the Silmaril, wife of Eärendil."
+  es: "Nieta de Beren y Lúthien, portadora del Silmaril y esposa de Eärendil."
+color: "#5a7a9a"
+scale: 1.75

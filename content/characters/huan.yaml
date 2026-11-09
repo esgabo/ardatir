@@ -1,0 +1,8 @@
+id: huan
+name: { en: "Huan", es: "Huan" }
+kind: beast
+summary:
+  en: "The great hound of Valinor, given to Celegorm, who became the friend of Lúthien and Beren."
+  es: "El gran sabueso de Valinor, entregado a Celegorm, que se hizo amigo de Lúthien y Beren."
+color: "#8a8a7a"
+scale: 2.5

@@ -1,0 +1,8 @@
+id: maeglin
+name: { en: "Maeglin", es: "Maeglin" }
+kind: elf
+summary:
+  en: "Nephew of Turgon, a master of mines and metal who betrayed Gondolin out of desire for Idril."
+  es: "Sobrino de Turgon, maestro de minas y metales, que traicionó a Gondolin por deseo de Idril."
+color: "#5a7a9a"
+scale: 1.85

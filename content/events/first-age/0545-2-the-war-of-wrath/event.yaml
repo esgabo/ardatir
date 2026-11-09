@@ -1,0 +1,22 @@
+id: the-war-of-wrath
+age: first-age
+when:
+  start: { age: first-age, year: 545 }   # about forty years of war; neither end is exact
+  end: { age: first-age, year: 587 }
+  precision: approximate
+place: beleriand
+characters: [ earendil, melkor, gil-galad, maedhros ]
+arcs: [ the-war-of-wrath ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
+title: { en: "The War of Wrath", es: "La Guerra de la Cólera" }
+summary:
+  en: "The Valar's host drives Morgoth's armies across Beleriand. The land is broken and drowned in the fighting, and the dragons are scattered."
+  es: "La hueste de los Valar empuja a los ejércitos de Morgoth por Beleriand. La tierra se parte y se hunde en la lucha, y los dragones se dispersan."
+links:
+  - to: the-host-of-the-valar-sets-sail
+    type: caused-by
+    note:
+      en: "The war begins when the host lands."
+      es: "La guerra empieza cuando la hueste desembarca."

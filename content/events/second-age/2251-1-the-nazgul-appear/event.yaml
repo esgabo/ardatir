@@ -1,0 +1,21 @@
+id: the-nazgul-appear
+age: second-age
+when:
+  start: { age: second-age, year: 2251 }   # Appendix B dates the first appearance of the Ringwraiths around SA 2251; approximate because the Silmarillion gives no year
+  precision: approximate
+place: mordor
+characters: [ sauron ]
+arcs: [ the-forging-of-the-rings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
+title: { en: "The Nine become Ringwraiths", es: "Los Nueve se convierten en Espectros del Anillo" }
+summary:
+  en: "The mortal kings who accepted the Nine Rings fall one by one under Sauron's will. They fade into wraiths who serve only him."
+  es: "Los reyes mortales que aceptaron los Nueve Anillos caen uno a uno bajo la voluntad de Sauron. Se desvanecen hasta ser espectros que solo lo sirven a él."
+links:
+  - to: the-seven-and-the-nine-are-forged
+    type: caused-by
+    note:
+      en: "The Nine are the cause of their fate."
+      es: "Los Nueve son la causa de su destino."

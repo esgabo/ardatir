@@ -1,0 +1,21 @@
+id: downfall-of-numenor
+age: second-age
+when:
+  start: { age: second-age, year: 3319 }
+  precision: year
+place: numenor
+characters: [ ar-pharazon, tar-miriel, sauron ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The Downfall of Númenor", es: "La Caída de Númenor" }
+summary:
+  en: "A chasm opens in the sea. The King and his fleet are buried, and a great wave swallows the island with all its pride. Sauron's fair body is destroyed, and he flees in spirit to Mordor."
+  es: "Se abre una sima en el mar. El Rey y su flota quedan sepultados, y una gran ola engulle la isla con todo su orgullo. El cuerpo hermoso de Sauron es destruido y su espíritu huye a Mordor."
+links:
+  - to: ar-pharazon-sets-foot-on-aman
+    type: caused-by
+    note:
+      en: "The Valar answer the invasion."
+      es: "Los Valar responden a la invasión."

@@ -1,0 +1,15 @@
+id: celebrimbor-founds-eregion
+age: second-age
+when:
+  start: { age: second-age, year: 750 }   # Noldor leave Lindon for Eregion around SA 750; year approximate
+  precision: approximate
+place: eregion
+characters: [ celebrimbor, galadriel ]
+arcs: [ the-forging-of-the-rings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
+title: { en: "Celebrimbor founds Eregion", es: "Celebrimbor funda Eregion" }
+summary:
+  en: "Craftsmen of the Noldor, drawn by news of mithril in Moria, found a realm at the Dwarves' western door. Celebrimbor, grandson of Fëanor, is their lord."
+  es: "Artífices noldor, atraídos por la noticia del mithril en Moria, fundan un reino ante la puerta occidental de los Enanos. Celebrimbor, nieto de Fëanor, es su señor."

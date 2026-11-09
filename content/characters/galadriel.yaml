@@ -1,0 +1,8 @@
+id: galadriel
+name: { en: "Galadriel", es: "Galadriel" }
+kind: elf
+summary:
+  en: "Daughter of Finarfin, proud and wise, who left Valinor for Middle-earth and lived through all three ages."
+  es: "Hija de Finarfin, orgullosa y sabia, que dejó Valinor por la Tierra Media y vivió a lo largo de tres edades."
+color: "#5a7a9a"
+scale: 1.85

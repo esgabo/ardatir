@@ -1,0 +1,21 @@
+id: burning-of-the-ships-at-losgar
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1496 }   # on landing in Middle-earth; before the first Sun
+  precision: approximate
+place: losgar
+characters: [ feanor, maedhros, fingolfin ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Flight of the Noldor" }
+title: { en: "The ships burn at Losgar", es: "Arden las naves en Losgar" }
+summary:
+  en: "Fëanor lands in Middle-earth and has his ships burned, leaving Fingolfin's followers behind. Seeing the flames, they take their own path north."
+  es: "Fëanor desembarca en la Tierra Media y manda quemar sus naves, dejando atrás a los seguidores de Fingolfin. Al ver las llamas, estos emprenden su propio camino hacia el norte."
+links:
+  - to: the-doom-of-mandos
+    type: caused-by
+    note:
+      en: "The doom does not stop Fëanor, only hardens him."
+      es: "La sentencia no detiene a Fëanor, solo lo endurece."

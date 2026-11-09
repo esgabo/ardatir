@@ -1,0 +1,22 @@
+id: turin-comes-to-brethil
+age: first-age
+when:
+  start: { age: first-age, year: 496 }   # at the end of the same year
+  precision: approximate
+place: brethil
+characters: [ turin, brandir ]
+arcs: [ the-children-of-hurin ]
+journeys: [ turins-wanderings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Túrin comes to Brethil", es: "Túrin llega a Brethil" }
+summary:
+  en: "Seeking rest, Túrin takes a new name, Turambar, Master of Doom, and settles among the Haladin. Brandir, their lame lord, welcomes him but fears him."
+  es: "Buscando reposo, Túrin adopta un nuevo nombre, Turambar, Señor del Destino, y se instala entre los Haladin. Brandir, su cojo señor, lo acoge pero lo teme."
+links:
+  - to: turin-returns-to-dor-lomin
+    type: caused-by
+    note:
+      en: "With no home left, he goes to the woods."
+      es: "Sin hogar, se refugia en los bosques."

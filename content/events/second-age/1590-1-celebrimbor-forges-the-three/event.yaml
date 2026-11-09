@@ -1,0 +1,21 @@
+id: celebrimbor-forges-the-three
+age: second-age
+when:
+  start: { age: second-age, year: 1590 }   # made after Sauron leaves, and before the One Ring in 1600
+  precision: approximate
+place: ost-in-edhil
+characters: [ celebrimbor, galadriel ]
+arcs: [ the-forging-of-the-rings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
+title: { en: "Celebrimbor forges the Three Rings", es: "Celebrimbor forja los Tres Anillos" }
+summary:
+  en: "Alone, without Sauron's help, Celebrimbor makes the three fairest rings, with no taint in them. They hold power to heal and to preserve, and Sauron has never touched them."
+  es: "A solas, sin ayuda de Sauron, Celebrimbor forja los tres anillos más bellos, sin mancha alguna. Tienen el poder de sanar y preservar, y Sauron nunca los tocó."
+links:
+  - to: the-seven-and-the-nine-are-forged
+    type: caused-by
+    note:
+      en: "The smiths have learned the art."
+      es: "Los herreros han aprendido el arte."

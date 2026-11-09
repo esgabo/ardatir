@@ -1,0 +1,8 @@
+id: beren
+name: { en: "Beren", es: "Beren" }
+kind: man
+summary:
+  en: "Son of Barahir, an outlaw of Dorthonion who won Lúthien's love and cut a Silmaril from Morgoth's crown."
+  es: "Hijo de Barahir, un proscrito de Dorthonion que ganó el amor de Lúthien y arrancó un Silmaril de la corona de Morgoth."
+color: "#7a6a4a"
+scale: 1.8

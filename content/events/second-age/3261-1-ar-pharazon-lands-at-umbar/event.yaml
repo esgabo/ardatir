@@ -1,0 +1,21 @@
+id: ar-pharazon-lands-at-umbar
+age: second-age
+when:
+  start: { age: second-age, year: 3261 }
+  precision: year
+place: umbar
+characters: [ ar-pharazon, sauron ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Ar-Pharazôn lands at Umbar", es: "Ar-Pharazôn desembarca en Umbar" }
+summary:
+  en: "The King sails with a vast fleet to Middle-earth and demands Sauron's submission. Seeing the fleet, Sauron's servants abandon him, and he kneels."
+  es: "El Rey navega con una gran flota hasta la Tierra Media y exige la sumisión de Sauron. Al ver la flota, los servidores de Sauron lo abandonan, y él se arrodilla."
+links:
+  - to: ar-pharazon-takes-the-sceptre
+    type: caused-by
+    note:
+      en: "The new king seeks glory."
+      es: "El nuevo rey busca gloria."

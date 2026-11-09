@@ -1,0 +1,8 @@
+id: fingolfin
+name: { en: "Fingolfin", es: "Fingolfin" }
+kind: elf
+summary:
+  en: "Half-brother of Fëanor and High King of the Noldor in Beleriand, who dared to challenge Morgoth himself."
+  es: "Hermanastro de Fëanor y rey supremo de los Noldor en Beleriand, que se atrevió a desafiar al propio Morgoth."
+color: "#5a7a9a"
+scale: 1.85

@@ -1,0 +1,21 @@
+id: feanor-draws-his-sword-on-fingolfin
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1490 }   # the last years before the Trees died
+  precision: approximate
+place: tirion
+characters: [ feanor, fingolfin, finwe ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Silmarils and the Unrest of the Noldor" }
+title: { en: "Fëanor draws his sword on Fingolfin", es: "Fëanor desenvaina su espada contra Fingolfin" }
+summary:
+  en: "Fëanor threatens his half-brother with drawn steel. The Valar banish him from Tirion, and he withdraws with his sons to Formenos, taking Finwë with him."
+  es: "Fëanor amenaza a su hermanastro con la espada desnuda. Los Valar lo destierran de Tirion, y se retira con sus hijos a Formenos, llevándose a Finwë."
+links:
+  - to: melkor-sows-discord-among-the-noldor
+    type: caused-by
+    note:
+      en: "The quarrel is the fruit of Melkor's lies."
+      es: "La disputa es fruto de las mentiras de Melkor."

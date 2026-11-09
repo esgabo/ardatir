@@ -1,0 +1,8 @@
+id: finrod
+name: { en: "Finrod Felagund", es: "Finrod Felagund" }
+kind: elf
+summary:
+  en: "Son of Finarfin, founder of Nargothrond and the first Elf-lord to befriend Men."
+  es: "Hijo de Finarfin, fundador de Nargothrond y el primer señor Elfo que se hizo amigo de los Hombres."
+color: "#5a7a9a"
+scale: 1.85

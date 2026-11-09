@@ -1,0 +1,22 @@
+id: earendil-reaches-valinor
+age: first-age
+when:
+  start: { age: first-age, year: 540 }   # Eärendil's voyage lasts years; year approximate
+  precision: approximate
+place: aman
+characters: [ earendil, elwing, manwe, ulmo ]
+arcs: [ the-war-of-wrath ]
+journeys: [ earendils-voyage ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
+title: { en: "Eärendil reaches Valinor", es: "Eärendil llega a Valinor" }
+summary:
+  en: "Bearing the Silmaril, Eärendil and Elwing come at last to Valinor. He speaks for the Elves and Men of Middle-earth before the Valar, begging them to end the war."
+  es: "Con el Silmaril, Eärendil y Elwing llegan por fin a Valinor. Él habla ante los Valar en nombre de Elfos y Hombres de la Tierra Media, y les ruega que pongan fin a la guerra."
+links:
+  - to: third-kinslaying-at-the-havens
+    type: caused-by
+    note:
+      en: "Elwing's flight sends them west."
+      es: "La huida de Elwing los envía al oeste."

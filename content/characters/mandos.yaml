@@ -1,0 +1,8 @@
+id: mandos
+name: { en: "Mandos", es: "Mandos" }
+kind: ainu
+summary:
+  en: "The Vala who keeps the houses of the dead and speaks the Dooms."
+  es: "El Vala que guarda las moradas de los muertos y pronuncia las Sentencias."
+color: "#c8c0a8"
+scale: 2.4

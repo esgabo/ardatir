@@ -1,0 +1,21 @@
+id: feanors-oath
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1495 }   # immediately after the Darkening
+  precision: approximate
+place: tirion
+characters: [ feanor, fingolfin, finarfin, finrod ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Flight of the Noldor" }
+title: { en: "Fëanor's Oath", es: "El juramento de Fëanor" }
+summary:
+  en: "Stirred by Fëanor's speech in Tirion, the Noldor are called to leave the Valar and win back the Silmarils. Fëanor and his seven sons swear a terrible oath of vengeance."
+  es: "Conmovidos por el discurso de Fëanor en Tirion, los Noldor son llamados a abandonar a los Valar y recobrar los Silmarils. Fëanor y sus siete hijos pronuncian un terrible juramento de venganza."
+links:
+  - to: the-trees-are-darkened
+    type: caused-by
+    note:
+      en: "The theft of the Silmarils and Finwë's death inflame him."
+      es: "El robo de los Silmarils y la muerte de Finwë lo encienden."

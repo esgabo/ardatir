@@ -1,0 +1,21 @@
+id: hurin-and-morwen-at-turins-grave
+age: first-age
+when:
+  start: { age: first-age, year: 502 }   # shortly after his release
+  precision: approximate
+place: brethil
+characters: [ hurin, morwen ]
+arcs: [ the-children-of-hurin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Húrin and Morwen at Túrin's grave", es: "Húrin y Morwen ante la tumba de Túrin" }
+summary:
+  en: "At the stone of Cabed Naeramarth, Húrin finds Morwen waiting. She tells him what she knows of their children, and dies with his hand in hers."
+  es: "Ante la piedra de Cabed Naeramarth, Húrin halla a Morwen que lo espera. Ella le cuenta lo que sabe de sus hijos y muere con la mano de él entre las suyas."
+links:
+  - to: hurin-is-released
+    type: caused-by
+    note:
+      en: "He goes at once to the places of his family's ruin."
+      es: "Va enseguida a los lugares de la ruina de su familia."

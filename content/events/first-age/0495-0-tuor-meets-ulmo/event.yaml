@@ -1,0 +1,21 @@
+id: tuor-meets-ulmo
+age: first-age
+when:
+  start: { age: first-age, year: 495 }   # before the winter at Ivrin, when Tuor is already on the road
+  precision: year
+place: vinyamar
+characters: [ tuor, ulmo ]
+arcs: [ the-fall-of-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: unfinished-tales, chapter: "Of Tuor and his Coming to Gondolin" }
+title: { en: "Tuor meets Ulmo", es: "Tuor se encuentra con Ulmo" }
+summary:
+  en: "At the ruins of Vinyamar, Ulmo rises from the sea and commands Tuor to go to Gondolin with a warning: the city must prepare for its fall."
+  es: "En las ruinas de Vinyamar, Ulmo emerge del mar y ordena a Tuor ir a Gondolin con una advertencia: la ciudad debe prepararse para su caída."
+links:
+  - to: tuor-reaches-gondolin
+    type: enables
+    note:
+      en: "The errand Tuor brings to Turgon."
+      es: "El mensaje que Tuor lleva a Turgon."

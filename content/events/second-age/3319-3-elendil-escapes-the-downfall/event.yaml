@@ -1,0 +1,22 @@
+id: elendil-escapes-the-downfall
+age: second-age
+when:
+  start: { age: second-age, year: 3319 }
+  precision: year
+place: andunie
+characters: [ elendil, isildur, anarion ]
+arcs: [ the-downfall-of-numenor ]
+journeys: [ isildurs-flight-from-numenor, elendils-flight-from-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Elendil escapes the Downfall", es: "Elendil escapa de la Caída" }
+summary:
+  en: "Elendil and his sons, waiting with nine ships at the island's east coast, are driven before a storm from the west. The wave carries them to the coasts of Middle-earth."
+  es: "Elendil y sus hijos, que aguardan con nueve naves en la costa oriental, son empujados por una tormenta del oeste. La ola los arrastra hasta las costas de la Tierra Media."
+links:
+  - to: downfall-of-numenor
+    type: caused-by
+    note:
+      en: "The wave that destroys Númenor carries them."
+      es: "La ola que destruye Númenor los lleva."

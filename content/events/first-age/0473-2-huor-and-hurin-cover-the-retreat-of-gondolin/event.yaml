@@ -1,0 +1,21 @@
+id: huor-and-hurin-cover-the-retreat-of-gondolin
+age: first-age
+when:
+  start: { age: first-age, year: 473 }
+  precision: year
+place: sirion-pass
+characters: [ hurin, huor, turgon ]
+arcs: [ the-children-of-hurin, the-fall-of-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Fifth Battle: Nirnaeth Arnoediad" }
+title: { en: "Húrin and Huor cover Turgon's retreat", es: "Húrin y Huor cubren la retirada de Turgon" }
+summary:
+  en: "As the rout deepens, Huor and Húrin hold a narrow ford while Turgon withdraws toward the hidden city. Huor falls, and Húrin fights on until he is taken alive."
+  es: "Cuando la derrota se hace general, Huor y Húrin defienden un vado estrecho mientras Turgon se retira hacia la ciudad oculta. Huor cae, y Húrin sigue luchando hasta ser capturado vivo."
+links:
+  - to: nirnaeth-arnoediad
+    type: caused-by
+    note:
+      en: "A moment inside the great battle."
+      es: "Un momento dentro de la gran batalla."

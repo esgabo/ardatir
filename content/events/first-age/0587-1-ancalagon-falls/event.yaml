@@ -1,0 +1,21 @@
+id: ancalagon-falls
+age: first-age
+when:
+  start: { age: first-age, year: 587 }   # at the end of the war
+  precision: approximate
+place: thangorodrim
+characters: [ ancalagon, earendil ]
+arcs: [ the-war-of-wrath ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
+title: { en: "Ancalagon falls", es: "Cae Ancalagon" }
+summary:
+  en: "Morgoth's last gamble is the winged dragons. Eärendil and the great eagles fight them for a day and a night. Ancalagon is hurled down and breaks the towers of Thangorodrim."
+  es: "La última carta de Morgoth son los dragones alados. Eärendil y las grandes águilas combaten con ellos un día y una noche. Ancalagon es derribado y destruye las torres de Thangorodrim."
+links:
+  - to: the-war-of-wrath
+    type: caused-by
+    note:
+      en: "A battle of the war."
+      es: "Una batalla de la guerra."

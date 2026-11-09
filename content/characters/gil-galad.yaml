@@ -1,0 +1,8 @@
+id: gil-galad
+name: { en: "Gil-galad", es: "Gil-galad" }
+kind: elf
+summary:
+  en: "Last High King of the Noldor in Middle-earth, ruler of Lindon."
+  es: "Último rey supremo de los Noldor en la Tierra Media, soberano de Lindon."
+color: "#5a7a9a"
+scale: 1.95

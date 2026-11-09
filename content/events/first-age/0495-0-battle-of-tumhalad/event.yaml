@@ -1,0 +1,26 @@
+id: battle-of-tumhalad
+age: first-age
+when:
+  start: { age: first-age, year: 495 }   # earlier in the year than the fall of Nargothrond
+  precision: year
+place: tumhalad
+characters: [ gwindor, orodreth, glaurung, turin ]
+arcs: [ the-children-of-hurin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "The Battle of Tumhalad", es: "La batalla de Tumhalad" }
+summary:
+  en: "Nargothrond marches openly to war on Túrin's counsel and is trapped between the rivers. Glaurung and his orcs break the host, and Gwindor falls, urging Túrin to save Finduilas."
+  es: "Nargothrond marcha abiertamente a la guerra por consejo de Túrin y queda atrapada entre los ríos. Glaurung y sus orcos quebrantan a la hueste, y Gwindor cae, instando a Túrin a salvar a Finduilas."
+links:
+  - to: turin-comes-to-nargothrond
+    type: caused-by
+    note:
+      en: "Túrin's new strategy led the host out."
+      es: "La nueva estrategia de Túrin sacó a la hueste."
+  - to: fall-of-nargothrond
+    type: causes
+    note:
+      en: "The way to the hidden city is now open."
+      es: "El camino a la ciudad oculta queda abierto."

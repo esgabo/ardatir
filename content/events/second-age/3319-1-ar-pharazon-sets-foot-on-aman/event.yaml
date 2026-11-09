@@ -1,0 +1,21 @@
+id: ar-pharazon-sets-foot-on-aman
+age: second-age
+when:
+  start: { age: second-age, year: 3319 }
+  precision: year
+place: aman
+characters: [ ar-pharazon ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Ar-Pharazôn sets foot on Aman", es: "Ar-Pharazôn pisa Aman" }
+summary:
+  en: "At Sauron's urging, the great fleet crosses the sea and the King lands on the Undying Lands. The Valar lay down their guardianship and call on Ilúvatar."
+  es: "Por consejo de Sauron, la gran flota cruza el mar y el Rey desembarca en las Tierras Imperecederas. Los Valar renuncian a su guarda y claman a Ilúvatar."
+links:
+  - to: amandil-sails-west
+    type: caused-by
+    note:
+      en: "The Armament sails when Amandil fails."
+      es: "El Armamento zarpa cuando Amandil fracasa."

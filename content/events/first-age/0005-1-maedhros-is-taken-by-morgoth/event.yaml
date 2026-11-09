@@ -1,0 +1,15 @@
+id: maedhros-is-taken-by-morgoth
+age: first-age
+when:
+  start: { age: first-age, year: 5 }   # soon after Fëanor's death; year is a guess
+  precision: approximate
+place: angband
+characters: [ maedhros, melkor ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Return of the Noldor" }
+title: { en: "Maedhros is taken by Morgoth", es: "Morgoth captura a Maedhros" }
+summary:
+  en: "Lured to a parley by Morgoth's false offer, Maedhros is seized and hung by his wrist from a cliff of Thangorodrim."
+  es: "Atraído a un parlamento por la falsa oferta de Morgoth, Maedhros es apresado y colgado de la muñeca en un precipicio de Thangorodrim."

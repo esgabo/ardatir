@@ -1,0 +1,8 @@
+id: elros
+name: { en: "Elros", es: "Elros" }
+kind: man
+summary:
+  en: "Twin brother of Elrond, who chose a mortal life and became the first King of Númenor."
+  es: "Hermano gemelo de Elrond, que eligió una vida mortal y fue el primer rey de Númenor."
+color: "#7a6a4a"
+scale: 1.8

@@ -1,0 +1,8 @@
+id: mim
+name: { en: "Mîm", es: "Mîm" }
+kind: dwarf
+summary:
+  en: "A bitter Petty-Dwarf of Amon Rûdh who sheltered Túrin's outlaws and then betrayed them."
+  es: "Un amargado Enano Menor de Amon Rûdh que dio cobijo a los proscritos de Túrin y luego los traicionó."
+color: "#8a5a3a"
+scale: 1.1

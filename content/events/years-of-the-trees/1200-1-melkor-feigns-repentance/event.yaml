@@ -1,0 +1,15 @@
+id: melkor-feigns-repentance
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1200 }   # released after three ages of captivity; no year is given
+  precision: approximate
+place: valinor
+characters: [ melkor, manwe, mandos ]
+arcs: [  ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Silmarils and the Unrest of the Noldor" }
+title: { en: "Melkor feigns repentance", es: "Melkor finge arrepentirse" }
+summary:
+  en: "After three ages in the halls of Mandos, Melkor kneels before Manwë, begs pardon and is set free to live in Valinor. He hides his hatred behind helpful words."
+  es: "Tras tres edades en las moradas de Mandos, Melkor se arrodilla ante Manwë, pide perdón y es liberado para vivir en Valinor. Esconde su odio tras palabras serviciales."

@@ -1,0 +1,15 @@
+id: awakening-of-the-elves
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1050 }   # Annals of Aman give the year in Valian years; Ardatir's year length is itself a later estimate, so only an approximate date is honest
+  precision: approximate
+place: cuivienen
+characters: [  ]
+arcs: [ the-great-journey ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Coming of the Elves and the Captivity of Melkor" }
+title: { en: "The Elves awake at Cuiviénen", es: "Los Elfos despiertan en Cuiviénen" }
+summary:
+  en: "Beneath the stars, by a bay in the far east, the first Elves open their eyes, wake to speech and song, and name the world around them."
+  es: "Bajo las estrellas, junto a una bahía del lejano oriente, los primeros Elfos abren los ojos, despiertan al habla y al canto y dan nombre al mundo que los rodea."

@@ -1,0 +1,21 @@
+id: beren-wins-back-the-nauglamir
+age: first-age
+when:
+  start: { age: first-age, year: 503 }   # immediately after Thingol's death
+  precision: approximate
+place: beleriand
+characters: [ beren, luthien, dior ]
+arcs: [ the-fall-of-doriath, beren-and-luthien ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Ruin of Doriath" }
+title: { en: "Beren wins back the Nauglamír", es: "Beren recupera el Nauglamír" }
+summary:
+  en: "Beren gathers the Elves of Ossiriand and ambushes the Dwarves at the ford of Sarn Athrad. He retakes the necklace and the Silmaril, and the two, now old by mortal measure, pass quietly away."
+  es: "Beren reúne a los Elfos de Ossiriand y embosca a los Enanos en el vado de Sarn Athrad. Recobra el collar y el Silmaril, y los dos, ya ancianos para medida mortal, mueren en paz."
+links:
+  - to: thingol-is-slain-by-dwarves
+    type: caused-by
+    note:
+      en: "He avenges Thingol."
+      es: "Venga a Thingol."

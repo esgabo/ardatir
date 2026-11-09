@@ -1,0 +1,22 @@
+id: finrod-dies-in-sauron-dungeon
+age: first-age
+when:
+  start: { age: first-age, year: 464 }   # the party is taken within the same journey
+  precision: approximate
+place: tol-sirion
+characters: [ finrod, beren, sauron ]
+arcs: [ beren-and-luthien ]
+journeys: [ berens-quest ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+title: { en: "Finrod dies in Sauron's dungeon", es: "Finrod muere en la mazmorra de Sauron" }
+summary:
+  en: "Disguised as orcs, the company is unmasked by Sauron and thrown into the pits of Tol Sirion. Finrod wrestles a werewolf with his bare hands and dies, saving Beren."
+  es: "Disfrazados de orcos, los compañeros son desenmascarados por Sauron y arrojados a los pozos de Tol Sirion. Finrod lucha con un hombre lobo a manos desnudas y muere, salvando a Beren."
+links:
+  - to: finrod-and-beren-leave-nargothrond
+    type: caused-by
+    note:
+      en: "Finrod's oath leads him to this death."
+      es: "El juramento de Finrod lo lleva a esta muerte."

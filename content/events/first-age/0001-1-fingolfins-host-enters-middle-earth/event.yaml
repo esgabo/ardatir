@@ -1,0 +1,21 @@
+id: fingolfins-host-enters-middle-earth
+age: first-age
+when:
+  start: { age: first-age, year: 1 }   # the host arrives as the Sun first rises, so FA 1 by definition
+  precision: year
+place: mithrim
+characters: [ fingolfin, fingon, finrod, galadriel ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Return of the Noldor" }
+title: { en: "Fingolfin's host enters Middle-earth", es: "La hueste de Fingolfin entra en la Tierra Media" }
+summary:
+  en: "As the Sun first climbs, Fingolfin's people march into Hithlum with banners raised. The Orcs flee, and Fëanor's folk are ashamed."
+  es: "Cuando el Sol asciende por primera vez, el pueblo de Fingolfin entra marchando en Hithlum con los estandartes alzados. Los orcos huyen y los seguidores de Fëanor sienten vergüenza."
+links:
+  - to: crossing-of-the-helcaraxe
+    type: caused-by
+    note:
+      en: "The ice-crossers arrive at last."
+      es: "Los que cruzaron el hielo llegan por fin."

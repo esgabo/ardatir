@@ -1,0 +1,8 @@
+id: maedhros
+name: { en: "Maedhros", es: "Maedhros" }
+kind: elf
+summary:
+  en: "Eldest son of Fëanor, held in torment on Thangorodrim, later leader of the Union that bears his name."
+  es: "Hijo mayor de Fëanor, torturado en Thangorodrim, y más tarde caudillo de la Unión que lleva su nombre."
+color: "#5a7a9a"
+scale: 1.85

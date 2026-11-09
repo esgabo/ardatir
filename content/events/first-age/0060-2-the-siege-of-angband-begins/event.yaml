@@ -1,0 +1,22 @@
+id: the-siege-of-angband-begins
+age: first-age
+when:
+  start: { age: first-age, year: 60 }   # the Siege lasts until the Battle of Sudden Flame in FA 455
+  end: { age: first-age, year: 455 }
+  precision: year
+place: angband
+characters: [ fingolfin, maedhros, melkor ]
+arcs: [ the-siege-of-angband ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
+title: { en: "The Siege of Angband", es: "El Sitio de Angband" }
+summary:
+  en: "For almost four centuries the Elves hold the northern passes, watching Angband's gates while Morgoth rebuilds his strength."
+  es: "Durante casi cuatro siglos los Elfos guardan los pasos del norte, vigilando las puertas de Angband mientras Morgoth rehace sus fuerzas."
+links:
+  - to: dagor-aglareb
+    type: caused-by
+    note:
+      en: "The victory shuts Morgoth in."
+      es: "La victoria encierra a Morgoth."

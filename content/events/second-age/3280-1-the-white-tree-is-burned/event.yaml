@@ -1,0 +1,21 @@
+id: the-white-tree-is-burned
+age: second-age
+when:
+  start: { age: second-age, year: 3280 }   # Sauron's corruption takes some years; Nimloth's felling is dated around here; year only a best guess
+  precision: approximate
+place: armenelos
+characters: [ sauron, ar-pharazon, isildur, amandil ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The White Tree Nimloth is burned", es: "Se quema el Blanco Árbol Nimloth" }
+summary:
+  en: "Sauron persuades the King to cut down Nimloth and burn it in his temple of Melkor. Isildur steals a fruit from the Tree and escapes with it, wounded."
+  es: "Sauron persuade al Rey de que corte a Nimloth y lo queme en su templo de Melkor. Isildur roba un fruto del Árbol y escapa herido."
+links:
+  - to: sauron-is-taken-to-numenor
+    type: caused-by
+    note:
+      en: "The temple is Sauron's work."
+      es: "El templo es obra de Sauron."
