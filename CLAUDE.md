@@ -47,6 +47,7 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Navigation is a collapsible left sidebar** (icon rail + panel: Ages, Time, Stories, Lives, Books, Places), not dropdowns | Keeps the 3D stage clear while making every way in visible. Fantasy look kept light: a few small ornaments, no textures. See `docs/DESIGN.md` §3.3. Decided 2026-11-09. |
 | **"Likely at the same time" is a labelled, explained guess**: never for two scenes sharing a character (unless linked `concurrent`/`crossing`); otherwise best guesses within ±3 / ±15 / ±45 days for day / month / season (the vaguer of the two); never for a year or vaguer | Story order already says which of a character's scenes comes first; a fixed window was too loose for vague dates (the secret door "during" Lake-town, #2). Gap-to-anchors was hard to explain, exact-only made "likely" vanish. Every guess records why it landed there (`atReason`) and the site says so in words. See `docs/DESIGN.md` §4.4.1. Decided 2026-11-09. |
 | **The time cursor is a page at a readable moment** (`#/time/third-age/3019-03-15`, `…/3019`, `…/before-time`): the ages as log-width segments (timeless ones apart, before the axis) and a finer scale down to a day; likely / possibly by `nearnessDuring`; whereabouts from journeys by company, honest first | Ages differ a hundredfold in length, so each needs room; a moment is said exactly as precisely as it was picked; "somewhere between" when the sources allow several stops, with our guess labelled. See `docs/DESIGN.md` §3.1. Decided 2026-11-09. |
+| **What is foretold is its own timeless age, after the Fourth Age** (`content/ages/foretold.yaml`, `foretold: true`): the Dagor Dagorath and the Second Music, never on the dated axis; every event in it cites its `source` and may name who foretold it (`foretoldBy`); marked as prophecy wherever it appears (a *Foretold* badge, *Foretold by Mandos, not told as history. Source: …* on its page, a dashed segment after the axis) | Prophecy must never read as history. The flag lives on the age so no event can forget it. We tell the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*, *The Lost Road*), one scene per event, so its strongest moments can each be animated. See `docs/DESIGN.md` §4.8. Decided 2026-11-09 (#57). |
 
 ## Architecture
 
@@ -89,6 +90,7 @@ src/
   format.ts          honest dates in words (labels only; the math is in calendar.ts)
   related.ts         an event's links and what overlaps it, likely vs possibly (Meanwhile, event pages)
   placement.ts       a best guess in words: how an event is placed (from atReason), why another is "likely"
+  foretold.ts        what is foretold (DESIGN §4.8): is an event prophecy, its badge, "Foretold by …, not told as history. Source: …"
   dom.ts, icons.ts   a tiny element builder; inline stroke SVG icons
   main.ts            app shell: routing, pages vs stage, playback loop, panels, breadcrumb, zoom switch, Meanwhile
 ```
@@ -114,7 +116,7 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 
 - **One event = one scene.** If it has several places or several days of distinct action, split it and group the pieces with an arc.
 - **Link what time can't show**: `enabled-by` / `caused-by` for consequences, `concurrent` for parallel action elsewhere. Don't link events just because they're close in time; the time cursor finds those.
-- **Every event gets `when` with an honest `precision`.** Only timeless ages (before the world) have none. When unsure of a season, claim only the year and add a comment saying why. A strong text cue may justify more ("just before June" → May), with the cue in a comment.
+- **Every event gets `when` with an honest `precision`.** Only timeless ages (before the world, and what is foretold after it) have none. When unsure of a season, claim only the year and add a comment saying why. A strong text cue may justify more ("just before June" → May), with the cue in a comment.
 - **Name the folder by story order**, then check the build's ordering warnings.
 - **Journeys follow who travels together.** Split them where companions part (Gandalf leaves the dwarves at Mirkwood).
 - **Our own words only.** Summaries, thoughts and narration are original paraphrase. No reading Tolkien's text aloud, and quotations at most a few words, rarely. When an in-character line drifts close to the book's wording, rephrase it.

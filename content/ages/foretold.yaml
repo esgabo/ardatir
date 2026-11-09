@@ -1,0 +1,10 @@
+id: foretold
+order: 7
+name: { en: What Is Foretold, es: Lo Profetizado }   # es: our own wording, not a published term (#51)
+summary:
+  en: "Not history but prophecy: the end of days as Mandos foretold it. We tell the fuller version from Tolkien's drafts in The History of Middle-earth, which Christopher Tolkien left out of the published Silmarillion."
+  es: "No es historia, sino profecía: el fin de los días tal como lo predijo Mandos. Contamos la versión más completa, la de los borradores de Tolkien en La historia de la Tierra Media, que Christopher Tolkien dejó fuera del Silmarillion publicado."
+# Timeless and after every dated age: what is foretold has no date, and the time cursor shows it
+# past the end of the axis (docs/DESIGN.md §4.8). Every event here is prophecy and needs a `source`.
+timeless: true
+foretold: true

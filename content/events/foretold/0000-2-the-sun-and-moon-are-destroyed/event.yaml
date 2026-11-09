@@ -1,0 +1,24 @@
+id: the-sun-and-moon-are-destroyed
+age: foretold
+characters: [ melkor, earendil ]
+arcs: [ the-end-of-days ]
+tags: [ silmarillion, prophecy, cosmology ]
+status: scripted
+# The Second Prophecy of Mandos (1937 Quenta Silmarillion, The Lost Road), as in the 1930 Quenta;
+# the 1926 Sketch has no Sun and Moon here. Morgoth destroys them, and Eärendil comes on him as a
+# white flame (his star, the Silmaril he carries) and drives him from the airs.
+source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
+foretoldBy: mandos
+title: { en: "The Sun and the Moon are destroyed", es: "El Sol y la Luna son destruidos" }
+summary:
+  en: "Back in the world, Morgoth puts out the Sun and the Moon. Then Eärendil, who sails the sky with a Silmaril, comes down on him like a blazing white fire and drives him out of the heavens."
+  es: "De vuelta en el mundo, Morgoth apaga el Sol y la Luna. Entonces Eärendil, que navega el cielo con un Silmaril, desciende sobre él como un fuego blanco y ardiente y lo expulsa de los cielos."
+links:
+  - to: earendil-reaches-valinor
+    type: enabled-by
+    note:
+      en: "Because he came to Valinor, the Valar set Eärendil to sail the sky with the Silmaril; from there he comes down."
+      es: "Porque llegó a Valinor, los Valar pusieron a Eärendil a navegar el cielo con el Silmaril; desde allí desciende."
+beats:
+  - { id: lights-out, label: { en: The lights go out, es: Se apagan las luces } }
+  - { id: earendil, label: { en: Eärendil comes down, es: Desciende Eärendil } }

@@ -412,6 +412,8 @@ function renderCrumbs(ageId: string | undefined, arcIds: string[], here: string)
   if (age) crumb(tr(age.name, L), () => sidebar.show('ages', `age:${age.id}`));
   if (arc) crumb(tr(arc.title, L), () => sidebar.show('stories', `arc:${arc.id}`));
   crumbs.append(h('span', { class: 'here' }, here));
+  // What is foretold is marked even here: the crumbs name an age that is prophecy, not history.
+  if (age?.foretold) crumbs.append(h('span', { class: 'foretold-badge', title: ui('foretoldHint', L) }, ui('foretold', L)));
 }
 
 /** Zoom switch: the cosmos, the world (not built yet) and events. */

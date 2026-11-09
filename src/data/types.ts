@@ -58,8 +58,14 @@ export interface Age {
   name: LocalizedText;
   abbr?: LocalizedText;
   summary: LocalizedText;
-  /** Timeless ages (before the world) have no axis. */
+  /** Timeless ages (before the world, and what is foretold after it) have no axis. */
   axis?: { start: number; yearLength: number };
+  /**
+   * What is foretold, not told as history (the Last Battle, the Second Music): a timeless age
+   * placed after the dated ones. Every event in it is prophecy, and the site says so wherever
+   * it shows one (docs/DESIGN.md §4.8).
+   */
+  foretold?: boolean;
 }
 
 export interface Kin {
@@ -200,6 +206,8 @@ export interface EventSummary {
   tags: string[];
   status: Status;
   source?: { book: string; chapter?: string | number };
+  /** In a foretold age: who foretells it (a character id, e.g. Mandos), when the source names one. */
+  foretoldBy?: string;
   title: LocalizedText;
   summary: LocalizedText;
   links: EventLink[];

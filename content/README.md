@@ -59,6 +59,18 @@ beats:                    # named turning points; their times go in staging.yaml
 - Unsure? Claim less (`year`) and leave a `#` comment saying why.
 - Events in a timeless age (before the world) have no `when`.
 
+### What is foretold
+
+Prophecy, not history (the Last Battle, the Second Music), goes in `events/foretold/`: the age `foretold` is timeless, comes after the Fourth Age, and has `foretold: true`, so the site marks every event in it as foretold (docs/DESIGN.md §4.8). Such an event has no `when`, **must have a `source`** (its page says where the prophecy comes from), and may say who foretells it:
+
+```yaml
+age: foretold
+source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
+foretoldBy: mandos        # a character id; only in a foretold age; leave it out when the source names no one
+```
+
+Add a comment saying which version you tell and where the others differ. Links to history work as usual (`caused-by` the curse on Húrin's house).
+
 ## Writing the script: `narration.yaml`
 
 Passages in order, one to three sentences each, in our own words. Set `status: scripted`.

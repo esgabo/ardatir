@@ -1,0 +1,26 @@
+id: the-silmarils-are-recovered
+age: foretold
+characters: [ earendil ]
+arcs: [ the-end-of-days ]
+tags: [ silmarillion, prophecy, cosmology ]
+status: scripted
+# The Second Prophecy of Mandos in the 1937 Quenta Silmarillion (The Lost Road): after the battle
+# the Earth is broken and made again, and the Silmarils are recovered from sea, earth and air,
+# Eärendil coming down to give up the one he keeps. The Quenta (The Shaping of Middle-earth) has the
+# recovery too. Where they lie comes from the end of the First Age: one in the sea (Maglor's), one in
+# the fires of the earth (Maedhros's), one in the sky (Eärendil's).
+source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
+foretoldBy: mandos
+title: { en: "The Silmarils are recovered", es: "Los Silmarils son recuperados" }
+summary:
+  en: "After the battle the Earth is broken and made anew, and the three Silmarils come back out of the sea, the deep earth and the air. Eärendil comes down and gives up the jewel he has carried across the sky."
+  es: "Tras la batalla, la Tierra se quiebra y se hace de nuevo, y los tres Silmarils vuelven del mar, de la tierra profunda y del aire. Eärendil desciende y entrega la joya que ha llevado por el cielo."
+links:
+  - to: the-last-sons-of-feanor-take-the-silmarils
+    type: enabled-by
+    note:
+      en: "The two jewels Maedhros and Maglor lost to fire and sea come back."
+      es: "Vuelven las dos joyas que Maedhros y Maglor perdieron en el fuego y en el mar."
+beats:
+  - { id: remade, label: { en: Earth broken and remade, es: La Tierra quebrada y rehecha } }
+  - { id: three-jewels, label: { en: The three jewels, es: Las tres joyas } }
