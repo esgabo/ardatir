@@ -8,7 +8,7 @@ place: numenor
 characters: [ tar-ancalimon ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "The King's Men and the Faithful", es: "Los Hombres del Rey y los Fieles" }
 summary:

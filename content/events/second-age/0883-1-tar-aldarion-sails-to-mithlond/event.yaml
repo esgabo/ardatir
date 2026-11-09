@@ -7,7 +7,7 @@ place: grey-havens
 characters: [ tar-aldarion, gil-galad, cirdan ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ unfinished-tales ]
-status: outline
+status: scripted
 source: { book: unfinished-tales, chapter: "Aldarion and Erendis" }
 title: { en: "Tar-Aldarion sails to Mithlond", es: "Tar-Aldarion navega a Mithlond" }
 summary:

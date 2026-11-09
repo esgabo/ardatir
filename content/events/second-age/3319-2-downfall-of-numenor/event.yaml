@@ -7,7 +7,7 @@ place: numenor
 characters: [ ar-pharazon, tar-miriel, sauron ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "The Downfall of Númenor", es: "La Caída de Númenor" }
 summary:
