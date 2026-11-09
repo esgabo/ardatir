@@ -17,6 +17,7 @@ npm run typecheck  # tsc --noEmit
 npm run build      # typecheck + static build into dist/
 npm run preview    # serve dist/ at http://localhost:4173
 npm run content    # validate content/ and write public/data/ (dev and build also do this)
+npm test           # vitest: calendar, best guesses, event clock, content validation (tests/)
 ```
 
 Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
@@ -53,6 +54,7 @@ content/             THE SOURCE OF TRUTH (YAML); see content/README.md
 scripts/content/
   build.ts           load + validate content/, place on the time axis, reverse links, lookups
   cli.ts             `npm run content`
+tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
 vite.config.ts       runs the content build on start (fails `npm run build` on errors) and on change in dev
 public/data/         GENERATED (gitignored): index.json, events/<id>.json, audio/<id>/<lang>.mp3
 src/
@@ -111,9 +113,10 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 ## Checking work
 
 - `npm run content` must show `✓ content is valid`, and `npm run build` must pass (it typechecks, then fails on content errors).
+- `npm test` must pass; the deploy workflow runs it before building. New validation rules get a broken case in `tests/build.test.ts` (each one a small change to the fixture in `tests/fixtures/valid/content/`), and date math gets a case in `tests/calendar.test.ts`.
 - After adding content, check the warnings too: missing Spanish, characters in no event, events outside their journey's dates, a sort key that contradicts the dates, a best guess that lands before what it follows.
 - For visual changes, look at the result: run `npm run preview` and screenshot key moments with Playwright, e.g. `#/event/ainulindale?t=0.25`, `?t=0.48`, `?t=0.72`, `?t=0.97`, and `#/event/roast-mutton?t=0.45&follow=bilbo&lang=es`. Headless Chromium needs `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader` for WebGL.
-- When touching `eventClock.ts`, check that a recording with uneven `starts` still lands each passage on its `t`, and that the playhead reaches `t = 1` at the recording's `duration`.
+- When touching `eventClock.ts`, check that a recording with uneven `starts` still lands each passage on its `t`, and that the playhead reaches `t = 1` at the recording's `duration` (`tests/eventClock.test.ts` covers both).
 - Don't commit test audio or placeholder recordings.
 
 ## Open questions

@@ -1,0 +1,9 @@
+stage: diorama
+duration: 12
+narration: { door: 0, tea: 0.5 }
+beats: { knock: 0.1 }
+tracks:
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 0, z: 0, action: idle }
+      - { t: 1, x: 1, z: 0, action: walk, thought: { en: So many dwarves., es: Cuántos enanos. } }

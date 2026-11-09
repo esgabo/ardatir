@@ -1,0 +1,6 @@
+id: third-age
+order: 5
+name: { en: Third Age, es: Tercera Edad }
+abbr: { en: T.A., es: T.E. }
+summary: { en: The Third Age., es: La Tercera Edad. }
+axis: { start: 4032 }

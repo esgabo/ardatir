@@ -1,0 +1,6 @@
+id: bilbo
+name: { en: Bilbo Baggins, es: Bilbo Bolsón }
+kind: hobbit
+summary: { en: A hobbit., es: Un hobbit. }
+color: "#6a8a3a"
+scale: 1
