@@ -1,0 +1,16 @@
+id: faramir-falls-at-the-causeway
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 13 }
+  precision: day
+place: pelennor-fields
+characters: [ faramir, imrahil, denethor ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [  ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Siege of Gondor" }
+title: { en: "Faramir Is Wounded at the Causeway Forts", es: "Faramir es herido en los fuertes de la Calzada" }
+summary:
+  en: "The Pelennor wall is overrun. Faramir, covering the retreat, is struck by a poisoned dart and carried back to the city by Prince Imrahil."
+  es: "El muro del Pelennor es invadido. Faramir, cubriendo la retirada, es alcanzado por un dardo envenenado y llevado de vuelta a la ciudad por el príncipe Imrahil."

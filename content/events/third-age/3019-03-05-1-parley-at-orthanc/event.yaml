@@ -1,0 +1,17 @@
+id: parley-at-orthanc
+age: third-age
+when:
+  # Noon of the 5th, per Appendix B.
+  start: { age: third-age, year: 3019, month: 3, day: 5 }
+  precision: day
+place: isengard
+characters: [ theoden, gandalf, saruman, grima, aragorn, legolas, gimli, merry, pippin, treebeard ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ aragorn-legolas-and-gimlis-road, gandalf-the-whites-road, merry-and-pippins-road, pippins-road-to-gondor, merrys-ride-with-theoden ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The Voice of Saruman" }
+title: { en: "Parley at Orthanc", es: "Parlamento en Orthanc" }
+summary:
+  en: "Théoden and Gandalf come to the drowned ruin of Isengard, where Merry and Pippin greet them. Saruman's honeyed words fail, and Gandalf strips him of his staff and rank."
+  es: "Théoden y Gandalf llegan a las ruinas anegadas de Isengard, donde Merry y Pippin los reciben. Las dulces palabras de Saruman fracasan, y Gandalf le quita el bastón y el rango."

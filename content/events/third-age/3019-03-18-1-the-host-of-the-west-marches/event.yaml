@@ -1,0 +1,16 @@
+id: the-host-of-the-west-marches
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 18 }
+  precision: day
+place: minas-tirith
+characters: [ aragorn, gandalf, imrahil, eomer, pippin, legolas, gimli ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ gandalf-the-whites-road, pippins-road-to-gondor, aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Black Gate Opens" }
+title: { en: "The Host of the West Marches", es: "La Hueste del Oeste se pone en marcha" }
+summary:
+  en: "Seven thousand men march out of Minas Tirith toward Mordor, with Aragorn, Gandalf and Éomer at their head. Pippin goes in the livery of the Tower."
+  es: "Siete mil hombres salen de Minas Tirith rumbo a Mordor, con Aragorn, Gandalf y Éomer a la cabeza. Pippin va con el uniforme de la Torre."

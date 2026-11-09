@@ -1,0 +1,8 @@
+id: pippins-road-to-gondor
+title: { en: "Pippin's Road to Gondor", es: "El camino de Pippin a Gondor" }
+characters: [ pippin ]
+# From Isengard with Gandalf to Minas Tirith, through the siege, and with the Host of the West to the Black Gate.
+waypoints:
+  - { place: isengard, date: { age: third-age, year: 3019, month: 3, day: 5 }, precision: day }
+  - { place: minas-tirith, date: { age: third-age, year: 3019, month: 3, day: 9 }, end: { age: third-age, year: 3019, month: 3, day: 18 }, precision: day }
+  - { place: morannon, date: { age: third-age, year: 3019, month: 3, day: 25 }, precision: day }

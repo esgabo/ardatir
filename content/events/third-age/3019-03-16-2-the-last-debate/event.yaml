@@ -1,0 +1,16 @@
+id: the-last-debate
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 16 }
+  precision: day
+place: minas-tirith
+characters: [ aragorn, gandalf, imrahil, eomer ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ gandalf-the-whites-road, aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Last Debate" }
+title: { en: "The Last Debate", es: "El último debate" }
+summary:
+  en: "The captains weigh their small host against Mordor's. They choose to march on the Black Gate to draw the Enemy's eye from the Ring-bearer, knowing it may be the end."
+  es: "Los capitanes sopesan su pequeña hueste frente a la de Mordor. Eligen marchar contra la Puerta Negra para atraer la mirada del Enemigo lejos del Portador, sabiendo que puede ser el fin."

@@ -1,0 +1,17 @@
+id: the-snows-of-caradhras
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 1, day: 11 }
+  end: { age: third-age, year: 3019, month: 1, day: 12 }
+  precision: day
+place: caradhras
+characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-of-the-ring ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Ring Goes South" }
+title: { en: "The Snows of Caradhras", es: "Las nieves de Caradhras" }
+summary:
+  en: "The mountain pass turns on them in a blizzard. Boromir and Aragorn carve a path through the drifts, but Gandalf has to turn the Company back."
+  es: "El paso de montaña se les vuelve en contra con una ventisca. Boromir y Aragorn abren camino entre la nieve, pero Gandalf debe hacer volver a la Compañía."

@@ -1,0 +1,16 @@
+id: aragorn-chooses-to-follow-the-orcs
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 26 }
+  precision: day
+place: parth-galen
+characters: [ aragorn, legolas, gimli ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The Departure of Boromir" }
+title: { en: "Aragorn Chooses to Follow the Orcs", es: "Aragorn decide seguir a los orcos" }
+summary:
+  en: "Finding Frodo and Sam gone, Aragorn thinks hard and then lets the Ring-bearer go his way. He sets out with Legolas and Gimli to rescue Merry and Pippin."
+  es: "Al no hallar a Frodo y a Sam, Aragorn medita hondamente y deja que el Portador siga su camino. Parte con Legolas y Gimli a rescatar a Merry y a Pippin."

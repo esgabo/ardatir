@@ -1,0 +1,8 @@
+id: halbarad
+name: { en: "Halbarad", es: "Halbarad" }
+kind: man
+summary:
+  en: "A Dúnadan of the North who brings the Rangers south to Aragorn."
+  es: "Un Dúnadan del Norte que lleva a los Montaraces al sur junto a Aragorn."
+color: "#4a5a4a"
+scale: 1.85

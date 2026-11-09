@@ -1,0 +1,17 @@
+id: the-fellowship-sets-out
+age: third-age
+when:
+  # At dusk, per Appendix B.
+  start: { age: third-age, year: 3018, month: 12, day: 25 }
+  precision: day
+place: rivendell
+characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir, elrond ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-of-the-ring ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Ring Goes South" }
+title: { en: "The Fellowship Sets Out", es: "La Comunidad se pone en marcha" }
+summary:
+  en: "Nine companions, chosen to match the nine Riders, leave Rivendell in the cold dusk: four hobbits, two Men, an Elf, a Dwarf and a wizard."
+  es: "Nueve compañeros, elegidos para igualar a los nueve Jinetes, dejan Rivendel en el frío crepúsculo: cuatro hobbits, dos Hombres, un Elfo, un Enano y un mago."

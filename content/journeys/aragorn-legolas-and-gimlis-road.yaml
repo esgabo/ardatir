@@ -1,0 +1,19 @@
+id: aragorn-legolas-and-gimlis-road
+title: { en: "Aragorn, Legolas and Gimli's Road", es: "El camino de Aragorn, Legolas y Gimli" }
+characters: [ aragorn, legolas, gimli ]
+# The three hunters from Parth Galen through Rohan and the Paths of the Dead to Pelargir, the Pelennor, and the Black Gate.
+waypoints:
+  - { place: parth-galen, date: { age: third-age, year: 3019, month: 2, day: 26 }, precision: day }
+  - { place: rohan, date: { age: third-age, year: 3019, month: 2, day: 27 }, end: { age: third-age, year: 3019, month: 2, day: 30 }, precision: day }
+  - { place: fangorn, date: { age: third-age, year: 3019, month: 3, day: 1 }, precision: day }
+  - { place: edoras, date: { age: third-age, year: 3019, month: 3, day: 2 }, precision: day }
+  - { place: helms-deep, date: { age: third-age, year: 3019, month: 3, day: 3 }, end: { age: third-age, year: 3019, month: 3, day: 4 }, precision: day }
+  - { place: isengard, date: { age: third-age, year: 3019, month: 3, day: 5 }, precision: day }
+  - { place: helms-deep, date: { age: third-age, year: 3019, month: 3, day: 6 }, precision: day }
+  - { place: dunharrow, date: { age: third-age, year: 3019, month: 3, day: 7 }, precision: day }
+  - { place: paths-of-the-dead, date: { age: third-age, year: 3019, month: 3, day: 8 }, precision: day }
+  - { place: erech, date: { age: third-age, year: 3019, month: 3, day: 8 }, precision: day }
+  - { place: pelargir, date: { age: third-age, year: 3019, month: 3, day: 13 }, precision: day }
+  - { place: pelennor-fields, date: { age: third-age, year: 3019, month: 3, day: 15 }, precision: day }
+  - { place: minas-tirith, date: { age: third-age, year: 3019, month: 3, day: 15 }, end: { age: third-age, year: 3019, month: 3, day: 18 }, precision: day }
+  - { place: morannon, date: { age: third-age, year: 3019, month: 3, day: 25 }, precision: day }

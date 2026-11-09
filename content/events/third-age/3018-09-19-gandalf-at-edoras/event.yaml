@@ -1,0 +1,18 @@
+id: gandalf-at-edoras
+age: third-age
+when:
+  # Appendix B: refused at the gate on the 19th, admitted on the 20th.
+  start: { age: third-age, year: 3018, month: 9, day: 19 }
+  end: { age: third-age, year: 3018, month: 9, day: 20 }
+  precision: day
+place: edoras
+characters: [ gandalf, theoden, grima ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ gandalfs-road-3018 ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
+title: { en: "Gandalf at Edoras", es: "Gandalf en Edoras" }
+summary:
+  en: "Théoden, under Gríma's spell, receives Gandalf coldly and tells him to take any horse he likes and be gone."
+  es: "Théoden, bajo el influjo de Gríma, recibe a Gandalf con frialdad y le dice que se lleve el caballo que quiera y se marche."

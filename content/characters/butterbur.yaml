@@ -1,0 +1,8 @@
+id: butterbur
+name: { en: "Barliman Butterbur", es: "Cebadilla Mantecona" }
+kind: man
+summary:
+  en: "Innkeeper of the Prancing Pony at Bree."
+  es: "Posadero del Poney Pisador, en Bree."
+color: "#9a7a5a"
+scale: 1.5

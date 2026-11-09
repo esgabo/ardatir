@@ -1,0 +1,8 @@
+id: radagast
+name: { en: "Radagast", es: "Radagast" }
+kind: wizard
+summary:
+  en: "A wizard who loves beasts and birds, and carries Saruman's summons to Gandalf."
+  es: "Un mago amigo de las bestias y las aves, que lleva a Gandalf el llamado de Saruman."
+color: "#8a7a4a"
+scale: 1.6

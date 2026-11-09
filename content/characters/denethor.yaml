@@ -1,0 +1,11 @@
+id: denethor
+name: { en: "Denethor", es: "Denethor" }
+kind: man
+summary:
+  en: "Steward of Gondor, proud and grim, who rules the city in the king's absence."
+  es: "Senescal de Gondor, orgulloso y sombrío, que gobierna la ciudad en ausencia del rey."
+color: "#6a6a7a"
+scale: 1.8
+kin:
+  - { id: boromir, as: son }
+  - { id: faramir, as: son }

@@ -1,0 +1,16 @@
+id: the-council-of-elrond
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 10, day: 25 }
+  precision: day
+place: rivendell
+characters: [ elrond, gandalf, frodo, bilbo, aragorn, boromir, legolas, gimli, gloin ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-rivendell, gandalfs-road-3018 ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
+title: { en: "The Council of Elrond", es: "El Concilio de Elrond" }
+summary:
+  en: "Elves, Dwarves and Men gather to decide the fate of the Ring. Since it cannot be used or hidden, it must be destroyed in Mount Doom, and Frodo takes the task upon himself."
+  es: "Elfos, Enanos y Hombres se reúnen para decidir el destino del Anillo. Como no puede usarse ni esconderse, debe ser destruido en el Monte del Destino, y Frodo asume la tarea."

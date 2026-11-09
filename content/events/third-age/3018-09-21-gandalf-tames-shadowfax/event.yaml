@@ -1,0 +1,18 @@
+id: gandalf-tames-shadowfax
+age: third-age
+when:
+  # Appendix B: he first meets Shadowfax on the 21st and has him tamed by the 23rd.
+  start: { age: third-age, year: 3018, month: 9, day: 21 }
+  end: { age: third-age, year: 3018, month: 9, day: 23 }
+  precision: day
+place: rohan
+characters: [ gandalf ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ gandalfs-road-3018 ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
+title: { en: "Gandalf Tames Shadowfax", es: "Gandalf doma a Sombragris" }
+summary:
+  en: "Gandalf chooses the proudest horse of the Mark, Shadowfax, and follows him over the plains until the great stallion lets him ride."
+  es: "Gandalf elige al caballo más orgulloso de la Marca, Sombragris, y lo sigue por las llanuras hasta que el gran corcel le deja montar."

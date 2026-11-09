@@ -1,0 +1,14 @@
+id: the-road-home
+title: { en: "The Road Home", es: "El camino de vuelta a casa" }
+characters: [ frodo, sam, merry, pippin, gandalf ]
+# From the Fire to Cormallen, Minas Tirith and Rivendell, and home through Bree to the Shire; then Frodo's last journey to the Grey Havens.
+waypoints:
+  - { place: mount-doom, date: { age: third-age, year: 3019, month: 3, day: 25 }, precision: day }
+  - { place: cormallen, date: { age: third-age, year: 3019, month: 4, day: 8 }, precision: day }
+  - { place: minas-tirith, date: { age: third-age, year: 3019, month: 5, day: 1 }, precision: day }
+  - { place: rivendell, date: { age: third-age, year: 3019, month: 9, day: 21 }, end: { age: third-age, year: 3019, month: 10, day: 5 }, precision: day }
+  - { place: prancing-pony, date: { age: third-age, year: 3019, month: 10, day: 28 }, end: { age: third-age, year: 3019, month: 10, day: 30 }, precision: day }
+  - { place: the-shire, date: { age: third-age, year: 3019, month: 10, day: 30 }, end: { age: third-age, year: 3019, month: 11, day: 2 }, precision: day }
+  - { place: bywater, date: { age: third-age, year: 3019, month: 11, day: 2 }, end: { age: third-age, year: 3019, month: 11, day: 3 }, precision: day }
+  - { place: bag-end, date: { age: third-age, year: 3019, month: 11, day: 3 }, precision: day }
+  - { place: grey-havens, date: { age: third-age, year: 3021, month: 9, day: 29 }, precision: day }

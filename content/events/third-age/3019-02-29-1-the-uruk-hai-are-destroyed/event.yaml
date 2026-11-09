@@ -1,0 +1,17 @@
+id: the-uruk-hai-are-destroyed
+age: third-age
+when:
+  # Sunrise of 29 February, per Appendix B. Merry and Pippin slip away during the fight.
+  start: { age: third-age, year: 3019, month: 2, day: 29 }
+  precision: day
+place: fangorn
+characters: [ eomer, ugluk, grishnakh, merry, pippin ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ merry-and-pippins-road ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-two-towers, chapter: "The Uruk-hai" }
+title: { en: "The Riders Destroy the Uruk-hai", es: "Los Jinetes destruyen a los Uruk-hai" }
+summary:
+  en: "At dawn the Rohirrim surround the Orcs on the edge of Fangorn. In the confusion Grishnákh drags the hobbits aside and is killed, and Merry and Pippin crawl away into the trees."
+  es: "Al alba, los Rohirrim rodean a los orcos en el linde de Fangorn. En la confusión, Grishnákh arrastra aparte a los hobbits y es muerto, y Merry y Pippin se arrastran hacia los árboles."

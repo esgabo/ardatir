@@ -1,0 +1,16 @@
+id: the-beacons-of-gondor
+age: third-age
+when:
+  # Seen on the road, in the evening of the 8th (Appendix B); no single place.
+  start: { age: third-age, year: 3019, month: 3, day: 8 }
+  precision: day
+characters: [ gandalf, pippin, denethor ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ gandalf-the-whites-road, pippins-road-to-gondor ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "Minas Tirith" }
+title: { en: "The Beacons Are Lit", es: "Se encienden los fuegos de alarma" }
+summary:
+  en: "On their wild ride south Gandalf and Pippin see the beacons of Gondor flare one after another on the hills, calling Rohan to war."
+  es: "En su desenfrenada cabalgata al sur, Gandalf y Pippin ven cómo los fuegos de alarma de Gondor se encienden uno tras otro en las colinas, llamando a Rohan a la guerra."

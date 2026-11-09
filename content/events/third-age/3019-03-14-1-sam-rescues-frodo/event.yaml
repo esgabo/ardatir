@@ -1,0 +1,16 @@
+id: sam-rescues-frodo
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 14 }
+  precision: day
+place: cirith-ungol
+characters: [ sam, frodo, shagrat, gorbag ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Tower of Cirith Ungol" }
+title: { en: "Sam Finds Frodo in the Tower", es: "Sam encuentra a Frodo en la Torre" }
+summary:
+  en: "Shagrat and Gorbag have fought and left the tower's guard dead. Sam climbs the stair, sings in despair, and is answered by Frodo's faint voice."
+  es: "Shagrat y Gorbag han luchado y dejado muerta a la guardia de la torre. Sam sube la escalera, canta desesperado, y le responde la débil voz de Frodo."

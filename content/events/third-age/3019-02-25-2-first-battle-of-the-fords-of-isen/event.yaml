@@ -1,0 +1,16 @@
+id: first-battle-of-the-fords-of-isen
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 25 }
+  precision: day
+place: fords-of-isen
+characters: [ theodred ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [  ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-lord-of-the-rings, chapter: "Appendix B" }
+title: { en: "The First Battle of the Fords of Isen", es: "La primera batalla de los Vados del Isen" }
+summary:
+  en: "Saruman's host forces the Isen. Théoden's son Théodred is slain, and the Westfold is open to attack."
+  es: "La hueste de Saruman fuerza el paso del Isen. Théodred, el hijo de Théoden, muere, y el Folde Oeste queda expuesto al ataque."

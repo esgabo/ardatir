@@ -1,0 +1,8 @@
+id: mouth-of-sauron
+name: { en: "The Mouth of Sauron", es: "La Boca de Sauron" }
+kind: man
+summary:
+  en: "Sauron's lieutenant and herald, who speaks for him at the Black Gate."
+  es: "Lugarteniente y heraldo de Sauron, que habla en su nombre ante la Puerta Negra."
+color: "#3a2a2a"
+scale: 1.9

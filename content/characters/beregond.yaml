@@ -1,0 +1,8 @@
+id: beregond
+name: { en: "Beregond", es: "Beregond" }
+kind: man
+summary:
+  en: "A guard of the Citadel who befriends Pippin and defies the Steward to save Faramir."
+  es: "Un guardia de la Ciudadela que se hace amigo de Pippin y desafía al Senescal para salvar a Faramir."
+color: "#3a4a6a"
+scale: 1.8

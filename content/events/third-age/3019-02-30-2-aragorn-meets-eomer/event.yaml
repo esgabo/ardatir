@@ -1,0 +1,16 @@
+id: aragorn-meets-eomer
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 30 }
+  precision: day
+place: rohan
+characters: [ aragorn, legolas, gimli, eomer ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The Riders of Rohan" }
+title: { en: "Aragorn Meets Éomer", es: "Aragorn se encuentra con Éomer" }
+summary:
+  en: "Aragorn, Legolas and Gimli meet Éomer on the plains. After a tense moment he lends them horses, and tells them of the pyre of Orcs he burned."
+  es: "Aragorn, Legolas y Gimli se encuentran con Éomer en la llanura. Tras un momento tenso les presta caballos y les cuenta de la pira de orcos que quemó."

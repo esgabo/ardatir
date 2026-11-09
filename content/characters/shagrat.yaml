@@ -1,0 +1,8 @@
+id: shagrat
+name: { en: "Shagrat", es: "Shagrat" }
+kind: orc
+summary:
+  en: "Captain of the Tower of Cirith Ungol."
+  es: "Capitán de la Torre de Cirith Ungol."
+color: "#3a3a30"
+scale: 1.6

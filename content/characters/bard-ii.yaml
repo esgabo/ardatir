@@ -1,0 +1,10 @@
+id: bard-ii
+name: { en: "Bard II", es: "Bardo II" }
+kind: man
+summary:
+  en: "King of Dale after Brand, who drives the enemy from the Valley."
+  es: "Rey de Valle tras Brand, que expulsa al enemigo del Valle."
+color: "#5a4a7a"
+scale: 1.8
+kin:
+  - { id: brand, as: father }

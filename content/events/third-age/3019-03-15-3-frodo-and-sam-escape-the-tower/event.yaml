@@ -1,0 +1,16 @@
+id: frodo-and-sam-escape-the-tower
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 15 }
+  precision: day
+place: cirith-ungol
+characters: [ frodo, sam ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Tower of Cirith Ungol" }
+title: { en: "Frodo and Sam Escape the Tower", es: "Frodo y Sam escapan de la Torre" }
+summary:
+  en: "Disguised in orc gear, the hobbits slip past the dead guards to the gate. The great Watchers give way before the light of the Phial, the arch cracks, and the two run out into Mordor."
+  es: "Disfrazados con ropas de orco, los hobbits pasan entre los guardias muertos hasta la puerta. Los grandes Vigilantes ceden ante la luz del Frasco, el arco se agrieta y los dos salen corriendo hacia Mordor."

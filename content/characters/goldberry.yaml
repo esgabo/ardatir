@@ -1,0 +1,10 @@
+id: goldberry
+name: { en: "Goldberry", es: "Baya de Oro" }
+kind: other
+summary:
+  en: "The River-woman's daughter, Tom Bombadil's wife."
+  es: "La hija del río, esposa de Tom Bombadil."
+color: "#a0c080"
+scale: 1.5
+kin:
+  - { id: tom-bombadil, as: husband }

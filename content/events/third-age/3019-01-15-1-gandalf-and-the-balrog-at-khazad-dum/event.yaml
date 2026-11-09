@@ -1,0 +1,16 @@
+id: gandalf-and-the-balrog-at-khazad-dum
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 1, day: 15 }
+  precision: day
+place: moria
+characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir, balrog ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-of-the-ring ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "A Journey in the Dark" }
+title: { en: "The Bridge of Khazad-dûm", es: "El Puente de Khazad-dûm" }
+summary:
+  en: "Pursued across the great hall, the Company reaches a narrow bridge. Gandalf stands alone against the Balrog, breaks the bridge beneath it, and is dragged into the abyss."
+  es: "Perseguida a través de la gran sala, la Compañía llega a un puente estrecho. Gandalf se enfrenta solo al Balrog, rompe el puente bajo sus pies y es arrastrado al abismo."

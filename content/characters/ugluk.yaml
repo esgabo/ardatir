@@ -1,0 +1,8 @@
+id: ugluk
+name: { en: "Uglúk", es: "Uglúk" }
+kind: orc
+summary:
+  en: "Captain of the Uruk-hai sent by Saruman, who seizes Merry and Pippin."
+  es: "Capitán de los Uruk-hai enviados por Saruman, que captura a Merry y Pippin."
+color: "#3a3a2a"
+scale: 1.6

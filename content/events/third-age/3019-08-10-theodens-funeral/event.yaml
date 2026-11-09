@@ -1,0 +1,22 @@
+id: theodens-funeral
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 8, day: 10 }
+  precision: day
+place: edoras
+characters: [ eomer, eowyn, faramir, aragorn, legolas, gimli, merry ]
+arcs: [ the-war-of-the-ring, after-the-war ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Steward and the King" }
+title: { en: "Théoden's Funeral", es: "El funeral de Théoden" }
+summary:
+  en: "The king is laid in a mound at Edoras with the kings before him. At the feast Éomer drinks to his memory and Éowyn and Faramir are betrothed."
+  es: "El rey es depositado en un túmulo de Edoras junto a los reyes que lo precedieron. En el banquete, Éomer brinda a su memoria y Éowyn y Faramir se prometen."
+links:
+  - to: battle-of-the-pelennor-fields
+    type: caused-by
+    note:
+      en: "He fell on the Pelennor and was brought home in the escort that left Minas Tirith."
+      es: "Cayó en el Pelennor y fue llevado a casa en la escolta que salió de Minas Tirith."

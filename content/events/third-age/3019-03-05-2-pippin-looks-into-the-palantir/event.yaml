@@ -1,0 +1,17 @@
+id: pippin-looks-into-the-palantir
+age: third-age
+when:
+  # The night of the 5th, per Appendix B, when a Nazgûl flies over the camp at Dol Baran.
+  start: { age: third-age, year: 3019, month: 3, day: 5 }
+  precision: day
+place: dol-baran
+characters: [ pippin, gandalf, sauron, nazgul ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ gandalf-the-whites-road, pippins-road-to-gondor ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The Palantír" }
+title: { en: "Pippin and the Palantír", es: "Pippin y el palantir" }
+summary:
+  en: "Pippin, unable to resist, steals the seeing-stone Saruman's servant threw down, and looks. Sauron questions him with his eyes, and Gandalf wrests it away."
+  es: "Pippin, incapaz de resistirse, toma la piedra vidente que arrojó el servidor de Saruman y mira. Sauron lo interroga con la mirada, y Gandalf se la arrebata."

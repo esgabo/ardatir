@@ -1,0 +1,11 @@
+id: pippin
+name: { en: "Peregrin Took (Pippin)", es: "Peregrin Tuk (Pippin)" }
+kind: hobbit
+summary:
+  en: "Frodo's cheerful young cousin, who joins the Fellowship and enters the service of Gondor."
+  es: "El alegre primo joven de Frodo, que se une a la Compañía y entra al servicio de Gondor."
+color: "#7a8a5a"
+scale: 1
+kin:
+  - { id: merry, as: cousin }
+  - { id: frodo, as: cousin }

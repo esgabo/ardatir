@@ -1,0 +1,16 @@
+id: merry-and-pippin-meet-treebeard
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 29 }
+  precision: day
+place: fangorn
+characters: [ merry, pippin, treebeard ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ merry-and-pippins-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "Treebeard" }
+title: { en: "Merry and Pippin Meet Treebeard", es: "Merry y Pippin conocen a Bárbol" }
+summary:
+  en: "Deep in Fangorn the hobbits meet a slow-speaking tree-shepherd, Treebeard, who carries them to his home to hear their story."
+  es: "En lo profundo de Fangorn, los hobbits encuentran a un lento pastor de árboles, Bárbol, que los lleva a su morada para oír su historia."

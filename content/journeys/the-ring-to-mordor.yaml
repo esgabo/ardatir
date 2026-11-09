@@ -1,7 +1,15 @@
 id: the-ring-to-mordor
-title: { en: The Ring to Mordor, es: El Anillo hacia Mordor }
+title: { en: "The Ring to Mordor", es: "El Anillo hacia Mordor" }
 characters: [ frodo, sam, gollum ]
-# Partial: only the last stretch so far. To be completed in the full inventory.
+# From the breaking of the Fellowship to the Cracks of Doom. Gollum joins on 29 February.
 waypoints:
-  - { place: cirith-ungol, date: { age: third-age, year: 3019, month: 3, day: 13 }, precision: day }
-  - { place: mount-doom,   date: { age: third-age, year: 3019, month: 3, day: 25 }, precision: day }
+  - { place: parth-galen, date: { age: third-age, year: 3019, month: 2, day: 26 }, precision: day }
+  - { place: emyn-muil, date: { age: third-age, year: 3019, month: 2, day: 26 }, end: { age: third-age, year: 3019, month: 2, day: 29 }, precision: day }
+  - { place: dead-marshes, date: { age: third-age, year: 3019, month: 3, day: 1 }, end: { age: third-age, year: 3019, month: 3, day: 2 }, precision: day }
+  - { place: morannon, date: { age: third-age, year: 3019, month: 3, day: 4 }, end: { age: third-age, year: 3019, month: 3, day: 5 }, precision: day }
+  - { place: henneth-annun, date: { age: third-age, year: 3019, month: 3, day: 7 }, end: { age: third-age, year: 3019, month: 3, day: 8 }, precision: day }
+  - { place: minas-morgul, date: { age: third-age, year: 3019, month: 3, day: 9 }, end: { age: third-age, year: 3019, month: 3, day: 10 }, precision: day }
+  - { place: shelobs-lair, date: { age: third-age, year: 3019, month: 3, day: 12 }, end: { age: third-age, year: 3019, month: 3, day: 13 }, precision: day }
+  - { place: cirith-ungol, date: { age: third-age, year: 3019, month: 3, day: 13 }, end: { age: third-age, year: 3019, month: 3, day: 15 }, precision: day }
+  - { place: mordor, date: { age: third-age, year: 3019, month: 3, day: 16 }, end: { age: third-age, year: 3019, month: 3, day: 24 }, precision: day }
+  - { place: mount-doom, date: { age: third-age, year: 3019, month: 3, day: 25 }, precision: day }

@@ -1,0 +1,16 @@
+id: glorfindel-at-the-last-bridge
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 10, day: 11 }
+  precision: day
+place: trollshaws
+characters: [ glorfindel, nazgul ]
+arcs: [ the-war-of-the-ring ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
+title: { en: "Glorfindel Drives the Riders from the Bridge", es: "Glorfindel expulsa a los Jinetes del puente" }
+summary:
+  en: "At the bridge over the Mitheithel Glorfindel scatters several Ringwraiths, who flee into the dark with their horses."
+  es: "En el puente sobre el Mitheithel, Glorfindel dispersa a varios Espectros del Anillo, que huyen en la oscuridad con sus caballos."

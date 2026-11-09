@@ -1,0 +1,17 @@
+id: arwen-comes-to-minas-tirith
+age: third-age
+when:
+  # Appendix B gives 1 Lithe (the day Arwen reaches the City); see also the wedding on Mid-year's Day.
+  start: { age: third-age, year: 3019, day: 1-lithe }
+  precision: day
+place: minas-tirith
+characters: [ arwen, aragorn, elrond ]
+arcs: [ the-war-of-the-ring, after-the-war ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Steward and the King" }
+title: { en: "Arwen Comes to the City", es: "Arwen llega a la Ciudad" }
+summary:
+  en: "Elrond's sons and an escort bring Arwen south to Minas Tirith. Aragorn goes out to meet her at the gate."
+  es: "Los hijos de Elrond y una escolta traen a Arwen al sur, a Minas Tirith. Aragorn sale a su encuentro a la puerta."

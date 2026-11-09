@@ -1,0 +1,18 @@
+id: eomer-pursues-the-orcs
+age: third-age
+when:
+  # Appendix B: Éomer rides at midnight on the 27th, against orders, and catches the Orcs on the 28th.
+  start: { age: third-age, year: 3019, month: 2, day: 27 }
+  end: { age: third-age, year: 3019, month: 2, day: 28 }
+  precision: day
+place: rohan
+characters: [ eomer ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The Riders of Rohan" }
+title: { en: "Éomer Rides Against Orders", es: "Éomer cabalga contra las órdenes" }
+summary:
+  en: "Hearing of Orcs in the Eastfold, Éomer leaves without the king's leave and rides with his company across the plains until he comes upon the Uruk-hai."
+  es: "Al saber de orcos en el Folde Este, Éomer parte sin permiso del rey y cabalga con su compañía por las llanuras hasta dar con los Uruk-hai."

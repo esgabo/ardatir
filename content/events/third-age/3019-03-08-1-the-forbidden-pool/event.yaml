@@ -1,0 +1,16 @@
+id: the-forbidden-pool
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 8 }
+  precision: day
+place: henneth-annun
+characters: [ frodo, sam, gollum, faramir ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-two-towers, chapter: "The Window on the West" }
+title: { en: "The Forbidden Pool", es: "El Estanque Prohibido" }
+summary:
+  en: "Gollum, fishing in the forbidden pool, is almost killed by Faramir's archers. Frodo begs for his life, then lets himself be taken by Faramir in trust. Faramir lets them go."
+  es: "Gollum, pescando en el estanque prohibido, está a punto de morir a manos de los arqueros de Faramir. Frodo ruega por su vida, y Faramir, confiando, los deja marchar."

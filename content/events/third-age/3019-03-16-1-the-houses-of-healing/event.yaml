@@ -1,0 +1,18 @@
+id: the-houses-of-healing
+age: third-age
+when:
+  # Evening and night after the battle. Appendix B has no entry; the days follow the book.
+  start: { age: third-age, year: 3019, month: 3, day: 15 }
+  end: { age: third-age, year: 3019, month: 3, day: 16 }
+  precision: day
+place: minas-tirith
+characters: [ aragorn, gandalf, faramir, eowyn, merry, pippin, imrahil, eomer ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ gandalf-the-whites-road, aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Houses of Healing" }
+title: { en: "The Houses of Healing", es: "Las Casas de Curación" }
+summary:
+  en: "Aragorn, who has the hands of a king, heals Faramir, Éowyn and Merry of the Black Breath, and the city begins to call him by the old name."
+  es: "Aragorn, que tiene manos de rey, cura a Faramir, a Éowyn y a Merry del Aliento Negro, y la ciudad empieza a darle el viejo nombre."

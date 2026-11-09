@@ -1,0 +1,23 @@
+id: thrors-death-at-moria
+age: third-age
+when:
+  # Appendix B gives 2790; Appendix A tells the story. No day or season is given.
+  start: { age: third-age, year: 2790 }
+  precision: year
+place: moria
+characters: [ thror, azog ]
+arcs: [ durins-folk-in-exile ]
+journeys: [  ]
+tags: [ lord-of-the-rings, hobbit ]
+status: outline
+source: { book: the-lord-of-the-rings, chapter: "Appendix A (Durin's Folk)" }
+title: { en: "Thrór Dies at Moria", es: "Muerte de Thrór en Moria" }
+summary:
+  en: "Old Thrór, wandering from the Mountain he lost, walks into Moria. The orc-chief Azog kills him at the gate and flings his body out in contempt."
+  es: "El viejo Thrór, errante lejos de la Montaña perdida, entra en Moria. El jefe orco Azog lo mata en la puerta y arroja su cuerpo con desprecio."
+links:
+  - to: battle-of-azanulbizar
+    type: causes
+    note:
+      en: "Thrór's murder is the insult the Dwarves of every house rise to avenge."
+      es: "El asesinato de Thrór es la afrenta que los enanos de todas las casas se alzan a vengar."

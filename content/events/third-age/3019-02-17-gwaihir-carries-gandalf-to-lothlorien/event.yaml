@@ -1,0 +1,16 @@
+id: gwaihir-carries-gandalf-to-lothlorien
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 17 }
+  precision: day
+place: lothlorien
+characters: [ gandalf, gwaihir, galadriel, celeborn ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ gandalf-the-whites-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The White Rider" }
+title: { en: "Gwaihir Carries Gandalf to Lothlórien", es: "Gwaihir lleva a Gandalf a Lothlórien" }
+summary:
+  en: "Gwaihir lifts Gandalf from the mountaintop and bears him to Lothlórien, where Galadriel heals him, one day after the Fellowship left it."
+  es: "Gwaihir alza a Gandalf de la cumbre y lo lleva a Lothlórien, donde Galadriel lo sana, un día después de que la Comunidad partiera."

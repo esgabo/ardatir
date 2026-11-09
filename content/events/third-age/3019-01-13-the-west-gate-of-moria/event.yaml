@@ -1,0 +1,17 @@
+id: the-west-gate-of-moria
+age: third-age
+when:
+  # Wolves in the early hours, the West-gate at nightfall, per Appendix B.
+  start: { age: third-age, year: 3019, month: 1, day: 13 }
+  precision: day
+place: moria
+characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir, gollum ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-of-the-ring ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "A Journey in the Dark" }
+title: { en: "The West-gate of Moria", es: "La Puerta Oeste de Moria" }
+summary:
+  en: "Wolves drive the Company to the cliff wall. Gandalf finally speaks the word that opens the doors, and a tentacled Watcher in the lake seals the way behind them."
+  es: "Los lobos acorralan a la Compañía contra el muro. Gandalf por fin halla la palabra que abre las puertas, y un Vigilante con tentáculos en el lago les cierra el paso a su espalda."

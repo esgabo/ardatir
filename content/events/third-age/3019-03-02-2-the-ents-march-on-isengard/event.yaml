@@ -1,0 +1,18 @@
+id: the-ents-march-on-isengard
+age: third-age
+when:
+  # Appendix B: the Entmoot ends on the afternoon of the 2nd and the Ents reach Isengard at night; the destruction is finished on the 3rd.
+  start: { age: third-age, year: 3019, month: 3, day: 2 }
+  end: { age: third-age, year: 3019, month: 3, day: 3 }
+  precision: day
+place: isengard
+characters: [ treebeard, merry, pippin, saruman ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ merry-and-pippins-road ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-two-towers, chapter: "The Flotsam and Jetsam" }
+title: { en: "The Ents March on Isengard", es: "Los Ents marchan sobre Isengard" }
+summary:
+  en: "Roused at last, the Ents stride south in anger. They tear down Saruman's walls and flood his pits with the river, and trap him in Orthanc."
+  es: "Despertados por fin, los Ents marchan hacia el sur con ira. Derriban las murallas de Saruman, inundan sus fosos con el río y lo encierran en Orthanc."

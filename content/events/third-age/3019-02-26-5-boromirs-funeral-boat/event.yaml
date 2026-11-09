@@ -1,0 +1,16 @@
+id: boromirs-funeral-boat
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 26 }
+  precision: day
+place: parth-galen
+characters: [ boromir, aragorn, legolas, gimli ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The Departure of Boromir" }
+title: { en: "Boromir's Funeral", es: "El funeral de Boromir" }
+summary:
+  en: "The three companions lay Boromir in one of the grey boats with his weapons and the broken horn, and send him down the falls of Rauros."
+  es: "Los tres compañeros ponen a Boromir en una de las barcas grises con sus armas y el cuerno roto, y lo envían por las cascadas de Rauros."

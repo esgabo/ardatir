@@ -1,0 +1,16 @@
+id: the-field-of-cormallen
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 4, day: 8 }
+  precision: day
+place: cormallen
+characters: [ frodo, sam, gandalf, aragorn, merry, pippin, legolas, gimli, eomer, faramir ]
+arcs: [ the-war-of-the-ring, after-the-war ]
+journeys: [ the-road-home ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Field of Cormallen" }
+title: { en: "The Field of Cormallen", es: "Los Campos de Cormallen" }
+summary:
+  en: "Frodo and Sam wake, healed, to find Gandalf and the Fellowship waiting. The host sings their praise, and the two hobbits are honoured as Ring-bearers."
+  es: "Frodo y Sam despiertan, sanados, y hallan a Gandalf y a la Comunidad esperándolos. La hueste canta sus alabanzas, y los dos hobbits son honrados como Portadores del Anillo."

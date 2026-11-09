@@ -1,0 +1,8 @@
+id: fatty-bolger
+name: { en: "Fredegar \"Fatty\" Bolger", es: "Fredegar \"Gordo\" Bolger" }
+kind: hobbit
+summary:
+  en: "The hobbit who stays behind at Crickhollow to keep Frodo's secret."
+  es: "El hobbit que se queda en Cricava para guardar el secreto de Frodo."
+color: "#8a7a6a"
+scale: 1.05

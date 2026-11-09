@@ -1,0 +1,8 @@
+id: glorfindel
+name: { en: "Glorfindel", es: "Glorfindel" }
+kind: elf
+summary:
+  en: "An Elf-lord of Rivendell who rides out to find the Ring-bearer."
+  es: "Un señor élfico de Rivendel que sale a cabalgar en busca del Portador del Anillo."
+color: "#d0c070"
+scale: 1.9

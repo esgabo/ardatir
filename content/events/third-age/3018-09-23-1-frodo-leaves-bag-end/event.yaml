@@ -1,0 +1,16 @@
+id: frodo-leaves-bag-end
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 9, day: 23 }
+  precision: day
+place: bag-end
+characters: [ frodo, sam, pippin ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-rivendell ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Three is Company" }
+title: { en: "Frodo Leaves Bag End", es: "Frodo deja Bolsón Cerrado" }
+summary:
+  en: "With no word from Gandalf, Frodo sets out on foot with Sam and Pippin, pretending to be moving house, as a Black Rider reaches Hobbiton that night."
+  es: "Sin noticias de Gandalf, Frodo parte a pie con Sam y Pippin, fingiendo una mudanza, mientras un Jinete Negro llega a Hobbiton esa noche."

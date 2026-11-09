@@ -1,0 +1,17 @@
+id: into-lothlorien
+age: third-age
+when:
+  # They reach the Nimrodel late at night, per Appendix B.
+  start: { age: third-age, year: 3019, month: 1, day: 15 }
+  precision: day
+place: lothlorien
+characters: [ frodo, sam, merry, pippin, aragorn, legolas, gimli, boromir ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-of-the-ring ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Lothlórien" }
+title: { en: "Into Lothlórien", es: "Hacia Lothlórien" }
+summary:
+  en: "Grieving, the Company flees down to the Silverlode and climbs into the trees by the Nimrodel, where Elves find them and bring them under the golden leaves."
+  es: "Afligida, la Compañía huye hasta el Cauce de Plata y se encarama a los árboles junto al Nimrodel, donde los Elfos los encuentran y los llevan bajo las hojas doradas."

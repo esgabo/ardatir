@@ -1,0 +1,17 @@
+id: orcs-attack-the-boats
+age: third-age
+when:
+  # At night, per Appendix B.
+  start: { age: third-age, year: 3019, month: 2, day: 23 }
+  precision: day
+place: sarn-gebir
+characters: [ frodo, sam, merry, pippin, aragorn, legolas, gimli, boromir, gollum, nazgul ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-of-the-ring ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Great River" }
+title: { en: "Orcs Attack the Boats", es: "Los orcos atacan las barcas" }
+summary:
+  en: "Orcs fire from the eastern bank at night. Legolas, with the Lady's bow, brings down a winged Nazgûl as it swoops over the river."
+  es: "Los orcos disparan desde la orilla oriental de noche. Legolas, con el arco de la Señora, derriba a un Nazgûl alado que se lanza sobre el río."
