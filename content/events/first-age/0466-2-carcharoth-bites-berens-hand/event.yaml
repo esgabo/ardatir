@@ -1,8 +1,8 @@
 id: carcharoth-bites-berens-hand
 age: first-age
 when:
-  start: { age: first-age, year: 466 }   # at the gates as they flee
-  precision: approximate
+  start: { age: first-age, year: 466 }   # Grey Annals; at the gates as they flee
+  precision: year
 place: angband
 characters: [ beren, luthien, carcharoth ]
 arcs: [ beren-and-luthien ]

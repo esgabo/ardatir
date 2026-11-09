@@ -3,7 +3,7 @@ age: second-age
 when:
   start: { age: second-age, year: 1500 }   # Sauron teaches the smiths from about SA 1500; the rings of Men and Dwarves are made before 1590 and the Three; no more precise year survives
   end: { age: second-age, year: 1590 }
-  precision: year
+  precision: approximate
 place: ost-in-edhil
 characters: [ sauron, celebrimbor ]
 arcs: [ the-forging-of-the-rings ]

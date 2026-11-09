@@ -1,8 +1,8 @@
 id: feanor-draws-his-sword-on-fingolfin
 age: years-of-the-trees
 when:
-  start: { age: years-of-the-trees, year: 1490 }   # the last years before the Trees died
-  precision: approximate
+  start: { age: years-of-the-trees, year: 1490 }   # Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
 place: tirion
 characters: [ feanor, fingolfin, finwe ]
 arcs: [ the-flight-of-the-noldor ]

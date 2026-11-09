@@ -2,7 +2,7 @@ id: gothmog
 name: { en: "Gothmog", es: "Gothmog" }
 kind: balrog
 summary:
-  en: "Lord of the Balrogs, who slew Fëanor and Fingolfin and led the assault on Gondolin."
-  es: "Señor de los Balrogs, que mató a Fëanor y a Fingolfin y encabezó el asalto a Gondolin."
+  en: "Lord of the Balrogs, who struck down Fëanor, slew Fingon and led the assault on Gondolin."
+  es: "Señor de los Balrogs, que abatió a Fëanor, mató a Fingon y encabezó el asalto a Gondolin."
 color: "#8a2a1a"
 scale: 3.5

@@ -8,7 +8,7 @@ characters: [ finwe ]
 arcs: [ the-great-journey ]
 tags: [ silmarillion ]
 status: outline
-source: { book: the-silmarillion, chapter: "Of the Sindar" }
+source: { book: the-silmarillion, chapter: "Of Eldamar and the Princes of the Eldalië" }
 title: { en: "The Vanyar and Noldor reach Valinor", es: "Los Vanyar y los Noldor llegan a Valinor" }
 summary:
   en: "The Vanyar and Noldor cross the sea on the island Tol Eressëa and settle in the light of the Two Trees, the Noldor in Tirion with Finwë as their king."

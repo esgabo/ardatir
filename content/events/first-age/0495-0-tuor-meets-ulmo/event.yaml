@@ -11,8 +11,8 @@ status: outline
 source: { book: unfinished-tales, chapter: "Of Tuor and his Coming to Gondolin" }
 title: { en: "Tuor meets Ulmo", es: "Tuor se encuentra con Ulmo" }
 summary:
-  en: "At the ruins of Vinyamar, Ulmo rises from the sea and commands Tuor to go to Gondolin with a warning: the city must prepare for its fall."
-  es: "En las ruinas de Vinyamar, Ulmo emerge del mar y ordena a Tuor ir a Gondolin con una advertencia: la ciudad debe prepararse para su caída."
+  en: "At the ruins of Vinyamar, Ulmo rises from the sea and commands Tuor to go to Gondolin to bid Turgon leave the city and go down to the sea, for its doom draws near."
+  es: "En las ruinas de Vinyamar, Ulmo emerge del mar y ordena a Tuor ir a Gondolin para pedir a Turgon que abandone la ciudad y baje al mar, pues su fin se acerca."
 links:
   - to: tuor-reaches-gondolin
     type: enables

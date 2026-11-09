@@ -1,8 +1,8 @@
 id: kinslaying-at-alqualonde
 age: years-of-the-trees
 when:
-  start: { age: years-of-the-trees, year: 1495 }   # during the Flight, before the ships burn
-  precision: approximate
+  start: { age: years-of-the-trees, year: 1495 }   # during the Flight, before the ships burn. Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
 place: alqualonde
 characters: [ feanor, fingolfin, finarfin ]
 arcs: [ the-flight-of-the-noldor ]

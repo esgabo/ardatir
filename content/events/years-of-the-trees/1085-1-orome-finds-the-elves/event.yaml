@@ -1,8 +1,8 @@
 id: orome-finds-the-elves
 age: years-of-the-trees
 when:
-  start: { age: years-of-the-trees, year: 1085 }   # soon after the awakening; the year is only a guess
-  precision: approximate
+  start: { age: years-of-the-trees, year: 1085 }   # Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
 place: cuivienen
 characters: [ orome, melkor ]
 arcs: [ the-great-journey ]

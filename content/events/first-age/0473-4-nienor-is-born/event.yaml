@@ -4,7 +4,7 @@ when:
   start: { age: first-age, year: 473 }   # born shortly after the Nirnaeth, while Morwen is alone
   precision: approximate
 place: dor-lomin
-characters: [ morwen, nienor, turin ]
+characters: [ morwen, nienor ]
 arcs: [ the-children-of-hurin ]
 tags: [ silmarillion ]
 status: outline

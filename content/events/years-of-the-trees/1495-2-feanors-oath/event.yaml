@@ -1,8 +1,8 @@
 id: feanors-oath
 age: years-of-the-trees
 when:
-  start: { age: years-of-the-trees, year: 1495 }   # immediately after the Darkening
-  precision: approximate
+  start: { age: years-of-the-trees, year: 1495 }   # immediately after the Darkening. Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
 place: tirion
 characters: [ feanor, fingolfin, finarfin, finrod ]
 arcs: [ the-flight-of-the-noldor ]

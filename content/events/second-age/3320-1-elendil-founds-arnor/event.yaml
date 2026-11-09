@@ -1,8 +1,8 @@
 id: elendil-founds-arnor
 age: second-age
 when:
-  start: { age: second-age, year: 3320 }   # the realms are founded soon after the landing
-  precision: approximate
+  start: { age: second-age, year: 3320 }   # App. B: 3320
+  precision: year
 place: annuminas
 characters: [ elendil, gil-galad ]
 arcs: [ the-downfall-of-numenor ]

@@ -12,8 +12,8 @@ status: outline
 source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
 title: { en: "Elendil and Gil-galad fall", es: "Caen Elendil y Gil-galad" }
 summary:
-  en: "Sauron himself comes out to fight. Gil-galad and Elendil both die in the struggle, and Elendil's sword Narsil breaks beneath him."
-  es: "El propio Sauron sale a combatir. Gil-galad y Elendil mueren en la lucha, y la espada de Elendil, Narsil, se rompe bajo él."
+  en: "Sauron himself comes out to fight. Gil-galad and Elendil both die in the struggle, and Narsil shatters as Elendil falls."
+  es: "El propio Sauron sale a combatir. Gil-galad y Elendil mueren en la lucha, y Narsil se quiebra al caer Elendil."
 links:
   - to: siege-of-barad-dur
     type: caused-by

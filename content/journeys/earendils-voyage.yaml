@@ -3,4 +3,4 @@ title: { en: "Eärendil's Voyage", es: "El viaje de Eärendil" }
 characters: [ earendil, elwing ]
 waypoints:
   - { place: havens-of-sirion, date: { age: first-age, year: 538 }, precision: year }
-  - { place: aman, date: { age: first-age, year: 540 }, precision: year }
+  - { place: aman, date: { age: first-age, year: 542 }, precision: year }

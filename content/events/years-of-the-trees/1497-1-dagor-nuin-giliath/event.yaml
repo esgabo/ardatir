@@ -1,8 +1,8 @@
 id: dagor-nuin-giliath
 age: years-of-the-trees
 when:
-  start: { age: years-of-the-trees, year: 1497 }   # fought by starlight before the first rising of the Moon and Sun; year approximate
-  precision: approximate
+  start: { age: years-of-the-trees, year: 1497 }   # fought by starlight, soon after the landing. Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
 place: mithrim
 characters: [ feanor, maedhros, gothmog, melkor ]
 arcs: [ the-flight-of-the-noldor ]

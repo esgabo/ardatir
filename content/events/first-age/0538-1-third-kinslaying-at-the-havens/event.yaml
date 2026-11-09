@@ -4,7 +4,7 @@ when:
   start: { age: first-age, year: 538 }   # after many years of peace at the Havens
   precision: approximate
 place: havens-of-sirion
-characters: [ elwing, maedhros, maglor, elrond, elros, earendil ]
+characters: [ elwing, maedhros, maglor, elrond, elros ]   # Eärendil is away at sea
 arcs: [ the-fall-of-doriath, the-flight-of-the-noldor ]
 journeys: [ earendils-voyage ]
 tags: [ silmarillion ]

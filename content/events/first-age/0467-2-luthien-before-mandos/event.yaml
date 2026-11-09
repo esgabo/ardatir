@@ -1,8 +1,8 @@
 id: luthien-before-mandos
 age: first-age
 when:
-  start: { age: first-age, year: 467 }   # immediately after Beren's death
-  precision: approximate
+  start: { age: first-age, year: 467 }   # Grey Annals; after Beren's death
+  precision: year
 place: aman
 characters: [ luthien, mandos, beren ]
 arcs: [ beren-and-luthien ]

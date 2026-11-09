@@ -1,0 +1,21 @@
+id: hurin-is-released
+age: first-age
+when:
+  start: { age: first-age, year: 500 }   # Grey Annals: the year after Túrin's end; Morgoth releases Húrin once the curse has done its work
+  precision: approximate
+place: angband
+characters: [ hurin, melkor ]
+arcs: [ the-children-of-hurin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Morgoth releases Húrin", es: "Morgoth libera a Húrin" }
+summary:
+  en: "After years bound on Thangorodrim, Húrin is let go, so that his grief and Morgoth's lies may do more harm than the chain."
+  es: "Tras años encadenado en Thangorodrim, Húrin es liberado para que su dolor y las mentiras de Morgoth hagan más daño que las cadenas."
+links:
+  - to: turins-end
+    type: caused-by
+    note:
+      en: "Morgoth has no more use for his prisoner."
+      es: "Morgoth ya no necesita a su prisionero."

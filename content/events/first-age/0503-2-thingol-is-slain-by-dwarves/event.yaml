@@ -4,7 +4,7 @@ when:
   start: { age: first-age, year: 503 }   # the Annals place Thingol's death in the years right after Húrin's visit; approximate
   precision: approximate
 place: menegroth
-characters: [ thingol, melian, dior ]
+characters: [ thingol, melian ]
 arcs: [ the-fall-of-doriath ]
 tags: [ silmarillion ]
 status: outline

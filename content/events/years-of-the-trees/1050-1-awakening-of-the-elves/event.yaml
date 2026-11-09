@@ -1,8 +1,8 @@
 id: awakening-of-the-elves
 age: years-of-the-trees
 when:
-  start: { age: years-of-the-trees, year: 1050 }   # Annals of Aman give the year in Valian years; Ardatir's year length is itself a later estimate, so only an approximate date is honest
-  precision: approximate
+  start: { age: years-of-the-trees, year: 1050 }   # Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
 place: cuivienen
 characters: [  ]
 arcs: [ the-great-journey ]

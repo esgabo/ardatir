@@ -3,7 +3,7 @@ age: second-age
 when:
   start: { age: second-age, year: 1 }   # made at the end of the War of Wrath, i.e. the turn of the First and Second Ages
   precision: approximate
-place: aman
+place: lindon   # they never went to Aman; the choice was made known to them in Middle-earth
 characters: [ elrond, elros ]
 arcs: [  ]
 tags: [ silmarillion ]

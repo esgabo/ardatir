@@ -2,5 +2,5 @@ id: elendils-flight-from-numenor
 title: { en: "Elendil's Flight from Númenor", es: "La huida de Elendil de Númenor" }
 characters: [ elendil ]
 waypoints:
-  - { place: andunie, date: { age: second-age, year: 3319 }, precision: year }
+  - { place: romenna, date: { age: second-age, year: 3319 }, precision: year }
   - { place: grey-havens, date: { age: second-age, year: 3319 }, end: { age: second-age, year: 3320 }, precision: year }

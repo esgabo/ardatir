@@ -2,7 +2,7 @@ id: berens-quest
 title: { en: "Beren's Quest for the Silmaril", es: "La búsqueda del Silmaril de Beren" }
 characters: [ beren, luthien ]
 waypoints:
-  - { place: doriath, date: { age: first-age, year: 463 }, precision: year }
-  - { place: tol-sirion, date: { age: first-age, year: 464 }, precision: year }
+  - { place: doriath, date: { age: first-age, year: 464 }, end: { age: first-age, year: 465 }, precision: year }
+  - { place: tol-sirion, date: { age: first-age, year: 465 }, precision: year }
   - { place: angband, date: { age: first-age, year: 466 }, precision: year }
-  - { place: doriath, date: { age: first-age, year: 467 }, precision: year }
+  - { place: doriath, date: { age: first-age, year: 466 }, end: { age: first-age, year: 467 }, precision: year }

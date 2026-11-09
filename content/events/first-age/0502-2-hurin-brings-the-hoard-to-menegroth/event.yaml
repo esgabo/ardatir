@@ -1,7 +1,7 @@
 id: hurin-brings-the-hoard-to-menegroth
 age: first-age
 when:
-  start: { age: first-age, year: 502 }   # the same year, when he reaches Nargothrond; he leaves the treasure in Menegroth
+  start: { age: first-age, year: 502 }   # after he leaves Morwen's grave and passes through Nargothrond; the year is approximate
   precision: approximate
 place: menegroth
 characters: [ hurin, thingol, melian ]
@@ -9,10 +9,10 @@ arcs: [ the-children-of-hurin, the-fall-of-doriath ]
 tags: [ silmarillion ]
 status: outline
 source: { book: the-silmarillion, chapter: "Of the Ruin of Doriath" }
-title: { en: "Húrin brings the hoard to Menegroth", es: "Húrin lleva el tesoro a Menegroth" }
+title: { en: "Húrin brings the Nauglamír to Menegroth", es: "Húrin lleva el Nauglamír a Menegroth" }
 summary:
-  en: "Húrin takes the dragon-hoard of Nargothrond, flings part of it at Thingol's feet in bitterness and walks on, leaving the Nauglamír, the Dwarf-wrought necklace, in the King's house."
-  es: "Húrin recoge el tesoro del dragón en Nargothrond, arroja parte a los pies de Thingol con amargura y se marcha, dejando en la casa del Rey el Nauglamír, el collar forjado por Enanos."
+  en: "From the dragon's hoard at Nargothrond Húrin takes only the Nauglamír, and flings it at Thingol's feet in bitterness before he walks away."
+  es: "Del tesoro del dragón en Nargothrond Húrin solo toma el Nauglamír, y lo arroja con amargura a los pies de Thingol antes de marcharse."
 links:
   - to: hurin-and-morwen-at-turins-grave
     type: caused-by

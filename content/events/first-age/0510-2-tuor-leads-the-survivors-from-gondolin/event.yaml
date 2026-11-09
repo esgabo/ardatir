@@ -4,7 +4,7 @@ when:
   start: { age: first-age, year: 510, season: summer }   # immediately after the fall
   precision: season
 place: gondolin
-characters: [ tuor, idril, earendil, gothmog ]
+characters: [ tuor, idril, earendil, glorfindel ]   # Gothmog died in the city, slain by Ecthelion
 arcs: [ the-fall-of-gondolin ]
 journeys: [ the-flight-from-gondolin ]
 tags: [ silmarillion ]

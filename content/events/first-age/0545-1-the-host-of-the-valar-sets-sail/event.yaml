@@ -4,15 +4,15 @@ when:
   start: { age: first-age, year: 545 }   # the war itself lasts until 587
   precision: approximate
 place: aman
-characters: [ manwe, earendil ]
+characters: [ manwe ]   # Eärendil joins only at the last battle
 arcs: [ the-war-of-wrath ]
 tags: [ silmarillion ]
 status: outline
 source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
 title: { en: "The host of the Valar sets sail", es: "La hueste de los Valar se hace a la mar" }
 summary:
-  en: "Manwë hears Eärendil and sends a host of Valar, Maiar and Vanyar and Noldor Elves against Morgoth. Eärendil's ship, Vingilot, sails before it."
-  es: "Manwë escucha a Eärendil y envía una hueste de Valar, Maiar y Elfos vanyar y noldor contra Morgoth. La nave de Eärendil, Vingilot, navega a su cabeza."
+  en: "Manwë hears Eärendil and sends a host of Valar, Maiar and Vanyar and Noldor Elves against Morgoth."
+  es: "Manwë escucha a Eärendil y envía una hueste de Valar, Maiar y Elfos vanyar y noldor contra Morgoth."
 links:
   - to: earendil-reaches-valinor
     type: caused-by
