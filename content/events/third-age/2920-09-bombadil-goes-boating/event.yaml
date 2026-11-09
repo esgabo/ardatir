@@ -4,8 +4,8 @@ when:
   # Shire lore, not history: the 1962 preface says Buckland hobbits made this poem, much later than
   # "The Adventures of Tom Bombadil" and after Frodo's stay with Tom. The poem says autumn but no
   # year, so we claim only bounds, by the year. Farmer Maggot is his host, a hobbit still farming in
-  # 3018-19, so the trip falls within his lifetime: we allow a long hobbit's life (about a century)
-  # before 3019. Tom already knows Maggot well and has news of Frodo from him by September 3018
+  # 3018-19, so the trip falls within his lifetime: Bilbo at 131 was the oldest hobbit ever, and
+  # Maggot is a grown farmer with daughters, so at least ~33 then; 3018 − 131 + 33 ≈ 2920. Tom already knows Maggot well and has news of Frodo from him by September 3018
   # (FotR I.7); Tolkien Gateway reads the poem's untroubled Shire as before the troubles of autumn
   # 3018, which we follow for the upper bound.
   start: { age: third-age, year: 2920 }
