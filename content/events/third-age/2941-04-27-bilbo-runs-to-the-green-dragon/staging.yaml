@@ -1,0 +1,139 @@
+stage: diorama
+duration: 36
+narration:
+  morning: 0
+  relief: 0.17
+  note: 0.33
+  eleven: 0.5
+  run: 0.67
+  away: 0.83
+beats:
+  quiet: 0
+  note: 0.33
+  dash: 0.67
+  off: 0.83
+tracks:
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 3.58, z: 3.47, action: idle, thought: { en: "He has had time to read my note.", es: "Ha tenido tiempo de leer mi nota." } }
+      - { t: 0.5, x: 3.58, z: 3.47, action: talk }
+      - { t: 0.72, x: 3.58, z: 3.47, action: idle }
+      - { t: 0.83, x: 3.58, z: 3.47, action: idle }
+      - { t: 0.9, x: 2.48, z: -0.62, action: walk }
+      - { t: 1, x: 1.67, z: -4.33, action: walk }
+  - characterId: balin
+    keyframes:
+      - { t: 0, x: 4.33, z: 3.47, action: idle }
+      - { t: 0.5, x: 4.33, z: 3.47, action: talk }
+      - { t: 0.72, x: 4.33, z: 3.47, action: idle }
+      - { t: 0.83, x: 4.33, z: 3.47, action: idle, thought: { en: "There he is, out of breath. He came.", es: "Ahí está, sin aliento. Vino." } }
+      - { t: 0.9, x: 3.23, z: -0.62, action: walk }
+      - { t: 1, x: 2.42, z: -4.33, action: walk }
+  - characterId: dwalin
+    keyframes:
+      - { t: 0, x: 5.08, z: 3.47, action: idle }
+      - { t: 0.5, x: 5.08, z: 3.47, action: talk }
+      - { t: 0.72, x: 5.08, z: 3.47, action: idle }
+      - { t: 0.83, x: 5.08, z: 3.47, action: idle }
+      - { t: 0.9, x: 3.98, z: -0.62, action: walk }
+      - { t: 1, x: 3.17, z: -4.33, action: walk }
+  - characterId: fili
+    keyframes:
+      - { t: 0, x: 5.83, z: 3.47, action: idle }
+      - { t: 0.5, x: 5.83, z: 3.47, action: talk }
+      - { t: 0.72, x: 5.83, z: 3.47, action: idle }
+      - { t: 0.83, x: 5.83, z: 3.47, action: idle }
+      - { t: 0.9, x: 4.72, z: -0.62, action: walk }
+      - { t: 1, x: 3.92, z: -4.33, action: walk }
+  - characterId: kili
+    keyframes:
+      - { t: 0, x: 3.58, z: 4.22, action: idle }
+      - { t: 0.5, x: 3.58, z: 4.22, action: talk }
+      - { t: 0.72, x: 3.58, z: 4.22, action: idle }
+      - { t: 0.83, x: 3.58, z: 4.22, action: idle }
+      - { t: 0.9, x: 2.48, z: 0.12, action: walk }
+      - { t: 1, x: 1.67, z: -3.58, action: walk }
+  - characterId: dori
+    keyframes:
+      - { t: 0, x: 4.33, z: 4.22, action: idle }
+      - { t: 0.5, x: 4.33, z: 4.22, action: talk }
+      - { t: 0.72, x: 4.33, z: 4.22, action: idle }
+      - { t: 0.83, x: 4.33, z: 4.22, action: idle }
+      - { t: 0.9, x: 3.23, z: 0.12, action: walk }
+      - { t: 1, x: 2.42, z: -3.58, action: walk }
+  - characterId: nori
+    keyframes:
+      - { t: 0, x: 5.08, z: 4.22, action: idle }
+      - { t: 0.5, x: 5.08, z: 4.22, action: talk }
+      - { t: 0.72, x: 5.08, z: 4.22, action: idle }
+      - { t: 0.83, x: 5.08, z: 4.22, action: idle }
+      - { t: 0.9, x: 3.98, z: 0.12, action: walk }
+      - { t: 1, x: 3.17, z: -3.58, action: walk }
+  - characterId: ori
+    keyframes:
+      - { t: 0, x: 5.83, z: 4.22, action: idle }
+      - { t: 0.5, x: 5.83, z: 4.22, action: talk }
+      - { t: 0.72, x: 5.83, z: 4.22, action: idle }
+      - { t: 0.83, x: 5.83, z: 4.22, action: idle }
+      - { t: 0.9, x: 4.72, z: 0.12, action: walk }
+      - { t: 1, x: 3.92, z: -3.58, action: walk }
+  - characterId: oin
+    keyframes:
+      - { t: 0, x: 3.58, z: 4.97, action: idle }
+      - { t: 0.5, x: 3.58, z: 4.97, action: talk }
+      - { t: 0.72, x: 3.58, z: 4.97, action: idle }
+      - { t: 0.83, x: 3.58, z: 4.97, action: idle }
+      - { t: 0.9, x: 2.48, z: 0.88, action: walk }
+      - { t: 1, x: 1.67, z: -2.83, action: walk }
+  - characterId: gloin
+    keyframes:
+      - { t: 0, x: 4.33, z: 4.97, action: idle }
+      - { t: 0.5, x: 4.33, z: 4.97, action: talk }
+      - { t: 0.72, x: 4.33, z: 4.97, action: idle }
+      - { t: 0.83, x: 4.33, z: 4.97, action: idle }
+      - { t: 0.9, x: 3.23, z: 0.88, action: walk }
+      - { t: 1, x: 2.42, z: -2.83, action: walk }
+  - characterId: bifur
+    keyframes:
+      - { t: 0, x: 5.08, z: 4.97, action: idle }
+      - { t: 0.5, x: 5.08, z: 4.97, action: talk }
+      - { t: 0.72, x: 5.08, z: 4.97, action: idle }
+      - { t: 0.83, x: 5.08, z: 4.97, action: idle }
+      - { t: 0.9, x: 3.98, z: 0.88, action: walk }
+      - { t: 1, x: 3.17, z: -2.83, action: walk }
+  - characterId: bofur
+    keyframes:
+      - { t: 0, x: 5.83, z: 4.97, action: idle }
+      - { t: 0.5, x: 5.83, z: 4.97, action: talk }
+      - { t: 0.72, x: 5.83, z: 4.97, action: idle }
+      - { t: 0.83, x: 5.83, z: 4.97, action: idle }
+      - { t: 0.9, x: 4.72, z: 0.88, action: walk }
+      - { t: 1, x: 3.92, z: -2.83, action: walk }
+  - characterId: bombur
+    keyframes:
+      - { t: 0, x: 4.7, z: 5.72, action: idle, thought: { en: "Eleven o'clock, and he is not here.", es: "Las once, y no ha llegado." } }
+      - { t: 0.5, x: 4.7, z: 5.72, action: talk }
+      - { t: 0.72, x: 4.7, z: 5.72, action: idle }
+      - { t: 0.83, x: 4.7, z: 5.72, action: idle }
+      - { t: 0.9, x: 3.6, z: 1.62, action: walk }
+      - { t: 1, x: 2.8, z: -2.08, action: walk }
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: -4, z: -4, action: hide, thought: { en: "That was a strange dream. Dwarves in my pantry!", es: "Qué sueño tan raro. ¡Enanos en mi despensa!" } }
+      - { t: 0.17, x: -4, z: -3.2, action: walk, thought: { en: "Quiet and tidy. Did I only dream it?", es: "Todo en silencio. ¿Lo habré soñado?" } }
+      - { t: 0.33, x: -3.4, z: -2.8, action: talk }
+      - { t: 0.5, x: -3.4, z: -2.8, action: idle, thought: { en: "A contract! And I said yes?", es: "¡Un contrato! ¿Y yo dije que sí?" } }
+      - { t: 0.62, x: -3.2, z: -2.6, action: idle }
+      - { t: 0.67, x: -1, z: -0.5, action: run, thought: { en: "No hat, no handkerchief. No time!", es: "Sin sombrero, sin pañuelo. ¡No hay tiempo!" } }
+      - { t: 0.8, x: 3.6, z: 3.6, action: run }
+      - { t: 0.84, x: 3.8, z: 3.8, action: idle, thought: { en: "I came. I really came.", es: "He venido. De verdad he venido." } }
+      - { t: 1, x: 3.4, z: 0, action: walk }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: -1.5, z: -1.5, action: idle }
+      - { t: 0.2, x: -1.5, z: -1.5, action: idle }
+      - { t: 0.3, x: -2.5, z: -2.2, action: walk, thought: { en: "Late as ever. The note is on the mantelpiece.", es: "Siempre tarde. La nota está en la repisa." } }
+      - { t: 0.5, x: -2.8, z: -2.5, action: talk }
+      - { t: 0.67, x: -2.8, z: -2.5, action: talk }
+      - { t: 0.85, x: 0, z: 0, action: walk }
+      - { t: 1, x: 2, z: -2.5, action: walk }
