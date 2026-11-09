@@ -13,7 +13,7 @@ characters: [ gandalf, saruman, elrond, galadriel, cirdan ]
 arcs: []
 journeys: [ gandalfs-road-2941 ]
 tags: [ hobbit, lord-of-the-rings ]
-status: scripted
+status: staged
 source: { book: the-lord-of-the-rings, chapter: Appendix B }
 title:
   en: The White Council Drives Out Sauron
@@ -21,3 +21,8 @@ title:
 summary:
   en: "While the dwarves journey east, the White Council at last moves against Dol Guldur. Sauron, having prepared, abandons it and flees, to rise again in Mordor."
   es: "Mientras los enanos viajan hacia el este, el Concilio Blanco actúa por fin contra Dol Guldur. Sauron, que ya lo tenía previsto, la abandona y huye, para resurgir en Mordor."
+beats:
+  - { id: meanwhile, label: { en: "The Council gathers", es: "Se reúne el Concilio" } }
+  - { id: saruman, label: { en: "Saruman agrees", es: "Saruman accede" } }
+  - { id: attack, label: { en: "The attack on Dol Guldur", es: "El ataque a Dol Guldur" } }
+  - { id: flight, label: { en: "Sauron slips away", es: "Sauron se escabulle" } }
