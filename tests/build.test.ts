@@ -160,6 +160,11 @@ describe('the valid fixture', () => {
     expect(ev('the-music').atReason).toBeUndefined();
   });
 
+  it('keeps a character\'s home', () => {
+    expect(r.index.characters.find((c) => c.id === 'bilbo')!.home).toBe('bag-end');
+    expect(r.index.characters.find((c) => c.id === 'gandalf')!.home).toBeUndefined();
+  });
+
   it('adds reverse links and derived lookups', () => {
     expect(ev('the-party').links).toContainEqual(expect.objectContaining({ to: 'moon-letters', type: 'enables', reverse: true }));
     expect(r.index.byCharacter.bilbo).toEqual(['the-party', 'moon-letters', 'leaving']);
@@ -260,6 +265,7 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'character without kind', changes: [{ file: 'characters/gandalf.yaml', replace: ['kind: wizard\n', ''] }], error: 'kind: required' },
   { name: 'bad colour', changes: [{ file: 'characters/bilbo.yaml', replace: ['"#6a8a3a"', 'green'] }], error: 'color: use #rrggbb' },
   { name: 'unknown kin', changes: [{ file: 'characters/bilbo.yaml', write: 'id: bilbo\nname: { en: Bilbo, es: Bilbo }\nkind: hobbit\nsummary: { en: A, es: A }\nkin:\n  - { id: frodo, as: cousin }\n' }], error: 'kin: unknown character "frodo"' },
+  { name: 'unknown home', changes: [{ file: 'characters/bilbo.yaml', replace: ['home: bag-end', 'home: hobbiton'] }], error: 'home: unknown place "hobbiton"' },
   { name: 'age with neither axis nor timeless', changes: [{ file: 'ages/third-age.yaml', replace: ['axis: { start: 4032 }', ''] }], error: 'needs either `timeless: true` or `axis: { start }`' },
 
   // Events: references and status

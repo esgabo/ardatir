@@ -2,6 +2,10 @@
 //
 //   #/event/<id>?t=0.42&follow=bilbo&lang=es   a staged event's stage; any other event's page
 //   #/lives?with=tuor,turin&lang=es             character lanes, side by side
+//   #/time/third-age/3019-03-15?zoom=year       the time cursor at a moment (moment.ts), at a scale
+//   #/time/first-age/495   #/time/before-time   a whole year; a timeless age
+//   #/time/7050.2                               an axis position (years of the Sun): the day it falls on
+//   #/time?from=roast-mutton                    from an event: the timeline offers the way back
 //
 // Links inside the site are plain hrefs built here, so the back button and sharing just work.
 
@@ -9,13 +13,20 @@ import type { Lang } from './data/types';
 
 export type Route =
   | { kind: 'event'; eventId?: string; t?: number; follow?: string; lang?: string }
-  | { kind: 'lives'; with: string[]; lang?: string };
+  | { kind: 'lives'; with: string[]; lang?: string }
+  /** `where` is the moment's path as written (parsed by moment.ts); absent: the default moment. */
+  | { kind: 'time'; where?: string; zoom?: string; from?: string; lang?: string };
 
 export function parseRoute(hash = location.hash): Route {
   const [path, query = ''] = hash.replace(/^#/, '').split('?');
   const q = new URLSearchParams(query);
   const lang = q.get('lang') ?? undefined;
   if (/^\/lives\/?$/.test(path)) return { kind: 'lives', with: (q.get('with') ?? '').split(',').filter((x) => /^[\w-]+$/.test(x)), lang };
+  const tm = path.match(/^\/time(?:\/(.*))?$/);
+  if (tm) {
+    const from = q.get('from') ?? undefined;
+    return { kind: 'time', where: tm[1]?.replace(/\/+$/, '') || undefined, zoom: q.get('zoom') ?? undefined, from: from && /^[\w-]+$/.test(from) ? from : undefined, lang };
+  }
   const m = path.match(/^\/event\/([\w-]+)/);
   const tv = q.get('t') === null ? NaN : Number(q.get('t'));
   return {
@@ -43,4 +54,9 @@ export function eventHref(id: string, lang: Lang, params: { t?: string; follow?:
 /** Character lanes for these characters, in this order. */
 export function livesHref(ids: string[], lang: Lang): string {
   return `#/lives${query({ with: ids.join(',') || undefined }, lang)}`;
+}
+
+/** The time cursor at a moment (its readable path, `momentPath` in moment.ts); `zoom` only when not the moment's default scale. */
+export function timeHref(where: string | undefined, lang: Lang, params: { zoom?: string; from?: string } = {}): string {
+  return `#/time${where ? `/${where}` : ''}${query(params, lang)}`;
 }

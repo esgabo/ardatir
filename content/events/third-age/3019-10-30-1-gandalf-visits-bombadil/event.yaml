@@ -1,0 +1,19 @@
+id: gandalf-visits-bombadil
+age: third-age
+when:
+  # Gandalf parts from the hobbits on the East Road where Tom had left them, the day they leave
+  # Bree (30 Oct; they reach the Bridge at dark, Appendix B), and rides off to Tom. The talk itself
+  # is not told; the journey gandalf-goes-to-bombadil carries his stay into November.
+  start: { age: third-age, year: 3019, month: 10, day: 30 }
+  precision: day
+place: barrow-downs
+characters: [ gandalf, tom-bombadil ]
+arcs: [ after-the-war ]
+journeys: [ gandalf-goes-to-bombadil ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "Homeward Bound" }
+title: { en: "Gandalf Goes to Talk with Bombadil", es: "Gandalf va a hablar con Bombadil" }
+summary:
+  en: "Where Tom had turned back a year before, Gandalf takes leave of the hobbits on the East Road: the Shire is theirs to mend. He sends Shadowfax over the dike toward the Downs, off to a long talk with Tom, unlike any he has had before; Tom has stayed in one place all his days, while Gandalf never stopped wandering. What passed between them is never told."
+  es: "Donde Tom se había vuelto un año antes, Gandalf se despide de los hobbits en el Camino del Este: arreglar la Comarca les toca a ellos. Lleva a Sombragris por encima del terraplén hacia las Quebradas, camino de una larga charla con Tom, distinta de cuantas ha tenido; Tom ha pasado todos sus días en un mismo lugar, mientras que Gandalf no dejó nunca de viajar. Lo que hablaron no se cuenta nunca."

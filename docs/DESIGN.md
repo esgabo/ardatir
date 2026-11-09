@@ -75,6 +75,15 @@ From inside an event the same list shows what is happening elsewhere at that mom
 
 "At the same time" is matched at the precision the sources allow (§4.4): day by day in the War of the Ring, by season or year in the First Age.
 
+**Route:** `#/time/<age>/<date>`, readable: `#/time/third-age/3019-03-15` (a day), `…/3019-03` (a month), `…/3019` (a whole year), `…/3019-midyear` or `…/3019-1-lithe` (a day outside the months), `…/2941-summer` (a season, from an event dated by season), `#/time/before-time` (a timeless age). A bare axis position (`#/time/7050.2`, years of the Sun) opens the day it falls on; an age alone opens the year of its first event. `?zoom=age|century|year|month` only when it isn't the moment's default scale; `?from=<event>` when opened from an event. Without a moment it opens on the Unexpected Party, 26 April 2941. It opens as a page in place of the stage, like the lanes (§3.2). Stepping, dragging and zooming update the URL in place (no history entry), like scrubbing; a moment link adds one.
+
+- **The moment is said honestly**, exactly as precise as it was picked: *T.A. 3019* (with *The whole year: everything the sources allow within it*), *March, T.A. 3019*, *15 March, T.A. 3019*. Its span is its honest range (`dateSpan`), like any event's.
+- **The control** has two scales. The **ages** as segments of one bar: the timeless ages (*Before Time*, *the Years of the Lamps*) in a dashed box of their own before the axis, not on it; then the dated ages, each as wide as the logarithm of its own years (1500 Valian years, 590, 3441, 3021, and the open Fourth Age shown to Fo.A. 120, the end of Appendix B), so each is readable and pickable though their lengths differ a hundredfold. Faint dots show where events are (placed by best guess, no dates said); a gold diamond marks the moment. Under it, the **finer scale** inside the chosen age, at four zooms: *Age* (the whole age, pick a year), *Century* (pick a year), *Year* (pick a month), *Month* (pick a day: the month with the days outside the months beside it, June and July with the Lithe days, Afteryule with 2 Yule, Foreyule with 1 Yule; an Overlithe slot in a year without one is drawn empty). In the Years of the Trees only *Age* and *Century*: a Valian year is about ten of the Sun, so only whole years mean anything. The scale names what it shows (*April, T.A. 2941*) and is a slider: drag or tap (the window holds still while dragging), arrows step by its unit (into a coarser moment first: from *T.A. 3019*, → is January), Page Up/Down by more (a century or ten years / ten years / a year / a month), Home/End to its ends, + and − zoom; ‹ › buttons step for touch. Steps run on across ages (F.A. 590 → S.A. 1). A URL naming a year past an age's end opens on its last year (for the Fourth Age, the last one shown), and an Overlithe in a year without one on Mid-year's Day. Pure logic in `src/moment.ts` (paths, precision), `src/timeAxis.ts` (segments, scales, ticks, picking, steps) and `stepDate` / `dayWindowSlots` / `nearnessDuring` in `calendar.ts`, all tested.
+- **Moments to visit**: a few moments where much happens at once (the Music, the darkening of Valinor, F.A. 495, the Downfall of Númenor, the Unexpected Party, Mirkwood in August 2941, the Council of Elrond, 15 March 3019, the Ring's end), listed in `src/moments.ts`, labelled by an event's title or their own string; also in the sidebar's **Time** view.
+- **Likely happening then — our best guess**: events whose guess falls inside the moment or within their own window of it (`nearnessDuring`, §4.4.1), each with the (i) explanation as on event pages (*By our best guess, it falls within three days of this moment (15 March, T.A. 3019)*, then how it is placed). **Possibly happening then**: the honest range includes the moment, and no more can be said (the first twelve, then *Show all*). Each with its full honest date and place.
+- **Where everyone is**, from the journeys (`src/whereabouts.ts`): a stop whose honest range covers the moment is a place they may be at (*At Cirith Ungol*); several such stops, or none between two, are *Somewhere between Goblin-town and the Elvenking's Halls*, with the stops in order and the first and last stop's honest ranges. For a day or a month (never a whole year) the best guesses add which stop was likely last reached, labelled: *Our best guess: past Shelob's Lair, on the way to Mordor* (i). Journeys with the same answer are one company (Bilbo, Gandalf and the dwarves at Bag End), largest first; each character is listed once, and on a handoff day (Gandalf leaving the hobbits on 30 Oct 3019) the journey that is starting wins; names open their lanes, *See their lives side by side* opens the company's; the event at that stop, if any, is linked (*There:*). Characters who stay in one place (`home`, §4.7) are listed quietly *At home*: *In their own country, the Old Forest*, only between their first and last events.
+- **Ways in and out:** the sidebar's **Time** rail item (§3.3); *See this moment on the timeline →* on every event page (under its placement) and at the foot of the Meanwhile panel on a stage, opening the event's moment (its start, at its own precision; vaguer than a season gives the year) with *← Back to <event>*. Meanwhile itself stays as it is.
+
 ### 3.2 Character lanes
 
 A character's life as a lane of events and journey legs. Add more characters and their lanes run side by side; where they share an event the lanes **cross**. Tuor's lane meets Túrin's at the pools of Ivrin, where the cousins pass without knowing each other, a few years before Túrin's end. Kin relations (`kin`) suggest which lanes to add.
@@ -95,7 +104,7 @@ The ways in live in a **sidebar on the left**, not in dropdowns. The 3D stage fi
 
 **Rail and panel.** The sidebar is two parts:
 
-- A narrow **icon rail**, always visible: the Ardatir star (home: the cosmos), then one item per view, **Ages, Stories, Lives, Books, Places**, each an icon with a short label. At the bottom, the language switch (EN / ES) and the collapse toggle.
+- A narrow **icon rail**, always visible: the Ardatir star (home: the cosmos), then one item per view, **Ages, Time, Stories, Lives, Books, Places**, each an icon with a short label. At the bottom, the language switch (EN / ES) and the collapse toggle.
 - A **panel** beside it showing the chosen view, with the wordmark, tagline and search at the top and the disclaimer at the bottom. Clicking a rail item opens its view; clicking the active one again folds the panel away, leaving only the rail. Collapsed, rail items show their name on hover.
 
 **The views:**
@@ -103,6 +112,7 @@ The ways in live in a **sidebar on the left**, not in dropdowns. The 3D stage fi
 | View | Shows |
 |---|---|
 | **Ages** | The ages as a vertical thread of nodes. The current age is lit and opens into its arcs, then their events, with the event on screen highlighted. |
+| **Time** | The time cursor (§3.1): what it is, the moment on screen (or *Open the timeline →*), the current event's moment, and the moments to visit. Its page is the timeline itself. |
 | **Stories** | The arcs as cards: age, name, one line of summary. |
 | **Lives** | The lives chosen for lanes as chips, with *Side by side →* (§3.2); then characters in the current event first, then everyone; each opens into summary, kin and their events in order, and has a + / ✓ toggle that adds or removes their lane. |
 | **Books** | Each book opens into chapters (from events' `source`), linking to the events they cover. |
@@ -115,7 +125,7 @@ Every event in a list is a link. Events that can be watched (staged) are marked 
 - Top left, a **breadcrumb** of where you are (*Third Age › The Quest of Erebor › Roast Mutton*); top right, a **zoom switch**, *Cosmos · World · Event*.
 - The event card sits under the breadcrumb, the selected character's card on the right (§2, Event).
 - The narration caption above the timeline bar.
-- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** and mute. Until the time cursor (§3.1) exists, Meanwhile lists the event's links and the events whose honest range overlaps it, as *likely* (our best guess, explained) and *possibly* (§4.4.1), each a link like those in the sidebar. Later, in the cosmos and world levels, the bar spans the ages instead.
+- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** and mute. Meanwhile lists the event's links and the events whose honest range overlaps it, as *likely* (our best guess, explained) and *possibly* (§4.4.1), each a link like those in the sidebar, and ends with *See this moment on the timeline →*, the time cursor (§3.1) at the event's moment. Later, in the cosmos and world levels, the bar spans the ages instead.
 
 **Phones.** The rail and panel become one **drawer** opened from a menu button: the views as a tab strip under the search, the language switch in the footer.
 
@@ -222,7 +232,7 @@ Two events (or a moment and an event) are **possibly** at the same time when the
 
 1. **Same character, different scene: never "likely"**, unless the two are linked `concurrent` or `crossing`. Story order already says one follows the other; guesses a few days apart would only blur that. (This fixes issue #2: during *A Welcome at Lake-town*, 22 September 2941, *The Secret Door* was "likely" because its guess fell in early October, though Bilbo is in both and the door comes later.)
 2. **Otherwise the window scales with the vaguer of the two precisions**, between best guesses: **day ±3 days** (exact dates still differ by a day or two between sources and reckonings), **month ±15 days** (half a month: a mid-month guess reaches either end of its month, no further), **season ±45 days** (half a season: the same part of the season, not anywhere in it). **Year, decade, approximate** and timeless dates never make "likely", only "possibly": a guess placed somewhere in a year says too little to call two events simultaneous. The numbers are `LIKELY_DAY`, `LIKELY_MONTH`, `LIKELY_SEASON` in `calendar.ts`.
-3. For the **bare time cursor** (a moment, not an event), the window is the event's own precision.
+3. For the **bare time cursor** (a moment, not an event), the window is the event's own precision. The cursor's moments are whole days, months, seasons or years, so the moment is its span (`nearnessDuring`): *possibly* when the event's honest range overlaps it, *likely* when the event's guess falls inside it or within the event's window of it. An empty span is exactly `nearnessAt`. A whole year thus calls an event dated 26 April "likely" in 2941, and a year-dated one only "possibly".
 
 **Why this rule** (decided 2026-11-09), over the options in issue #2:
 
@@ -253,7 +263,7 @@ Journeys follow who actually travels together: in *The Hobbit*, Bilbo's journey,
 
 ### 4.7 Characters
 
-Name, kind, summary and, for staging, a placeholder colour and relative height (`scale`). `kin` lists family relations (`{ id: turin, as: cousin }`), used to suggest lanes to compare.
+Name, kind, summary and, for staging, a placeholder colour and relative height (`scale`). `kin` lists family relations (`{ id: turin, as: cousin }`), used to suggest lanes to compare. `home` (a place id) is for characters who never travel, like Tom Bombadil in the Old Forest: when no journey places them, the time cursor shows them at home, but only between the start of their first event and the end of their last (honest ranges), since outside that the sources say nothing of them. A journey that comes to visit them (one of their events is on it) extends that span through its stops at their home: Gandalf's stay with Tom in November 3019 keeps Tom at home after his last event.
 
 ## 5. Narration
 
@@ -296,6 +306,8 @@ The URL always reflects where you are:
 /#/event/roast-mutton?t=0.45&follow=bilbo&lang=es
 /#/event/tuor-sees-turin-at-ivrin?lang=es          an event that isn't staged: its page (§3.4)
 /#/lives?with=tuor,turin                            character lanes, in this order (§3.2)
+/#/time/third-age/3019-03-15                        the time cursor at a day (§3.1); …/3019-03, …/3019, …/3019-midyear
+/#/time/first-age/495?zoom=age&from=fall-of-nargothrond   a whole year, at the age scale, opened from an event
 ```
 
 Moving to another event or view adds a history entry, so the back button returns; scrubbing and selecting only update the current one. A link to the event already on screen seeks to its `t` and follows its `follow`, when it gives them. Links inside the site are plain `href`s built in `src/routes.ts`.
@@ -363,6 +375,7 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 | 2026-11-09 | Every event is reachable: events that can't be watched yet open a text page at the same route, with the narration as text once scripted (§3.4). |
 | 2026-11-09 | "Likely at the same time": never for two scenes sharing a character (unless linked `concurrent`/`crossing`); otherwise best guesses within ±3 days / ±15 days / ±45 days by the vaguer precision (day / month / season), never for a year or vaguer. Every best guess records why it landed there (`atReason`), and the site labels "likely" as our best guess and explains it (§4.4, §4.4.1; #2). |
 | 2026-11-09 | Character lanes: lanes as coloured columns with time running down, one story order, crossings in gold, honest gaps ("at least N years later"), kin suggestions; lanes derived by the build; route `#/lives?with=` (§3.2). |
+| 2026-11-09 | The time cursor (#1): a page at `#/time/<age>/<date>` (readable, at the precision picked: year, month, day, days outside the months; also an axis position); the ages as log-width segments with the timeless ones apart before the axis, and a finer scale (age, century, year, month) down to a single day, keyboard and touch operable; likely / possibly by `nearnessDuring` (the moment is its span); whereabouts from journeys by company, honest ("somewhere between"), with a labelled best guess for a day or month; characters who never travel shown at `home` within their events' span; moments to visit; a **Time** rail item; ways to and from events (§3.1). |
 
 ## 12. Open questions
 

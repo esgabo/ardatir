@@ -13,7 +13,8 @@ import { t as ui, tr, type UiKey } from './i18n';
 import { linkedEvents, sameTime } from './related';
 import { likelyParts, placementParts, renderParts, whyToggle } from './placement';
 import { hasLane, MAX_LANES } from './lanes';
-import { eventHref, livesHref } from './routes';
+import { eventHref, livesHref, timeHref } from './routes';
+import { momentOfEvent, momentPath } from './moment';
 
 export interface ReaderHost {
   lang(): Lang;
@@ -63,6 +64,9 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     const parts = placementParts(ev, L);
     if (parts.length) art.append(h('p', { class: 'r-placed' }, h('span', { class: 'r-placed-label' }, `${S('placedLabel')}: `), ...renderParts(parts, L)));
   }
+  // Everything else at this moment, everywhere: the time cursor, with the way back here.
+  art.append(h('a', { class: 'r-more r-timeline', href: timeHref(momentPath(momentOfEvent(ev, index.ages)), L, { from: ev.id }) },
+    h('span', { html: ICONS.time }), `${S('seeOnTimeline')} →`));
   art.append(h('p', { class: 'r-status' }, h('span', { class: 'r-status-mark', 'aria-hidden': 'true' }), S(ev.status === 'outline' ? 'status_outline' : 'status_scripted')));
   art.append(h('p', { class: 'r-summary' }, tr(ev.summary, L)));
 

@@ -1,9 +1,12 @@
 id: the-road-home
 title: { en: "The Road Home", es: "El camino de vuelta a casa" }
 characters: [ frodo, sam, merry, pippin, gandalf ]
-# From Cormallen to Minas Tirith and Rivendell, and with Gandalf as far as Bree; beyond Bree he turns aside and the hobbits go on alone (the-scouring-road).
+# From Cormallen to Minas Tirith and Rivendell, and on with Gandalf past Bree to the spot on the East Road
+# by the Barrow-downs where Tom Bombadil had left them in 3018 (30 Oct, RotK VI.7). There Gandalf turns
+# aside to Bombadil (gandalf-goes-to-bombadil) and the hobbits go on alone (the-scouring-road).
 waypoints:
   - { place: cormallen, date: { age: third-age, year: 3019, month: 4, day: 8 }, precision: day }
   - { place: minas-tirith, date: { age: third-age, year: 3019, month: 5, day: 1 }, precision: day }
   - { place: rivendell, date: { age: third-age, year: 3019, month: 9, day: 21 }, end: { age: third-age, year: 3019, month: 10, day: 5 }, precision: day }
   - { place: prancing-pony, date: { age: third-age, year: 3019, month: 10, day: 28 }, end: { age: third-age, year: 3019, month: 10, day: 30 }, precision: day }
+  - { place: barrow-downs, date: { age: third-age, year: 3019, month: 10, day: 30 }, precision: day }

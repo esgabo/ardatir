@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
-import { dateSpan, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
+import { dateSpan, EPS, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
   EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
@@ -166,16 +166,18 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'characters'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin'], 'character');
+    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin', 'home'], 'character');
     const cid = id(f, o.id, charIds, 'character');
     if (!cid) continue;
     if (typeof o.kind !== 'string') R.error(f, 'kind: required (hobbit, elf, man, ...)');
     if (o.color !== undefined && !/^#[0-9a-f]{6}$/i.test(String(o.color))) R.error(f, 'color: use #rrggbb');
     if (o.scale !== undefined && !(typeof o.scale === 'number' && o.scale > 0)) R.error(f, 'scale: a positive number');
     const kin = Array.isArray(o.kin) ? o.kin.filter(isObj).map((k) => ({ id: String(k.id), as: String(k.as) })) : undefined;
+    if (o.home !== undefined && typeof o.home !== 'string') R.error(f, 'home: a place id');
     characters.push({
       id: cid, name: text(f, o.name, 'name')!, kind: String(o.kind), summary: text(f, o.summary, 'summary')!,
       ...o.color ? { color: String(o.color) } : {}, ...o.scale ? { scale: Number(o.scale) } : {}, ...kin ? { kin } : {},
+      ...typeof o.home === 'string' ? { home: o.home } : {},
     });
     charFile.set(cid, f);
   }
@@ -192,6 +194,8 @@ export function buildContent(contentDir: string): BuildResult {
     const world = isObj(o.world) && typeof o.world.x === 'number' && typeof o.world.z === 'number' ? { x: o.world.x, z: o.world.z } : undefined;
     places.push({ id: pid, name: text(f, o.name, 'name')!, summary: text(f, o.summary, 'summary')!, ...world ? { world } : {} });
   }
+  // A character who stays in one place (Tom Bombadil): the time cursor shows them there between their events.
+  for (const c of characters) if (c.home && !placeIds.has(c.home)) R.error(charFile.get(c.id)!, `home: unknown place "${c.home}"`);
 
   const arcs: Arc[] = [];
   const arcIds = new Set<string>();
@@ -241,7 +245,7 @@ export function buildContent(contentDir: string): BuildResult {
     });
     if (waypoints.length < 2) R.error(f, 'a journey needs at least two waypoints');
     // Coarse dates may overlap their neighbours; only a waypoint that ends before the previous one starts is out of order.
-    for (let i = 1; i < waypoints.length; i++) if (waypoints[i].span.to <= waypoints[i - 1].span.from) R.error(f, `waypoints[${i}]: earlier than the waypoint before it`);
+    for (let i = 1; i < waypoints.length; i++) if (waypoints[i].span.to <= waypoints[i - 1].span.from + EPS) R.error(f, `waypoints[${i}]: earlier than the waypoint before it`);
     const span = waypoints.length ? { from: waypoints[0].span.from, to: waypoints.at(-1)!.span.to } : undefined;
     journeys.push({ id: jid, title: text(f, o.title, 'title')!, characters: chars, waypoints, ...span ? { span } : {}, events: [] });
   }
@@ -392,7 +396,7 @@ export function buildContent(contentDir: string): BuildResult {
   raws.sort((a, b) => a.ageOrder - b.ageOrder || a.folder.localeCompare(b.folder));
   for (let i = 1; i < raws.length; i++) {
     const prev = raws[i - 1].summary.span, cur = raws[i].summary.span;
-    if (prev && cur && cur.to <= prev.from) R.warn(raws[i].file, `sorts after "${raws[i - 1].summary.id}" but its dates are earlier; check the folder sort key`);
+    if (prev && cur && cur.to <= prev.from + EPS) R.warn(raws[i].file, `sorts after "${raws[i - 1].summary.id}" but its dates are earlier; check the folder sort key`);
   }
 
   // ---------- best-guess positions ----------
@@ -521,7 +525,7 @@ export function buildContent(contentDir: string): BuildResult {
       const jr = journeyMap.get(j);
       if (!jr) continue;
       jr.events.push(e.id);
-      for (const c of e.characters) if (jr.characters.includes(c) && e.span && jr.span && (e.span.to < jr.span.from || e.span.from > jr.span.to)) {
+      for (const c of e.characters) if (jr.characters.includes(c) && e.span && jr.span && (e.span.to < jr.span.from - EPS || e.span.from > jr.span.to + EPS)) {
         R.warn(byId.get(e.id)!.file, `is part of journey "${j}" but falls outside its dates`);
         break;
       }
@@ -655,8 +659,8 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
       // A matching event says more than the middle of a short range (a month-long stay in
       // Rivendell takes the moon-letters' 1 Lithe, not mid-June), so it comes first.
       const e = events.find((x) => x.journeys.includes(j.id) && x.place === w.place && x.span && x.at !== undefined
-        && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last
-        && x.at >= w.span.from && x.at <= w.span.to);
+        && overlaps(x.span, w.span) && x.at >= last
+        && x.at >= w.span.from - EPS && x.at <= w.span.to + EPS);
       let at = e?.at;
       if (e) w.event = e.id;
       if (at === undefined && w.span.to - w.span.from <= ANCHOR_WIDTH) at = (w.span.from + w.span.to) / 2;

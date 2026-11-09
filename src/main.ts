@@ -11,7 +11,10 @@ import { renderReader } from './reader';
 import { linkedEvents, sameTime } from './related';
 import { likelyParts, whyToggle } from './placement';
 import { MAX_LANES, PHONE_QUERY, renderLanes } from './lanes';
-import { eventHref, livesHref, parseRoute, type Route } from './routes';
+import { eventHref, livesHref, parseRoute, timeHref, type Route } from './routes';
+import { DEFAULT_MOMENT, momentOfEvent, momentPath, parseMoment } from './moment';
+import { fitZoom, ZOOMS, type Zoom } from './timeAxis';
+import { momentHref, renderTime, resolveMoment, type TimeState } from './timeCursor';
 import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
@@ -27,12 +30,16 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
  * lives side by side (character lanes). While a page is open the stage stays loaded
  * underneath but neither renders nor plays.
  */
-type Page = { kind: 'event'; id: string } | { kind: 'lives'; ids: string[] };
+type Page = { kind: 'event'; id: string } | { kind: 'lives'; ids: string[] } | ({ kind: 'time' } & TimeState);
 let page: Page | null = null;
 /** The lives last shown side by side, so the sidebar can offer them again. */
 let laneIds: string[] = [];
 
-const pageHref = (p: Page) => (p.kind === 'event' ? eventHref(p.id, state.lang) : livesHref(p.ids, state.lang));
+const pageHref = (p: Page) => (p.kind === 'event' ? eventHref(p.id, state.lang)
+  : p.kind === 'lives' ? livesHref(p.ids, state.lang) : momentHref(p, state.lang));
+
+/** The time cursor at an event's moment, with the way back to it. */
+const timeHrefFor = (e: EventSummary) => timeHref(momentPath(momentOfEvent(e, index.ages)), state.lang, { from: e.id });
 
 /** Update the URL in place (no history entry) to what is on screen. */
 function writeRoute(): void {
@@ -249,6 +256,14 @@ function applyRoute(r: Route): void {
     showPage({ kind: 'lives', ids: laneIds });
     return;
   }
+  if (r.kind === 'time') {
+    // An unreadable moment opens the default one (the URL is then rewritten to it).
+    const moment = resolveMoment(r.where) ?? parseMoment(DEFAULT_MOMENT, index.ages)!;
+    const zoom = fitZoom((ZOOMS as readonly string[]).includes(r.zoom ?? '') ? r.zoom as Zoom : undefined, moment, index.ages);
+    const from = r.from && eventById(r.from) ? r.from : undefined;
+    showPage({ kind: 'time', moment, zoom, from });
+    return;
+  }
   const target = r.eventId ? eventById(r.eventId) : undefined;
   if (target && !target.stage) { showPage({ kind: 'event', id: target.id }); return; }
   const id = target?.id ?? homeId();
@@ -283,7 +298,7 @@ function applyRoute(r: Route): void {
 function showPage(p: Page): void {
   stageGeneration++; // a stage still loading must not replace the page
   pending = undefined;
-  const same = !!page && page.kind === p.kind && (p.kind === 'lives' || (page.kind === 'event' && page.id === p.id));
+  const same = !!page && page.kind === p.kind && (p.kind !== 'event' || (page.kind === 'event' && page.id === p.id));
   page = p;
   state.playing = false;
   closeMeanwhile();
@@ -314,6 +329,16 @@ function renderPage(): void {
     renderCrumbs(undefined, [], ui('title_lives', L));
     renderZoom(null);
     sidebar.setView('lives'); // the rail shows where we are, without opening the drawer
+  } else if (page.kind === 'time') {
+    const tp = page;
+    renderTime(pageEl, tp, {
+      lang: () => state.lang,
+      // Stepping, dragging, zooming: the URL follows in place (no history entry), like scrubbing.
+      changed: (s) => { Object.assign(tp, s); writeRoute(); renderCrumbs(s.moment.age, [], ui('title_time', state.lang)); sidebar.render(); },
+    });
+    renderCrumbs(tp.moment.age, [], ui('title_time', L));
+    renderZoom(null);
+    sidebar.setView('time');
   } else {
     const ev = eventById(page.id)!;
     renderReader(pageEl, ev, { lang: () => state.lang });
@@ -345,6 +370,8 @@ matchMedia(PHONE_QUERY).addEventListener('change', () => { if (page?.kind === 'l
 const sidebar = new Sidebar($('sidebar'), {
   lang: () => state.lang,
   currentId: () => (page ? (page.kind === 'event' ? page.id : '') : state.event?.id ?? ''),
+  timeOpen: () => (page?.kind === 'time' ? page : undefined),
+  timeHrefFor,
   lanes: () => laneIds,
   lanesOpen: () => page?.kind === 'lives',
   setLanes,
@@ -559,6 +586,8 @@ function renderMeanwhile(): void {
   }));
   section(ui('possiblySameTime', L), same.possibly.map(({ event: e }) => row(e, placeOf(e))), ui('possiblyWhy', L));
   if (!meanwhilePanel.childElementCount) meanwhilePanel.append(h('p', { class: 'muted' }, ui('nothingMeanwhile', L)));
+  // Everything else at this moment, everywhere: the time cursor, with the way back here.
+  meanwhilePanel.append(h('a', { class: 'mw-timeline', href: timeHrefFor(ev) }, h('span', { html: ICONS.time }), `${ui('seeOnTimeline', L)} →`));
 }
 meanwhileBtn.addEventListener('click', () => {
   const open = meanwhilePanel.hidden;

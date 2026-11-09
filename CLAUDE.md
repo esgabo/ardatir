@@ -44,8 +44,9 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Status pipeline**: outline → scripted → staged → animated | Lets the phases overlap; the build checks each event has the files its status claims. |
 | **One shared time axis** with date precision; typed links; journeys for whereabouts | Powers the time cursor ("what's happening now") and character lanes ("where their lives cross"). |
 | **Time cursor is the first platform feature**, then character lanes | Decided 2026-11-08. |
-| **Navigation is a collapsible left sidebar** (icon rail + panel: Ages, Stories, Lives, Books, Places), not dropdowns | Keeps the 3D stage clear while making every way in visible. Fantasy look kept light: a few small ornaments, no textures. See `docs/DESIGN.md` §3.3. Decided 2026-11-09. |
+| **Navigation is a collapsible left sidebar** (icon rail + panel: Ages, Time, Stories, Lives, Books, Places), not dropdowns | Keeps the 3D stage clear while making every way in visible. Fantasy look kept light: a few small ornaments, no textures. See `docs/DESIGN.md` §3.3. Decided 2026-11-09. |
 | **"Likely at the same time" is a labelled, explained guess**: never for two scenes sharing a character (unless linked `concurrent`/`crossing`); otherwise best guesses within ±3 / ±15 / ±45 days for day / month / season (the vaguer of the two); never for a year or vaguer | Story order already says which of a character's scenes comes first; a fixed window was too loose for vague dates (the secret door "during" Lake-town, #2). Gap-to-anchors was hard to explain, exact-only made "likely" vanish. Every guess records why it landed there (`atReason`) and the site says so in words. See `docs/DESIGN.md` §4.4.1. Decided 2026-11-09. |
+| **The time cursor is a page at a readable moment** (`#/time/third-age/3019-03-15`, `…/3019`, `…/before-time`): the ages as log-width segments (timeless ones apart, before the axis) and a finer scale down to a day; likely / possibly by `nearnessDuring`; whereabouts from journeys by company, honest first | Ages differ a hundredfold in length, so each needs room; a moment is said exactly as precisely as it was picked; "somewhere between" when the sources allow several stops, with our guess labelled. See `docs/DESIGN.md` §3.1. Decided 2026-11-09. |
 
 ## Architecture
 
@@ -77,6 +78,11 @@ src/
   reader.ts          an event's page, for events that can't be watched yet (DESIGN §3.4)
   lanes.ts           character lanes: lives side by side, crossings, kin suggestions (DESIGN §3.2)
   laneRows.ts        the lanes as rows (story order, legs, gaps), search ranking, initials: pure, tested
+  timeCursor.ts      the time cursor page: the ages, the finer scale, likely / possibly, where everyone is (DESIGN §3.1)
+  moment.ts          a moment: readable URL path ⇄ date and precision, its span, an event's moment: pure, tested
+  timeAxis.ts        the control as data: age segments, scales and ticks, picking, keyboard steps: pure, tested
+  whereabouts.ts     where everyone is at a moment, from journeys, grouped by company; `home` for those who stay: pure, tested
+  moments.ts         the "moments to visit" shortcuts
   routes.ts          parse the URL, build every in-site href
   format.ts          honest dates in words (labels only; the math is in calendar.ts)
   related.ts         an event's links and what overlaps it, likely vs possibly (Meanwhile, event pages)
@@ -91,13 +97,13 @@ src/
 - **The playhead runs in seconds of narration; `t` is derived** via `EventClock.tAt`. Seeking converts back with `secondsAt`. Never advance `t` directly.
 - **Narration timing:** `staging.yaml` gives each passage's `t` (where it belongs in the animation); `audio/<lang>.yaml` gives the second it starts in that recording, keyed by passage id. The build turns both into ordered arrays, and the clock stretches the animation between those points.
 - **Recordings carry a `textHash`** of the words they read (`audio/<lang>.yaml`); the build warns when `narration.yaml` no longer matches. Editing a recorded passage means re-recording it.
-- **The URL is the state**: `#/event/<id>?t=&follow=&lang=` (a staged event's stage, any other event's page), `#/lives?with=a,b` (character lanes). New view state that matters should be added to the route (`src/routes.ts`); in-site links are plain hrefs from there.
+- **The URL is the state**: `#/event/<id>?t=&follow=&lang=` (a staged event's stage, any other event's page), `#/lives?with=a,b` (character lanes), `#/time/<age>/<date>?zoom=&from=` (the time cursor; `<date>` is `3019`, `3019-03`, `3019-03-15`, `3019-midyear`, `2941-summer`, or an axis position). New view state that matters should be added to the route (`src/routes.ts`); in-site links are plain hrefs from there.
 - **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.
 - **Date math lives in `src/data/calendar.ts` only.** Spans are widened by precision (a `year` date covers the whole year): that's the honest range.
 - **Story order is the folder sort key** (age, then key), never the dates. Keys are numeric `YYYY-MM-DD-n`, seasons written as a month (summer `07`, autumn `09`).
-- **`at` is a best guess, not a date.** The build places vague events between exact-dated anchors in their characters' lanes, in story order, never before what they follow or are caused by (`estimatePositions`, `estimateWaypoints` in `scripts/content/build.ts`). Each guess records why it landed there (`atReason`: kind, anchors, lane, window). The site may use it to place and to say "likely", but states only the honest range and explains the placement in words (`src/placement.ts`). "Likely" vs "possibly" is decided only by `nearness` / `nearnessAt` in `calendar.ts` (DESIGN §4.4.1).
+- **`at` is a best guess, not a date.** The build places vague events between exact-dated anchors in their characters' lanes, in story order, never before what they follow or are caused by (`estimatePositions`, `estimateWaypoints` in `scripts/content/build.ts`). Each guess records why it landed there (`atReason`: kind, anchors, lane, window). The site may use it to place and to say "likely", but states only the honest range and explains the placement in words (`src/placement.ts`). "Likely" vs "possibly" is decided only by `nearness` / `nearnessAt` / `nearnessDuring` in `calendar.ts` (DESIGN §4.4.1).
 - **Links are written once.** The build adds the reverse (`enabled-by` ↔ `enables`, `caused-by` ↔ `causes`; `concurrent` and `crossing` are symmetric) and marks it `reverse: true`.
 
 ## Writing content
