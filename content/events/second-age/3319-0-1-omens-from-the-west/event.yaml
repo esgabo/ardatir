@@ -1,0 +1,15 @@
+id: omens-from-the-west
+age: second-age
+when:
+  start: { age: second-age, year: 3319 }   # while the fleet is gathered, shortly before it sails; the Akallabêth gives no separate date
+  precision: approximate
+place: armenelos
+characters: [ ar-pharazon ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Omens from the West", es: "Presagios del Oeste" }
+summary:
+  en: "Great clouds in the shape of eagles darken the sky from the west, and thunder rolls over the island. Lightning strikes the Temple's dome, but Sauron laughs it off and the King does not turn back."
+  es: "Grandes nubes con forma de águilas oscurecen el cielo desde el oeste, y el trueno rueda sobre la isla. Un rayo golpea la cúpula del Templo, pero Sauron se burla y el Rey no da marcha atrás."

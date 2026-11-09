@@ -1,0 +1,8 @@
+id: ar-gimilzor
+name: { en: "Ar-Gimilzôr", es: "Ar-Gimilzôr" }
+kind: man
+summary:
+  en: "King of Númenor and a bitter enemy of the Faithful, who banned the Elvish tongues and turned the Eldar away."
+  es: "Rey de Númenor y acerbo enemigo de los Fieles, que prohibió las lenguas élficas y rechazó a los Eldar."
+color: "#7a6a4a"
+scale: 2

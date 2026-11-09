@@ -1,0 +1,15 @@
+id: the-ban-of-the-valar
+age: second-age
+when:
+  start: { age: second-age, year: 32 }   # laid on the Edain when they were given the island; the Akallabêth gives no separate year
+  precision: approximate
+place: numenor
+characters: [ elros ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The Ban of the Valar", es: "La Prohibición de los Valar" }
+summary:
+  en: "With the island the Valar give one command: the Númenóreans may never sail west out of sight of their own shores, nor set foot on the Undying Lands. It is a test of trust, for Men are mortal and the gift of the Valar does not change that."
+  es: "Con la isla, los Valar imponen una sola orden: los númenóreanos no deben navegar hacia el oeste hasta perder de vista sus costas, ni pisar las Tierras Imperecederas. Es una prueba de confianza, pues los Hombres son mortales y el don de los Valar no cambia eso."

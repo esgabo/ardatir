@@ -1,0 +1,21 @@
+id: isildur-saves-the-fruit-of-nimloth
+age: second-age
+when:
+  start: { age: second-age, year: 3280 }   # same best guess as the felling it precedes; the night before
+  precision: approximate
+place: armenelos
+characters: [ isildur, amandil ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Isildur saves the fruit of Nimloth", es: "Isildur salva el fruto de Nimloth" }
+summary:
+  en: "Amandil sends his son Isildur, disguised, into the King's courtyard. He slips past the guards and takes a fruit from the White Tree before the felling, and escapes with it, wounded."
+  es: "Amandil envía a su hijo Isildur, disfrazado, al patio del Rey. Burla a los guardias y toma un fruto del Blanco Árbol antes de que lo talen, y huye con él, herido."
+links:
+  - to: sauron-builds-the-temple-of-melkor
+    type: caused-by
+    note:
+      en: "The felling is decreed for the Temple."
+      es: "La tala se decreta para el Templo."

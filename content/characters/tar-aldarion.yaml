@@ -1,0 +1,8 @@
+id: tar-aldarion
+name: { en: "Tar-Aldarion", es: "Tar-Aldarion" }
+kind: man
+summary:
+  en: "The Mariner King of Númenor, who loved the sea and the shores of Middle-earth and befriended Gil-galad."
+  es: "El Rey Marinero de Númenor, que amó el mar y las costas de la Tierra Media y trabó amistad con Gil-galad."
+color: "#7a6a4a"
+scale: 2

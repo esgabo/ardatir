@@ -1,0 +1,8 @@
+id: tar-ancalimon
+name: { en: "Tar-Ancalimon", es: "Tar-Ancalimon" }
+kind: man
+summary:
+  en: "King of Númenor in whose long reign the people split into the King's Men and the Faithful."
+  es: "Rey de Númenor en cuyo largo reinado el pueblo se dividió en los Hombres del Rey y los Fieles."
+color: "#7a6a4a"
+scale: 2

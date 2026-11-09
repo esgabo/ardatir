@@ -1,0 +1,15 @@
+id: tar-aldarion-sails-to-mithlond
+age: second-age
+when:
+  start: { age: second-age, year: 883 }   # Unfinished Tales: Aldarion takes the Sceptre in 883 and sails soon after; some readings say 884
+  precision: approximate
+place: grey-havens
+characters: [ tar-aldarion, gil-galad, cirdan ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ unfinished-tales ]
+status: outline
+source: { book: unfinished-tales, chapter: "Aldarion and Erendis" }
+title: { en: "Tar-Aldarion sails to Mithlond", es: "Tar-Aldarion navega a Mithlond" }
+summary:
+  en: "The seafaring King takes his ships once more to the Grey Havens. He renews his friendship with Gil-galad and Círdan, and with it Númenor's long bond with the Elves of Middle-earth."
+  es: "El Rey marino lleva de nuevo sus naves a los Puertos Grises. Renueva su amistad con Gil-galad y Círdan, y con ella el largo vínculo de Númenor con los Elfos de la Tierra Media."
