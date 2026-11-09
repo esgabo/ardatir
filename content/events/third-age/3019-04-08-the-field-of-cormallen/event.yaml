@@ -4,7 +4,7 @@ when:
   start: { age: third-age, year: 3019, month: 4, day: 8 }
   precision: day
 place: cormallen
-characters: [ frodo, sam, gandalf, aragorn, merry, pippin, legolas, gimli, eomer, faramir ]
+characters: [ frodo, sam, gandalf, aragorn, merry, pippin, legolas, gimli, eomer ]
 arcs: [ the-war-of-the-ring, after-the-war ]
 journeys: [ the-road-home ]
 tags: [ lord-of-the-rings ]

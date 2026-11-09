@@ -6,7 +6,7 @@ when:
 place: parth-galen
 characters: [ frodo, sam ]
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring, the-ringbearers-road ]
-journeys: [ the-fellowship-of-the-ring, the-ring-to-mordor ]
+journeys: [ the-fellowship-after-moria, through-the-emyn-muil ]
 tags: [ lord-of-the-rings, the-ring ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "The Breaking of the Fellowship" }

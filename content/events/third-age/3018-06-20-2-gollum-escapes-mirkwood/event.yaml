@@ -1,9 +1,9 @@
 id: gollum-escapes-mirkwood
 age: third-age
 when:
-  # Appendix B places the attack on Thranduil and Gollum's escape in the same entry as Osgiliath.
+  # App. B: "about the same time" as the attack on Osgiliath (20 June).
   start: { age: third-age, year: 3018, month: 6, day: 20 }
-  precision: day
+  precision: approximate
 place: mirkwood
 characters: [ gollum, thranduil ]
 arcs: [ the-war-of-the-ring ]

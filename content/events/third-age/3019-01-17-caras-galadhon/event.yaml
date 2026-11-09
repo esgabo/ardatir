@@ -7,7 +7,7 @@ when:
 place: lothlorien
 characters: [ frodo, sam, merry, pippin, aragorn, legolas, gimli, boromir, galadriel, celeborn ]
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
-journeys: [ the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-after-moria ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "Lothlórien" }

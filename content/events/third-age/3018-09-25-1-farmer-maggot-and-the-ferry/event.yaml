@@ -1,13 +1,13 @@
 id: farmer-maggot-and-the-ferry
 age: third-age
 when:
-  # Best reading of the chapter order, day not given directly by Appendix B.
-  start: { age: third-age, year: 3018, month: 9, day: 24 }
+  # The morning after meeting Gildor; Bucklebury Ferry and Crickhollow the same evening (App. B: 25th).
+  start: { age: third-age, year: 3018, month: 9, day: 25 }
   precision: day
 place: the-shire
 characters: [ frodo, sam, pippin, farmer-maggot ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
-journeys: [ the-road-to-rivendell ]
+journeys: [ the-road-to-crickhollow ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "A Short Cut to Mushrooms" }

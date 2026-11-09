@@ -1,0 +1,10 @@
+id: with-strider-to-rivendell
+title: { en: "With Strider to Rivendell", es: "Con Trancos a Rivendel" }
+characters: [ frodo, sam, merry, pippin, aragorn ]
+# Strider leads the hobbits from Bree by Weathertop and the Trollshaws to the Ford and Rivendell.
+waypoints:
+  - { place: prancing-pony, date: { age: third-age, year: 3018, month: 9, day: 29 }, end: { age: third-age, year: 3018, month: 9, day: 30 }, precision: day }
+  - { place: weathertop, date: { age: third-age, year: 3018, month: 10, day: 6 }, precision: day }
+  - { place: trollshaws, date: { age: third-age, year: 3018, month: 10, day: 18 }, precision: day }
+  - { place: ford-of-bruinen, date: { age: third-age, year: 3018, month: 10, day: 20 }, precision: day }
+  - { place: rivendell, date: { age: third-age, year: 3018, month: 10, day: 20 }, end: { age: third-age, year: 3018, month: 10, day: 25 }, precision: day }

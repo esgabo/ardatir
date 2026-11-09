@@ -1,0 +1,17 @@
+id: the-black-riders-raid-bree
+age: third-age
+when:
+  # Early hours of the 30th, per Appendix B (the inn and Crickhollow raided the same night; Crickhollow is its own event).
+  start: { age: third-age, year: 3018, month: 9, day: 30 }
+  precision: day
+place: prancing-pony
+characters: [ nazgul, butterbur ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "A Knife in the Dark" }
+title: { en: "The Night Raid on the Inn at Bree", es: "El asalto nocturno a la posada de Bree" }
+summary:
+  en: "In the night the hobbits' room at the Prancing Pony is broken into and the empty beds slashed to pieces. By morning the inn's stables stand open and every pony is gone."
+  es: "De noche alguien entra en la habitación de los hobbits en El Poney Pisador y hace trizas las camas vacías. Al amanecer, los establos de la posada están abiertos y no queda ni un poney."

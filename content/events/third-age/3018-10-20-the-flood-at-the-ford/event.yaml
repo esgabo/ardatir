@@ -4,9 +4,9 @@ when:
   start: { age: third-age, year: 3018, month: 10, day: 20 }
   precision: day
 place: ford-of-bruinen
-characters: [ frodo, glorfindel, aragorn, elrond, gandalf, nazgul ]
+characters: [ frodo, glorfindel, aragorn, sam, merry, pippin, nazgul ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
-journeys: [ the-road-to-rivendell ]
+journeys: [ with-strider-to-rivendell ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }

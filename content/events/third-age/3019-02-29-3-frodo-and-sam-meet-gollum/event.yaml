@@ -6,7 +6,7 @@ when:
 place: emyn-muil
 characters: [ frodo, sam, gollum ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
-journeys: [ the-ring-to-mordor ]
+journeys: [ through-the-emyn-muil, the-ring-to-mordor ]
 tags: [ lord-of-the-rings, the-ring ]
 status: outline
 source: { book: the-two-towers, chapter: "The Taming of Sméagol" }

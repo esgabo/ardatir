@@ -6,7 +6,7 @@ when:
 place: weathertop
 characters: [ frodo, sam, merry, pippin, aragorn, witch-king, nazgul ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
-journeys: [ the-road-to-rivendell ]
+journeys: [ with-strider-to-rivendell ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "A Knife in the Dark" }

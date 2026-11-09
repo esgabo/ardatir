@@ -1,7 +1,7 @@
 id: gandalf-the-whites-road
 title: { en: "Gandalf the White's Road", es: "El camino de Gandalf el Blanco" }
-characters: [ gandalf, pippin ]
-# After Moria: the fight on Zirakzigil, Lothlórien, Fangorn, Rohan, Isengard, Minas Tirith and the Morannon. Pippin rides with him from Isengard to Minas Tirith.
+characters: [ gandalf ]
+# After Moria: the fight on Zirakzigil, Lothlórien, Fangorn, Rohan, Isengard, Minas Tirith and the Morannon. Pippin rides with him from Isengard to Minas Tirith (his own road is pippins-road-to-gondor).
 waypoints:
   - { place: zirakzigil, date: { age: third-age, year: 3019, month: 1, day: 23 }, end: { age: third-age, year: 3019, month: 2, day: 14 }, precision: day }
   - { place: lothlorien, date: { age: third-age, year: 3019, month: 2, day: 17 }, precision: day }

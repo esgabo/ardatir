@@ -1,0 +1,10 @@
+id: the-fellowship-after-moria
+title: { en: "The Fellowship after Moria", es: "La Comunidad tras Moria" }
+characters: [ frodo, sam, merry, pippin, aragorn, legolas, gimli, boromir ]
+# The eight without Gandalf, from the gates of Moria through Lothlórien and down the Anduin to Parth Galen, where they break apart on 26 February.
+waypoints:
+  - { place: moria, date: { age: third-age, year: 3019, month: 1, day: 15 }, precision: day }
+  - { place: lothlorien, date: { age: third-age, year: 3019, month: 1, day: 15 }, end: { age: third-age, year: 3019, month: 2, day: 16 }, precision: day }
+  - { place: sarn-gebir, date: { age: third-age, year: 3019, month: 2, day: 23 }, precision: day }
+  - { place: argonath, date: { age: third-age, year: 3019, month: 2, day: 25 }, precision: day }
+  - { place: parth-galen, date: { age: third-age, year: 3019, month: 2, day: 25 }, end: { age: third-age, year: 3019, month: 2, day: 26 }, precision: day }

@@ -6,7 +6,7 @@ when:
 place: cirith-ungol
 characters: [ frodo, shagrat, gorbag, shelob ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
-journeys: [ the-ring-to-mordor ]
+journeys: [ frodo-and-sam-across-mordor ]
 tags: [ lord-of-the-rings, the-ring ]
 status: outline
 source: { book: the-two-towers, chapter: "Shelob's Lair" }

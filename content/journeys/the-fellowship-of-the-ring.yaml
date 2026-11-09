@@ -1,13 +1,9 @@
 id: the-fellowship-of-the-ring
 title: { en: "The Fellowship of the Ring", es: "La Comunidad del Anillo" }
 characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir ]
-# The nine together, Rivendell to Parth Galen. Gandalf falls in Moria on 15 January and his road continues in gandalf-the-whites-road; the rest split at Parth Galen on 26 February.
+# The nine together, Rivendell to Khazad-dûm. Gandalf falls there on 15 January (his road goes on in gandalf-the-whites-road); the eight go on in the-fellowship-after-moria.
 waypoints:
   - { place: rivendell, date: { age: third-age, year: 3018, month: 12, day: 25 }, precision: day }
   - { place: hollin, date: { age: third-age, year: 3019, month: 1, day: 8 }, precision: day }
   - { place: caradhras, date: { age: third-age, year: 3019, month: 1, day: 11 }, end: { age: third-age, year: 3019, month: 1, day: 12 }, precision: day }
   - { place: moria, date: { age: third-age, year: 3019, month: 1, day: 13 }, end: { age: third-age, year: 3019, month: 1, day: 15 }, precision: day }
-  - { place: lothlorien, date: { age: third-age, year: 3019, month: 1, day: 15 }, end: { age: third-age, year: 3019, month: 2, day: 16 }, precision: day }
-  - { place: sarn-gebir, date: { age: third-age, year: 3019, month: 2, day: 23 }, precision: day }
-  - { place: argonath, date: { age: third-age, year: 3019, month: 2, day: 25 }, precision: day }
-  - { place: parth-galen, date: { age: third-age, year: 3019, month: 2, day: 25 }, end: { age: third-age, year: 3019, month: 2, day: 26 }, precision: day }

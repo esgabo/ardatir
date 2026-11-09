@@ -6,7 +6,7 @@ when:
 place: bywater
 characters: [ frodo, sam, merry, pippin ]
 arcs: [ the-war-of-the-ring, after-the-war, the-scouring-of-the-shire ]
-journeys: [ the-road-home ]
+journeys: [ the-scouring-road ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-return-of-the-king, chapter: "The Scouring of the Shire" }

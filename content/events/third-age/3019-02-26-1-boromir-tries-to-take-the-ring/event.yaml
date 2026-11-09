@@ -6,7 +6,7 @@ when:
 place: parth-galen
 characters: [ boromir, frodo ]
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
-journeys: [ the-fellowship-of-the-ring, boromirs-road ]
+journeys: [ the-fellowship-after-moria, boromirs-road ]
 tags: [ lord-of-the-rings, the-ring ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "The Breaking of the Fellowship" }

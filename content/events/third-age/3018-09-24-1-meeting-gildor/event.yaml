@@ -1,13 +1,13 @@
 id: meeting-gildor
 age: third-age
 when:
-  # Night of the 23rd, per Appendix B.
-  start: { age: third-age, year: 3018, month: 9, day: 23 }
+  # Second night out (night of the 24th); not in App. B.
+  start: { age: third-age, year: 3018, month: 9, day: 24 }
   precision: day
 place: woody-end
 characters: [ frodo, sam, pippin, gildor ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
-journeys: [ the-road-to-rivendell ]
+journeys: [ the-road-to-crickhollow ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "Three is Company" }
