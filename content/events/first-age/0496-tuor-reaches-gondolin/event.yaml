@@ -8,7 +8,7 @@ characters: [ tuor, voronwe ]
 arcs: [ the-fall-of-gondolin ]
 journeys: [ tuors-road-to-gondolin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: Of Tuor and the Fall of Gondolin }
 title: { en: Tuor reaches Gondolin, es: Tuor llega a Gondolin }
 summary:
