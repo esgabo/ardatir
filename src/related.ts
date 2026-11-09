@@ -2,8 +2,8 @@
 // may have happened at the same time. Shared by the Meanwhile panel and event pages.
 
 import { index } from './chronicle';
-import { nearness, type NearnessWhy } from './data/calendar';
-import type { EventLink, EventSummary } from './data/types';
+import { nearness, nearnessDuring, type NearnessWhy } from './data/calendar';
+import type { EventLink, EventSummary, Span } from './data/types';
 
 /** The event's links with the events they point to (the build adds each link's reverse). */
 export function linkedEvents(ev: EventSummary): { event: EventSummary; link: EventLink }[] {
@@ -38,5 +38,28 @@ export function sameTime(ev: EventSummary, limit = 8): SameTime {
     if (n!.kind === 'likely') { if (out.likely.length < limit) out.likely.push(e); }
     else if (out.possibly.length < limit) out.possibly.push({ event: e, why: n!.why });
   }
+  return out;
+}
+
+export interface AtMoment {
+  /** Best guess inside the moment, or within the event's own window of it: our best guess. */
+  likely: EventSummary[];
+  /** Honest range overlaps the moment, and no more can be said. */
+  possibly: EventSummary[];
+}
+
+/**
+ * Events at a moment of the time cursor (`nearnessDuring` in data/calendar.ts), split into
+ * "likely" and "possibly". Likely ones are ordered by best guess, possibly ones by where their
+ * honest range begins: `at` only orders them, it is never shown.
+ */
+export function atMoment(span: Span): AtMoment {
+  const out: AtMoment = { likely: [], possibly: [] };
+  for (const e of index.events) {
+    const n = nearnessDuring(span, e);
+    if (n?.kind === 'likely') out.likely.push(e); else if (n) out.possibly.push(e);
+  }
+  out.likely.sort((a, b) => (a.at ?? 0) - (b.at ?? 0));
+  out.possibly.sort((a, b) => a.span!.from - b.span!.from || (a.at ?? 0) - (b.at ?? 0));
   return out;
 }

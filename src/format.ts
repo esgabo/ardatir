@@ -65,6 +65,21 @@ export function honestDate(e: Dated, L: Lang): string {
   return `${dateLabel(start, p, L)} – ${dateLabel(end, q, L)}`;
 }
 
+/** A moment on the time cursor in words, exactly as precise as it was picked: "T.A. 3019", "March, T.A. 3019", "15 March, T.A. 3019"; a timeless age by name. */
+export function momentLabel(m: { age: string; date?: StoryDate; precision?: Precision }, L: Lang): string {
+  if (!m.date || !m.precision) return tr(index.ages.find((a) => a.id === m.age)?.name, L);
+  return dateLabel(m.date, m.precision, L);
+}
+
+/** A month's short name: "Mar" / "mar". */
+export const monthShort = (month: number, L: Lang) => new Date(2000, month - 1, 1).toLocaleString(L, { month: 'short' }).replace('.', '');
+
+/** A place's name inside a sentence: "the Lonely Mountain" / "la Montaña Solitaria" (a leading article lowercased). */
+export function placeInSentence(name: string, L: Lang): string {
+  const article = L === 'en' ? /^The\b/ : /^(El|La|Los|Las)\b/;
+  return article.test(name) ? name[0].toLowerCase() + name.slice(1) : name;
+}
+
 /** The short part finer than the year: "Apr", "summer", "1 Lithe"; empty for a year or coarser. */
 function shortWithinYear(d: StoryDate, p: Precision, L: Lang): string {
   if (p === 'year' || p === 'decade' || p === 'approximate') return '';

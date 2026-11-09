@@ -226,8 +226,141 @@ export function axisToDate(x: number, ages: Age[]): { age: Age; year: number; mo
   const whole = Math.floor(years + 1e-9);
   const year = whole + 1;
   const s = Math.min(Math.max(Math.floor((years - whole) * SLOTS_PER_YEAR + 1e-6), 0), SLOTS_PER_YEAR - 1);
+  return { age, year, ...slotDay(s) };
+}
+
+/** The day in a slot (0–365): a numbered day in its month, or a day outside the months by name. Inverse of `daySlot`. */
+export function slotDay(s: number): { month?: number; day: number | ExtraDay } {
   const named = (Object.entries(EXTRA_DAY_SLOT) as [ExtraDay, number][]).find(([, v]) => v === s);
-  if (named) return { age, year, day: named[0] };
+  if (named) return { day: named[0] };
   const half = s < 185 ? 0 : 6, inHalf = s - (half ? 185 : 1);
-  return { age, year, month: half + Math.floor(inHalf / 30) + 1, day: (inHalf % 30) + 1 };
+  return { month: half + Math.floor(inHalf / 30) + 1, day: (inHalf % 30) + 1 };
+}
+
+// ---------- Moments on the time cursor (docs/DESIGN.md §3.1) ----------
+//
+// The time cursor picks a moment: a whole year, a month or a single day (or a season, when it
+// comes from an event dated by season). Its span is the moment's honest range, the same
+// `dateSpan` every event gets. Stepping moves by a year, a month or a day, running on into
+// the next age at an age's end.
+
+type AgeOnAxis = Pick<Age, 'id' | 'axis'>;
+
+/** Ages on the axis, in axis order. */
+const datedAges = <A extends AgeOnAxis>(ages: A[]): A[] => ages.filter((a) => a.axis).sort((a, b) => a.axis!.start - b.axis!.start);
+
+/**
+ * How many of its own years an age has: up to the start of the next age on the axis.
+ * Undefined for the last (open-ended) age and for timeless ages.
+ */
+export function ageYearCount(age: AgeOnAxis, ages: AgeOnAxis[]): number | undefined {
+  if (!age.axis) return undefined;
+  const dated = datedAges(ages);
+  const next = dated[dated.findIndex((a) => a.id === age.id) + 1];
+  return next ? Math.round((next.axis!.start - age.axis.start) / age.axis.yearLength) : undefined;
+}
+
+/**
+ * The days the day scale of the time cursor shows around a date: its month, with the days
+ * outside the months next to it (June and July with the Lithe days, Afteryule with 2 Yule,
+ * Foreyule with 1 Yule). A day outside the months shows the month it follows (the Lithe days:
+ * June) or opens (2 Yule: Afteryule). Slots from `from` up to, not including, `to`.
+ */
+export function dayWindowSlots(month: number | undefined, day: StoryDate['day']): { month: number; from: number; to: number } {
+  let m = month ?? 1;
+  if (typeof day === 'string') m = day === '2-yule' ? 1 : day === '1-yule' ? 12 : 6;
+  const from = m === 1 ? 0 : m === 7 ? 181 : monthSlot(m);
+  const to = m === 6 ? 185 : m === 12 ? 366 : monthSlot(m) + 30;
+  return { month: m, from, to };
+}
+
+/** Axis position of the start of a day slot of a year (slot 366 is the start of the next year). */
+export function slotStart(age: AgeOnAxis, year: number, slot: number): number {
+  const L = age.axis!.yearLength;
+  return age.axis!.start + (year - 1) * L + (slot * L) / SLOTS_PER_YEAR;
+}
+
+/** Axis position of the first day of a month (1–12) of a year. */
+export const monthStart = (age: AgeOnAxis, year: number, month: number) => slotStart(age, year, monthSlot(month));
+
+/** Does this slot hold a real day in this year? Only the Overlithe slot can be empty (years without one). */
+export const slotIsDay = (year: number, slot: number) => slot !== EXTRA_DAY_SLOT.overlithe || hasOverlithe(year);
+
+/** Day slot of a date (its day, or the first day of its month or year). */
+export const dateSlot = (d: StoryDate) => daySlot(d.month, d.day ?? 1);
+
+/**
+ * Move a date by `n` years, months or days, running on into the neighbouring age at an age's
+ * end (F.A. 590 + 1 year = S.A. 1). Months: from a day outside the months, the next month is
+ * the one after it (1 Lithe + 1 → July) and the previous the one before it (→ June). Days skip
+ * the Overlithe in years without one. Finer fields are kept when they still exist (an
+ * Overlithe in a year without one becomes Mid-year's Day). Clamped at year 1 of the first age
+ * on the axis; the open-ended last age has no end here (the caller clamps it).
+ */
+export function stepDate(d: StoryDate, unit: 'year' | 'month' | 'day', n: number, ages: AgeOnAxis[]): StoryDate {
+  let { year } = d;
+  let month = d.month, day = d.day;
+  let season = unit === 'year' ? d.season : undefined;
+  if (unit === 'month' && n !== 0) {
+    let m: number;
+    if (typeof day === 'string') {
+      // The first step leaves the named day: forward to the month after it, back to the one before.
+      const after: Record<ExtraDay, number> = { '2-yule': 1, '1-lithe': 7, midyear: 7, overlithe: 7, '2-lithe': 7, '1-yule': 13 };
+      const before: Record<ExtraDay, number> = { '2-yule': 0, '1-lithe': 6, midyear: 6, overlithe: 6, '2-lithe': 6, '1-yule': 12 };
+      m = n > 0 ? after[day] + (n - 1) : before[day] + (n + 1);
+      day = 1;
+    } else m = (month ?? 1) + n;
+    year += Math.floor((m - 1) / 12);
+    month = ((((m - 1) % 12) + 12) % 12) + 1;
+  } else if (unit === 'day') {
+    let s = daySlot(month, day ?? 1);
+    for (let i = 0; i < Math.abs(n); i++) {
+      s += Math.sign(n);
+      if (s > 365) { s = 0; year++; } else if (s < 0) { s = 365; year--; }
+      if (!slotIsDay(year, s)) s += Math.sign(n);
+    }
+    ({ month, day } = slotDay(s));
+  } else if (unit === 'year') {
+    year += n;
+  }
+  if (day === 'overlithe' && !hasOverlithe(year)) day = 'midyear';
+  // Run on into the neighbouring age.
+  let age = ages.find((a) => a.id === d.age);
+  const dated = datedAges(ages);
+  for (let guard = 0; age?.axis && guard < 16; guard++) {
+    const i = dated.findIndex((a) => a.id === age!.id);
+    const count = ageYearCount(age, ages);
+    if (year < 1) {
+      const prev = dated[i - 1];
+      if (!prev) { year = 1; break; }
+      year += ageYearCount(prev, ages)!;
+      age = prev;
+    } else if (count !== undefined && year > count) {
+      year -= count;
+      age = dated[i + 1];
+    } else break;
+  }
+  const out: StoryDate = { age: age?.id ?? d.age, year };
+  if (month !== undefined && typeof day !== 'string') out.month = month;
+  if (day !== undefined) out.day = day;
+  if (season) out.season = season;
+  return out;
+}
+
+/** Is `x` inside a span (from inclusive, to exclusive)? */
+export const within = (x: number, s: Span) => x >= s.from && x < s.to;
+
+/**
+ * The time cursor over a whole moment (a day, a month, a season or a year): is event `b`
+ * likely, possibly, or not at all happening then? "Possibly" when its honest range overlaps
+ * the moment; "likely" when its best guess falls inside the moment or within `b`'s own window
+ * of it (a moment has no precision of its own, as for `nearnessAt`). An empty span is the
+ * bare cursor, exactly `nearnessAt`.
+ */
+export function nearnessDuring(m: Span, b: Timed): { kind: Nearness; why: NearnessWhy } | undefined {
+  if (m.to <= m.from) return nearnessAt(m.from, b);
+  if (!b.span || !overlaps(m, b.span)) return undefined;
+  const w = likelyWindow(b.when?.precision);
+  if (w === undefined || b.at === undefined) return { kind: 'possibly', why: 'vague' };
+  return b.at >= m.from - w - 1e-9 && b.at < m.to + w + 1e-9 ? { kind: 'likely', why: 'window' } : { kind: 'possibly', why: 'too-far' };
 }

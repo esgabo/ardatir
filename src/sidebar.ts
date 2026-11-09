@@ -8,12 +8,16 @@ import { t as ui, tr, type UiKey } from './i18n';
 import { fold, h } from './dom';
 import { shortDate } from './format';
 import { hasLane, laneColor, MAX_LANES } from './lanes';
-import { eventHref, livesHref } from './routes';
+import { eventHref, livesHref, timeHref } from './routes';
+import { momentLabel } from './format';
+import { momentOfEvent, parseMoment } from './moment';
+import { MOMENTS } from './moments';
+import { shortcutLabel, type TimeState } from './timeCursor';
 
-export const VIEWS = ['ages', 'stories', 'lives', 'books', 'places'] as const;
+export const VIEWS = ['ages', 'time', 'stories', 'lives', 'books', 'places'] as const;
 export type View = (typeof VIEWS)[number];
 
-const VIEW_ICON: Record<View, IconName> = { ages: 'ages', stories: 'stories', lives: 'lives', books: 'books', places: 'places' };
+const VIEW_ICON: Record<View, IconName> = { ages: 'ages', time: 'time', stories: 'stories', lives: 'lives', books: 'books', places: 'places' };
 const BOOK_ORDER = ['the-hobbit', 'the-fellowship-of-the-ring', 'the-two-towers', 'the-return-of-the-king', 'the-lord-of-the-rings', 'the-silmarillion', 'unfinished-tales'];
 const STORAGE_KEY = 'ardatir.sidebar';
 
@@ -29,6 +33,10 @@ export interface SidebarHost {
   lanes(): string[];
   lanesOpen(): boolean;
   setLanes(ids: string[]): void;
+  /** The time cursor's state when its page is open. */
+  timeOpen(): TimeState | undefined;
+  /** The time cursor at an event's moment. */
+  timeHrefFor(e: EventSummary): string;
 }
 
 export class Sidebar {
@@ -170,7 +178,7 @@ export class Sidebar {
     body.innerHTML = '';
     body.parentElement?.querySelector('.sb-title')?.toggleAttribute('hidden', !!this.query.trim());
     if (this.query.trim()) { body.append(this.searchResults(this.query.trim())); return; }
-    const build = { ages: () => this.agesView(), stories: () => this.storiesView(), lives: () => this.livesView(), books: () => this.booksView(), places: () => this.placesView() }[this.view];
+    const build = { ages: () => this.agesView(), time: () => this.timeView(), stories: () => this.storiesView(), lives: () => this.livesView(), books: () => this.booksView(), places: () => this.placesView() }[this.view];
     body.append(build());
   }
 
@@ -246,6 +254,41 @@ export class Sidebar {
       }, 'age'));
     }
     return ol;
+  }
+
+  /** The time cursor: where it stands, this event's moment, and moments to visit (docs/DESIGN.md §3.1). */
+  private timeView(): HTMLElement {
+    const L = this.host.lang();
+    const box = h('div', { class: 'sb-time' });
+    const open = this.host.timeOpen();
+    const card = h('div', { class: 'sb-lanes' }, h('p', {}, this.L('timeIntro')));
+    if (open) card.append(h('p', { class: 'sb-time-now' }, momentLabel(open.moment, L)));
+    else {
+      const go = h('a', { class: 'sb-lanes-go', href: timeHref(undefined, L) }, `${this.L('openTimeline')} →`);
+      go.addEventListener('click', () => this.setDrawer(false));
+      card.append(go);
+    }
+    box.append(card);
+    const current = index.events.find((e) => e.id === this.host.currentId());
+    const link = (href: string, name: string, when: string, here = false) => {
+      const a = h('a', { class: 'ev', href, 'aria-current': here ? 'page' : undefined },
+        h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, name), h('span', { class: 'ev-when' }, when));
+      a.addEventListener('click', () => this.setDrawer(false));
+      return h('li', {}, a);
+    };
+    if (current && !open) {
+      box.append(h('div', { class: 'sb-section' }, this.L('thisEventsMoment')),
+        h('ul', { class: 'ev-list' }, link(this.host.timeHrefFor(current), tr(current.title, L), momentLabel(momentOfEvent(current, index.ages), L))));
+    }
+    box.append(h('div', { class: 'sb-section' }, this.L('momentsToVisit')));
+    const ul = h('ul', { class: 'ev-list' });
+    for (const mo of MOMENTS) {
+      const m = parseMoment(mo.path, index.ages);
+      const here = !!open && !!m && momentLabel(m, L) === momentLabel(open.moment, L) && m.age === open.moment.age;
+      ul.append(link(timeHref(mo.path, L), shortcutLabel(mo.path, mo.event, L), m ? momentLabel(m, L) : '', here));
+    }
+    box.append(ul);
+    return box;
   }
 
   private storiesView(): HTMLElement {
