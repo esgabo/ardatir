@@ -131,7 +131,9 @@ describe('the control', () => {
   it('steps out of timeless ages towards the axis only', () => {
     const s = segs();
     const entry = (a: { id: string }) => ({ age: a.id, marker: true }) as never;
-    expect(stepOutside(P('before-time'), 'next', s, index.ages, entry)).toEqual({ age: 'years-of-the-trees', marker: true });
+    expect(stepOutside(P('before-time'), 'next', s, index.ages, entry)).toEqual({ age: 'years-of-the-lamps' });
+    expect(stepOutside(P('years-of-the-lamps'), 'next', s, index.ages, entry)).toEqual({ age: 'years-of-the-trees', marker: true });
+    expect(stepOutside(P('years-of-the-lamps'), 'prev', s, index.ages, entry)).toEqual({ age: 'before-time' });
     expect(stepOutside(P('before-time'), 'prev', s, index.ages, entry)).toBeUndefined();
     expect(momentPath(stepOutside(P('foretold'), 'prev', s, index.ages, entry)!)).toBe('fourth-age/120');
     expect(stepOutside(P('foretold'), 'next', s, index.ages, entry)).toBeUndefined();
@@ -178,7 +180,20 @@ describe('the control', () => {
     expect(step('third-age/3019', 'century', 'end')).toBe('third-age/3021');
     expect(step('third-age/3021', 'age', 'next')).toBe('fourth-age/1');
     expect(step('first-age/1', 'age', 'prev')).toBe('years-of-the-trees/1500');
-    expect(step('fourth-age/120', 'age', 'next')).toBe('fourth-age/120'); // the control's end
+    expect(step('fourth-age/120', 'age', 'next')).toBe('foretold'); // past the axis: what is foretold
+    expect(step('fourth-age/119', 'age', 'bigNext')).toBe('fourth-age/120'); // a big step stops at the end first
+    expect(step('fourth-age/120', 'age', 'end')).toBe('foretold');
+    expect(step('fourth-age/50', 'age', 'end')).toBe('fourth-age/120');
+    expect(step('fourth-age/120-12', 'year', 'next')).toBe('foretold');
+    expect(step('fourth-age/120-03', 'year', 'next')).toBe('fourth-age/120-04');
+    expect(step('fourth-age/120-1-yule', 'month', 'next')).toBe('foretold');
+    expect(step('fourth-age/120-03-15', 'month', 'end')).toBe('fourth-age/120-03-30');
+    expect(step('fourth-age/120-03-30', 'month', 'end')).toBe('fourth-age/120-03-30'); // the end of a month, not of the axis
+    expect(step('years-of-the-trees/1', 'age', 'prev')).toBe('years-of-the-lamps'); // back before the axis: the timeless age beside it
+    expect(step('years-of-the-trees/1', 'century', 'bigPrev')).toBe('years-of-the-lamps');
+    expect(step('years-of-the-trees/5', 'age', 'home')).toBe('years-of-the-trees/1');
+    expect(step('years-of-the-trees/1', 'age', 'home')).toBe('years-of-the-lamps');
+    expect(step('years-of-the-trees/2', 'age', 'prev')).toBe('years-of-the-trees/1');
     expect(step('years-of-the-trees/1495', 'century', 'end')).toBe('years-of-the-trees/1500'); // no one-year century
   });
 });

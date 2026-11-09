@@ -192,6 +192,11 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
       }
       b.append(dots);
     }
+    // On a timeless segment the arrows step along the bar (there is no scale to hold focus).
+    if (s.timeless) b.addEventListener('keydown', (e) => {
+      const k = STEP_KEYS[e.key];
+      if (k) { e.preventDefault(); step(k); }
+    });
     b.addEventListener('click', (ev) => {
       if (s.timeless) { set({ age: s.age.id }, st.zoom); return; }
       const r = b.getBoundingClientRect();
@@ -263,14 +268,18 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
   }
 
   function step(key: StepKey): void {
-    if (!st.moment.date) {
-      // From outside time: "later" from before the world enters the first age on the axis,
-      // "earlier" from what is foretold the last year the axis shows.
+    const wasDated = !!st.moment.date;
+    if (!wasDated) {
+      // From outside time, along the bar: "later" from before the world to the Years of the Lamps
+      // and on into the first age on the axis, "earlier" from what is foretold the last year the axis shows.
       const to = stepOutside(st.moment, key, segs, ages, entryMoment);
-      if (to) set(to, 'age');
-      return;
-    }
-    set(stepMoment(st.moment, st.zoom, key, segs, ages), st.zoom);
+      if (to) set(to, to.date ? 'age' : st.zoom);
+    } else set(stepMoment(st.moment, st.zoom, key, segs, ages), st.zoom);
+    // Keep keyboard focus where the moment went: the scale hides outside time, the segments hold it there.
+    const active = document.activeElement;
+    if (active !== scale && !(active instanceof HTMLElement && active.classList.contains('tc-seg'))) return;
+    if (!st.moment.date) segBtns.get(st.moment.age)?.focus({ preventScroll: true });
+    else if (!wasDated) scale.focus({ preventScroll: true });
   }
 
   scale.addEventListener('keydown', (e) => {
@@ -320,7 +329,10 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
 
     // Scale.
     const dated = !!m.date;
-    scaleRow.hidden = !dated;
+    // Outside time the ‹ › steps stay (along the bar); the scales and the slider go.
+    zoomGroup.hidden = !dated;
+    earlier.disabled = !dated && !stepOutside(m, 'prev', segs, ages, entryMoment);
+    later.disabled = !dated && !stepOutside(m, 'next', segs, ages, entryMoment);
     scale.hidden = !dated;
     control.querySelector('.tc-keys')!.toggleAttribute('hidden', !dated);
     const allowed = zoomsFor(age);

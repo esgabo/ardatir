@@ -639,7 +639,8 @@ a.r-person { color: inherit; text-decoration: none; }
 .tc-zooms button[aria-pressed='true'] { background: rgba(232, 199, 122, 0.16); color: var(--gold); font-weight: 600; }
 .tc-zooms button:not(:disabled):hover { color: var(--ink); }
 .tc-step { width: 40px; height: 40px; flex: none; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line-soft); border-radius: 50%; background: transparent; color: var(--gold-soft); }
-.tc-step:hover { border-color: var(--gold-soft); color: var(--gold); }
+.tc-step:not(:disabled):hover { border-color: var(--gold-soft); color: var(--gold); }
+.tc-step:disabled { opacity: 0.35; cursor: default; }
 .tc-step:first-child .icon { transform: scaleX(-1); }
 .tc-step .icon { width: 18px; height: 18px; }
 
