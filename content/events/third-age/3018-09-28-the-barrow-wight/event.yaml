@@ -1,8 +1,10 @@
 id: the-barrow-wight
 age: third-age
 when:
-  # Appendix B gives the 28th for the capture; Tom's rescue follows at once.
+  # Appendix B: captured on the 28th. Fog takes them at sunset, Frodo wakes in the barrow in the
+  # night, and Tom comes at sunrise: the morning of the 29th (they reach Bree that night).
   start: { age: third-age, year: 3018, month: 9, day: 28 }
+  end: { age: third-age, year: 3018, month: 9, day: 29 }
   precision: day
 place: barrow-downs
 characters: [ frodo, sam, merry, pippin, tom-bombadil ]
@@ -13,5 +15,5 @@ status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "Fog on the Barrow-downs" }
 title: { en: "The Barrow-wight", es: "El tumulario" }
 summary:
-  en: "Lost in fog on the Barrow-downs, the hobbits are caught by a wight in a barrow. Frodo wakes in time to call for Tom, who drives the creature away and gives them ancient blades."
-  es: "Perdidos en la niebla entre los túmulos, los hobbits son atrapados por un tumulario. Frodo despierta a tiempo para llamar a Tom, que ahuyenta a la criatura y les da antiguas hojas."
+  en: "Waved off by Goldberry, the hobbits ride onto the Downs, doze in the afternoon sun and wake to fog. In the dark a wight takes them into a barrow. Frodo comes to himself in time to sing the rhyme Tom taught him, and at sunrise Tom breaks in, banishes the wight and wakes the others on the open grass."
+  es: "Despedidos por Baya de Oro, los hobbits cabalgan por las Quebradas, se adormecen al sol de la tarde y despiertan entre la niebla. En la oscuridad un tumulario se los lleva a un túmulo. Frodo vuelve en sí a tiempo de cantar la canción que Tom le enseñó, y al amanecer Tom irrumpe, expulsa al tumulario y despierta a los demás sobre la hierba."

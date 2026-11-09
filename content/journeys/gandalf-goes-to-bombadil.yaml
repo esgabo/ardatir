@@ -1,0 +1,9 @@
+id: gandalf-goes-to-bombadil
+title: { en: "Gandalf Goes to Bombadil", es: "Gandalf va a ver a Bombadil" }
+characters: [ gandalf ]
+# Gandalf parts from the hobbits on the East Road by the Barrow-downs on 30 Oct 3019 and rides south
+# to Tom's country (RotK VI.7). Arrival and the length of his stay are not told: some time from that
+# day into November. His next appearance is at the Grey Havens in 3021.
+waypoints:
+  - { place: barrow-downs, date: { age: third-age, year: 3019, month: 10, day: 30 }, precision: day }
+  - { place: old-forest, date: { age: third-age, year: 3019, month: 10, day: 30 }, end: { age: third-age, year: 3019, month: 11 }, precision: day, endPrecision: month }

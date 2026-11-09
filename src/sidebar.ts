@@ -18,7 +18,7 @@ export const VIEWS = ['ages', 'time', 'stories', 'lives', 'books', 'places'] as 
 export type View = (typeof VIEWS)[number];
 
 const VIEW_ICON: Record<View, IconName> = { ages: 'ages', time: 'time', stories: 'stories', lives: 'lives', books: 'books', places: 'places' };
-const BOOK_ORDER = ['the-hobbit', 'the-fellowship-of-the-ring', 'the-two-towers', 'the-return-of-the-king', 'the-lord-of-the-rings', 'the-silmarillion', 'unfinished-tales'];
+const BOOK_ORDER = ['the-hobbit', 'the-fellowship-of-the-ring', 'the-two-towers', 'the-return-of-the-king', 'the-lord-of-the-rings', 'the-silmarillion', 'unfinished-tales', 'the-adventures-of-tom-bombadil'];
 const STORAGE_KEY = 'ardatir.sidebar';
 
 export interface SidebarHost {

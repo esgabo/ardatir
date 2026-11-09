@@ -1,0 +1,17 @@
+id: tom-bombadils-tales
+age: third-age
+when:
+  # Appendix B: the "second night with Bombadil" is the 27th; the rain and the tales fill that day.
+  start: { age: third-age, year: 3018, month: 9, day: 27 }
+  precision: day
+place: old-forest
+characters: [ frodo, sam, merry, pippin, tom-bombadil, goldberry ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-bree ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "In the House of Tom Bombadil" }
+title: { en: "A Rainy Day of Tales", es: "Un día de lluvia y de historias" }
+summary:
+  en: "Rain keeps the hobbits indoors, and Tom talks the day away: of the Forest and its bitter trees, of the barrows and the kings laid in them, and back to the world's first days, for he calls himself Eldest. At evening he asks to see the Ring, slips it on without vanishing, and hands it back with a laugh."
+  es: "La lluvia retiene a los hobbits en casa, y Tom se pasa el día hablando: del Bosque y sus árboles rencorosos, de los túmulos y los reyes que yacen en ellos, y hasta los primeros días del mundo, pues se llama a sí mismo el Más Viejo. Al caer la tarde pide ver el Anillo, se lo pone sin desaparecer y lo devuelve riendo."
