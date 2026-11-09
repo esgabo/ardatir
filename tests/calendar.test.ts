@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   ageYearCount, APPROXIMATE_YEARS, axisToDate, dateSpan, daySlot, dayWindowSlots, hasOverlithe, LIKELY_DAY, LIKELY_MONTH, LIKELY_SEASON,
-  likelyWindow, nearness, nearnessAt, nearnessDuring, ONE_DAY, overlaps, slotDay, stepDate, vaguer, whenSpan, yearsBetween, type Timed,
+  likelyWindow, nearness, nearnessAt, nearnessDuring, ONE_DAY, overlaps, slotDay, stepDate, vaguer, whenSpan, within, yearsBetween, type Timed,
 } from '../src/data/calendar.ts';
 import { EXTRA_DAYS, type Age, type Precision, type StoryDate } from '../src/data/types.ts';
 
@@ -173,6 +173,31 @@ describe('whenSpan and overlaps', () => {
   it('touching spans do not overlap', () => {
     expect(overlaps({ from: 0, to: 1 }, { from: 1, to: 2 })).toBe(false);
     expect(overlaps({ from: 0, to: 1.01 }, { from: 1, to: 2 })).toBe(true);
+  });
+
+  it('adjacent days do not overlap, despite float rounding (26 and 27 September 3018)', () => {
+    const day = (year: number, month: number, dd: number) => dateSpan(d({ year, month, day: dd }), 'day', ta)!;
+    const a = day(3018, 9, 26), b = day(3018, 9, 27);
+    expect(overlaps(a, b)).toBe(false);
+    expect(overlaps(b, a)).toBe(false);
+    expect(overlaps(a, a)).toBe(true);
+    // Every pair of neighbouring days in the busiest years.
+    for (const year of [2941, 3018, 3019]) for (let s = 0; s < 365; s++) {
+      const x = dateSpan({ age: 'third-age', year, ...slotDay(s) }, 'day', ta)!, y = dateSpan({ age: 'third-age', year, ...slotDay(s + 1) }, 'day', ta)!;
+      expect(overlaps(x, y), `${year} slot ${s}`).toBe(false);
+    }
+  });
+
+  it('adjacent Valian years do not overlap', () => {
+    const vy = (year: number) => dateSpan({ age: 'years-of-the-trees', year }, 'year', { id: 'years-of-the-trees', axis: { start: -14372, yearLength: 9.582 } })!;
+    for (let year = 1; year < 1500; year += 37) expect(overlaps(vy(year), vy(year + 1)), `Y.T. ${year}`).toBe(false);
+  });
+
+  it('within: the end of a span is outside it, its start inside, after float rounding', () => {
+    const a = dateSpan(d({ year: 3018, month: 9, day: 26 }), 'day', ta)!, b = dateSpan(d({ year: 3018, month: 9, day: 27 }), 'day', ta)!;
+    expect(within(b.from, a)).toBe(false);
+    expect(within(a.to, b)).toBe(true);
+    expect(within(a.from, a)).toBe(true);
   });
 });
 

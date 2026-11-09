@@ -115,9 +115,17 @@ export function whenSpan(when: When & { endPrecision?: Precision }, ages: Map<st
   return b ? { from: a.from, to: Math.max(a.to, b.to) } : a;
 }
 
-/** Do two spans overlap? */
+/**
+ * Tolerance for comparing positions on the axis, far below a day (about 3e-3 years). A day's
+ * end (`from + slot`) and the next day's start (computed from its own slot) can differ by
+ * ~1e-12 after float rounding; without this, adjacent days would overlap. Every comparison of
+ * span ends goes through `overlaps` / `within` or uses this.
+ */
+export const EPS = 1e-9;
+
+/** Do two spans overlap? Spans that only touch (adjacent days) don't. */
 export function overlaps(a: Span, b: Span): boolean {
-  return a.from < b.to && b.from < a.to;
+  return a.from < b.to - EPS && b.from < a.to - EPS;
 }
 
 /**
@@ -131,7 +139,7 @@ export function overlaps(a: Span, b: Span): boolean {
  */
 export function yearsBetween(a: Span, b: Span, age?: AgeAxis): number {
   const L = age?.axis?.yearLength ?? 1;
-  return Math.max(0, Math.floor((b.from - a.to) / L + 1e-9));
+  return Math.max(0, Math.floor((b.from - a.to) / L + EPS));
 }
 
 /** Does this age count its years in Valian years, not years of the Sun? */
@@ -203,7 +211,7 @@ export function nearness(a: Timed, b: Timed): { kind: Nearness; why: NearnessWhy
  * A moment has no precision of its own, so the window is `b`'s alone.
  */
 export function nearnessAt(x: number, b: Timed): { kind: Nearness; why: NearnessWhy } | undefined {
-  if (!b.span || x < b.span.from || x >= b.span.to) return undefined;
+  if (!b.span || !within(x, b.span)) return undefined;
   return guessNear(x, b.at, b.when?.precision);
 }
 
@@ -211,7 +219,7 @@ function guessNear(x: number | undefined, y: number | undefined, p: Precision | 
   const w = likelyWindow(p);
   if (w === undefined || x === undefined || y === undefined) return { kind: 'possibly', why: 'vague' };
   // A hair of tolerance, so "exactly 3 days apart" counts after float rounding.
-  return Math.abs(x - y) <= w + 1e-9 ? { kind: 'likely', why: 'window' } : { kind: 'possibly', why: 'too-far' };
+  return Math.abs(x - y) <= w + EPS ? { kind: 'likely', why: 'window' } : { kind: 'possibly', why: 'too-far' };
 }
 
 /** The age and date an axis position falls in, for labels. Days outside the months come back by name, with no month. */
@@ -223,7 +231,7 @@ export function axisToDate(x: number, ages: Age[]): { age: Age; year: number; mo
   const L = age.axis!.yearLength;
   const years = (x - age.axis!.start) / L;
   // A hair of tolerance so the first instant of a day, after float rounding, still reads as that day.
-  const whole = Math.floor(years + 1e-9);
+  const whole = Math.floor(years + EPS);
   const year = whole + 1;
   const s = Math.min(Math.max(Math.floor((years - whole) * SLOTS_PER_YEAR + 1e-6), 0), SLOTS_PER_YEAR - 1);
   return { age, year, ...slotDay(s) };
@@ -347,8 +355,10 @@ export function stepDate(d: StoryDate, unit: 'year' | 'month' | 'day', n: number
   return out;
 }
 
-/** Is `x` inside a span (from inclusive, to exclusive)? */
-export const within = (x: number, s: Span) => x >= s.from && x < s.to;
+/** Is `x` inside a span (from inclusive, to exclusive), with `EPS` of tolerance at both ends? */
+export function within(x: number, s: Span): boolean {
+  return x >= s.from - EPS && x < s.to - EPS;
+}
 
 /**
  * The time cursor over a whole moment (a day, a month, a season or a year): is event `b`
@@ -362,5 +372,5 @@ export function nearnessDuring(m: Span, b: Timed): { kind: Nearness; why: Nearne
   if (!b.span || !overlaps(m, b.span)) return undefined;
   const w = likelyWindow(b.when?.precision);
   if (w === undefined || b.at === undefined) return { kind: 'possibly', why: 'vague' };
-  return b.at >= m.from - w - 1e-9 && b.at < m.to + w + 1e-9 ? { kind: 'likely', why: 'window' } : { kind: 'possibly', why: 'too-far' };
+  return b.at >= m.from - w - EPS && b.at < m.to + w + EPS ? { kind: 'likely', why: 'window' } : { kind: 'possibly', why: 'too-far' };
 }

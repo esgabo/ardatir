@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
-import { dateSpan, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
+import { dateSpan, EPS, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
   EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
@@ -245,7 +245,7 @@ export function buildContent(contentDir: string): BuildResult {
     });
     if (waypoints.length < 2) R.error(f, 'a journey needs at least two waypoints');
     // Coarse dates may overlap their neighbours; only a waypoint that ends before the previous one starts is out of order.
-    for (let i = 1; i < waypoints.length; i++) if (waypoints[i].span.to <= waypoints[i - 1].span.from) R.error(f, `waypoints[${i}]: earlier than the waypoint before it`);
+    for (let i = 1; i < waypoints.length; i++) if (waypoints[i].span.to <= waypoints[i - 1].span.from + EPS) R.error(f, `waypoints[${i}]: earlier than the waypoint before it`);
     const span = waypoints.length ? { from: waypoints[0].span.from, to: waypoints.at(-1)!.span.to } : undefined;
     journeys.push({ id: jid, title: text(f, o.title, 'title')!, characters: chars, waypoints, ...span ? { span } : {}, events: [] });
   }
@@ -396,7 +396,7 @@ export function buildContent(contentDir: string): BuildResult {
   raws.sort((a, b) => a.ageOrder - b.ageOrder || a.folder.localeCompare(b.folder));
   for (let i = 1; i < raws.length; i++) {
     const prev = raws[i - 1].summary.span, cur = raws[i].summary.span;
-    if (prev && cur && cur.to <= prev.from) R.warn(raws[i].file, `sorts after "${raws[i - 1].summary.id}" but its dates are earlier; check the folder sort key`);
+    if (prev && cur && cur.to <= prev.from + EPS) R.warn(raws[i].file, `sorts after "${raws[i - 1].summary.id}" but its dates are earlier; check the folder sort key`);
   }
 
   // ---------- best-guess positions ----------
@@ -525,7 +525,7 @@ export function buildContent(contentDir: string): BuildResult {
       const jr = journeyMap.get(j);
       if (!jr) continue;
       jr.events.push(e.id);
-      for (const c of e.characters) if (jr.characters.includes(c) && e.span && jr.span && (e.span.to < jr.span.from || e.span.from > jr.span.to)) {
+      for (const c of e.characters) if (jr.characters.includes(c) && e.span && jr.span && (e.span.to < jr.span.from - EPS || e.span.from > jr.span.to + EPS)) {
         R.warn(byId.get(e.id)!.file, `is part of journey "${j}" but falls outside its dates`);
         break;
       }
@@ -659,8 +659,8 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
       // A matching event says more than the middle of a short range (a month-long stay in
       // Rivendell takes the moon-letters' 1 Lithe, not mid-June), so it comes first.
       const e = events.find((x) => x.journeys.includes(j.id) && x.place === w.place && x.span && x.at !== undefined
-        && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last
-        && x.at >= w.span.from && x.at <= w.span.to);
+        && overlaps(x.span, w.span) && x.at >= last
+        && x.at >= w.span.from - EPS && x.at <= w.span.to + EPS);
       let at = e?.at;
       if (e) w.event = e.id;
       if (at === undefined && w.span.to - w.span.from <= ANCHOR_WIDTH) at = (w.span.from + w.span.to) / 2;
