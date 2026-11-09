@@ -6,11 +6,11 @@ when:
   start: { age: third-age, year: 2941, month: 4, day: 27 }
   precision: day
 place: green-dragon
-characters: [ bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+characters: [ bilbo, gandalf, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
 arcs: [ the-quest-of-erebor ]
-journeys: [ there-and-back-again, the-road-to-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 2 }
 title: { en: Bilbo Runs to the Green Dragon, es: Bilbo corre hacia el Dragón Verde }
 summary:

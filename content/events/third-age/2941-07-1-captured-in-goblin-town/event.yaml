@@ -8,7 +8,7 @@ characters: [ bilbo, gandalf, great-goblin, thorin, balin, dwalin, fili, kili, d
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 4 }
 title: { en: Captured in Goblin-town, es: Capturados en la Ciudad de los Trasgos }
 summary:

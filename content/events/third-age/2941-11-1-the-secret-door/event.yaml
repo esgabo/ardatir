@@ -11,7 +11,7 @@ characters: [ bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gl
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor ]
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 11 }
 title: { en: The Secret Door on Durin's Day, es: La puerta secreta en el Día de Durin }
 summary:

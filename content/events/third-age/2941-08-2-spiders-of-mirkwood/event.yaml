@@ -9,7 +9,7 @@ characters: [ bilbo, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bif
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor ]
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 8 }
 title: { en: The Spiders of Mirkwood, es: Las arañas del Bosque Negro }
 summary:
