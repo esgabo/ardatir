@@ -17,7 +17,7 @@ summary:
   es: "Tras la batalla, la Tierra se quiebra y se hace de nuevo, y los tres Silmarils vuelven del mar, de la tierra profunda y del aire. Eärendil desciende y entrega la joya que ha llevado por el cielo."
 links:
   - to: the-last-sons-of-feanor-take-the-silmarils
-    type: caused-by
+    type: enabled-by
     note:
       en: "The two jewels Maedhros and Maglor lost to fire and sea come back."
       es: "Vuelven las dos joyas que Maedhros y Maglor perdieron en el fuego y en el mar."

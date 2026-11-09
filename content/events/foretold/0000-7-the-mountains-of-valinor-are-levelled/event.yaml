@@ -15,8 +15,8 @@ source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
 foretoldBy: mandos
 title: { en: "The Mountains of Valinor are levelled", es: "Las Montañas de Valinor son allanadas" }
 summary:
-  en: "The Pelóri are brought low, and the light of the Trees flows out over the whole world. In it the Valar grow young again, and the Elves awake, all their dead rising. Of Men the prophecy is silent, but for Túrin."
-  es: "Las Pelóri se abaten, y la luz de los Árboles fluye sobre el mundo entero. En ella los Valar rejuvenecen, y los Elfos despiertan y se alzan todos sus muertos. De los Hombres la profecía calla, salvo de Túrin."
+  en: "The Pelóri fall, and the light of the Trees spreads across the whole world. The Valar are made young, and the Elves wake with all their dead. Of Men the prophecy names only Túrin."
+  es: "Las Pelóri caen, y la luz de los Árboles se extiende por el mundo entero. Los Valar rejuvenecen, y los Elfos despiertan con todos sus muertos. De los Hombres, la profecía solo nombra a Túrin."
 beats:
   - { id: levelled, label: { en: The mountains brought low, es: Las montañas abatidas } }
   - { id: light, label: { en: Light over the world, es: Luz sobre el mundo } }

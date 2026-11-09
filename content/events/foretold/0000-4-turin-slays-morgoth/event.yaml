@@ -10,12 +10,13 @@ status: scripted
 # children of Húrin and all Men are avenged. The published Silmarillion has none of this. The
 # sword is Gurthang, named in the published "Of Túrin Turambar"; the prophecy says only that it
 # is black.
+# A late note (The Peoples of Middle-earth, "The Problem of Ros") changes this: Túrin returns from the dead in the Last Battle to slay the dragon Ancalagon, not Morgoth. We keep the 1937 telling.
 source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
 foretoldBy: mandos
 title: { en: "Túrin slays Morgoth", es: "Túrin mata a Morgoth" }
 summary:
-  en: "With his black sword Túrin deals Morgoth his death and final end. So the children of Húrin, and all Men, are avenged for the curse Morgoth laid on them."
-  es: "Con su espada negra, Túrin da a Morgoth la muerte y el fin definitivo. Así quedan vengados los hijos de Húrin, y todos los Hombres, por la maldición que Morgoth lanzó sobre ellos."
+  en: "Túrin's black sword ends Morgoth for good. The house of Húrin, and every Man who suffered under him, has its reckoning at last."
+  es: "La espada negra de Túrin acaba con Morgoth para siempre. La casa de Húrin, y todo Hombre que sufrió bajo él, obtiene al fin su desquite."
 links:
   - to: morgoth-curses-hurin-and-his-kin
     type: caused-by

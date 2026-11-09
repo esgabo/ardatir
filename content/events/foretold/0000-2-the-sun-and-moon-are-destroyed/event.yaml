@@ -4,10 +4,9 @@ characters: [ melkor, earendil ]
 arcs: [ the-end-of-days ]
 tags: [ silmarillion, prophecy, cosmology ]
 status: scripted
-# The Second Prophecy of Mandos (1937 Quenta Silmarillion, The Lost Road); also in the Quenta
-# (The Shaping of Middle-earth). The drafts say Morgoth destroys the Sun and Moon; later retellings
-# often soften this to "darkens". Eärendil's descent as a white flame is his star, the Silmaril he
-# carries across the sky.
+# The Second Prophecy of Mandos (1937 Quenta Silmarillion, The Lost Road), as in the 1930 Quenta;
+# the 1926 Sketch has no Sun and Moon here. Morgoth destroys them, and Eärendil comes on him as a
+# white flame (his star, the Silmaril he carries) and drives him from the airs.
 source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
 foretoldBy: mandos
 title: { en: "The Sun and the Moon are destroyed", es: "El Sol y la Luna son destruidos" }
