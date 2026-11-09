@@ -75,6 +75,7 @@ src/
   sidebar.ts         the collapsible sidebar: rail + panel views built from the index
   reader.ts          an event's page, for events that can't be watched yet (DESIGN §3.4)
   lanes.ts           character lanes: lives side by side, crossings, kin suggestions (DESIGN §3.2)
+  laneRows.ts        the lanes as rows (story order, legs, gaps), search ranking, initials: pure, tested
   routes.ts          parse the URL, build every in-site href
   format.ts          honest dates in words (labels only; the math is in calendar.ts)
   related.ts         an event's links and what overlaps it (Meanwhile, event pages)
