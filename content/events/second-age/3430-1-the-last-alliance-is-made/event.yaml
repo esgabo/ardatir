@@ -8,7 +8,7 @@ characters: [ gil-galad, elendil, elrond ]
 arcs: [ the-war-of-the-last-alliance ]
 journeys: [ the-march-of-the-last-alliance ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
 title: { en: "The Last Alliance is made", es: "Se forma la Última Alianza" }
 summary:
