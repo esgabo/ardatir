@@ -79,6 +79,38 @@ From inside an event the same list shows what is happening elsewhere at that mom
 
 A character's life as a lane of events and journey legs. Add more characters and their lanes run side by side; where they share an event the lanes **cross**. Tuor's lane meets Túrin's at the pools of Ivrin, where the cousins pass without knowing each other, a few years before Túrin's end. Kin relations (`kin`) suggest which lanes to add.
 
+### 3.3 The interface: a collapsible sidebar
+
+The ways in live in a **sidebar on the left**, not in dropdowns. The 3D stage fills the rest of the screen, and every other control floats over it. Mockups: the *Ardatir UI* design canvas (event view with the sidebar open, cosmos with it collapsed, phone drawer).
+
+**Rail and panel.** The sidebar is two parts:
+
+- A narrow **icon rail**, always visible: the Ardatir star (home: the cosmos), then one item per view, **Ages, Stories, Lives, Books, Places**, each an icon with a short label. At the bottom, the language switch (EN / ES) and the collapse toggle.
+- A **panel** beside it showing the chosen view, with the wordmark, tagline and search at the top and the disclaimer at the bottom. Clicking a rail item opens its view; clicking the active one again folds the panel away, leaving only the rail. Collapsed, rail items show their name on hover.
+
+**The views:**
+
+| View | Shows |
+|---|---|
+| **Ages** | The ages as a vertical thread of nodes. The current age is lit and opens into its arcs, then their events, with the event on screen highlighted. |
+| **Stories** | The arcs as cards: age, name, one line of summary. |
+| **Lives** | Characters grouped by story; pick several as chips and show their lanes side by side (§3.2). Kin suggests more lanes. |
+| **Books** | Each book opens into chapters (from events' `source`), linking to the events they cover. |
+| **Places** | Places grouped by region, plus a way into the world map of the age. |
+
+**Over the stage:**
+
+- Top left, a **breadcrumb** of where you are (*Third Age › The Quest of Erebor › Roast Mutton*); top right, a **zoom switch**, *Cosmos · World · Event*.
+- The event card sits under the breadcrumb, the selected character's card on the right (§2, Event).
+- The narration caption above the timeline bar.
+- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** (the time cursor list, §3.1) and mute. In the cosmos and world levels the bar spans the ages instead.
+
+**Phones.** The rail and panel become one **drawer** opened from a menu button: the views as a tab strip under the search, the language switch in the footer.
+
+**Look: fantasy, kept light.** Night-blue ground, parchment ink, one gold accent; Cormorant Garamond for names and titles, Inter for everything else. The fantasy comes from a few small touches only: the four-point star, diamond markers on section rules and beats, the glowing node on the ages thread, a faint starfield. No parchment textures, ornate frames or decorative fonts in body text: the dioramas are the show.
+
+**The URL still holds the state** (§7); which view is open and whether the panel is collapsed are remembered per visitor, not put in the route.
+
 ## 4. Content model
 
 ### 4.1 Storage
@@ -258,6 +290,7 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 | 2026-11-09 | Goal stated: people should be amazed and feel good learning these stories. |
 | 2026-11-09 | Characters are modelled in Blender and exported as glTF; current visuals are placeholders. |
 | 2026-11-09 | Character style: low-poly with enough detail to look good; film-like proportions (no enlarged heads); simplified faces. |
+| 2026-11-09 | Navigation moves from top-right dropdowns to a collapsible left sidebar (icon rail + panel): Ages, Stories, Lives, Books, Places; a light fantasy look (§3.3). |
 
 ## 12. Open questions
 

@@ -42,6 +42,7 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Status pipeline**: outline → scripted → staged → animated | Lets the phases overlap; the build checks each event has the files its status claims. |
 | **One shared time axis** with date precision; typed links; journeys for whereabouts | Powers the time cursor ("what's happening now") and character lanes ("where their lives cross"). |
 | **Time cursor is the first platform feature**, then character lanes | Decided 2026-11-08. |
+| **Navigation is a collapsible left sidebar** (icon rail + panel: Ages, Stories, Lives, Books, Places), not dropdowns | Keeps the 3D stage clear while making every way in visible. Fantasy look kept light: a few small ornaments, no textures. See `docs/DESIGN.md` §3.3. Decided 2026-11-09. |
 
 ## Architecture
 
