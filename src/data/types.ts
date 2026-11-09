@@ -80,6 +80,11 @@ export interface Character {
   /** Relative height (1 = hobbit-sized), keeps film-like proportions between races. */
   scale?: number;
   kin?: Kin[];
+  /**
+   * Where a character who doesn't travel lives (Tom Bombadil: the Old Forest). The time cursor
+   * shows them there when no journey of theirs covers the moment, within the span of their events.
+   */
+  home?: string;
 }
 
 export interface Place {

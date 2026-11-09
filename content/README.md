@@ -144,4 +144,7 @@ color: "#3a6a8a"                     # placeholder for staging
 scale: 1.85                          # height relative to a hobbit
 kin:
   - { id: turin, as: cousin }
+home: old-forest                     # optional: a place they stay in (see below)
 ```
+
+`home` is for characters who don't travel: Tom Bombadil never leaves his own country. Between their first and last events (honest ranges), when no journey of theirs covers the moment, the time cursor shows them *in their own country* at that place, in a quiet "At home" group. It must be a known place id. Travellers don't need it: their journeys say where they are.
