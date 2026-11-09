@@ -20,7 +20,7 @@ Ids are kebab-case (`battle-of-the-pelennor-fields`) and match the file name. Ev
 
 ## Writing a new event
 
-1. Make a folder under `events/<age>/`, named `<sort-key>-<id>`. **The sort key is the story order**: events are ordered by it, not by their dates. Use `YYYY-MM-DD-n`, as precise as you like, with a season written as a month (spring `03`, summer `07`, autumn `09`, winter `12`) and `-1`, `-2`… for events in the same stretch: `2941-07-1-captured-in-goblin-town`, `2941-07-2-riddles-in-the-dark`. First Age years get four digits: `0495-…`.
+1. Make a folder under `events/<age>/`, named `<sort-key>-<id>`. **The sort key is the story order**: events are ordered by it, not by their dates. Use `YYYY-MM-DD-n`, as precise as you like, with a season written as a month (spring `03`, summer `07`, autumn `09`, winter `12`) and `-1`, `-2`… for events in the same stretch: `2941-07-1-captured-in-goblin-town`, `2941-07-2-riddles-in-the-dark`. First Age years get four digits: `0495-…`. Days outside the months sort under the month they sit beside: `2-yule` (first day of the year) as `01`, `1-yule` (last day of the year) as `12`, and the Lithe days (`1-lithe`, `midyear`, `overlithe`, `2-lithe`) as `06`, so Midsummer's Eve is `2941-06-…`.
 2. Add `event.yaml` with `status: outline`. Start from this:
 
 ```yaml

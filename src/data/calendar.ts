@@ -31,6 +31,9 @@ import type { Age, ExtraDay, Precision, Season, Span, StoryDate, When } from './
 /** Day slots in every year on the axis (see the layout above). */
 const SLOTS_PER_YEAR = 366;
 
+/** One day on the axis, in years of the Sun: the width of a day-precision span in a Sun-year age. */
+export const ONE_DAY = 1 / SLOTS_PER_YEAR;
+
 /** Slot of each day outside the months. */
 const EXTRA_DAY_SLOT: Record<ExtraDay, number> = {
   '2-yule': 0, '1-lithe': 181, midyear: 182, overlithe: 183, '2-lithe': 184, '1-yule': 365,

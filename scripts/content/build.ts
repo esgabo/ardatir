@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
-import { dateSpan, hasOverlithe, overlaps, whenSpan } from '../../src/data/calendar.ts';
+import { dateSpan, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
   EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
@@ -587,7 +587,6 @@ export function estimatePositions(events: EventSummary[]): void {
 
   // Forward pass in story order: nothing happens before what it follows, whether that's the
   // previous event in a shared character's lane or an event it is caused-by / enabled-by.
-  const STEP = 1 / 360; // a day
   const byId = new Map(events.map((e) => [e.id, e]));
   const lastInLane = new Map<string, number>();
   for (const e of events) {
@@ -598,7 +597,7 @@ export function estimatePositions(events: EventSummary[]): void {
       const x = byId.get(l.to)?.at;
       if (x !== undefined && order.get(l.to)! < order.get(e.id)!) floor = Math.max(floor, x);
     }
-    if (!isAnchor(e) && e.at <= floor) e.at = Math.min(floor + STEP, e.span.to);
+    if (!isAnchor(e) && e.at <= floor) e.at = Math.min(floor + ONE_DAY, e.span.to);
     for (const c of e.characters) lastInLane.set(c, e.at);
   }
 }

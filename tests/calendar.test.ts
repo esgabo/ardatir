@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { APPROXIMATE_YEARS, axisToDate, dateSpan, daySlot, hasOverlithe, overlaps, whenSpan } from '../src/data/calendar.ts';
+import { APPROXIMATE_YEARS, axisToDate, dateSpan, daySlot, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../src/data/calendar.ts';
 import { EXTRA_DAYS, type Age, type StoryDate } from '../src/data/types.ts';
 
 const ta: Age = { id: 'third-age', order: 5, name: { en: 'Third Age' }, summary: { en: '' }, axis: { start: 4032, yearLength: 1 } };
@@ -11,6 +11,13 @@ const yearStart = 4032 + 2940;
 const SLOT = 1 / 366;
 
 describe('dateSpan by precision', () => {
+  it('a day is ONE_DAY wide in a Sun-year age, for named days too', () => {
+    for (const day of [{ month: 4, day: 26 }, { day: '1-lithe' as const }]) {
+      const s = dateSpan(d(day), 'day', ta)!;
+      expect(s.to - s.from).toBeCloseTo(ONE_DAY, 12);
+    }
+  });
+
   it('a year covers the whole year', () => {
     expect(dateSpan(d({}), 'year', ta)).toEqual({ from: yearStart, to: yearStart + 1 });
   });
