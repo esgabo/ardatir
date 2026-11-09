@@ -81,12 +81,12 @@ A character's life as a lane of events and journey legs. Add more characters and
 
 **Route:** `#/lives?with=tuor,turin` (the order of the lanes; up to eight). It opens as a page in place of the stage, like an event page (§3.4).
 
-- **Lanes are columns, time runs down the page.** Each chosen character is a thin vertical thread in their own colour (a light palette that reads on the night ground; gold stays the accent), with their initial at the top of the column, sticky while scrolling. Beside the threads, one row per step, in **one story order** for all lanes (the index order: age, then sort key).
-- **What a lane holds** comes from the build (`index.lanes`): the character's events in story order, and between them the **journey legs** no event of theirs covers, a waypoint whose matched event they are not in, or one with no event at all (Frodo's road through Cirith Ungol before his events exist). Legs are placed by best guess, after the lane's event before them; they are drawn as small hollow nodes with the place in italics, the journey and the waypoint's honest date beneath. Legs shared by several lanes (same place and range) are one row.
-- **Crossings:** a row where two or more lanes share an event gets filled nodes ringed in gold, joined by a gold bar across the lanes, and a soft gold band behind the title with *Paths cross · Tuor, Túrin*. A row with one lane has a plain node in that lane's colour.
-- **Time between rows** is said honestly: an age heading when the age changes, and *at least N years later* (dotted threads) when the honest ranges are a year or more apart (`yearsBetween` in `calendar.ts`). Each row states only its honest date; the best guess is never shown.
+- **Lanes are columns, time runs down the page.** Each chosen character is a thin vertical thread in their own colour (a light palette that reads on the night ground; gold stays the accent), with their initial at the top of the column, sticky while scrolling (two letters when lanes would share one: Gollum *Go*, Gimli *Gi*). On a phone at most four lanes are drawn, the first four chosen, and the page says so (*Showing 4 of 8 lives*); the chips still list all. Beside the threads, one row per step, in **one story order** for all lanes (the index order: age, then sort key).
+- **What a lane holds** comes from the build (`index.lanes`): the character's events in story order, and between them the **journey legs** no event of theirs covers, a waypoint whose matched event they are not in, or one with no event at all (Frodo's road through Cirith Ungol before his events exist). Legs are placed by best guess: between their own lane's events before and after them, and there after every event of any chosen lane guessed no later than the leg (so a leg never shows before another lane's earlier event); they are drawn as small hollow nodes with the place in italics, the journey and the waypoint's honest range beneath (*Jun – 1 Lithe 2941*). Legs shared by several lanes (same place and range) are one row.
+- **Crossings:** a row where two or more lanes share an event gets filled nodes ringed in gold, joined by a gold bar across the lanes, and a soft gold band behind the title with *Paths cross · Tuor, Túrin*, each full name in its lane's colour. A row with one lane has a plain node in that lane's colour.
+- **Time between rows** is said honestly: an age heading when the age changes, and *at least N years later* (dotted threads) when the honest ranges are a year or more apart (`yearsBetween` in `calendar.ts`), counted in the age's own years: in the Years of the Trees, *at least 75 Valian years later*. Each row states only its honest date; the best guess is never shown.
 - **Clicking an event opens it**: its stage if staged, else its page; Back returns to the lanes.
-- **Choosing lanes:** chips at the top (each with its colour and a remove button), a search box to add a life, and **kin suggestions** from `kin`, written from the chosen character's side (*Túrin Turambar, cousin of Tuor*; *Thráin, father of Thorin Oakenshield*). With no lanes chosen, the page offers a few **lives that cross**: for each age, the pair sharing the most events.
+- **Choosing lanes:** chips at the top (each with its colour and a remove button), a search box to add a life (a combobox: whole-name, then name-start, then word-start matches first; arrow keys, Enter, Escape), and **kin suggestions** from `kin`, written from the chosen character's side (*Túrin Turambar, cousin of Tuor*; *Thráin, father of Thorin Oakenshield*). Characters have no gender field, so Spanish takes the gender from the relation word (*Nienor, hermana de Túrin*) and says gender-neutral ones without guessing (*Túrin y Tuor, primos*; *Aragorn y Arwen, prometidos*). With no lanes chosen, the page offers a few **lives that cross**: for each age, the pair sharing the most events. Kin suggestions and pairs are links to the lanes with them added, so they can be opened or shared and Back undoes them; the add box and the remove buttons change the lanes in place and keep focus in the add box.
 - **Ways in:** the sidebar's **Lives** view shows the chosen lives as chips with *Side by side →*, and every character row has a **+ / ✓ toggle** that adds or removes their lane; a character's name on an event page opens their lane, and *See their lives side by side* opens everyone in the event; the selected character's card on a stage has *Follow their life →*.
 
 ### 3.3 The interface: a collapsible sidebar
@@ -253,7 +253,7 @@ starts: { fire: 0.4, trolls: 7.2, caught: 13.9 }
 - Every content text is `{ en, es }`. English is required; missing languages fall back to English, and the build reports what's missing.
 - Names follow the published translations (Bilbo Bolsón, Bolsón Cerrado, Thorin Escudo de Roble).
 - Interface strings live in `src/i18n.ts`.
-- The language comes from `?lang=` in the URL, then the visitor's last choice, then English.
+- The language comes from `?lang=` in the URL, then the visitor's last choice, then English. Following a link with `?lang=` switches the open tab to that language; a link without one keeps the current language.
 
 ## 7. Shareable moments
 
@@ -266,7 +266,9 @@ The URL always reflects where you are:
 /#/lives?with=tuor,turin                            character lanes, in this order (§3.2)
 ```
 
-Moving to another event or view adds a history entry, so the back button returns; scrubbing and selecting only update the current one. Links inside the site are plain `href`s built in `src/routes.ts`.
+Moving to another event or view adds a history entry, so the back button returns; scrubbing and selecting only update the current one. A link to the event already on screen seeks to its `t` and follows its `follow`, when it gives them. Links inside the site are plain `href`s built in `src/routes.ts`.
+
+After every navigation, focus moves to the new view's heading (its `h1`), so keyboard and screen-reader users start at the top of what they opened; redrawing the sidebar keeps focus on the control that had it.
 
 ## 8. Technical shape
 

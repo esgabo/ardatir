@@ -62,6 +62,16 @@ const UI = {
   kind_eagle: { en: 'Eagle', es: 'Águila' },
   'kind_skin-changer': { en: 'Skin-changer', es: 'Cambiapieles' },
   'kind_the-one': { en: 'The One', es: 'El Único' },
+  kind_maia: { en: 'Maia', es: 'Maia' },
+  kind_balrog: { en: 'Balrog', es: 'Balrog' },
+  kind_ent: { en: 'Ent', es: 'Ent' },
+  kind_huorn: { en: 'Huorn', es: 'Ucorno' },
+  kind_spider: { en: 'Spider', es: 'Araña' },
+  kind_beast: { en: 'Beast', es: 'Bestia' },
+  kind_wolf: { en: 'Wolf', es: 'Lobo' },
+  kind_warg: { en: 'Warg', es: 'Huargo' },
+  kind_horse: { en: 'Horse', es: 'Caballo' },
+  kind_other: { en: 'Other being', es: 'Otro ser' },
   // Cosmos labels (Ambarkanta): the Quenya names stay, the gloss is translated.
   ambar: { en: 'Ambar · the Earth', es: 'Ambar · la Tierra' },
   vista: { en: 'Vista · the inner air', es: 'Vista · el aire interior' },
@@ -155,26 +165,46 @@ const UI = {
   pathsCross: { en: 'Paths cross', es: 'Sus caminos se cruzan' },
   yearLater: { en: 'at least a year later', es: 'al menos un año después' },
   yearsLater: { en: 'at least {n} years later', es: 'al menos {n} años después' },
+  // In the Years of the Trees the years are Valian years (each about ten of the Sun)
+  valianYearLater: { en: 'at least a Valian year later', es: 'al menos un año valiano después' },
+  valianYearsLater: { en: 'at least {n} Valian years later', es: 'al menos {n} años valianos después' },
+  lanesShowing: { en: 'Showing {n} of {m} lives: a wider screen shows them all.', es: 'Se muestran {n} de {m} vidas: en una pantalla más ancha se ven todas.' },
+  suggestions: { en: 'Characters', es: 'Personajes' },
   storyOrder: { en: 'In story order', es: 'En el orden de la historia' },
-  of: { en: 'of', es: 'de' },
   sideBySide: { en: 'Side by side', es: 'En paralelo' },
   seeSideBySide: { en: 'See their lives side by side', es: 'Ver sus vidas en paralelo' },
   followLife: { en: 'Follow their life', es: 'Sigue su vida' },
   laneAdd: { en: 'Show beside the others', es: 'Mostrar junto a los demás' },
   laneRemove: { en: 'Take out of the lanes', es: 'Quitar de la vista en paralelo' },
-  // Kin relations (`kin[].as` in characters/): "Túrin, cousin of Tuor"
-  kin_brother: { en: 'brother', es: 'hermano' },
-  kin_sister: { en: 'sister', es: 'hermana' },
-  kin_cousin: { en: 'cousin', es: 'primo' },
-  kin_father: { en: 'father', es: 'padre' },
-  kin_mother: { en: 'mother', es: 'madre' },
-  kin_son: { en: 'son', es: 'hijo' },
-  kin_daughter: { en: 'daughter', es: 'hija' },
-  kin_grandfather: { en: 'grandfather', es: 'abuelo' },
-  kin_grandson: { en: 'grandson', es: 'nieto' },
-  kin_uncle: { en: 'uncle', es: 'tío' },
-  kin_nephew: { en: 'nephew', es: 'sobrino' },
-  kin_kin: { en: 'kin', es: 'pariente' },
+  // Kin relations (`kin[].as` in characters/), as phrases: {a} is the relative, {b} the one
+  // whose kin they are ("Túrin, cousin of Tuor"). Characters have no gender field, so Spanish
+  // takes the gender from the English word (sister → hermana); for words with none (cousin,
+  // sibling, betrothed, kin) it says it without guessing: "Túrin y Tuor, primos".
+  kin_brother: { en: '{a}, brother of {b}', es: '{a}, hermano de {b}' },
+  kin_sister: { en: '{a}, sister of {b}', es: '{a}, hermana de {b}' },
+  kin_sibling: { en: '{a}, sibling of {b}', es: '{a} y {b}, hermanos' },
+  kin_cousin: { en: '{a}, cousin of {b}', es: '{a} y {b}, primos' },
+  kin_father: { en: '{a}, father of {b}', es: '{a}, padre de {b}' },
+  kin_mother: { en: '{a}, mother of {b}', es: '{a}, madre de {b}' },
+  kin_parent: { en: '{a}, parent of {b}', es: '{a}, de los padres de {b}' },
+  kin_son: { en: '{a}, son of {b}', es: '{a}, hijo de {b}' },
+  kin_daughter: { en: '{a}, daughter of {b}', es: '{a}, hija de {b}' },
+  kin_child: { en: '{a}, child of {b}', es: '{a}, descendiente de {b}' },
+  kin_grandfather: { en: '{a}, grandfather of {b}', es: '{a}, abuelo de {b}' },
+  kin_grandmother: { en: '{a}, grandmother of {b}', es: '{a}, abuela de {b}' },
+  kin_grandson: { en: '{a}, grandson of {b}', es: '{a}, nieto de {b}' },
+  kin_granddaughter: { en: '{a}, granddaughter of {b}', es: '{a}, nieta de {b}' },
+  kin_uncle: { en: '{a}, uncle of {b}', es: '{a}, tío de {b}' },
+  kin_aunt: { en: '{a}, aunt of {b}', es: '{a}, tía de {b}' },
+  kin_nephew: { en: '{a}, nephew of {b}', es: '{a}, sobrino de {b}' },
+  kin_niece: { en: '{a}, niece of {b}', es: '{a}, sobrina de {b}' },
+  kin_wife: { en: '{a}, wife of {b}', es: '{a}, esposa de {b}' },
+  kin_husband: { en: '{a}, husband of {b}', es: '{a}, esposo de {b}' },
+  kin_spouse: { en: '{a}, spouse of {b}', es: '{a} y {b}, casados' },
+  kin_betrothed: { en: '{a}, betrothed of {b}', es: '{a} y {b}, prometidos' },
+  kin_ancestor: { en: '{a}, ancestor of {b}', es: '{a}, de los antepasados de {b}' },
+  kin_descendant: { en: '{a}, descendant of {b}', es: '{a}, descendiente de {b}' },
+  kin_kin: { en: '{a}, kin of {b}', es: '{a}, pariente de {b}' },
   // Books (published Spanish titles)
   'book_the-hobbit': { en: 'The Hobbit', es: 'El Hobbit' },
   'book_the-fellowship-of-the-ring': { en: 'The Fellowship of the Ring', es: 'La Comunidad del Anillo' },
@@ -200,4 +230,20 @@ export type UiKey = keyof typeof UI;
 
 export function t(key: UiKey, lang: Lang): string {
   return tr(UI[key], lang);
+}
+
+/** Is there an interface string for this key? (For keys built from content ids: `kind_<kind>`, `kin_<as>`.) */
+export const hasKey = (key: string): key is UiKey => Object.hasOwn(UI, key);
+
+/** Is this key written in this language (not just falling back to English)? */
+export const hasText = (key: string, lang: Lang): boolean => hasKey(key) && !!(UI[key] as LocalizedText)[lang];
+
+/**
+ * "Arwen, betrothed of Aragorn" / "Arwen y Aragorn, prometidos": `a` is `as` of `b`. A relation
+ * with no phrase yet says only that they are kin, never shows the raw id in Spanish.
+ */
+export function kinPhrase(as: string, a: string, b: string, lang: Lang): string {
+  const key = `kin_${as}`;
+  const tpl = hasKey(key) ? t(key, lang) : lang === 'en' ? `{a}, ${as.replace(/-/g, ' ')} of {b}` : t('kin_kin', lang);
+  return tpl.replace('{a}', a).replace('{b}', b);
 }
