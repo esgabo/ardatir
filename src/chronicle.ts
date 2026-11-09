@@ -1,7 +1,8 @@
 // Loads the generated content (public/data/, built from content/ by scripts/content).
-// The index loads once at startup; each playable event's detail loads when opened.
+// The index loads once at startup; each playable event's detail loads when opened, and a
+// scripted event's narration (to read as text) when its page opens.
 
-import type { Character, ContentIndex, EventDetail, EventSummary } from './data/types';
+import type { Character, ContentIndex, EventDetail, EventScript, EventSummary } from './data/types';
 
 const base = import.meta.env.BASE_URL + 'data/';
 
@@ -37,3 +38,21 @@ export function loadEvent(id: string | undefined): Promise<EventDetail> {
   }
   return p;
 }
+
+const scripts = new Map<string, Promise<EventScript>>();
+
+/** The narration of an event that has one (status scripted or later), to read as text. */
+export function loadScript(id: string): Promise<EventScript> {
+  let p = scripts.get(id);
+  if (!p) {
+    p = fetch(`${base}scripts/${id}.json`).then((r) => {
+      if (!r.ok) throw new Error(`script ${id} missing (${r.status})`);
+      return r.json() as Promise<EventScript>;
+    });
+    p.catch(() => scripts.delete(id));
+    scripts.set(id, p);
+  }
+  return p;
+}
+
+export const eventById = (id: string): EventSummary | undefined => index.events.find((e) => e.id === id);

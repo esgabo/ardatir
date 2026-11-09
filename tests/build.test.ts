@@ -124,6 +124,19 @@ describe('the valid fixture', () => {
     expect(d.durationSeconds).toBe(12);
   });
 
+  it('writes a readable script for every event with narration, staged or not', () => {
+    expect(r.scripts.map((s) => s.id)).toEqual(['the-party']);
+    const ok = buildWith([
+      { file: LETTERS, replace: ['status: outline', 'status: scripted'] },
+      { file: 'events/third-age/2941-06-moon-letters/narration.yaml', write: '- id: runes\n  en: The runes shine under the moon.\n  es: Las runas brillan bajo la luna.\n- id: door\n  en: A door, on Durin\'s Day.\n  es: Una puerta, el Día de Durin.\n' },
+    ]);
+    expect(ok.errors).toEqual([]);
+    const s = ok.scripts.find((x) => x.id === 'moon-letters')!;
+    expect(s.passages.map((p) => p.id)).toEqual(['runes', 'door']);
+    expect(s.passages[0].text.es).toBe('Las runas brillan bajo la luna.');
+    expect(ok.details.some((d) => d.id === 'moon-letters')).toBe(false); // not playable
+  });
+
   it('matches a ranged waypoint to the event inside its range', () => {
     const w = r.index.journeys[0].waypoints[1];
     expect(w.end).toEqual({ age: 'third-age', year: 2941, season: 'autumn' });

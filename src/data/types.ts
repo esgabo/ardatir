@@ -221,6 +221,12 @@ export interface EventDetail extends EventSummary {
   audioFiles: Partial<Record<Lang, NarrationAudio>>;
 }
 
+/** data/scripts/<id>.json: an event's narration as text, for every event that has a narration.yaml. */
+export interface EventScript {
+  id: string;
+  passages: { id: string; text: LocalizedText }[];
+}
+
 /** data/index.json */
 export interface ContentIndex {
   ages: Age[];

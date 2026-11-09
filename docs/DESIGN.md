@@ -98,20 +98,34 @@ The ways in live in a **sidebar on the left**, not in dropdowns. The 3D stage fi
 | **Books** | Each book opens into chapters (from events' `source`), linking to the events they cover. |
 | **Places** | Places with their events, alphabetical for now; grouped by region, with a way into the world map, once the world map exists. |
 
-Events that can be watched (staged) are links marked with a filled diamond; outlines are listed dimmed so the whole story is visible. Search matches event, character and place names in the current language, ignoring accents.
+Every event in a list is a link. Events that can be watched (staged) are marked with a filled diamond and open their stage; the others (outline, scripted) have a hollow diamond, are listed a little dimmer, and open their page (§3.4), so the whole story can be followed. Search matches event, character and place names in the current language, ignoring accents.
 
 **Over the stage:**
 
 - Top left, a **breadcrumb** of where you are (*Third Age › The Quest of Erebor › Roast Mutton*); top right, a **zoom switch**, *Cosmos · World · Event*.
 - The event card sits under the breadcrumb, the selected character's card on the right (§2, Event).
 - The narration caption above the timeline bar.
-- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** and mute. Until the time cursor (§3.1) exists, Meanwhile lists the event's links and the events whose honest range overlaps it. Later, in the cosmos and world levels, the bar spans the ages instead.
+- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** and mute. Until the time cursor (§3.1) exists, Meanwhile lists the event's links and the events whose honest range overlaps it, each a link like those in the sidebar. Later, in the cosmos and world levels, the bar spans the ages instead.
 
 **Phones.** The rail and panel become one **drawer** opened from a menu button: the views as a tab strip under the search, the language switch in the footer.
 
 **Look: fantasy, kept light.** Night-blue ground, parchment ink, one gold accent; Cormorant Garamond for names and titles, Inter for everything else. The fantasy comes from a few small touches only: the four-point star, diamond markers on section rules and beats, the glowing node on the ages thread, a faint starfield. No parchment textures, ornate frames or decorative fonts in body text: the dioramas are the show.
 
 **The URL still holds the state** (§7); which view is open and whether the panel is collapsed are remembered per visitor, not put in the route.
+
+### 3.4 Event pages: events that can't be watched yet
+
+Most events will be outlines for a long time, and they are exactly what the cross-views are made of. So every event has a way in: a staged event opens its stage, and **any other event opens its page**, a calm text view in place of the stage, at the same route (`#/event/<id>`). It is what most visitors will see for a long time, so it is treated as a finished thing, not a placeholder.
+
+- **One centred column**, set like a page of a book: the age and stories as a small overline, the title large in the serif, then the **honest date** (start and end at their precision, e.g. *Winter, F.A. 495*; never the best guess), the place and the source (book and chapter, cited, not quoted). A quiet note says it isn't staged yet.
+- The **summary** in the serif, larger than body text. When the event is `scripted`, **the telling**: its narration passages read as plain text, in order, without animation (`data/scripts/<id>.json`, loaded with the page).
+- **Who was there**: the characters as small cards (name, kind, one line); a name opens their life.
+- **Connections**: every link, both directions (the reverses come from the build), with its type (*caused by*, *makes possible*…) and its note.
+- **Part of**: each arc with its summary and the events before and after this one in it; each journey with its places in order, this one lit.
+- **Around the same time**: events whose honest range overlaps this one (as Meanwhile does).
+- **Before / After**: the previous and next event in story order, so the whole chronicle can be read page by page.
+
+The look is the sidebar's: night ground with a faint starfield and a soft gold glow at the top, section rules with a diamond, filled and hollow diamonds on event links. While a page is open the stage under it neither renders nor plays; the breadcrumb and zoom switch stay on top.
 
 ## 4. Content model
 
@@ -238,7 +252,10 @@ The URL always reflects where you are:
 ```
 /#/event/ainulindale?t=0.42
 /#/event/roast-mutton?t=0.45&follow=bilbo&lang=es
+/#/event/tuor-sees-turin-at-ivrin?lang=es          an event that isn't staged: its page (§3.4)
 ```
+
+Moving to another event or view adds a history entry, so the back button returns; scrubbing and selecting only update the current one. Links inside the site are plain `href`s built in `src/routes.ts`.
 
 ## 8. Technical shape
 
@@ -247,6 +264,7 @@ The URL always reflects where you are:
 - **Content build** (`scripts/content/`): reads `content/`, validates it, and writes `public/data/` (generated, not committed):
   - `index.json`: ages, characters, places, arcs, journeys, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc and journey. Small enough to load up front; the time cursor and lanes run on it.
   - `events/<id>.json`: one per staged event, with narration, staging and audio timing, loaded when the event opens.
+  - `scripts/<id>.json`: the narration passages of every event that has a `narration.yaml`, so a scripted event's page can show them as text.
   - `audio/<id>/<lang>.mp3`: recordings copied from the event folders.
 - **Validation fails the build**: unknown ids, missing English, a status without its files, narration or beat ids that don't match their staging or audio timing, impossible dates. Missing Spanish is a warning.
 - Runs automatically with `npm run dev` (rebuilds on change) and `npm run build`; `npm run content` checks content on its own.
@@ -297,6 +315,7 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 | 2026-11-09 | Character style: low-poly with enough detail to look good; film-like proportions (no enlarged heads); simplified faces. |
 | 2026-11-09 | The Shire's days outside the months are named with `day:` (`2-yule`, `1-lithe`, `midyear`, `overlithe`, `2-lithe`, `1-yule`); each year is 366 fixed day slots. |
 | 2026-11-09 | Navigation moves from top-right dropdowns to a collapsible left sidebar (icon rail + panel): Ages, Stories, Lives, Books, Places; a light fantasy look (§3.3). |
+| 2026-11-09 | Every event is reachable: events that can't be watched yet open a text page at the same route, with the narration as text once scripted (§3.4). |
 
 ## 12. Open questions
 

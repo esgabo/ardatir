@@ -5,6 +5,9 @@ import { index } from './chronicle';
 import type { Character, EventSummary, Lang } from './data/types';
 import { ICONS, type IconName } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
+import { fold, h } from './dom';
+import { shortDate } from './format';
+import { eventHref } from './routes';
 
 export const VIEWS = ['ages', 'stories', 'lives', 'books', 'places'] as const;
 export type View = (typeof VIEWS)[number];
@@ -22,21 +25,6 @@ export interface SidebarHost {
   /** Called whenever the sidebar's width changes. */
   layoutChanged(): void;
 }
-
-type Child = Node | string | null | undefined | false;
-
-function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string | boolean | undefined> = {}, ...children: Child[]): HTMLElementTagNameMap[K] {
-  const el = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (v === undefined || v === false) continue;
-    if (k === 'html') el.innerHTML = String(v);
-    else el.setAttribute(k, v === true ? '' : v);
-  }
-  for (const c of children) if (c) el.append(c);
-  return el;
-}
-
-const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
 export class Sidebar {
   view: View = 'ages';
@@ -165,16 +153,18 @@ export class Sidebar {
 
   // ---------- Building blocks ----------
 
+  /**
+   * Every event is a link: staged ones open their stage (filled diamond), the others their
+   * page (hollow diamond, a little dimmer), so the whole story can be followed.
+   */
   private eventRow(e: EventSummary): HTMLElement {
     const L = this.host.lang();
-    const label = [h('span', { class: 'ev-name' }, tr(e.title, L)), h('span', { class: 'ev-when' }, this.shortDate(e))];
     const current = e.id === this.host.currentId();
-    if (!e.stage) {
-      return h('li', {}, h('span', { class: 'ev dim', title: this.L('notStaged') }, ...label));
-    }
-    const a = h('a', { class: 'ev', href: `#/event/${e.id}`, 'aria-current': current ? 'page' : undefined, title: this.L('playable') },
-      h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), ...label);
-    a.addEventListener('click', (ev) => { ev.preventDefault(); this.host.openEvent(e.id); this.drawer = false; this.render(); });
+    const a = h('a', {
+      class: e.stage ? 'ev' : 'ev dim', href: eventHref(e.id, L), 'aria-current': current ? 'page' : undefined,
+      title: this.L(e.stage ? 'playable' : 'readable'),
+    }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, tr(e.title, L)), h('span', { class: 'ev-when' }, shortDate(e, L)));
+    a.addEventListener('click', (ev) => { ev.preventDefault(); this.drawer = false; this.host.openEvent(e.id); });
     return h('li', {}, a);
   }
 
@@ -199,15 +189,6 @@ export class Sidebar {
     li.append(btn);
     if (open) li.append(children());
     return li;
-  }
-
-  private shortDate(e: EventSummary): string {
-    const d = e.when?.start;
-    if (!d) return '';
-    const L = this.host.lang();
-    const age = index.ages.find((a) => a.id === d.age);
-    const month = typeof d.day === 'string' ? ui(`day_${d.day}`, L) : d.month ? new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'short' }).replace('.', '') : d.season ? ui(d.season, L) : '';
-    return [month, `${d.year}`].filter(Boolean).join(' ') || tr(age?.abbr, L);
   }
 
   // ---------- Views ----------

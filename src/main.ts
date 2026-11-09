@@ -1,11 +1,15 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
-import { characterMap, index, loadEvent, loadIndex, playable } from './chronicle';
+import { characterMap, eventById, index, loadEvent, loadIndex, playable } from './chronicle';
 import { LANGS, type EventDetail, type EventSummary, type Lang } from './data/types';
-import { overlaps } from './data/calendar';
+import { h } from './dom';
+import { honestDate } from './format';
 import { ICONS } from './icons';
 import { initialLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
+import { renderReader } from './reader';
+import { linkedEvents, sameTime } from './related';
+import { eventHref, parseRoute, type Route } from './routes';
 import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
@@ -14,35 +18,34 @@ import './style.css';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
-// ---------- URL state: #/event/<id>?t=0.42&follow=bilbo&lang=es ----------
-interface Route { eventId?: string; t?: number; follow?: string; lang?: string }
+// ---------- URL state (routes.ts): #/event/<id>?t=0.42&follow=bilbo&lang=es ----------
 
-function parseRoute(): Route {
-  const [path, query = ''] = location.hash.replace(/^#/, '').split('?');
-  const q = new URLSearchParams(query);
-  const m = path.match(/^\/event\/([\w-]+)/);
-  const tv = Number(q.get('t'));
-  return {
-    eventId: m?.[1],
-    t: Number.isFinite(tv) ? Math.min(Math.max(tv, 0), 1) : undefined,
-    follow: q.get('follow') ?? undefined,
-    lang: q.get('lang') ?? undefined,
-  };
+/**
+ * A page shown instead of the stage: an event that can't be watched yet, read as text.
+ * While a page is open the stage stays loaded underneath but neither renders nor plays.
+ */
+type Page = { kind: 'event'; id: string };
+let page: Page | null = null;
+
+/** Update the URL in place (no history entry) to what is on screen. */
+function writeRoute(): void {
+  if (page) { history.replaceState(null, '', eventHref(page.id, state.lang)); return; }
+  if (!state.event) return;
+  history.replaceState(null, '', eventHref(state.event.id, state.lang, {
+    t: state.t > 0 ? state.t.toFixed(3) : undefined, follow: state.selected ?? undefined,
+  }));
 }
 
-function writeRoute(): void {
-  const q = new URLSearchParams();
-  if (state.t > 0) q.set('t', state.t.toFixed(3));
-  if (state.selected) q.set('follow', state.selected);
-  if (state.lang !== 'en') q.set('lang', state.lang);
-  const qs = q.toString();
-  history.replaceState(null, '', `#/event/${state.event.id}${qs ? `?${qs}` : ''}`);
+/** Go somewhere: a new history entry, so the back button returns. */
+function navigate(hash: string): void {
+  if (location.hash === hash) applyRoute(parseRoute(hash));
+  else location.hash = hash; // → hashchange → applyRoute
 }
 
 // ---------- State ----------
-const route = parseRoute();
+const route: Route = parseRoute();
 const state = {
-  event: undefined as unknown as EventDetail, // set before the first frame
+  event: undefined as unknown as EventDetail, // set when the first stage loads
   t: route.t ?? 0,
   playing: false,
   lang: initialLang(route.lang ?? null) as Lang,
@@ -87,7 +90,7 @@ async function buildStage(event: EventDetail): Promise<Stage> {
   return createDioramaStage(event, characterMap, state.lang);
 }
 
-/** Bumped on every loadStage, so a slower event or stage load can't replace a newer one. */
+/** Bumped on every loadStage (and when a page opens), so a slower load can't replace a newer view. */
 let stageGeneration = 0;
 interface StageLoad { id: string; view: () => { t: number; selected: string | null }; onSwitch?: () => void }
 /** The newest loadStage's request while it is in flight, so a language change can redo it. */
@@ -115,6 +118,7 @@ async function loadStage(load?: StageLoad): Promise<void> {
   pending = undefined;
 
   if (load) {
+    if (page) hidePage(); // a page stays up until the stage that replaces it is ready
     const v = load.view();
     state.event = event;
     state.t = v.t;
@@ -122,6 +126,7 @@ async function loadStage(load?: StageLoad): Promise<void> {
     load.onSwitch?.();
   }
   loadError = false;
+  stageStale = false;
 
   // The previous stage keeps rendering until the new one is ready, then is swapped out.
   stage?.dispose();
@@ -190,24 +195,87 @@ const nextBtn = $<HTMLButtonElement>('next');
 const meanwhileBtn = $<HTMLButtonElement>('meanwhile');
 const meanwhilePanel = $('meanwhile-panel');
 const menuBtn = $<HTMLButtonElement>('menu');
+const pageEl = $('page');
 
 /** The last diorama visited, so the zoom switch can return to it from the cosmos. */
 let lastDiorama: string | undefined;
 
-async function openEvent(id: string): Promise<void> {
-  if (id === (pending?.id ?? state.event.id)) return;
-  await loadStage({
+/** The front door: the cosmos. */
+const homeId = () => (playable().find((e) => e.stage === 'cosmos') ?? playable()[0])?.id;
+
+const openEvent = (id: string) => navigate(eventHref(id, state.lang));
+
+/** Set when the language changed while a page hid the stage: rebuilt on the way back. */
+let stageStale = false;
+
+/**
+ * Show what a route names. A staged event opens its stage; any other event opens its page;
+ * no event (or an unknown one) is the front door, the cosmos.
+ */
+function applyRoute(r: Route): void {
+  const target = r.eventId ? eventById(r.eventId) : undefined;
+  if (target && !target.stage) { showPage({ kind: 'event', id: target.id }); return; }
+  const id = target?.id ?? homeId();
+  if (!id) return;
+  if (state.event && !pending && id === state.event.id) {
+    // Already on screen (or under a page): just come back to it.
+    if (page) {
+      hidePage();
+      if (stageStale) { void loadStage(); return; } // the language changed meanwhile
+      renderStatic();
+      resize();
+    }
+    writeRoute();
+    return;
+  }
+  if (pending?.id === id) return; // already on its way
+  // loadStage takes its generation before fetching, so only the newest route can switch.
+  void loadStage({
     id,
-    view: () => ({ t: 0, selected: null }),
+    view: () => ({ t: target ? r.t ?? 0 : 0, selected: target ? r.follow ?? null : null }),
     onSwitch: () => { state.playing = false; closeMeanwhile(); },
   });
 }
 
+function showPage(p: Page): void {
+  stageGeneration++; // a stage still loading must not replace the page
+  pending = undefined;
+  const same = page?.kind === p.kind && page.id === p.id;
+  page = p;
+  state.playing = false;
+  closeMeanwhile();
+  document.body.classList.add('page-open');
+  renderPage();
+  if (!same) pageEl.scrollTop = 0;
+  writeRoute();
+}
+
+function hidePage(): void {
+  page = null;
+  document.body.classList.remove('page-open');
+  pageEl.innerHTML = '';
+}
+
+function renderPage(): void {
+  if (!page) return;
+  const L = state.lang;
+  document.documentElement.lang = L;
+  const ev = eventById(page.id)!;
+  renderReader(pageEl, ev, {
+    lang: () => state.lang,
+    openCharacter: (id) => sidebar.show('lives', `char:${id}`),
+  });
+  renderCrumbs(ev.age, ev.arcs, tr(ev.title, L));
+  renderZoom('event');
+  renderChrome();
+  sidebar.render();
+}
+
 const sidebar = new Sidebar($('sidebar'), {
   lang: () => state.lang,
-  currentId: () => state.event?.id ?? '',
-  openEvent: (id) => { void openEvent(id); },
-  openHome: () => { const c = playable().find((e) => e.stage === 'cosmos'); if (c) void openEvent(c.id); },
+  currentId: () => page?.id ?? state.event?.id ?? '',
+  openEvent,
+  openHome: () => { const c = homeId(); if (c) openEvent(c); },
   toggleLang: () => setLang(LANGS[(LANGS.indexOf(state.lang) + 1) % LANGS.length]),
   layoutChanged: () => { if (stage) resize(); },
 });
@@ -215,29 +283,59 @@ const sidebar = new Sidebar($('sidebar'), {
 function setLang(lang: Lang): void {
   state.lang = lang;
   rememberLang(lang);
+  if (page) {
+    // The page redraws now; the stage underneath (labels and names baked in) when it is next shown.
+    renderPage();
+    writeRoute();
+    if (state.event) stageStale = true;
+    return;
+  }
   if (!pending) writeRoute();
   void loadStage(pending); // labels and names are baked into the stage; redo a load in flight in the new language
 }
 
-function formatDate(e: EventSummary): string {
+/** Breadcrumb: age › arc › here. */
+function renderCrumbs(ageId: string, arcIds: string[], here: string): void {
   const L = state.lang;
-  const age = index.ages.find((a) => a.id === e.age);
-  if (!e.when) return tr(age?.name, L);
-  const d = e.when.start;
-  const dAge = index.ages.find((a) => a.id === d.age);
-  const parts: string[] = [];
-  if (d.season) { const s = ui(d.season, L); parts.push(s[0].toUpperCase() + s.slice(1)); }
-  const month = d.month ? new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'long' }) : '';
-  const day = typeof d.day === 'string' ? ui(`day_${d.day}`, L) : d.day && d.month ? `${d.day} ${month}` : month;
-  if (day) parts.push(day);
-  parts.push(`${tr(dAge?.abbr, L) || tr(dAge?.name, L)} ${d.year}`);
-  return parts.join(' · ');
+  const crumbs = $('crumbs');
+  crumbs.setAttribute('aria-label', ui('breadcrumb', L));
+  crumbs.innerHTML = '';
+  const age = index.ages.find((a) => a.id === ageId);
+  const arc = index.arcs.find((a) => arcIds.includes(a.id));
+  const crumb = (text: string, onClick: () => void) => {
+    const b = h('button', { type: 'button', class: 'crumb' }, text);
+    b.addEventListener('click', onClick);
+    crumbs.append(b, h('span', { class: 'sep', 'aria-hidden': 'true' }, '›'));
+  };
+  if (age) crumb(tr(age.name, L), () => sidebar.show('ages', `age:${age.id}`));
+  if (arc) crumb(tr(arc.title, L), () => sidebar.show('stories', `arc:${arc.id}`));
+  crumbs.append(h('span', { class: 'here' }, here));
 }
 
-function renderStatic(): void {
+/** Zoom switch: the cosmos, the world (not built yet) and events. */
+function renderZoom(level: 'cosmos' | 'event' | null): void {
+  const zoom = $('zoom');
+  zoom.setAttribute('aria-label', ui('zoom', state.lang));
+  for (const b of zoom.querySelectorAll<HTMLButtonElement>('button')) {
+    const z = b.dataset.zoom as 'cosmos' | 'world' | 'event';
+    b.textContent = ui(`zoom_${z}`, state.lang);
+    b.setAttribute('aria-pressed', String(z === level));
+    if (z === 'world') b.title = ui('worldSoon', state.lang);
+  }
+}
+
+/** What every view shares: the language, the menu button and the disclaimer. */
+function renderChrome(): void {
   const L = state.lang;
   document.documentElement.lang = L;
   $('disclaimer').textContent = ui('disclaimer', L);
+  menuBtn.innerHTML = ICONS.menu; menuBtn.setAttribute('aria-label', ui('openMenu', L));
+}
+
+function renderStatic(): void {
+  if (page) return; // the stage is hidden under a page; it is redrawn when shown again
+  const L = state.lang;
+  renderChrome();
   scrubber.setAttribute('aria-label', ui('progress', L));
   const L_ = (k: UiKey) => ui(k, L);
   prevBtn.innerHTML = ICONS.prev; prevBtn.setAttribute('aria-label', L_('prevEvent')); prevBtn.title = L_('prevEvent');
@@ -247,39 +345,13 @@ function renderStatic(): void {
   prevBtn.disabled = i <= 0;
   nextBtn.disabled = i < 0 || i >= list.length - 1;
   meanwhileBtn.innerHTML = `${ICONS.clock}<span>${L_('meanwhile')}</span>`;
-  menuBtn.innerHTML = ICONS.menu; menuBtn.setAttribute('aria-label', L_('openMenu'));
-
-  // Breadcrumb: age › arc › event.
-  const crumbs = $('crumbs');
-  crumbs.setAttribute('aria-label', L_('breadcrumb'));
-  crumbs.innerHTML = '';
-  const age = index.ages.find((a) => a.id === state.event.age);
-  const arc = index.arcs.find((a) => state.event.arcs.includes(a.id));
-  const crumb = (text: string, onClick: () => void) => {
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'crumb'; b.textContent = text;
-    b.addEventListener('click', onClick);
-    crumbs.append(b, Object.assign(document.createElement('span'), { className: 'sep', textContent: '›', ariaHidden: 'true' }));
-  };
-  if (age) crumb(tr(age.name, L), () => sidebar.show('ages', `age:${age.id}`));
-  if (arc) crumb(tr(arc.title, L), () => sidebar.show('stories', `arc:${arc.id}`));
-  crumbs.append(Object.assign(document.createElement('span'), { className: 'here', textContent: tr(state.event.title, L) }));
-
-  // Zoom switch: the cosmos, the world (not built yet) and event dioramas.
-  const zoom = $('zoom');
-  zoom.setAttribute('aria-label', L_('zoom'));
-  const level = state.event.stage === 'cosmos' ? 'cosmos' : 'event';
-  for (const b of zoom.querySelectorAll<HTMLButtonElement>('button')) {
-    const z = b.dataset.zoom as 'cosmos' | 'world' | 'event';
-    b.textContent = L_(`zoom_${z}`);
-    b.setAttribute('aria-pressed', String(z === level));
-    if (z === 'world') b.title = L_('worldSoon');
-  }
+  renderCrumbs(state.event.age, state.event.arcs, tr(state.event.title, L));
+  renderZoom(state.event.stage === 'cosmos' ? 'cosmos' : 'event');
   if (state.event.stage !== 'cosmos') lastDiorama = state.event.id;
   sidebar.render();
 
   $('event-title').textContent = tr(state.event.title, L);
-  $('event-date').textContent = formatDate(state.event);
+  $('event-date').textContent = honestDate(state.event, L);
   $('event-summary').textContent = tr(state.event.summary, L);
 
   const beats = $('beats');
@@ -362,16 +434,16 @@ function step(dir: number): void {
   const list = playable();
   const i = list.findIndex((e) => e.id === state.event.id);
   const target = list[i + dir];
-  if (target) void openEvent(target.id);
+  if (target) openEvent(target.id);
 }
 menuBtn.addEventListener('click', () => sidebar.setDrawer(true));
 $('scrim').addEventListener('click', () => sidebar.setDrawer(false));
 $('zoom').addEventListener('click', (e) => {
   const z = (e.target as HTMLElement).closest<HTMLButtonElement>('button')?.dataset.zoom;
-  if (z === 'cosmos') { const c = playable().find((x) => x.stage === 'cosmos'); if (c) void openEvent(c.id); }
-  if (z === 'event' && state.event.stage === 'cosmos') {
+  if (z === 'cosmos') { const c = homeId(); if (c && (page || state.event?.id !== c)) openEvent(c); }
+  if (z === 'event' && !page && state.event?.stage === 'cosmos') {
     const d = lastDiorama ?? playable().find((x) => x.stage !== 'cosmos')?.id;
-    if (d) void openEvent(d);
+    if (d) openEvent(d);
   }
 });
 
@@ -384,40 +456,17 @@ function renderMeanwhile(): void {
   const L = state.lang;
   const ev = state.event;
   meanwhilePanel.innerHTML = '';
-  const row = (e: EventSummary, note?: string) => {
-    const li = document.createElement('li');
-    const el = document.createElement(e.stage ? 'button' : 'span');
-    el.className = e.stage ? 'mw-item' : 'mw-item dim';
-    if (!e.stage) el.title = ui('notStaged', L);
-    el.innerHTML = '<span class="mw-name"></span><span class="mw-note"></span>';
-    el.querySelector('.mw-name')!.textContent = tr(e.title, L);
-    el.querySelector('.mw-note')!.textContent = note ?? '';
-    if (e.stage) el.addEventListener('click', () => { void openEvent(e.id); });
-    li.append(el);
-    return li;
-  };
+  // Every event is a link: staged ones open their stage, the others their page.
+  const row = (e: EventSummary, note?: string) => h('li', {},
+    h('a', { class: e.stage ? 'mw-item' : 'mw-item dim', href: eventHref(e.id, L), title: ui(e.stage ? 'playable' : 'readable', L) },
+      h('span', { class: 'mw-name' }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), tr(e.title, L)),
+      h('span', { class: 'mw-note' }, note ?? '')));
   const section = (title: string, items: HTMLElement[]) => {
-    if (!items.length) return;
-    const h = document.createElement('h3'); h.textContent = title;
-    const ul = document.createElement('ul'); ul.append(...items);
-    meanwhilePanel.append(h, ul);
+    if (items.length) meanwhilePanel.append(h('h3', {}, title), h('ul', {}, ...items));
   };
-  const byId = (id: string) => index.events.find((e) => e.id === id);
-  const linked = ev.links.map((l) => [byId(l.to), l] as const).filter(([e]) => !!e);
-  section(ui('connected', L), linked.map(([e, l]) => row(e!, ui(`link_${l.type}` as UiKey, L))));
-  const linkedIds = new Set(ev.links.map((l) => l.to));
-  const same = ev.span
-    ? index.events.filter((e) => e.id !== ev.id && !linkedIds.has(e.id) && e.span && overlaps(e.span, ev.span!))
-      .sort((a, b) => Math.abs((a.at ?? 0) - (ev.at ?? 0)) - Math.abs((b.at ?? 0) - (ev.at ?? 0))).slice(0, 8)
-    : [];
-  section(ui('sameTime', L), same.map((e) => {
-    const place = index.places.find((p) => p.id === e.place);
-    return row(e, tr(place?.name, L));
-  }));
-  if (!meanwhilePanel.childElementCount) {
-    const p = document.createElement('p'); p.className = 'muted'; p.textContent = ui('nothingMeanwhile', L);
-    meanwhilePanel.append(p);
-  }
+  section(ui('connected', L), linkedEvents(ev).map(({ event: e, link: l }) => row(e, ui(`link_${l.type}` as UiKey, L))));
+  section(ui('sameTime', L), sameTime(ev).map((e) => row(e, tr(index.places.find((p) => p.id === e.place)?.name, L))));
+  if (!meanwhilePanel.childElementCount) meanwhilePanel.append(h('p', { class: 'muted' }, ui('nothingMeanwhile', L)));
 }
 meanwhileBtn.addEventListener('click', () => {
   const open = meanwhilePanel.hidden;
@@ -429,23 +478,16 @@ meanwhileBtn.addEventListener('click', () => {
 addEventListener('keydown', (e) => {
   const tgt = e.target as HTMLElement;
   if (e.code === 'Escape') { closeMeanwhile(); sidebar.setDrawer(false); }
-  if (e.code === 'Space' && !tgt.closest('input, textarea, select, button, a')) { e.preventDefault(); setPlaying(!state.playing); }
+  if (e.code === 'Space' && !page && stage && !tgt.closest('input, textarea, select, button, a')) { e.preventDefault(); setPlaying(!state.playing); }
 });
-addEventListener('hashchange', () => {
-  const r = parseRoute();
-  // Compare with the event on its way, if any; going back to the shown one while another
-  // loads reloads it, which cancels the other.
-  if (!r.eventId || r.eventId === (pending?.id ?? state.event.id)) return;
-  // loadStage takes its generation before fetching, so only the newest hash change can switch.
-  void loadStage({ id: r.eventId, view: () => ({ t: r.t ?? 0, selected: r.follow ?? null }) });
-});
+addEventListener('hashchange', () => applyRoute(parseRoute()));
 
 // Click (not drag) on the scene selects a character.
 const ray = new THREE.Raycaster();
 let down: { x: number; y: number } | null = null;
 renderer.domElement.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY }; });
 renderer.domElement.addEventListener('pointerup', (e) => {
-  if (!down || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5 || !stage.pick) return;
+  if (!down || page || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5 || !stage.pick) return;
   const r = renderer.domElement.getBoundingClientRect();
   const ndc = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(ndc, stage.camera);
@@ -462,7 +504,7 @@ function resize(): void {
   labelRenderer.setSize(w, h);
   stage.resize(w, h);
 }
-addEventListener('resize', resize);
+addEventListener('resize', () => { if (stage) resize(); });
 new ResizeObserver(() => { if (stage) resize(); }).observe(viewport);
 
 const flash = $('flash');
@@ -472,6 +514,8 @@ let lastUi = 0;
 
 function frame(): void {
   const dt = Math.min(frameClock.getDelta(), 0.1);
+  requestAnimationFrame(frame);
+  if (page) { narration.sync(playhead, false); return; } // hidden under a page: nothing to draw
   ambient += dt;
   if (state.playing) {
     playhead = Math.min(playhead + dt, clock.duration);
@@ -486,16 +530,15 @@ function frame(): void {
   renderer.render(stage.scene, stage.camera);
   labelRenderer.render(stage.scene, stage.camera);
   if (ambient - lastUi > 0.1) { lastUi = ambient; updateDynamic(); }
-  requestAnimationFrame(frame);
 }
 
 async function start(): Promise<void> {
   await loadIndex();
-  state.event = await loadEvent(route.eventId);
-  if (state.event.id !== route.eventId) state.t = 0;
-  await loadStage(); // starts the frame loop once a stage is up; shows the error if it can't load
+  // A staged event (or the cosmos) loads its stage, which starts the frame loop; any other
+  // event opens its page, and no stage loads until one is needed.
+  applyRoute(route);
 }
 start().catch(showLoadError);
 
 // Handy for debugging and automated screenshots.
-Object.assign(window, { ardatir: { state, seek: seekTo } });
+Object.assign(window, { ardatir: { state, seek: seekTo, page: () => page } });

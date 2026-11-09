@@ -9,7 +9,7 @@ import { dateSpan, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/d
 import {
   EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
-  type EventSummary, type Journey, type Keyframe, type Lang, type LinkType, type LocalizedText,
+  type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LinkType, type LocalizedText,
   type NarrationAudio, type NarrationSegment, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
@@ -18,6 +18,8 @@ import { narrationHash, TEXT_HASH } from '../narration/text.ts';
 export interface BuildResult {
   index: ContentIndex;
   details: EventDetail[];
+  /** The narration of every event that has one, for reading as text while it isn't staged. */
+  scripts: EventScript[];
   errors: string[];
   warnings: string[];
   /** Missing translations, counted per language. */
@@ -501,6 +503,10 @@ export function buildContent(contentDir: string): BuildResult {
     details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, audioFiles });
   }
 
+  // Scripts: every narration as text, so a scripted event can be read before it is staged.
+  const scripts: EventScript[] = raws.filter((r) => r.narration?.length)
+    .map((r) => ({ id: r.summary.id, passages: r.narration!.map((p) => ({ id: p.id, text: p.text })) }));
+
   // ---------- derived lookups ----------
   const events = raws.map((r) => r.summary);
   const byCharacter: Record<string, string[]> = Object.fromEntries(characters.map((c) => [c.id, []]));
@@ -540,7 +546,7 @@ export function buildContent(contentDir: string): BuildResult {
 
   return {
     index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace },
-    details, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
+    details, scripts, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
   };
 }
 
@@ -650,8 +656,10 @@ export function writeContent(result: BuildResult, publicDir: string): void {
   const out = path.join(publicDir, 'data');
   fs.rmSync(out, { recursive: true, force: true });
   fs.mkdirSync(path.join(out, 'events'), { recursive: true });
+  fs.mkdirSync(path.join(out, 'scripts'), { recursive: true });
   fs.writeFileSync(path.join(out, 'index.json'), JSON.stringify(result.index));
   for (const d of result.details) fs.writeFileSync(path.join(out, 'events', `${d.id}.json`), JSON.stringify(d));
+  for (const s of result.scripts) fs.writeFileSync(path.join(out, 'scripts', `${s.id}.json`), JSON.stringify(s));
   for (const c of result.copies) {
     const to = path.join(publicDir, c.to);
     fs.mkdirSync(path.dirname(to), { recursive: true });
