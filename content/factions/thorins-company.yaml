@@ -1,0 +1,10 @@
+id: thorins-company
+name: { en: "Thorin's Company", es: La compañía de Thorin }
+color: "#d4a73a"
+kind: dwarf
+# Thorin and his twelve dwarves; Bilbo stays out of the fighting, on Ravenhill (Hobbit ch. 17).
+# In staging they are named characters with their own tracks, so they need no army block.
+summary:
+  en: "Thorin and the twelve dwarves who came with him to win back the Lonely Mountain, holding its Front Gate."
+  es: "Thorin y los doce enanos que vinieron con él a recuperar la Montaña Solitaria, defendiendo su Puerta Principal."
+leaders: [ thorin ]

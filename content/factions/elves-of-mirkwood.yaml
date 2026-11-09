@@ -1,0 +1,8 @@
+id: elves-of-mirkwood
+name: { en: Elves of Mirkwood, es: Elfos del Bosque Negro }
+color: "#2f7a5c"
+kind: elf
+summary:
+  en: The Wood-elves of northern Mirkwood, spearmen and archers of the Elvenking.
+  es: Los Elfos del Bosque del norte del Bosque Negro, lanceros y arqueros del Rey Elfo.
+leaders: [ thranduil ]

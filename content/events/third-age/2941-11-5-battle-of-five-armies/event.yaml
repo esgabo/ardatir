@@ -11,6 +11,12 @@ characters: [ thorin, dain, bard, thranduil, gandalf, bilbo, bolg, beorn, lord-o
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, gandalfs-road-2941 ]
 tags: [ hobbit, battle ]
+# Hobbit ch. 17: the five armies are the goblins and the wolves against elves, men and dwarves.
+# Thorin's company sallies from the gate; the eagles come late as a host of their own. Beorn comes
+# alone, so he is a character (his own track), not a faction.
+sides:
+  - [ thorins-company, dwarves-of-the-iron-hills, elves-of-mirkwood, men-of-lake-town, eagles-of-the-misty-mountains ]
+  - [ goblins-of-the-misty-mountains, wargs ]
 status: staged
 source: { book: the-hobbit, chapter: 17 }
 title: { en: The Battle of Five Armies, es: La Batalla de los Cinco Ejércitos }

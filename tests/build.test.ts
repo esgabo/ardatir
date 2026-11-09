@@ -243,6 +243,17 @@ describe('the valid fixture', () => {
     expect(ok.errors).toEqual([]);
   });
 
+  it('reads factions, a battle\'s sides and its armies, and finds a faction\'s battles', () => {
+    expect(r.index.factions.map((f) => f.id)).toEqual(['bagginses', 'sackville-bagginses']);
+    expect(r.index.factions[0]).toEqual({ id: 'bagginses', name: { en: 'The Bagginses', es: 'Los Bolsón' }, color: '#6a8a3a', kind: 'hobbit', summary: { en: 'Respectable hobbits.', es: 'Hobbits respetables.' }, leaders: ['bilbo'] });
+    expect(r.index.factions[1].leaders).toEqual([]);
+    expect(ev('the-party').sides).toEqual([['bagginses'], ['sackville-bagginses']]);
+    expect(ev('moon-letters').sides).toBeUndefined();
+    expect(r.index.byFaction).toEqual({ bagginses: ['the-party'], 'sackville-bagginses': ['the-party'] });
+    const d = r.details.find((x) => x.id === 'the-party')!;
+    expect(d.armies).toEqual([{ faction: 'bagginses', size: 'small', keyframes: [{ t: 0, x: -3, z: 2 }, { t: 0.5, x: -1, z: 1, action: 'walk' }] }]);
+  });
+
   it('reads a recording with uneven starts', () => {
     const ok = buildWith([
       { file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 1.5, tea: 14 }\n' },
@@ -308,6 +319,19 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'waypoint end inside its coarser date', changes: [{ file: ROAD, replace: ['end: { age: third-age, year: 2941, season: autumn }, precision: season', 'end: { age: third-age, year: 2941, month: 7, day: 3 }, precision: season, endPrecision: day'] }], error: 'waypoints[1].end ends before its date does' },
   { name: 'waypoint end in an unknown age', changes: [{ file: ROAD, replace: ['end: { age: third-age,', 'end: { age: fifth-age,'] }], error: 'waypoints[1].end.age: unknown age "fifth-age"' },
 
+  // Factions, sides and armies
+  { name: 'faction without English', changes: [{ file: 'factions/bagginses.yaml', replace: ['name: { en: The Bagginses, es: Los Bolsón }', 'name: { es: Los Bolsón }'] }], error: 'factions/bagginses.yaml: name: needs an English text (en)' },
+  { name: 'faction with a bad colour', changes: [{ file: 'factions/bagginses.yaml', replace: ['"#6a8a3a"', 'green'] }], error: 'color: the banner colour, as #rrggbb' },
+  { name: 'faction without kind', changes: [{ file: 'factions/bagginses.yaml', replace: ['kind: hobbit\n', ''] }], error: 'kind: required, a character kind' },
+  { name: 'faction with an unknown leader', changes: [{ file: 'factions/bagginses.yaml', replace: ['[ bilbo ]', '[ bilbo, lobelia ]'] }], error: 'leaders: unknown character "lobelia"' },
+  { name: 'sides with an unknown faction', changes: [{ file: `${PARTY}/event.yaml`, replace: ['[ sackville-bagginses ]', '[ sackville-bagginses, proudfoots ]'] }], error: 'sides: unknown faction "proudfoots"' },
+  { name: 'a faction on two sides', changes: [{ file: `${PARTY}/event.yaml`, replace: ['[ sackville-bagginses ]', '[ sackville-bagginses, bagginses ]'] }], error: 'sides: "bagginses" is listed twice' },
+  { name: 'only one side', changes: [{ file: `${PARTY}/event.yaml`, replace: ['sides: [ [ bagginses ], [ sackville-bagginses ] ]', 'sides: [ [ bagginses, sackville-bagginses ] ]'] }], error: 'sides: a list of at least two sides' },
+  { name: 'army of a faction not on the sides', changes: [{ file: `${PARTY}/event.yaml`, replace: ['sides: [ [ bagginses ], [ sackville-bagginses ] ]', ''] }], error: 'armies[0]: "bagginses" is not on the event\'s sides' },
+  { name: 'army of an unknown size', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['size: small', 'size: huge'] }], error: 'armies[0].size: one of small, medium, large' },
+  { name: 'army keyframes not rising', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['{ t: 0.5, x: -1', '{ t: -0.2, x: -1'] }], error: 'armies[0].keyframes[1]: t must rise from 0 to 1' },
+  { name: 'army with an unknown action', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['action: walk }\n', 'action: talk }\n'] }], error: 'armies[0].keyframes[1].action: one of idle, walk, run, fight' },
+
   // Staging and recordings
   { name: 'unknown stage', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['stage: diorama', 'stage: film'] }], error: 'stage: one of cosmos, diorama' },
   { name: 'narration not rising', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['{ door: 0, tea: 0.5 }', '{ door: 0.6, tea: 0.5 }'] }], error: 'narration.tea: starts before the passage before it' },
@@ -368,6 +392,12 @@ describe('broken content', () => {
       expect(r.errors).toEqual([]);
       expect(r.warnings.some((w) => w.includes('en.yaml: stale recording'))).toBe(true);
     });
+  });
+
+  it('warns about a faction in no battle', () => {
+    const r = buildWith([{ file: 'factions/proudfoots.yaml', write: 'id: proudfoots\nname: { en: The Proudfoots, es: Los Ganapié }\ncolor: "#444444"\nkind: hobbit\nsummary: { en: Big feet., es: Pies grandes. }\n' }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('factions/proudfoots.yaml: fights in no battle yet'))).toBe(true);
   });
 
   it('warns about missing Spanish and unknown fields', () => {

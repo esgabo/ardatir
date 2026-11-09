@@ -7,3 +7,9 @@ tracks:
     keyframes:
       - { t: 0, x: 0, z: 0, action: idle }
       - { t: 1, x: 1, z: 0, action: walk, thought: { en: So many dwarves., es: Cuántos enanos. } }
+armies:
+  - faction: bagginses
+    size: small
+    keyframes:
+      - { t: 0, x: -3, z: 2 }
+      - { t: 0.5, x: -1, z: 1, action: walk }
