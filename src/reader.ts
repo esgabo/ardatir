@@ -7,7 +7,7 @@ import { index, loadScript } from './chronicle';
 import { overlaps } from './data/calendar';
 import type { EventSummary, Lang } from './data/types';
 import { h } from './dom';
-import { honestDate, shortDate } from './format';
+import { honestDate, placeInSentence, shortDate } from './format';
 import { ICONS } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
 import { linkedEvents, sameTime } from './related';
@@ -15,6 +15,7 @@ import { likelyParts, placementParts, renderParts, whyToggle } from './placement
 import { hasLane, MAX_LANES } from './lanes';
 import { eventHref, livesHref, timeHref } from './routes';
 import { momentOfEvent, momentPath } from './moment';
+import { factionById, factionChip, listNodes, sidesLine } from './sides';
 
 export interface ReaderHost {
   lang(): Lang;
@@ -53,6 +54,8 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
   const meta = h('ul', { class: 'r-meta' });
   meta.append(h('li', {}, h('span', { html: ICONS.clock }), h('span', {}, honestDate(ev, L))));
   if (ev.place) meta.append(h('li', {}, h('span', { html: ICONS.places }), h('span', {}, placeName(ev.place, L))));
+  const sides = sidesLine(ev, L);
+  if (sides) meta.append(h('li', { class: 'r-sides' }, h('span', { html: ICONS.sides }), sides));
   if (ev.source) {
     const ch = ev.source.chapter;
     const chapter = typeof ch === 'number' ? `${S('chapter')} ${ch}` : ch ? `“${ch}”` : '';
@@ -97,6 +100,33 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     const lanes = people.filter((c) => hasLane(c.id)).slice(0, MAX_LANES).map((c) => c.id);
     art.append(h('section', { class: 'r-section' }, heading(S('whoWasThere')), ul,
       lanes.length > 1 && h('a', { class: 'r-more', href: livesHref(lanes, L) }, `${S('seeSideBySide')} →`)));
+  }
+
+  // ---- The sides: each faction, who leads it; the sides divided by "against" ----
+  if (ev.sides?.length) {
+    const box = h('section', { class: 'r-section' }, heading(S('sidesTitle')));
+    ev.sides.forEach((side, i) => {
+      if (i) box.append(h('p', { class: 'r-against' }, S('against')));
+      const ul = h('ul', { class: 'r-who r-factions' });
+      for (const f of side.map(factionById)) {
+        if (!f) continue;
+        const leaders = f.leaders.map((id) => index.characters.find((c) => c.id === id)).filter((c) => !!c);
+        const led = h('span', { class: 'r-person-sum' });
+        if (leaders.length) {
+          const [before, after] = S('ledBy').split('{a}');
+          led.append(before);
+          const names = leaders.map((c) => placeInSentence(tr(c.name, L), L));
+          led.append(...listNodes(leaders.map((c, k) => h('a', { href: livesHref([c.id], L), title: S('followLife') }, names[k])), names, L));
+          led.append(after);
+        }
+        ul.append(h('li', { class: 'r-person r-faction', style: `--fx:${f.color}` },
+          h('span', { class: 'r-person-name' }, factionChip(f, L)),
+          h('span', { class: 'r-person-sum' }, tr(f.summary, L)),
+          leaders.length ? led : null));
+      }
+      box.append(ul);
+    });
+    art.append(box);
   }
 
   // ---- Connections: links in both directions, with their notes ----

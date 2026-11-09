@@ -9,6 +9,7 @@ import { honestDate } from './format';
 import { ICONS } from './icons';
 import { initialLang, isLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { renderReader } from './reader';
+import { sidesLine } from './sides';
 import { linkedEvents, sameTime } from './related';
 import { likelyParts, whyToggle } from './placement';
 import { MAX_LANES, PHONE_QUERY, renderLanes } from './lanes';
@@ -117,7 +118,7 @@ async function buildStage(event: EventDetail): Promise<Stage> {
     });
   }
   const { createDioramaStage } = await import('./scene/dioramaStage');
-  return createDioramaStage(event, characterMap, state.lang);
+  return createDioramaStage(event, characterMap, state.lang, new Map((index.factions ?? []).map((f) => [f.id, f])));
 }
 
 /** Bumped on every loadStage (and when a page opens), so a slower load can't replace a newer view. */
@@ -455,6 +456,9 @@ function renderStatic(): void {
   $('event-title').textContent = tr(state.event.title, L);
   $('event-date').textContent = honestDate(state.event, L);
   $('event-summary').textContent = tr(state.event.summary, L);
+  const sides = sidesLine(state.event, L);
+  $('event-sides').replaceChildren(...sides ? [sides] : []);
+  $('event-sides').hidden = !sides;
 
   buildBeats();
 

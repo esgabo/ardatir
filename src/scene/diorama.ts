@@ -53,6 +53,7 @@ export function createDiorama(opts: DioramaOptions = {}): THREE.Group {
     }
   }
   const h = (i: number, j: number) => heights[i][j];
+  group.userData.grid = { half: size / 2, step: size / segments, segments, heights } satisfies Grid;
   const px = (i: number) => -half + i * step;
 
   // Top surface: two triangles per cell, flat-shaded for the faceted look.
@@ -126,6 +127,25 @@ export function createDiorama(opts: DioramaOptions = {}): THREE.Group {
   }
 
   return group;
+}
+
+interface Grid { half: number; step: number; segments: number; heights: number[][] }
+
+/**
+ * Height of the terrain under (x, z) from the tile's own grid, without a raycast: the same two
+ * triangles per cell as the mesh, so it is exact. For the many small figures of an army.
+ */
+export function sampleGround(diorama: THREE.Object3D, x: number, z: number): number {
+  const g = diorama.userData.grid as Grid | undefined;
+  if (!g) return groundHeight(diorama, x, z);
+  const fx = Math.min(Math.max((x + g.half) / g.step, 0), g.segments - 1e-6);
+  const fz = Math.min(Math.max((z + g.half) / g.step, 0), g.segments - 1e-6);
+  const i = Math.floor(fx), j = Math.floor(fz), u = fx - i, v = fz - j;
+  const H = g.heights;
+  // Cell corners a (i, j), b (i+1, j), c (i, j+1), d (i+1, j+1); triangles a-c-b and b-c-d.
+  return u + v <= 1
+    ? H[i][j] + (H[i + 1][j] - H[i][j]) * u + (H[i][j + 1] - H[i][j]) * v
+    : H[i + 1][j + 1] + (H[i][j + 1] - H[i + 1][j + 1]) * (1 - u) + (H[i + 1][j] - H[i + 1][j + 1]) * (1 - v);
 }
 
 const ray = new THREE.Raycaster();

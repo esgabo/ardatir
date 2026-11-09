@@ -297,6 +297,11 @@ const UI = {
   kin_ancestor: { en: '{a}, ancestor of {b}', es: '{a}, de los antepasados de {b}' },
   kin_descendant: { en: '{a}, descendant of {b}', es: '{a}, descendiente de {b}' },
   kin_kin: { en: '{a}, kin of {b}', es: '{a}, pariente de {b}' },
+  // Battles: their sides (factions)
+  against: { en: 'against', es: 'contra' },
+  sidesTitle: { en: 'The sides', es: 'Los bandos' },
+  ledBy: { en: 'Led by {a}', es: 'Con {a} al frente' },
+  resultsFactions: { en: 'Sides in battles', es: 'Bandos en las batallas' },
   // Books (published Spanish titles)
   'book_the-hobbit': { en: 'The Hobbit', es: 'El Hobbit' },
   'book_the-fellowship-of-the-ring': { en: 'The Fellowship of the Ring', es: 'La Comunidad del Anillo' },
