@@ -88,20 +88,38 @@ export class Sidebar {
     if (e.source) { this.expanded.add(`book:${e.source.book}`); this.expanded.add(`book:${e.source.book}/ch:${e.source.chapter ?? ''}`); }
   }
 
+  /**
+   * Make this the view shown in the rail and panel, without opening the panel or the phone
+   * drawer (the page on screen belongs to it). Takes effect on the next render().
+   */
+  setView(view: View): void {
+    if (this.view === view) return;
+    this.view = view;
+    this.query = '';
+  }
+
   render(): void {
     const L = this.host.lang();
     this.revealCurrent();
+    // Redrawing replaces every control: keep focus on the one that had it (marked data-fk).
+    const had = document.activeElement instanceof HTMLElement && this.root.contains(document.activeElement)
+      ? document.activeElement.dataset.fk : undefined;
+    this.build(L);
+    if (had) this.root.querySelector<HTMLElement>(`[data-fk="${CSS.escape(had)}"]`)?.focus({ preventScroll: true });
+  }
+
+  private build(L: Lang): void {
     this.root.innerHTML = '';
     this.root.setAttribute('aria-label', this.L('navigation'));
 
     // ---- Rail ----
     const rail = h('nav', { class: 'rail', 'aria-label': this.L('navigation') });
-    const home = h('button', { type: 'button', class: 'rail-home', 'aria-label': this.L('home'), title: this.L('home'), html: ICONS.star });
+    const home = h('button', { type: 'button', class: 'rail-home', 'data-fk': 'home', 'aria-label': this.L('home'), title: this.L('home'), html: ICONS.star });
     home.addEventListener('click', () => { this.host.openHome(); this.setDrawer(false); });
     rail.append(home);
     for (const v of VIEWS) {
       const on = v === this.view && (this.open || this.drawer);
-      const b = h('button', { type: 'button', class: 'rail-item', 'aria-pressed': on ? 'true' : 'false', 'data-hint': this.L(`hint_${v}` as UiKey) },
+      const b = h('button', { type: 'button', class: 'rail-item', 'data-fk': `rail:${v}`, 'aria-pressed': on ? 'true' : 'false', 'data-hint': this.L(`hint_${v}` as UiKey) },
         h('span', { html: ICONS[VIEW_ICON[v]] }), h('span', { class: 'rail-label' }, this.L(`view_${v}` as UiKey)));
       b.addEventListener('click', () => {
         if (v === this.view && this.open && !this.drawer) { this.toggle(); return; }
@@ -110,17 +128,17 @@ export class Sidebar {
       rail.append(b);
     }
     rail.append(h('span', { class: 'rail-spacer' }));
-    const lang = h('button', { type: 'button', class: 'rail-lang', 'aria-label': this.L('language'), title: this.L('language') }, L.toUpperCase());
+    const lang = h('button', { type: 'button', class: 'rail-lang', 'data-fk': 'lang', 'aria-label': this.L('language'), title: this.L('language') }, L.toUpperCase());
     lang.addEventListener('click', () => this.host.toggleLang());
-    const tog = h('button', { type: 'button', class: 'rail-toggle', 'aria-expanded': this.open ? 'true' : 'false', 'aria-label': this.L(this.open ? 'collapse' : 'expand'), title: this.L(this.open ? 'collapse' : 'expand'), html: ICONS.sidebar });
+    const tog = h('button', { type: 'button', class: 'rail-toggle', 'data-fk': 'toggle', 'aria-expanded': this.open ? 'true' : 'false', 'aria-label': this.L(this.open ? 'collapse' : 'expand'), title: this.L(this.open ? 'collapse' : 'expand'), html: ICONS.sidebar });
     tog.addEventListener('click', () => this.toggle());
     rail.append(lang, tog);
 
     // ---- Panel ----
     const panel = h('div', { class: 'sb-panel' });
-    const close = h('button', { type: 'button', class: 'sb-close', 'aria-label': this.L('closeMenu'), html: ICONS.close });
+    const close = h('button', { type: 'button', class: 'sb-close', 'data-fk': 'close', 'aria-label': this.L('closeMenu'), html: ICONS.close });
     close.addEventListener('click', () => this.setDrawer(false));
-    const input = h('input', { type: 'search', placeholder: this.L('search'), 'aria-label': this.L('search'), value: this.query }) as HTMLInputElement;
+    const input = h('input', { type: 'search', 'data-fk': 'search', placeholder: this.L('search'), 'aria-label': this.L('search'), value: this.query }) as HTMLInputElement;
     input.value = this.query;
     input.addEventListener('input', () => { this.query = input.value; this.renderBody(); });
     panel.append(
@@ -134,7 +152,7 @@ export class Sidebar {
     // Language switch for the phone drawer (the rail's EN/ES button covers larger screens).
     const langs = h('div', { class: 'foot-lang', role: 'group', 'aria-label': this.L('language') });
     for (const code of ['en', 'es'] as const) {
-      const b = h('button', { type: 'button', 'aria-pressed': code === L ? 'true' : 'false' }, code === 'en' ? 'English' : 'Español');
+      const b = h('button', { type: 'button', 'data-fk': `lang:${code}`, 'aria-pressed': code === L ? 'true' : 'false' }, code === 'en' ? 'English' : 'Español');
       b.addEventListener('click', () => { if (code !== this.host.lang()) this.host.toggleLang(); });
       langs.append(b);
     }
@@ -166,7 +184,7 @@ export class Sidebar {
     const L = this.host.lang();
     const current = e.id === this.host.currentId();
     const a = h('a', {
-      class: e.stage ? 'ev' : 'ev dim', href: eventHref(e.id, L), 'aria-current': current ? 'page' : undefined,
+      class: e.stage ? 'ev' : 'ev dim', href: eventHref(e.id, L), 'data-fk': `ev:${e.id}`, 'aria-current': current ? 'page' : undefined,
       title: this.L(e.stage ? 'playable' : 'readable'),
     }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, tr(e.title, L)), h('span', { class: 'ev-when' }, shortDate(e, L)));
     a.addEventListener('click', (ev) => { ev.preventDefault(); this.drawer = false; this.host.openEvent(e.id); });
@@ -185,12 +203,13 @@ export class Sidebar {
   private group(key: string, head: Node[], children: () => Node, cls = 'grp', extra?: () => Node | null): HTMLElement {
     const open = this.expanded.has(key);
     const li = h('li', { class: `${cls}${open ? ' open' : ''}` });
-    const btn = h('button', { type: 'button', class: `${cls}-head`, 'aria-expanded': open ? 'true' : 'false' }, h('span', { class: 'chev', html: ICONS.chevron }), ...head);
+    const btn = h('button', { type: 'button', class: `${cls}-head`, 'data-fk': `grp:${key}`, 'aria-expanded': open ? 'true' : 'false' }, h('span', { class: 'chev', html: ICONS.chevron }), ...head);
     btn.addEventListener('click', () => {
       if (this.expanded.has(key)) this.expanded.delete(key); else this.expanded.add(key);
       const fresh = this.group(key, head, children, cls, extra);
       if (li.dataset.key) fresh.dataset.key = li.dataset.key;
       li.replaceWith(fresh);
+      fresh.querySelector<HTMLElement>(`[data-fk="${CSS.escape(`grp:${key}`)}"]`)?.focus({ preventScroll: true });
     });
     const side = extra?.();
     li.append(side ? h('div', { class: 'grp-row' }, btn, side) : btn);
@@ -284,7 +303,7 @@ export class Sidebar {
     const on = i >= 0;
     const full = !on && lanes.length >= MAX_LANES;
     const b = h('button', {
-      type: 'button', class: 'lane-toggle', 'aria-pressed': on ? 'true' : 'false', disabled: full,
+      type: 'button', class: 'lane-toggle', 'data-fk': `lane:${c.id}`, 'aria-pressed': on ? 'true' : 'false', disabled: full,
       'aria-label': `${this.L(on ? 'laneRemove' : 'laneAdd')}: ${tr(c.name, this.host.lang())}`, title: this.L(full ? 'lanesMax' : on ? 'laneRemove' : 'laneAdd'),
       style: on ? `--c: ${laneColor(i)}` : undefined, html: on ? ICONS.check : ICONS.plus,
     });

@@ -6,10 +6,10 @@ import { LANGS, type EventDetail, type EventSummary, type Lang } from './data/ty
 import { h } from './dom';
 import { honestDate } from './format';
 import { ICONS } from './icons';
-import { initialLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
+import { initialLang, isLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { renderReader } from './reader';
 import { linkedEvents, sameTime } from './related';
-import { MAX_LANES, renderLanes } from './lanes';
+import { MAX_LANES, PHONE_QUERY, renderLanes } from './lanes';
 import { eventHref, livesHref, parseRoute, type Route } from './routes';
 import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
@@ -44,8 +44,23 @@ function writeRoute(): void {
 
 /** Go somewhere: a new history entry, so the back button returns. */
 function navigate(hash: string): void {
-  if (location.hash === hash) applyRoute(parseRoute(hash));
+  if (location.hash === hash) { focusHeading = true; applyRoute(parseRoute(hash)); }
   else location.hash = hash; // → hashchange → applyRoute
+}
+
+/**
+ * Set by a navigation: once the new view is on screen, focus moves to its heading, so
+ * keyboard and screen-reader users start at the top of what they opened (not lost in a
+ * redrawn sidebar or on the body).
+ */
+let focusHeading = false;
+function focusView(): void {
+  if (!focusHeading) return;
+  focusHeading = false;
+  const h1 = page ? pageEl.querySelector<HTMLElement>('h1') : $('event-title');
+  if (!h1) return;
+  h1.tabIndex = -1;
+  h1.focus({ preventScroll: true });
 }
 
 // ---------- State ----------
@@ -161,6 +176,7 @@ async function loadStage(load?: StageLoad): Promise<void> {
   resize();
   renderStatic();
   writeRoute();
+  focusView();
   if (!looping) { looping = true; frame(); }
 }
 
@@ -219,6 +235,14 @@ let stageStale = false;
  * no event (or an unknown one) is the front door, the cosmos.
  */
 function applyRoute(r: Route): void {
+  // The language is part of the URL: a link with ?lang=es opens in Spanish, whatever this tab
+  // showed before. (No lang means "as you were": in-site links always carry a non-English one.)
+  const langChanged = isLang(r.lang) && r.lang !== state.lang;
+  if (langChanged) {
+    state.lang = r.lang as Lang;
+    rememberLang(state.lang);
+    if (state.event) stageStale = true; // labels and names are baked into the stage
+  }
   if (r.kind === 'lives') {
     laneIds = r.with.filter((id) => index.characters.some((c) => c.id === id)).slice(0, MAX_LANES);
     showPage({ kind: 'lives', ids: laneIds });
@@ -229,17 +253,24 @@ function applyRoute(r: Route): void {
   const id = target?.id ?? homeId();
   if (!id) return;
   if (state.event && !pending && id === state.event.id) {
-    // Already on screen (or under a page): just come back to it.
-    if (page) {
-      hidePage();
-      if (stageStale) { void loadStage(); return; } // the language changed meanwhile
-      renderStatic();
-      resize();
-    }
+    // Already on screen (or under a page): come back to it, at the moment and with the
+    // character the URL names, when it names them.
+    if (page) hidePage();
+    if (target && r.t !== undefined) { state.playing = false; state.t = r.t; }
+    if (target && r.follow !== undefined) state.selected = r.follow;
+    if (stageStale) { void loadStage(); return; } // the language changed: rebuild (it seeks to state.t)
+    playhead = clock.secondsAt(state.t);
+    stage.select?.(state.selected);
+    renderStatic();
+    resize();
     writeRoute();
+    focusView();
     return;
   }
-  if (pending?.id === id) return; // already on its way
+  if (pending?.id === id) {
+    if (langChanged) void loadStage(pending); // on its way in the old language: redo it in the new one
+    return;
+  }
   // loadStage takes its generation before fetching, so only the newest route can switch.
   void loadStage({
     id,
@@ -259,6 +290,8 @@ function showPage(p: Page): void {
   renderPage();
   if (!same) pageEl.scrollTop = 0;
   writeRoute();
+  if (same && p.kind === 'lives' && focusHeading) focusLanesAdd(); // a life added by a link: keep adding
+  else focusView();
 }
 
 function hidePage(): void {
@@ -272,9 +305,14 @@ function renderPage(): void {
   const L = state.lang;
   document.documentElement.lang = L;
   if (page.kind === 'lives') {
-    renderLanes(pageEl, page.ids, { lang: () => state.lang, setLanes });
+    renderLanes(pageEl, page.ids, {
+      lang: () => state.lang,
+      // Changed from the lanes page itself (add box, remove): the page redraws, so keep focus in the add box.
+      setLanes: (ids) => { setLanes(ids); focusLanesAdd(); },
+    });
     renderCrumbs(undefined, [], ui('title_lives', L));
     renderZoom(null);
+    sidebar.setView('lives'); // the rail shows where we are, without opening the drawer
   } else {
     const ev = eventById(page.id)!;
     renderReader(pageEl, ev, { lang: () => state.lang });
@@ -288,9 +326,20 @@ function renderPage(): void {
 /** Change the lives shown side by side: in place on the lanes page, else opening it. */
 function setLanes(ids: string[]): void {
   laneIds = ids.slice(0, MAX_LANES);
-  if (page?.kind === 'lives') { page = { kind: 'lives', ids: laneIds }; renderPage(); writeRoute(); }
-  else navigate(livesHref(laneIds, state.lang));
+  if (page?.kind === 'lives' && page.ids.length) { page = { kind: 'lives', ids: laneIds }; renderPage(); writeRoute(); }
+  else navigate(livesHref(laneIds, state.lang)); // from elsewhere, or the first pick on an empty page: a history entry
 }
+
+/** After the lanes page redraws: focus the add box, or the heading when eight lives fill it. */
+function focusLanesAdd(): void {
+  if (page?.kind !== 'lives') return;
+  focusHeading = false;
+  const el = pageEl.querySelector<HTMLElement>('.lp-add input') ?? pageEl.querySelector<HTMLElement>('h1');
+  el?.focus({ preventScroll: true });
+}
+
+// Lanes on a phone show fewer at once (lanes.ts): redraw when the layout crosses the breakpoint.
+matchMedia(PHONE_QUERY).addEventListener('change', () => { if (page?.kind === 'lives') renderPage(); });
 
 const sidebar = new Sidebar($('sidebar'), {
   lang: () => state.lang,
@@ -509,7 +558,7 @@ addEventListener('keydown', (e) => {
   if (e.code === 'Escape') { closeMeanwhile(); sidebar.setDrawer(false); }
   if (e.code === 'Space' && !page && stage && !tgt.closest('input, textarea, select, button, a')) { e.preventDefault(); setPlaying(!state.playing); }
 });
-addEventListener('hashchange', () => applyRoute(parseRoute()));
+addEventListener('hashchange', () => { focusHeading = true; applyRoute(parseRoute()); });
 
 // Click (not drag) on the scene selects a character.
 const ray = new THREE.Raycaster();
