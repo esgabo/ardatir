@@ -501,6 +501,7 @@ function buildBeats(): void {
 
 /** Recomputed only on resize, language or event change, and when the current beat changes. */
 function layoutBeats(): void {
+  if (!state.event) return; // the bar is observed before the first event has loaded
   const beats = state.event.beats ?? [];
   const positions = beats.map((b) => b.t);
   beatCurrent = currentBeat(positions, state.t);
