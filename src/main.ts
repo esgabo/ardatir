@@ -9,7 +9,8 @@ import { ICONS } from './icons';
 import { initialLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { renderReader } from './reader';
 import { linkedEvents, sameTime } from './related';
-import { eventHref, parseRoute, type Route } from './routes';
+import { MAX_LANES, renderLanes } from './lanes';
+import { eventHref, livesHref, parseRoute, type Route } from './routes';
 import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
@@ -21,15 +22,20 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 // ---------- URL state (routes.ts): #/event/<id>?t=0.42&follow=bilbo&lang=es ----------
 
 /**
- * A page shown instead of the stage: an event that can't be watched yet, read as text.
- * While a page is open the stage stays loaded underneath but neither renders nor plays.
+ * A page shown instead of the stage: an event that can't be watched yet, read as text, or
+ * lives side by side (character lanes). While a page is open the stage stays loaded
+ * underneath but neither renders nor plays.
  */
-type Page = { kind: 'event'; id: string };
+type Page = { kind: 'event'; id: string } | { kind: 'lives'; ids: string[] };
 let page: Page | null = null;
+/** The lives last shown side by side, so the sidebar can offer them again. */
+let laneIds: string[] = [];
+
+const pageHref = (p: Page) => (p.kind === 'event' ? eventHref(p.id, state.lang) : livesHref(p.ids, state.lang));
 
 /** Update the URL in place (no history entry) to what is on screen. */
 function writeRoute(): void {
-  if (page) { history.replaceState(null, '', eventHref(page.id, state.lang)); return; }
+  if (page) { history.replaceState(null, '', pageHref(page)); return; }
   if (!state.event) return;
   history.replaceState(null, '', eventHref(state.event.id, state.lang, {
     t: state.t > 0 ? state.t.toFixed(3) : undefined, follow: state.selected ?? undefined,
@@ -46,10 +52,10 @@ function navigate(hash: string): void {
 const route: Route = parseRoute();
 const state = {
   event: undefined as unknown as EventDetail, // set when the first stage loads
-  t: route.t ?? 0,
+  t: 0, // set from the route when its stage loads
   playing: false,
   lang: initialLang(route.lang ?? null) as Lang,
-  selected: (route.follow ?? null) as string | null,
+  selected: null as string | null,
 };
 
 // ---------- Renderer ----------
@@ -213,6 +219,11 @@ let stageStale = false;
  * no event (or an unknown one) is the front door, the cosmos.
  */
 function applyRoute(r: Route): void {
+  if (r.kind === 'lives') {
+    laneIds = r.with.filter((id) => index.characters.some((c) => c.id === id)).slice(0, MAX_LANES);
+    showPage({ kind: 'lives', ids: laneIds });
+    return;
+  }
   const target = r.eventId ? eventById(r.eventId) : undefined;
   if (target && !target.stage) { showPage({ kind: 'event', id: target.id }); return; }
   const id = target?.id ?? homeId();
@@ -240,7 +251,7 @@ function applyRoute(r: Route): void {
 function showPage(p: Page): void {
   stageGeneration++; // a stage still loading must not replace the page
   pending = undefined;
-  const same = page?.kind === p.kind && page.id === p.id;
+  const same = !!page && page.kind === p.kind && (p.kind === 'lives' || (page.kind === 'event' && page.id === p.id));
   page = p;
   state.playing = false;
   closeMeanwhile();
@@ -260,20 +271,33 @@ function renderPage(): void {
   if (!page) return;
   const L = state.lang;
   document.documentElement.lang = L;
-  const ev = eventById(page.id)!;
-  renderReader(pageEl, ev, {
-    lang: () => state.lang,
-    openCharacter: (id) => sidebar.show('lives', `char:${id}`),
-  });
-  renderCrumbs(ev.age, ev.arcs, tr(ev.title, L));
-  renderZoom('event');
+  if (page.kind === 'lives') {
+    renderLanes(pageEl, page.ids, { lang: () => state.lang, setLanes });
+    renderCrumbs(undefined, [], ui('title_lives', L));
+    renderZoom(null);
+  } else {
+    const ev = eventById(page.id)!;
+    renderReader(pageEl, ev, { lang: () => state.lang });
+    renderCrumbs(ev.age, ev.arcs, tr(ev.title, L));
+    renderZoom('event');
+  }
   renderChrome();
   sidebar.render();
 }
 
+/** Change the lives shown side by side: in place on the lanes page, else opening it. */
+function setLanes(ids: string[]): void {
+  laneIds = ids.slice(0, MAX_LANES);
+  if (page?.kind === 'lives') { page = { kind: 'lives', ids: laneIds }; renderPage(); writeRoute(); }
+  else navigate(livesHref(laneIds, state.lang));
+}
+
 const sidebar = new Sidebar($('sidebar'), {
   lang: () => state.lang,
-  currentId: () => page?.id ?? state.event?.id ?? '',
+  currentId: () => (page ? (page.kind === 'event' ? page.id : '') : state.event?.id ?? ''),
+  lanes: () => laneIds,
+  lanesOpen: () => page?.kind === 'lives',
+  setLanes,
   openEvent,
   openHome: () => { const c = homeId(); if (c) openEvent(c); },
   toggleLang: () => setLang(LANGS[(LANGS.indexOf(state.lang) + 1) % LANGS.length]),
@@ -295,7 +319,7 @@ function setLang(lang: Lang): void {
 }
 
 /** Breadcrumb: age › arc › here. */
-function renderCrumbs(ageId: string, arcIds: string[], here: string): void {
+function renderCrumbs(ageId: string | undefined, arcIds: string[], here: string): void {
   const L = state.lang;
   const crumbs = $('crumbs');
   crumbs.setAttribute('aria-label', ui('breadcrumb', L));
@@ -389,6 +413,11 @@ function updateDynamic(): void {
     $('sel-subtitle').textContent = info.subtitle ?? '';
     $('sel-body').textContent = info.body;
     $('sel-thought').textContent = info.thought ?? '';
+    // The selected character's life, lane by lane.
+    const life = $<HTMLAnchorElement>('sel-life');
+    const href = state.selected && index.lanes[state.selected]?.length ? livesHref([state.selected], L) : '';
+    life.hidden = !href;
+    if (href && life.getAttribute('href') !== href) { life.href = href; life.textContent = `${ui('followLife', L)} →`; }
   }
 }
 

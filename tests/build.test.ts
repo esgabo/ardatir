@@ -70,6 +70,19 @@ describe('the real content', () => {
     }
   });
 
+  it('gives every character a lane that keeps time, and crosses Tuor and Túrin at Ivrin', () => {
+    const at = (x: (typeof r.index.lanes)[string][number]) => ('event' in x
+      ? r.index.events.find((e) => e.id === x.event)!.at
+      : r.index.journeys.find((j) => j.id === x.journey)!.waypoints[x.waypoint].at);
+    for (const [c, lane] of Object.entries(r.index.lanes)) {
+      expect(lane.filter((x) => 'event' in x).map((x) => (x as { event: string }).event), c).toEqual(r.index.byCharacter[c]);
+      let last = -Infinity;
+      for (const x of lane) { const a = at(x); if (a === undefined) continue; expect(a, `${c} ${JSON.stringify(x)}`).toBeGreaterThanOrEqual(last - 1e-9); last = a; }
+    }
+    expect(r.index.lanes.tuor).toContainEqual({ event: 'tuor-sees-turin-at-ivrin' });
+    expect(r.index.lanes.turin).toContainEqual({ event: 'tuor-sees-turin-at-ivrin' });
+  });
+
   it('never guesses an event before what enables or causes it', () => {
     const at = new Map(r.index.events.map((e) => [e.id, e.at]));
     for (const e of r.index.events) for (const l of e.links) {
@@ -135,6 +148,31 @@ describe('the valid fixture', () => {
     expect(s.passages.map((p) => p.id)).toEqual(['runes', 'door']);
     expect(s.passages[0].text.es).toBe('Las runas brillan bajo la luna.');
     expect(ok.details.some((d) => d.id === 'moon-letters')).toBe(false); // not playable
+  });
+
+  it('builds lanes: events in story order, waypoints matched to them left out', () => {
+    expect(r.index.lanes.bilbo).toEqual([{ event: 'the-party' }, { event: 'moon-letters' }, { event: 'leaving' }]);
+    expect(r.index.journeys[0].waypoints.map((w) => w.event)).toEqual(['the-party', 'moon-letters']);
+  });
+
+  it('places the legs no event covers between the lane\'s events, by best guess', () => {
+    const ok = buildWith([{ file: ROAD, replace: [
+      '  - { place: rivendell,',
+      '  - { place: bag-end, date: { age: third-age, year: 2941, month: 5 }, precision: month }\n  - { place: rivendell,',
+    ] }, { file: ROAD, replace: [
+      'season: autumn }, precision: season }',
+      'season: autumn }, precision: season }\n  - { place: bag-end, date: { age: third-age, year: 2941, season: winter }, precision: season }',
+    ] }]);
+    expect(ok.errors).toEqual([]);
+    const lane = [{ event: 'the-party' }, { journey: 'the-road', waypoint: 1 }, { event: 'moon-letters' }, { event: 'leaving' }, { journey: 'the-road', waypoint: 3 }];
+    expect(ok.index.lanes.bilbo).toEqual(lane);
+    expect(ok.index.lanes.gandalf).toEqual(lane);
+  });
+
+  it('keeps a matched waypoint in the lane of a traveller who is not in that event', () => {
+    const ok = buildWith([{ file: LETTERS, replace: ['[ bilbo, gandalf ]', '[ bilbo ]'] }]);
+    expect(ok.errors).toEqual([]);
+    expect(ok.index.lanes.gandalf).toEqual([{ event: 'the-party' }, { journey: 'the-road', waypoint: 1 }, { event: 'leaving' }]);
   });
 
   it('matches a ranged waypoint to the event inside its range', () => {

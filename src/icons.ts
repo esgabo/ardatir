@@ -16,6 +16,8 @@ export const ICONS = {
   menu: svg('<path d="M4 7h16M4 12h16M4 17h16"/>'),
   close: svg('<path d="M6 6l12 12M18 6L6 18"/>'),
   search: svg('<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>'),
+  plus: svg('<path d="M12 6v12M6 12h12"/>'),
+  check: svg('<path d="M5.5 12.5l4.5 4.5 8.5-10"/>'),
   chevron: svg('<path d="M9 6l6 6-6 6"/>'),
   play: svg('<path d="M7 4l13 8-13 8z"/>', true),
   pause: svg('<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>', true),

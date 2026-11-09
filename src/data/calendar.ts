@@ -120,6 +120,15 @@ export function overlaps(a: Span, b: Span): boolean {
   return a.from < b.to && b.from < a.to;
 }
 
+/**
+ * Whole years of the Sun that certainly passed between two honest ranges: from the latest
+ * the first can end to the earliest the second can begin. 0 when they overlap, touch, or
+ * are less than a year apart. It is what the lanes can honestly say: "at least N years later".
+ */
+export function yearsBetween(a: Span, b: Span): number {
+  return Math.max(0, Math.floor(b.from - a.to + 1e-9));
+}
+
 /** The age and date an axis position falls in, for labels. Days outside the months come back by name, with no month. */
 export function axisToDate(x: number, ages: Age[]): { age: Age; year: number; month?: number; day: number | ExtraDay } | undefined {
   const dated = ages.filter((a) => a.axis).sort((a, b) => a.axis!.start - b.axis!.start);

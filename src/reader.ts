@@ -11,12 +11,11 @@ import { honestDate, shortDate } from './format';
 import { ICONS } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
 import { linkedEvents, sameTime } from './related';
-import { eventHref } from './routes';
+import { hasLane, MAX_LANES } from './lanes';
+import { eventHref, livesHref } from './routes';
 
 export interface ReaderHost {
   lang(): Lang;
-  /** A character's name was chosen: show their life. */
-  openCharacter(id: string): void;
 }
 
 const BOOK = (book: string, L: Lang) => ui(`book_${book}` as UiKey, L) || book;
@@ -78,15 +77,16 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
   const people = ev.characters.map((id) => index.characters.find((c) => c.id === id)).filter((c) => !!c);
   if (people.length) {
     const ul = h('ul', { class: 'r-who' });
+    // A name opens that life's lane; with several, all their lanes side by side.
     for (const c of people) {
       const kind = ui(`kind_${c.kind}` as UiKey, L) || c.kind;
-      const b = h('button', { type: 'button', class: 'r-person' },
+      ul.append(h('li', {}, h('a', { class: 'r-person', href: livesHref([c.id], L), title: S('followLife') },
         h('span', { class: 'r-person-name' }, tr(c.name, L)), h('span', { class: 'r-person-kind' }, kind),
-        h('span', { class: 'r-person-sum' }, tr(c.summary, L)));
-      b.addEventListener('click', () => host.openCharacter(c.id));
-      ul.append(h('li', {}, b));
+        h('span', { class: 'r-person-sum' }, tr(c.summary, L)))));
     }
-    art.append(h('section', { class: 'r-section' }, heading(S('whoWasThere')), ul));
+    const lanes = people.filter((c) => hasLane(c.id)).slice(0, MAX_LANES).map((c) => c.id);
+    art.append(h('section', { class: 'r-section' }, heading(S('whoWasThere')), ul,
+      lanes.length > 1 && h('a', { class: 'r-more', href: livesHref(lanes, L) }, `${S('seeSideBySide')} →`)));
   }
 
   // ---- Connections: links in both directions, with their notes ----

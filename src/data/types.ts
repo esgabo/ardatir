@@ -111,6 +111,8 @@ export interface Waypoint {
   span: Span;
   /** Best-guess moment inside `span`: the matching event's `at` when there is one. */
   at: number;
+  /** Derived: the event on this journey that happens at this waypoint, when there is one. */
+  event?: string;
 }
 
 export interface Journey {
@@ -227,6 +229,9 @@ export interface EventScript {
   passages: { id: string; text: LocalizedText }[];
 }
 
+/** One step of a character's lane: an event they are in, or a waypoint of one of their journeys. */
+export type LaneEntry = { event: string } | { journey: string; waypoint: number };
+
 /** data/index.json */
 export interface ContentIndex {
   ages: Age[];
@@ -237,5 +242,10 @@ export interface ContentIndex {
   /** Every event: timeless ones first (by age order), then by axis position. */
   events: EventSummary[];
   byCharacter: Record<string, string[]>;
+  /**
+   * Each character's lane (docs/DESIGN.md §3.2): their events in story order, with the legs
+   * of their journeys that no event of theirs covers placed between them.
+   */
+  lanes: Record<string, LaneEntry[]>;
   byPlace: Record<string, string[]>;
 }

@@ -7,7 +7,8 @@ import { ICONS, type IconName } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
 import { fold, h } from './dom';
 import { shortDate } from './format';
-import { eventHref } from './routes';
+import { hasLane, laneColor, MAX_LANES } from './lanes';
+import { eventHref, livesHref } from './routes';
 
 export const VIEWS = ['ages', 'stories', 'lives', 'books', 'places'] as const;
 export type View = (typeof VIEWS)[number];
@@ -24,6 +25,10 @@ export interface SidebarHost {
   toggleLang(): void;
   /** Called whenever the sidebar's width changes. */
   layoutChanged(): void;
+  /** The lives shown side by side (character lanes), and whether that page is open. */
+  lanes(): string[];
+  lanesOpen(): boolean;
+  setLanes(ids: string[]): void;
 }
 
 export class Sidebar {
@@ -177,16 +182,18 @@ export class Sidebar {
   }
 
   /** An expandable group: a header button and children built only when open. */
-  private group(key: string, head: Node[], children: () => Node, cls = 'grp'): HTMLElement {
+  private group(key: string, head: Node[], children: () => Node, cls = 'grp', extra?: () => Node | null): HTMLElement {
     const open = this.expanded.has(key);
     const li = h('li', { class: `${cls}${open ? ' open' : ''}` });
     const btn = h('button', { type: 'button', class: `${cls}-head`, 'aria-expanded': open ? 'true' : 'false' }, h('span', { class: 'chev', html: ICONS.chevron }), ...head);
     btn.addEventListener('click', () => {
       if (this.expanded.has(key)) this.expanded.delete(key); else this.expanded.add(key);
-      const fresh = this.group(key, head, children, cls);
+      const fresh = this.group(key, head, children, cls, extra);
+      if (li.dataset.key) fresh.dataset.key = li.dataset.key;
       li.replaceWith(fresh);
     });
-    li.append(btn);
+    const side = extra?.();
+    li.append(side ? h('div', { class: 'grp-row' }, btn, side) : btn);
     if (open) li.append(children());
     return li;
   }
@@ -266,7 +273,43 @@ export class Sidebar {
       }
       box.append(this.eventList(index.byCharacter[c.id] ?? []));
       return box;
-    }, 'grp');
+    }, 'grp', () => this.laneToggle(c));
+  }
+
+  /** Add a character to the lives shown side by side, or take them out. */
+  private laneToggle(c: Character): Node | null {
+    if (!hasLane(c.id)) return null;
+    const lanes = this.host.lanes();
+    const i = lanes.indexOf(c.id);
+    const on = i >= 0;
+    const full = !on && lanes.length >= MAX_LANES;
+    const b = h('button', {
+      type: 'button', class: 'lane-toggle', 'aria-pressed': on ? 'true' : 'false', disabled: full,
+      'aria-label': `${this.L(on ? 'laneRemove' : 'laneAdd')}: ${tr(c.name, this.host.lang())}`, title: this.L(full ? 'lanesMax' : on ? 'laneRemove' : 'laneAdd'),
+      style: on ? `--c: ${laneColor(i)}` : undefined, html: on ? ICONS.check : ICONS.plus,
+    });
+    b.addEventListener('click', () => { this.drawer = false; this.host.setLanes(on ? lanes.filter((x) => x !== c.id) : [...lanes, c.id]); });
+    return b;
+  }
+
+  /** The top of the Lives view: the lives side by side, as chips, and the way to their lanes. */
+  private lanesCard(): HTMLElement {
+    const L = this.host.lang();
+    const lanes = this.host.lanes();
+    const box = h('div', { class: 'sb-lanes' });
+    const chips = h('ul', { class: 'sb-chips' });
+    lanes.forEach((id, i) => {
+      const c = index.characters.find((x) => x.id === id);
+      if (c) chips.append(h('li', { style: `--c: ${laneColor(i)}` }, h('span', { class: 'lp-dot', 'aria-hidden': 'true' }), tr(c.name, L)));
+    });
+    if (lanes.length) box.append(chips);
+    else box.append(h('p', {}, this.L('livesIntro')));
+    if (!this.host.lanesOpen()) {
+      const go = h('a', { class: 'sb-lanes-go', href: livesHref(lanes, L) }, `${this.L('sideBySide')} →`);
+      go.addEventListener('click', (e) => { e.preventDefault(); this.drawer = false; this.host.setLanes(lanes); });
+      box.append(go);
+    }
+    return box;
   }
 
   private livesView(): HTMLElement {
@@ -274,8 +317,8 @@ export class Sidebar {
     const current = index.events.find((e) => e.id === this.host.currentId());
     const byName = (a: Character, b: Character) => tr(a.name, L).localeCompare(tr(b.name, L), L);
     const here = index.characters.filter((c) => current?.characters.includes(c.id)).sort(byName);
-    const rest = index.characters.filter((c) => !here.includes(c) && (index.byCharacter[c.id]?.length ?? 0) > 0).sort(byName);
-    const box = h('div', {});
+    const rest = index.characters.filter((c) => !here.includes(c) && hasLane(c.id)).sort(byName);
+    const box = h('div', {}, this.lanesCard());
     const section = (title: string, list: Character[]) => {
       if (!list.length) return;
       box.append(h('div', { class: 'sb-section' }, title));
