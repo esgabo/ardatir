@@ -1,0 +1,49 @@
+stage: diorama
+duration: 36
+narration:
+  kingdom: 0
+  dragon: 0.17
+  attack: 0.33
+  halls: 0.5
+  escape: 0.67
+  lost: 0.83
+beats:
+  wealth: 0
+  dragon: 0.33
+  door: 0.67
+  lost: 0.83
+tracks:
+  - characterId: smaug
+    keyframes:
+      - { t: 0, x: -6, z: -6, action: idle }
+      - { t: 0.17, x: -6, z: -6, action: idle, thought: { en: "So much gold, and no one strong enough to keep it.", es: "Tanto oro, y nadie lo bastante fuerte para guardarlo." } }
+      - { t: 0.33, x: -3.5, z: -3.5, action: walk }
+      - { t: 0.4, x: -3, z: -3, action: fight, thought: { en: "Burn it all.", es: "Que arda todo." } }
+      - { t: 0.5, x: -1.5, z: -1.5, action: fight }
+      - { t: 0.67, x: -1, z: -0.5, action: fight }
+      - { t: 0.83, x: -1.5, z: -1.5, action: walk }
+      - { t: 0.9, x: -1.5, z: -1.5, action: hide, thought: { en: "Mine. Every coin of it is mine.", es: "Mío. Cada moneda es mía." } }
+      - { t: 1, x: -1.5, z: -1.5, action: hide }
+  - characterId: thror
+    keyframes:
+      - { t: 0, x: 1, z: 1, action: talk, thought: { en: "Our halls are deep and our gold is plentiful.", es: "Nuestras salas son profundas y nuestro oro abunda." } }
+      - { t: 0.3, x: 1.5, z: 1.5, action: idle }
+      - { t: 0.5, x: 1.5, z: 1.5, action: idle, thought: { en: "Something is shaking the Mountain.", es: "Algo está sacudiendo la Montaña." } }
+      - { t: 0.6, x: 1.5, z: 2, action: run }
+      - { t: 0.75, x: 5.5, z: 4, action: run, thought: { en: "The door, quickly, before he finds us.", es: "La puerta, deprisa, antes de que nos encuentre." } }
+      - { t: 1, x: 6, z: 3.5, action: idle, thought: { en: "The Mountain is gone, and all our people with it.", es: "La Montaña está perdida, y con ella nuestra gente." } }
+  - characterId: thrain
+    keyframes:
+      - { t: 0, x: 2.2, z: 0.2, action: talk }
+      - { t: 0.3, x: 2.5, z: 1, action: idle }
+      - { t: 0.5, x: 2.5, z: 1, action: idle, thought: { en: "Father, the dragon is at the gates!", es: "¡Padre, el dragón está en las puertas!" } }
+      - { t: 0.6, x: 2.4, z: 2.3, action: run }
+      - { t: 0.75, x: 5.3, z: 4.8, action: run }
+      - { t: 1, x: 5.2, z: 4.4, action: idle }
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 5, z: -4, action: walk, thought: { en: "A fine day for a long walk.", es: "Un buen día para pasear lejos." } }
+      - { t: 0.3, x: 5.5, z: -5, action: walk }
+      - { t: 0.5, x: 5.5, z: -5.5, action: idle, thought: { en: "Fire on the mountain. That is our home!", es: "¡Fuego en la montaña! ¡Ese es nuestro hogar!" } }
+      - { t: 0.67, x: 5.5, z: -5.5, action: hide, thought: { en: "I can only watch, and I will not forget.", es: "Solo puedo mirar, y no lo olvidaré." } }
+      - { t: 1, x: 5.5, z: -5.5, action: hide }

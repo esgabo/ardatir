@@ -8,7 +8,7 @@ characters: [ gandalf, thrain ]
 arcs: [ durins-folk-in-exile ]
 journeys: []
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-lord-of-the-rings, chapter: Appendix B }
 title:
   en: Gandalf Finds Thráin in Dol Guldur
@@ -16,3 +16,8 @@ title:
 summary:
   en: "Entering Dol Guldur in secret, Gandalf learns that its master is Sauron himself. In the dungeons he finds a dying dwarf, Thráin, who gives him a map and a key for his son."
   es: "Entrando en secreto en Dol Guldur, Gandalf descubre que su señor es el mismo Sauron. En las mazmorras encuentra a un enano moribundo, Thráin, que le entrega un mapa y una llave para su hijo."
+beats:
+  - { id: sneak, label: { en: "Gandalf slips in", es: "Gandalf se cuela" } }
+  - { id: sauron, label: { en: "Sauron revealed", es: "Sauron al descubierto" } }
+  - { id: thrain, label: { en: "Thráin in the dungeon", es: "Thráin en la mazmorra" } }
+  - { id: key, label: { en: "Map and key", es: "El mapa y la llave" } }

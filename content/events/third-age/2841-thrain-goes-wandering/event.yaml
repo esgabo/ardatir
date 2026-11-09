@@ -9,7 +9,7 @@ characters: [ thrain, balin, dwalin ]
 arcs: [ durins-folk-in-exile ]
 journeys: [  ]
 tags: [ lord-of-the-rings, hobbit ]
-status: outline
+status: staged
 source: { book: the-lord-of-the-rings, chapter: "Appendix A (Durin's Folk)" }
 title: { en: "Thráin Sets Out Again", es: "Thráin parte de nuevo" }
 summary:
@@ -21,3 +21,7 @@ links:
     note:
       en: "His road ends in the dungeons of Dol Guldur, where Gandalf finds him."
       es: "Su camino acaba en las mazmorras de Dol Guldur, donde Gandalf lo encuentra."
+beats:
+  - { id: weary, label: { en: "The weary king", es: "El rey cansado" } }
+  - { id: goodbye, label: { en: "He leaves", es: "Se marcha" } }
+  - { id: followed, label: { en: "Followed", es: "Perseguidos" } }

@@ -8,9 +8,14 @@ characters: [ smaug, thror, thrain, thorin ]
 arcs: [ durins-folk-in-exile ]
 journeys: []
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 1 }   # year from LOTR Appendix A
 title: { en: Smaug Comes to Erebor, es: Smaug llega a Erebor }
 summary:
   en: "Drawn by the gold of the dwarves, the dragon Smaug falls on the Lonely Mountain and on Dale. Thrór and Thráin escape through a secret door, and young Thorin, out wandering, survives outside. The kingdom is lost."
   es: "Atraído por el oro de los enanos, el dragón Smaug cae sobre la Montaña Solitaria y sobre Valle. Thrór y Thráin escapan por una puerta secreta, y el joven Thorin, que andaba fuera, sobrevive. El reino se pierde."
+beats:
+  - { id: wealth, label: { en: "The dwarves prosper", es: "Los enanos prosperan" } }
+  - { id: dragon, label: { en: "Smaug attacks", es: "Smaug ataca" } }
+  - { id: door, label: { en: "The secret door", es: "La puerta secreta" } }
+  - { id: lost, label: { en: "The kingdom lost", es: "El reino perdido" } }

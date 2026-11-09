@@ -1,0 +1,34 @@
+stage: diorama
+duration: 30
+narration:
+  wander: 0
+  gate: 0.17
+  enters: 0.35
+  azog: 0.55
+  contempt: 0.7
+  news: 0.85
+beats:
+  arrival: 0.17
+  slain: 0.55
+  insult: 0.7
+tracks:
+  - characterId: thror
+    keyframes:
+      - { t: 0, x: 5, z: 5, action: walk, thought: { en: "No kingdom, and no home. Only the road.", es: "Sin reino y sin hogar. Solo el camino." } }
+      - { t: 0.17, x: 3, z: 3, action: walk }
+      - { t: 0.3, x: 1.5, z: 1.5, action: talk, thought: { en: "Moria was our people's glory. I will see it again.", es: "Moria fue la gloria de mi pueblo. La veré de nuevo." } }
+      - { t: 0.45, x: 1.5, z: 1.5, action: talk }
+      - { t: 0.5, x: 0, z: 0, action: walk, thought: { en: "I am the King under the Mountain. Who dares stop me?", es: "Soy el Rey bajo la Montaña. ¿Quién se atreve a detenerme?" } }
+      - { t: 0.62, x: -2.2, z: -2.2, action: walk }
+      - { t: 0.7, x: -2.4, z: -2.4, action: fight }
+      - { t: 0.76, x: -2.4, z: -2.4, action: hide }
+      - { t: 0.82, x: 1, z: 1, action: hide }
+      - { t: 1, x: 1, z: 1, action: hide }
+  - characterId: azog
+    keyframes:
+      - { t: 0, x: -5, z: -5, action: idle, thought: { en: "Let any dwarf come to my gate.", es: "Que venga cualquier enano a mi puerta." } }
+      - { t: 0.5, x: -5, z: -5, action: idle }
+      - { t: 0.62, x: -3.5, z: -3.5, action: walk, thought: { en: "An old fool, walking into my halls.", es: "Un viejo necio, entrando en mis salas." } }
+      - { t: 0.7, x: -2.9, z: -2.9, action: fight }
+      - { t: 0.78, x: -2.9, z: -2.9, action: talk, thought: { en: "Throw him out. Let them see what he was worth.", es: "Échenlo fuera. Que vean lo que valía." } }
+      - { t: 1, x: -3, z: -3, action: idle, thought: { en: "Let every dwarf hear of it.", es: "Que todos los enanos se enteren." } }

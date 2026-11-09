@@ -9,7 +9,7 @@ characters: [ thror, azog ]
 arcs: [ durins-folk-in-exile ]
 journeys: [  ]
 tags: [ lord-of-the-rings, hobbit ]
-status: outline
+status: staged
 source: { book: the-lord-of-the-rings, chapter: "Appendix A (Durin's Folk)" }
 title: { en: "Thrór Dies at Moria", es: "Muerte de Thrór en Moria" }
 summary:
@@ -21,3 +21,7 @@ links:
     note:
       en: "Thrór's murder is the insult the Dwarves of every house rise to avenge."
       es: "El asesinato de Thrór es la afrenta que los enanos de todas las casas se alzan a vengar."
+beats:
+  - { id: arrival, label: { en: "Thrór reaches the gate", es: "Thrór llega a la puerta" } }
+  - { id: slain, label: { en: "Azog kills him", es: "Azog lo mata" } }
+  - { id: insult, label: { en: "The insult", es: "La afrenta" } }

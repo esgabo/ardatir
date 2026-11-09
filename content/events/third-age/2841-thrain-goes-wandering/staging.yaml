@@ -1,0 +1,38 @@
+stage: diorama
+duration: 30
+narration:
+  exile: 0
+  restless: 0.2
+  farewell: 0.4
+  road: 0.6
+  hunted: 0.8
+beats:
+  weary: 0
+  goodbye: 0.4
+  followed: 0.8
+tracks:
+  - characterId: thrain
+    keyframes:
+      - { t: 0, x: -5, z: -4, action: idle, thought: { en: "We built forges here, but never a home.", es: "Aquí levantamos forjas, pero nunca un hogar." } }
+      - { t: 0.2, x: -4.5, z: -3.5, action: walk }
+      - { t: 0.4, x: -4, z: -3, action: talk, thought: { en: "The Mountain calls me. I must see it again.", es: "La Montaña me llama. Tengo que verla otra vez." } }
+      - { t: 0.6, x: -4, z: -3, action: talk }
+      - { t: 0.65, x: -1, z: 0, action: walk }
+      - { t: 0.8, x: 2, z: 3, action: walk, thought: { en: "East, always east.", es: "Al este, siempre al este." } }
+      - { t: 1, x: 5.5, z: 5.5, action: walk, thought: { en: "Something is behind us. I can feel it.", es: "Algo viene detrás de nosotros. Lo noto." } }
+  - characterId: balin
+    keyframes:
+      - { t: 0, x: -3, z: -5, action: idle }
+      - { t: 0.4, x: -3, z: -5, action: idle }
+      - { t: 0.6, x: -3, z: -4, action: walk, thought: { en: "I will not let him go alone.", es: "No lo dejaré ir solo." } }
+      - { t: 0.68, x: -0.2, z: 0.8, action: walk }
+      - { t: 0.8, x: 2.8, z: 3.8, action: walk }
+      - { t: 1, x: 6, z: 5.2, action: walk }
+  - characterId: dwalin
+    keyframes:
+      - { t: 0, x: -6, z: -3, action: idle }
+      - { t: 0.4, x: -6, z: -3, action: idle }
+      - { t: 0.6, x: -5, z: -3.5, action: walk, thought: { en: "Then I walk with him, and my axe too.", es: "Entonces camino con él, y mi hacha también." } }
+      - { t: 0.68, x: -1.3, z: 0.2, action: walk }
+      - { t: 0.8, x: 1.6, z: 2.4, action: walk }
+      - { t: 1, x: 5, z: 6, action: walk, thought: { en: "Eyes open. Someone is following.", es: "Ojos abiertos. Alguien nos sigue." } }

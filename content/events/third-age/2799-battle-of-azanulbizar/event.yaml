@@ -8,9 +8,14 @@ characters: [ thrain, thorin, frerin, nain, dain, azog ]
 arcs: [ durins-folk-in-exile ]
 journeys: []
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-lord-of-the-rings, chapter: Appendix A }
 title: { en: The Battle of Azanulbizar, es: La batalla de Azanulbizar }
 summary:
   en: "The dwarves avenge Thrór before the gates of Moria. Thorin fights with an oak branch for a shield and earns his name; Dáin slays Azog, but knowing what still waits in Moria, he will not let them enter."
   es: "Los enanos vengan a Thrór ante las puertas de Moria. Thorin lucha con una rama de roble como escudo y gana su nombre; Dáin mata a Azog, pero sabiendo lo que aún aguarda en Moria, no permite que entren."
+beats:
+  - { id: muster, label: { en: "The dwarves muster", es: "Los enanos se reúnen" } }
+  - { id: shield, label: { en: "Oakenshield", es: "Escudo de Roble" } }
+  - { id: azog, label: { en: "Azog falls", es: "Cae Azog" } }
+  - { id: burn, label: { en: "The dead are burned", es: "Se queman los caídos" } }
