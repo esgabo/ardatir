@@ -13,6 +13,7 @@ import {
   type NarrationAudio, type NarrationSegment, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
+import { narrationHash, TEXT_HASH } from '../narration/text.ts';
 
 export interface BuildResult {
   index: ContentIndex;
@@ -444,6 +445,11 @@ export function buildContent(contentDir: string): BuildResult {
         if (!fs.existsSync(meta)) { R.error(file, `recording without ${lang}.yaml (duration and starts)`); continue; }
         const m = readYaml(meta);
         if (!isObj(m) || !(typeof m.duration === 'number' && m.duration > 0)) { R.error(meta, 'duration: seconds, a positive number'); continue; }
+        // textHash ties the recording to the words it reads (content/README.md, "Recordings").
+        const hash = narrationHash(narration, lang);
+        if (m.textHash === undefined) R.warn(meta, `textHash: missing, so the build can't tell if the recording still matches narration.yaml (text now ${hash})`);
+        else if (typeof m.textHash !== 'string' || !TEXT_HASH.test(m.textHash)) R.error(meta, 'textHash: expected sha256: and 16 hex digits');
+        else if (m.textHash !== hash) R.warn(meta, `stale recording: narration.yaml changed since it was recorded (textHash ${m.textHash}, text now ${hash}); re-record with npm run narration:export -- --changed`);
         let starts: number[] | undefined;
         if (m.starts !== undefined) {
           const st = isObj(m.starts) ? m.starts : {};

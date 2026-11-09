@@ -14,7 +14,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "content": "node scripts/content/cli.ts"
+    "content": "node scripts/content/cli.ts",
+    "narration:export": "node scripts/narration/export.ts"
   },
   "dependencies": {
     "three": "^0.170.0"
