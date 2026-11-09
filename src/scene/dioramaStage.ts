@@ -8,6 +8,13 @@ import { createFigure, setSelected } from './figure';
 import type { Stage } from './stage';
 import { disposeTree } from './util';
 
+/**
+ * How much wider the view gets per share of the viewport the event card covers. Tuned so the
+ * whole tile clears the card, right corner uncropped, at 1280×720, 1440×900 and 1920×1080 with
+ * the sidebar open or collapsed (the tightest: 1280×720 open, a 560 px wide free space).
+ */
+const INSET_ZOOM = 2;
+
 /** An event staged on an isometric low-poly diorama tile with animated characters. */
 export function createDioramaStage(event: EventDetail, characters: Map<string, Character>, lang: Lang, factions = new Map<string, Faction>()): Stage {
   const scene = new THREE.Scene();
@@ -84,10 +91,14 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
       };
     },
 
-    resize(w, h) {
+    resize(w, h, inset = 0) {
+      // Frame the tile in the part of the viewport the event card leaves free: widen the view
+      // and shift it so the tile's centre sits in the middle of what is left (inset / 2 across).
       const aspect = w / h;
-      const view = 9;
-      Object.assign(camera, { left: -view * aspect, right: view * aspect, top: view, bottom: -view });
+      const f = Math.min(Math.max(inset / w, 0), 0.5);
+      const view = 9 * (1 + INSET_ZOOM * f);
+      const dx = f * view * aspect;
+      Object.assign(camera, { left: -view * aspect - dx, right: view * aspect - dx, top: view, bottom: -view });
       camera.updateProjectionMatrix();
     },
 

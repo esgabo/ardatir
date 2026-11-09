@@ -331,7 +331,12 @@ body.sb-open .disclaimer { display: none; }
   .foot-lang button[aria-pressed='true'] { background: rgba(232, 199, 122, 0.16); color: var(--gold); font-weight: 600; }
   .menu-btn { display: flex; }
   .zoom button { padding: 0 8px; }
-  #event-panel { top: auto; bottom: 150px; }
+  /* The event card: one slim line under the top bar (the bar already names the event), out of the
+     way of the caption; the selection panel takes its place when someone is picked. */
+  #event-panel { top: 64px; bottom: auto; left: var(--gap); right: var(--gap); width: auto; padding: 6px 12px; border-radius: 10px; }
+  #event-panel #event-title { display: none; }
+  #event-panel #event-date { margin: 0; }
+  body:has(#selection-panel:not([hidden])) #event-panel { display: none; }
   #event-summary { display: none; }
   #selection-panel { top: 70px; left: var(--gap); width: auto; }
   .caption { font-size: 17px; bottom: 84px; }
@@ -344,7 +349,6 @@ body.sb-open .disclaimer { display: none; }
   .crumbs .here { font-family: var(--serif); font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .timeline { bottom: 40px; }
   .caption { bottom: 100px; }
-  #event-panel { bottom: 168px; }
   .meanwhile { bottom: 102px; }
   .disclaimer, body.sb-open .disclaimer { display: block; font-size: 10px; padding: 0 12px; }
 }
@@ -710,7 +714,7 @@ a.r-person { color: inherit; text-decoration: none; }
   .tc-seg-name.full { display: none; }
   .tc-seg-name.short { display: block; font-size: 13px; }
   .tc-outside { flex: 0 0 58px; flex-direction: column; }
-  .tc-outside.after { flex-basis: 50px; }
+  .tc-outside.after { flex-basis: 44px; }
   .tc-ages { gap: 6px; }
   .tc-seg.timeless { border-radius: 6px; }
   .tc-seg.timeless .tc-seg-name.short { font-size: 10px; line-height: 1; }
@@ -732,6 +736,8 @@ a.r-person { color: inherit; text-decoration: none; }
 }
 .fx-line { line-height: 1.6; }
 .fx-against { font-style: italic; color: var(--gold-soft); }
+/* On the event card each side starts its own line, "against" between them. */
+.event-sides .fx-against { display: block; }
 .event-sides { margin-top: 8px !important; font-size: 11.5px !important; line-height: 1.6 !important; color: var(--muted); }
 .r-meta .r-sides { flex-basis: 100%; align-items: flex-start; }
 .r-meta .r-sides .icon { margin-top: 3px; }
@@ -747,4 +753,8 @@ a.r-person { color: inherit; text-decoration: none; }
 .sb-faction { margin: 8px 0 4px; font-size: 13px; }
 @media (max-width: 720px) {
   .event-sides { display: none; }
+}
+/* On a desktop the card's summary keeps to three lines, so the card leaves the stage room. */
+@media (min-width: 721px) {
+  #event-summary { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 }

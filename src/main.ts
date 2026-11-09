@@ -682,10 +682,18 @@ function resize(): void {
   const w = viewport.clientWidth || innerWidth, h = viewport.clientHeight || innerHeight;
   renderer.setSize(w, h);
   labelRenderer.setSize(w, h);
-  stage.resize(w, h);
+  stage.resize(w, h, cardInset());
+}
+/** How far the event card reaches into the stage from the left, on a desktop (0 on phones or when hidden). */
+function cardInset(): number {
+  const card = $('event-panel');
+  if (!matchMedia('(min-width: 721px)').matches || card.hidden || !card.getClientRects().length) return 0;
+  return Math.max(0, card.getBoundingClientRect().right - viewport.getBoundingClientRect().left);
 }
 addEventListener('resize', () => { if (stage) resize(); });
-new ResizeObserver(() => { if (stage) resize(); }).observe(viewport);
+const sizes = new ResizeObserver(() => { if (stage) resize(); });
+sizes.observe(viewport);
+sizes.observe($('event-panel'));
 
 const flash = $('flash');
 const frameClock = new THREE.Clock();
