@@ -1,0 +1,24 @@
+id: bombadil-goes-boating
+age: third-age
+when:
+  # Shire lore, not history: the 1962 preface says Buckland hobbits made this poem, much later than
+  # "The Adventures of Tom Bombadil" and after Frodo's stay with Tom. The poem says autumn but no
+  # year, so we claim only bounds, by the year. Farmer Maggot is his host, a hobbit still farming in
+  # 3018-19, so the trip falls within his lifetime: we allow a long hobbit's life (about a century)
+  # before 3019. Tom already knows Maggot well and has news of Frodo from him by September 3018
+  # (FotR I.7); Tolkien Gateway reads the poem's untroubled Shire as before the troubles of autumn
+  # 3018, which we follow for the upper bound.
+  start: { age: third-age, year: 2920 }
+  end: { age: third-age, year: 3018 }
+  precision: year
+place: the-shire
+characters: [ tom-bombadil, farmer-maggot ]
+arcs: []
+journeys: []
+tags: [ poems ]
+status: outline
+source: { book: the-adventures-of-tom-bombadil, chapter: "Bombadil Goes Boating" }
+title: { en: "Bombadil Goes Boating", es: "Bombadil va en bote" }
+summary:
+  en: "One autumn Tom mends his little boat and drifts down the Withywindle to the Brandywine, trading teasing words with birds, an otter and an old swan. Bucklanders on the bank loose arrows at his hat, a ferry takes him across, and Farmer Maggot gives him a lift to his farm in his cart. There is supper and dancing, Tom and Maggot swap news all night, and by dawn Tom has vanished."
+  es: "Un otoño, Tom arregla su barquita y baja por el Tornasauce hasta el Brandivino, cruzando burlas con pájaros, una nutria y un viejo cisne. Desde la orilla, gente de Los Gamos dispara flechas a su sombrero, una barca lo pasa al otro lado y el granjero Maggot lo lleva a su granja en su carro. Allí hay cena y baile, Tom y Maggot se cuentan noticias toda la noche, y al alba Tom ha desaparecido."

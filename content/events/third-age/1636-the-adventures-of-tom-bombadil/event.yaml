@@ -1,0 +1,22 @@
+id: the-adventures-of-tom-bombadil
+age: third-age
+when:
+  # Shire lore, not history: the 1962 preface calls this the oldest Bombadil poem in the Red Book,
+  # Buckland hobbits' blend of older tales about him. The poem gives no date, so we claim only the
+  # bounds: a Barrow-wight is in it, and evil spirits first came into the barrows at the time of the
+  # Great Plague (1636, RotK Appendix A); and Goldberry is long his wife when the hobbits come in
+  # September 3018 (FotR I.7). Story order puts it with the earliest of those years.
+  start: { age: third-age, year: 1636 }
+  end: { age: third-age, year: 3017 }
+  precision: year
+place: old-forest
+characters: [ tom-bombadil, goldberry ]
+arcs: []
+journeys: []
+tags: [ poems ]
+status: outline
+source: { book: the-adventures-of-tom-bombadil, chapter: "The Adventures of Tom Bombadil" }
+title: { en: "The Adventures of Tom Bombadil", es: "Las aventuras de Tom Bombadil" }
+summary:
+  en: "In a hobbit rhyme of Buckland, Tom idles by the Withywindle and is pulled into the water by Goldberry, the River-daughter. Old Man Willow traps him, the Badger-folk drag him underground, and a Barrow-wight lies in wait in his own house, but Tom sends each one packing. In the end he goes back for Goldberry and weds her."
+  es: "En una canción hobbit de Los Gamos, Tom se entretiene junto al Tornasauce y Baya de Oro, la hija del Río, lo arrastra al agua. El Viejo Hombre Sauce lo atrapa, los tejones lo meten bajo tierra y un tumulario lo espera en su propia casa, pero Tom los despacha a todos. Al final vuelve a buscar a Baya de Oro y se casa con ella."

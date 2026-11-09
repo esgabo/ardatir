@@ -1,9 +1,9 @@
 id: the-road-to-bree
 title: { en: "The Road to Bree", es: "El camino a Bree" }
 characters: [ frodo, sam, merry, pippin ]
-# The four hobbits from Crickhollow through the Old Forest and the Barrow-downs to the Prancing Pony, where Strider finds them.
+# The four hobbits from Crickhollow through the Old Forest and the Barrow-downs to the Prancing Pony, where Strider finds them. Tom Bombadil is their host and guide from the Withywindle to the East Road, but he never leaves his own country, so he is not on this journey.
 waypoints:
   - { place: crickhollow, date: { age: third-age, year: 3018, month: 9, day: 25 }, end: { age: third-age, year: 3018, month: 9, day: 26 }, precision: day }
   - { place: old-forest, date: { age: third-age, year: 3018, month: 9, day: 26 }, end: { age: third-age, year: 3018, month: 9, day: 27 }, precision: day }
-  - { place: barrow-downs, date: { age: third-age, year: 3018, month: 9, day: 28 }, precision: day }
+  - { place: barrow-downs, date: { age: third-age, year: 3018, month: 9, day: 28 }, end: { age: third-age, year: 3018, month: 9, day: 29 }, precision: day }
   - { place: prancing-pony, date: { age: third-age, year: 3018, month: 9, day: 29 }, precision: day }

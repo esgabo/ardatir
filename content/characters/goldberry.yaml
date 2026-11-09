@@ -2,8 +2,8 @@ id: goldberry
 name: { en: "Goldberry", es: "Baya de Oro" }
 kind: other
 summary:
-  en: "The River-woman's daughter, Tom Bombadil's wife."
-  es: "La hija del río, esposa de Tom Bombadil."
+  en: "The River-woman's daughter, fair and golden-haired, who keeps house with Tom Bombadil by the Withywindle; her singing is like the river's."
+  es: "La hija de la Mujer del Río, hermosa y de cabellos dorados, que comparte casa con Tom Bombadil junto al Tornasauce; su canto es como el del río."
 color: "#a0c080"
 scale: 1.5
 kin:

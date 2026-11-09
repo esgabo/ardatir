@@ -237,6 +237,7 @@ const UI = {
   'book_the-lord-of-the-rings': { en: 'The Lord of the Rings', es: 'El Señor de los Anillos' },
   'book_the-silmarillion': { en: 'The Silmarillion', es: 'El Silmarillion' },
   'book_unfinished-tales': { en: 'Unfinished Tales', es: 'Cuentos inconclusos' },
+  'book_the-adventures-of-tom-bombadil': { en: 'The Adventures of Tom Bombadil', es: 'Las aventuras de Tom Bombadil' },
   spring: { en: 'spring', es: 'primavera' },
   summer: { en: 'summer', es: 'verano' },
   autumn: { en: 'autumn', es: 'otoño' },
