@@ -106,10 +106,11 @@ export function buildContent(contentDir: string): BuildResult {
   // ---------- ages ----------
   const ages: Age[] = [];
   const ageIds = new Set<string>();
+  const ageFile = new Map<string, string>();
   for (const f of yamlFiles(path.join(contentDir, 'ages'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis'], 'age');
+    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis', 'foretold'], 'age');
     const aid = id(f, o.id, ageIds, 'age');
     if (!aid) continue;
     if (typeof o.order !== 'number') R.error(f, 'order: must be a number');
@@ -121,10 +122,21 @@ export function buildContent(contentDir: string): BuildResult {
       if (typeof yl !== 'number' || yl <= 0) R.error(f, 'axis.yearLength: must be a positive number');
       axis = { start: o.axis.start, yearLength: Number(yl) };
     } else R.error(f, 'needs either `timeless: true` or `axis: { start }`');
-    ages.push({ id: aid, order: Number(o.order), name: text(f, o.name, 'name')!, abbr: text(f, o.abbr, 'abbr', false), summary: text(f, o.summary, 'summary')!, ...axis ? { axis } : {} });
+    // What is foretold (docs/DESIGN.md §4.8): prophecy, not history, so never on the dated axis.
+    if (o.foretold !== undefined && typeof o.foretold !== 'boolean') R.error(f, 'foretold: true or false');
+    const foretold = o.foretold === true;
+    if (foretold && o.timeless !== true) R.error(f, 'a foretold age must be timeless: what is foretold has no dates');
+    ages.push({
+      id: aid, order: Number(o.order), name: text(f, o.name, 'name')!, abbr: text(f, o.abbr, 'abbr', false), summary: text(f, o.summary, 'summary')!,
+      ...axis ? { axis } : {}, ...foretold ? { foretold } : {},
+    });
+    ageFile.set(aid, f);
   }
   ages.sort((a, b) => a.order - b.order);
   const ageMap = new Map(ages.map((a) => [a.id, a]));
+  // A foretold age comes after every dated age: the time cursor shows it past the end of the axis.
+  const lastDated = Math.max(...ages.filter((a) => a.axis).map((a) => a.order));
+  for (const a of ages) if (a.foretold && a.order < lastDated) R.error(ageFile.get(a.id)!, 'order: a foretold age comes after every dated age');
 
   // ---------- dates ----------
   const date = (file: string, v: unknown, what: string): StoryDate | undefined => {
@@ -267,7 +279,7 @@ export function buildContent(contentDir: string): BuildResult {
     const f = path.join(dir, 'event.yaml');
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'title', 'summary', 'links', 'beats'], 'event');
+    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'summary', 'links', 'beats'], 'event');
     const eid = id(f, o.id, eventIds, 'event');
     if (!eid) continue;
     const folder = path.basename(dir);
@@ -331,6 +343,15 @@ export function buildContent(contentDir: string): BuildResult {
 
     const source = isObj(o.source) ? { book: String(o.source.book), ...o.source.chapter !== undefined ? { chapter: o.source.chapter as string | number } : {} } : undefined;
 
+    // Prophecy: the page must say where it comes from, and may say who foretells it.
+    let foretoldBy: string | undefined;
+    if (age?.foretold && !source) R.error(f, `source: required for what is foretold ("${age.id}"), so the page can say where the prophecy comes from`);
+    if (o.foretoldBy !== undefined) {
+      if (!age?.foretold) R.error(f, 'foretoldBy: only for events in a foretold age');
+      else if (typeof o.foretoldBy !== 'string' || !charIds.has(o.foretoldBy)) R.error(f, `foretoldBy: unknown character "${o.foretoldBy}"`);
+      else foretoldBy = o.foretoldBy;
+    }
+
     // narration.yaml
     const nf = path.join(dir, 'narration.yaml');
     let narration: NarrationSegment[] | undefined;
@@ -365,7 +386,7 @@ export function buildContent(contentDir: string): BuildResult {
       summary: {
         id: eid, age: String(o.age), ...when ? { when } : {}, ...span ? { span } : {}, ...place ? { place } : {},
         characters: chars, arcs: evArcs, journeys: evJourneys, tags: strList(f, o.tags, 'tags'), status,
-        ...source ? { source } : {}, title: text(f, o.title, 'title')!, summary: text(f, o.summary, 'summary')!,
+        ...source ? { source } : {}, ...foretoldBy ? { foretoldBy } : {}, title: text(f, o.title, 'title')!, summary: text(f, o.summary, 'summary')!,
         links, audio: [],
       },
     });
@@ -548,7 +569,7 @@ export function buildContent(contentDir: string): BuildResult {
     R.warnings.push(`${file}: ${n} text${n > 1 ? 's' : ''} missing "${lang}"`);
   }
 
-  const lanes = characterLanes(characters.map((c) => c.id), events, journeys);
+  const lanes = characterLanes(characters.map((c) => c.id), events, journeys, new Set(ages.filter((a) => a.foretold).map((a) => a.id)));
 
   return {
     index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes },
@@ -694,8 +715,9 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
  * event they are in is that event). Waypoints are placed by best guess: before the first of
  * the character's events whose guess comes later, so the lane keeps story order. `events`
  * arrive in story order, with `at` and the waypoints' `at` and `event` already estimated.
+ * Events in a foretold age (`foretoldAges`) come after every leg: prophecy follows history.
  */
-export function characterLanes(characterIds: string[], events: EventSummary[], journeys: Journey[]): Record<string, LaneEntry[]> {
+export function characterLanes(characterIds: string[], events: EventSummary[], journeys: Journey[], foretoldAges = new Set<string>()): Record<string, LaneEntry[]> {
   const chars = new Map(events.map((e) => [e.id, e.characters]));
   const lanes: Record<string, LaneEntry[]> = {};
   for (const c of characterIds) {
@@ -712,6 +734,8 @@ export function characterLanes(characterIds: string[], events: EventSummary[], j
     const lane: LaneEntry[] = [];
     let k = 0;
     for (const e of mine) {
+      // What is foretold comes after every journey: the lane's history ends before its prophecy.
+      if (foretoldAges.has(e.age)) while (k < legs.length) lane.push(legs[k++].entry);
       while (k < legs.length && e.at !== undefined && legs[k].at < e.at) lane.push(legs[k++].entry);
       lane.push({ event: e.id });
     }

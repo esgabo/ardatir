@@ -7,6 +7,7 @@ import { ICONS, type IconName } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
 import { fold, h } from './dom';
 import { shortDate } from './format';
+import { foretoldBadge } from './foretold';
 import { hasLane, laneColor, MAX_LANES } from './lanes';
 import { eventHref, livesHref, timeHref } from './routes';
 import { momentLabel } from './format';
@@ -188,23 +189,24 @@ export class Sidebar {
    * Every event is a link: staged ones open their stage (filled diamond), the others their
    * page (hollow diamond, a little dimmer), so the whole story can be followed.
    */
-  private eventRow(e: EventSummary): HTMLElement {
+  private eventRow(e: EventSummary, mark = true): HTMLElement {
     const L = this.host.lang();
     const current = e.id === this.host.currentId();
     const a = h('a', {
       class: e.stage ? 'ev' : 'ev dim', href: eventHref(e.id, L), 'data-fk': `ev:${e.id}`, 'aria-current': current ? 'page' : undefined,
       title: this.L(e.stage ? 'playable' : 'readable'),
-    }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, tr(e.title, L)), h('span', { class: 'ev-when' }, shortDate(e, L)));
+    }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, tr(e.title, L)), (mark && foretoldBadge(e, L)) || h('span', { class: 'ev-when' }, shortDate(e, L)));
     a.addEventListener('click', (ev) => { ev.preventDefault(); this.drawer = false; this.host.openEvent(e.id); });
     return h('li', {}, a);
   }
 
-  private eventList(ids: string[] | EventSummary[]): HTMLElement {
+  /** `mark: false` leaves out the Foretold badges, where the list sits under the foretold age itself. */
+  private eventList(ids: string[] | EventSummary[], mark = true): HTMLElement {
     const evs = (ids as (string | EventSummary)[])
       .map((x) => (typeof x === 'string' ? index.events.find((e) => e.id === x) : x))
       .filter((e): e is EventSummary => !!e);
     if (!evs.length) return h('p', { class: 'sb-empty' }, this.L('noEvents'));
-    return h('ul', { class: 'ev-list' }, ...evs.map((e) => this.eventRow(e)));
+    return h('ul', { class: 'ev-list' }, ...evs.map((e) => this.eventRow(e, mark)));
   }
 
   /** An expandable group: a header button and children built only when open. */
@@ -235,8 +237,9 @@ export class Sidebar {
       const evs = index.events.filter((e) => e.age === age.id);
       const lit = current?.age === age.id;
       const key = `age:${age.id}`;
+      // What is foretold: a hollow, dashed node at the end of the thread, past history.
       const head = [
-        h('span', { class: `node${lit ? ' lit' : ''}`, 'aria-hidden': 'true' }),
+        h('span', { class: `node${lit ? ' lit' : ''}${age.foretold ? ' foretold' : ''}`, 'aria-hidden': 'true' }),
         h('span', { class: 'age-text' }, h('span', { class: 'age-name' }, tr(age.name, L)), h('span', { class: 'age-sub' }, tr(age.summary, L))),
       ];
       ol.append(this.group(key, head, () => {
@@ -245,11 +248,11 @@ export class Sidebar {
         const list = h('ul', { class: 'sub' });
         for (const arc of arcs) {
           const inAge = arc.events.filter((id) => evs.some((e) => e.id === id));
-          list.append(this.group(`${key}/arc:${arc.id}`, [h('span', { class: 'grp-name' }, tr(arc.title, L))], () => this.eventList(inAge)));
+          list.append(this.group(`${key}/arc:${arc.id}`, [h('span', { class: 'grp-name' }, tr(arc.title, L))], () => this.eventList(inAge, !age.foretold)));
         }
         const loose = evs.filter((e) => !e.arcs.length);
-        if (loose.length && arcs.length) list.append(this.group(`${key}/other`, [h('span', { class: 'grp-name' }, this.L('otherEvents'))], () => this.eventList(loose)));
-        else if (loose.length) list.append(h('li', {}, this.eventList(loose)));
+        if (loose.length && arcs.length) list.append(this.group(`${key}/other`, [h('span', { class: 'grp-name' }, this.L('otherEvents'))], () => this.eventList(loose, !age.foretold)));
+        else if (loose.length) list.append(h('li', {}, this.eventList(loose, !age.foretold)));
         return list;
       }, 'age'));
     }

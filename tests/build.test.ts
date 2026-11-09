@@ -22,6 +22,17 @@ type Change =
 const PARTY = 'events/third-age/2941-04-26-the-party';
 const LETTERS = 'events/third-age/2941-06-moon-letters/event.yaml';
 const ROAD = 'journeys/the-road.yaml';
+const END = 'events/foretold/0001-the-end/event.yaml';
+/** A foretold age after the axis, with one event in it (docs/DESIGN.md §4.8). */
+const FORETOLD: Change[] = [
+  { file: 'ages/foretold.yaml', write: 'id: foretold\norder: 7\nname: { en: What Is Foretold, es: Lo Profetizado }\nsummary: { en: Prophecy., es: Profecía. }\ntimeless: true\nforetold: true\n' },
+  { file: END, write: [
+    'id: the-end', 'age: foretold', 'characters: [ gandalf ]', 'status: outline', 'foretoldBy: bilbo',
+    'source: { book: the-lost-road, chapter: Quenta Silmarillion }',
+    'title: { en: The End, es: El Fin }', 'summary: { en: It will come., es: Vendrá. }',
+    'links:', '  - { to: leaving, type: caused-by }', '',
+  ].join('\n') },
+];
 
 /** Build a copy of the valid fixture with some changes applied. */
 let n = 0;
@@ -223,6 +234,27 @@ describe('the valid fixture', () => {
     expect(w.at).toBe(ev('moon-letters').at);
   });
 
+  it('places what is foretold after the axis, as prophecy, after every journey leg', () => {
+    const ok = buildWith([...FORETOLD, { file: ROAD, replace: [
+      'season: autumn }, precision: season }',
+      'season: autumn }, precision: season }\n  - { place: bag-end, date: { age: third-age, year: 2941, season: winter }, precision: season }',
+    ] }]);
+    expect(ok.errors).toEqual([]);
+    expect(ok.warnings).toEqual([]);
+    expect(ok.index.ages.at(-1)).toMatchObject({ id: 'foretold', foretold: true });
+    expect(ok.index.ages.at(-1)!.axis).toBeUndefined();
+    const end = ok.index.events.at(-1)!;
+    expect(end).toMatchObject({ id: 'the-end', foretoldBy: 'bilbo', source: { book: 'the-lost-road' } });
+    expect(end.span).toBeUndefined();
+    expect(end.at).toBeUndefined();
+    // A link from prophecy into history is kept, with its reverse.
+    expect(ok.index.events.find((e) => e.id === 'leaving')!.links).toContainEqual(expect.objectContaining({ to: 'the-end', type: 'causes', reverse: true }));
+    // The winter leg comes before the prophecy in the lane, though the prophecy has no guess to sort by.
+    expect(ok.index.lanes.gandalf.slice(-2)).toEqual([{ journey: 'the-road', waypoint: 2 }, { event: 'the-end' }]);
+    // Other ages carry no flag.
+    expect(ok.index.ages.find((a) => a.id === 'before-time')!.foretold).toBeUndefined();
+  });
+
   it('lets a waypoint end at its own precision', () => {
     const ok = buildWith([{ file: ROAD, replace: [
       'date: { age: third-age, year: 2941, season: summer }, end: { age: third-age, year: 2941, season: autumn }, precision: season',
@@ -281,6 +313,13 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'scripted without narration', changes: [{ file: `${PARTY}/narration.yaml`, remove: true }], error: 'status "staged" needs a narration.yaml' },
   { name: 'staged without staging', changes: [{ file: `${PARTY}/staging.yaml`, remove: true }], error: 'status "staged" needs a staging.yaml' },
   { name: 'timeless event with a date', changes: [{ file: 'events/before-time/0000-the-music/event.yaml', replace: ['status: outline', 'status: outline\nwhen: { start: { age: third-age, year: 1 }, precision: year }'] }], error: 'age "before-time" is timeless; remove the date' },
+
+  // What is foretold
+  { name: 'foretold age with an axis', changes: [...FORETOLD, { file: 'ages/foretold.yaml', replace: ['timeless: true', 'axis: { start: 9000 }'] }], error: 'a foretold age must be timeless' },
+  { name: 'foretold age before a dated age', changes: [...FORETOLD, { file: 'ages/foretold.yaml', replace: ['order: 7', 'order: 1'] }], error: 'order: a foretold age comes after every dated age' },
+  { name: 'foretold event without a source', changes: [...FORETOLD, { file: END, replace: ['source: { book: the-lost-road, chapter: Quenta Silmarillion }', ''] }], error: 'source: required for what is foretold' },
+  { name: 'foretoldBy outside a foretold age', changes: [{ file: LETTERS, replace: ['status: outline', 'status: outline\nforetoldBy: gandalf'] }], error: 'foretoldBy: only for events in a foretold age' },
+  { name: 'foretoldBy an unknown character', changes: [...FORETOLD, { file: END, replace: ['foretoldBy: bilbo', 'foretoldBy: mandos'] }], error: 'foretoldBy: unknown character "mandos"' },
 
   // Dates
   { name: 'precision day without a day', changes: [{ file: `${PARTY}/event.yaml`, replace: ['month: 4, day: 26 }', 'month: 4 }'] }], error: 'precision "day" needs a day' },

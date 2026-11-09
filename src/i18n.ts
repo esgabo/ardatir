@@ -163,6 +163,7 @@ const UI = {
   theAges: { en: 'The ages', es: 'Las edades' },
   'ageShort_before-time': { en: 'Before', es: 'Antes' },
   'ageShort_years-of-the-lamps': { en: 'Lamps', es: 'Lámparas' },
+  ageShort_foretold: { en: 'Foretold', es: 'Profecía' },
   ageYears: { en: '{n} years', es: '{n} años' },
   ageValianYears: { en: '{n} Valian years', es: '{n} años valianos' },
   moment: { en: 'Moment', es: 'Momento' },
@@ -185,6 +186,17 @@ const UI = {
     en: 'Outside time: this happens before the world has days or years, so it has no place on the timeline.',
     es: 'Fuera del tiempo: ocurre antes de que el mundo tenga días o años, así que no tiene lugar en la línea del tiempo.',
   },
+  momentNote_foretold: {
+    en: 'Foretold, not history: what the prophecies say will come after all the ages. It has no date, so it stands past the end of the timeline.',
+    es: 'Profetizado, no historia: lo que las profecías dicen que vendrá después de todas las edades. No tiene fecha, así que queda más allá del final de la línea del tiempo.',
+  },
+  // What is foretold (#57, docs/DESIGN.md §4.8)
+  foretold: { en: 'Foretold', es: 'Profecía' },
+  foretoldHint: { en: 'Foretold, not told as history', es: 'Profecía; no se narra como historia' },
+  foretoldBy: { en: 'Foretold by {a}, not told as history.', es: 'Lo predijo {a}; no se narra como historia.' },
+  foretoldNoOne: { en: 'Foretold, not told as history.', es: 'Es una profecía; no se narra como historia.' },
+  foretoldSource: { en: 'Source: {s}.', es: 'Fuente: {s}.' },
+  foretoldTitle: { en: 'Foretold, not history', es: 'Profetizado, no historia' },
   valianNote: {
     en: 'In the Years of the Trees a year is a Valian year, about ten years of the Sun: only whole years can be chosen.',
     es: 'En los Años de los Árboles un año es un año valiano, unos diez años del Sol: solo se pueden elegir años enteros.',
@@ -220,8 +232,8 @@ const UI = {
   openTimeline: { en: 'Open the timeline', es: 'Abrir la línea del tiempo' },
   thisEventsMoment: { en: "This event's moment", es: 'El momento de este evento' },
   timeIntro: {
-    en: 'Pick any moment, from the Music before time to the Fourth Age, and see what is happening then, and where everyone is.',
-    es: 'Elige cualquier momento, de la Música antes del tiempo a la Cuarta Edad, y mira qué ocurre entonces y dónde está cada cual.',
+    en: 'Pick any moment, from the Music before time to the Fourth Age, and see what is happening then, and where everyone is. Past the end lies what is foretold.',
+    es: 'Elige cualquier momento, de la Música antes del tiempo a la Cuarta Edad, y mira qué ocurre entonces y dónde está cada cual. Más allá del final queda lo profetizado.',
   },
   // Event pages: events that can't be watched yet, read as text (#4)
   readable: { en: 'Read its story', es: 'Lee su historia' },
@@ -306,6 +318,8 @@ const UI = {
   'book_the-silmarillion': { en: 'The Silmarillion', es: 'El Silmarillion' },
   'book_unfinished-tales': { en: 'Unfinished Tales', es: 'Cuentos inconclusos' },
   'book_the-adventures-of-tom-bombadil': { en: 'The Adventures of Tom Bombadil', es: 'Las aventuras de Tom Bombadil' },
+  // The History of Middle-earth, vol. V; the Spanish title is unconfirmed (#51)
+  'book_the-lost-road': { en: 'The Lost Road and Other Writings', es: 'El camino perdido y otros escritos' },
   spring: { en: 'spring', es: 'primavera' },
   summer: { en: 'summer', es: 'verano' },
   autumn: { en: 'autumn', es: 'otoño' },

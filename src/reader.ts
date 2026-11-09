@@ -15,12 +15,11 @@ import { likelyParts, placementParts, renderParts, whyToggle } from './placement
 import { hasLane, MAX_LANES } from './lanes';
 import { eventHref, livesHref, timeHref } from './routes';
 import { momentOfEvent, momentPath } from './moment';
+import { foretoldBadge, foretoldLine, isForetold, sourceLabel } from './foretold';
 
 export interface ReaderHost {
   lang(): Lang;
 }
-
-const BOOK = (book: string, L: Lang) => ui(`book_${book}` as UiKey, L) || book;
 
 /** A section heading in the sidebar's style: label, rule, diamond. */
 function heading(text: string): HTMLElement {
@@ -30,7 +29,7 @@ function heading(text: string): HTMLElement {
 /** A link to another event: filled diamond when it can be watched, hollow when it is read. */
 function eventLink(e: EventSummary, L: Lang, cls = 'r-ev'): HTMLAnchorElement {
   return h('a', { class: `${cls}${e.stage ? ' staged' : ''}`, href: eventHref(e.id, L), title: ui(e.stage ? 'playable' : 'readable', L) },
-    h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'r-ev-name' }, tr(e.title, L)));
+    h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'r-ev-name' }, tr(e.title, L)), foretoldBadge(e, L));
 }
 
 function placeName(id: string | undefined, L: Lang): string {
@@ -46,18 +45,17 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
   const art = h('article', { class: 'reader', lang: L });
 
   // ---- Title block ----
+  const foretold = isForetold(ev);
   art.append(
     h('p', { class: 'r-over' }, [tr(age?.name, L), ...arcs.map((a) => tr(a.title, L))].filter(Boolean).join('  ·  ')),
     h('h1', { class: 'r-title' }, tr(ev.title, L)),
   );
+  // Prophecy, not history: said before anything else, with who foretold it and where it comes from.
+  if (foretold) art.append(h('p', { class: 'r-foretold' }, foretoldBadge(ev, L), h('span', {}, foretoldLine(ev, L))));
   const meta = h('ul', { class: 'r-meta' });
   meta.append(h('li', {}, h('span', { html: ICONS.clock }), h('span', {}, honestDate(ev, L))));
   if (ev.place) meta.append(h('li', {}, h('span', { html: ICONS.places }), h('span', {}, placeName(ev.place, L))));
-  if (ev.source) {
-    const ch = ev.source.chapter;
-    const chapter = typeof ch === 'number' ? `${S('chapter')} ${ch}` : ch ? `“${ch}”` : '';
-    meta.append(h('li', {}, h('span', { html: ICONS.books }), h('span', {}, [BOOK(ev.source.book, L), chapter].filter(Boolean).join(', '))));
-  }
+  if (ev.source) meta.append(h('li', {}, h('span', { html: ICONS.books }), h('span', {}, sourceLabel(ev.source, L))));
   art.append(meta);
   // How the event sits on the timeline when its date isn't exact: words, never the guess as a date.
   if (ev.atReason && ev.atReason.kind !== 'exact') {

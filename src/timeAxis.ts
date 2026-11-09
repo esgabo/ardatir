@@ -14,8 +14,10 @@ export const OPEN_AGE_YEARS = 120;
 
 export interface Segment {
   age: Age;
-  /** Timeless ages sit before the axis, as their own segments, not on it. */
+  /** Timeless ages sit beside the axis, as their own segments, not on it. */
   timeless: boolean;
+  /** A timeless age after the axis (what is foretold), not before it. */
+  after?: boolean;
   /** The age's own years (Valian years in the Years of the Trees). */
   years?: number;
   /** Axis span, for dated ages. */
@@ -26,19 +28,23 @@ export interface Segment {
   width: number;
 }
 
-/** Room between the timeless segments and the axis, as a share of the bar. */
+/** Room between the timeless segments and the axis, on each side, as a share of the bar. */
 const TIMELESS_GAP = 0.02;
 const TIMELESS_WEIGHT = 1.25;
 
 /**
  * The overview: every age as a segment. Lengths differ hugely (1500 Valian years, 590, 3441,
  * 3021 years), so widths follow the logarithm of each age's own years: every age gets room
- * to be read and picked, and longer ages are still wider. Timeless ages come first, apart.
- * `contentEnd` (an axis position) stretches the open-ended last age to cover all content.
+ * to be read and picked, and longer ages are still wider. Timeless ages stand apart: those
+ * ordered before the dated ages first (before the world), those after them last (what is
+ * foretold). `contentEnd` (an axis position) stretches the open-ended last age to cover all content.
  */
 export function buildSegments(agesIn: Age[], contentEnd?: number): Segment[] {
   const ages = [...agesIn].sort((a, b) => a.order - b.order);
-  const timeless = ages.filter((a) => !a.axis);
+  const datedOrders = ages.filter((a) => a.axis).map((a) => a.order);
+  const lastDated = datedOrders.length ? Math.max(...datedOrders) : Infinity;
+  const timeless = ages.filter((a) => !a.axis && a.order < lastDated);
+  const afterAxis = ages.filter((a) => !a.axis && a.order > lastDated);
   const dated = ages.filter((a) => a.axis).sort((a, b) => a.axis!.start - b.axis!.start);
   const rows = dated.map((age) => {
     const L = age.axis!.yearLength;
@@ -49,15 +55,44 @@ export function buildSegments(agesIn: Age[], contentEnd?: number): Segment[] {
     }
     return { age, years, from: age.axis!.start, to: age.axis!.start + years * L, weight: Math.max(2, Math.log10(years)) };
   });
-  const total = timeless.length * TIMELESS_WEIGHT + rows.reduce((s, r) => s + r.weight, 0);
-  const gap = timeless.length ? TIMELESS_GAP : 0;
-  const unit = (1 - gap) / total;
+  const total = (timeless.length + afterAxis.length) * TIMELESS_WEIGHT + rows.reduce((s, r) => s + r.weight, 0);
+  const gap = timeless.length ? TIMELESS_GAP : 0, gapAfter = afterAxis.length ? TIMELESS_GAP : 0;
+  const unit = (1 - gap - gapAfter) / total;
   const out: Segment[] = [];
   let left = 0;
   for (const age of timeless) { out.push({ age, timeless: true, left, width: TIMELESS_WEIGHT * unit }); left += TIMELESS_WEIGHT * unit; }
   left += gap;
   for (const r of rows) { out.push({ age: r.age, timeless: false, years: r.years, from: r.from, to: r.to, left, width: r.weight * unit }); left += r.weight * unit; }
+  left += gapAfter;
+  for (const age of afterAxis) { out.push({ age, timeless: true, after: true, left, width: TIMELESS_WEIGHT * unit }); left += TIMELESS_WEIGHT * unit; }
   return out;
+}
+
+/** The part of the overview the axis takes (from its first dated age to the end of its last), 0–1. */
+export function axisExtent(segs: Segment[]): { left: number; right: number } {
+  const dated = segs.filter((s) => !s.timeless);
+  if (!dated.length) return { left: 0, right: 1 };
+  const last = dated[dated.length - 1];
+  return { left: dated[0].left, right: last.left + last.width };
+}
+
+/**
+ * Stepping from a timeless moment, outside the axis: "later" from before time enters the first
+ * dated age, "earlier" from what is foretold enters the last year the axis shows. Undefined
+ * when there is nowhere to go that way (before the beginning, past the end).
+ */
+export function stepOutside(m: Moment, key: StepKey, segs: Segment[], ages: Age[], entry: (age: Age) => Moment): Moment | undefined {
+  const seg = segs.find((s) => s.age.id === m.age);
+  if (!seg?.timeless) return undefined;
+  const dated = segs.filter((s) => !s.timeless);
+  if (!dated.length) return undefined;
+  const fwd = key === 'next' || key === 'bigNext' || key === 'end';
+  if (!seg.after && fwd) return entry(dated[0].age);
+  if (seg.after && !fwd) {
+    const last = dated[dated.length - 1];
+    return momentOf({ age: last.age.id, year: last.years! }, ages);
+  }
+  return undefined;
 }
 
 /** Where a moment sits on the overview bar (0–1), at the start of its honest range; undefined for a timeless moment. */

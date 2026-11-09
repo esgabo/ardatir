@@ -23,6 +23,17 @@ describe('interface strings for content ids', () => {
     expect(rels.filter((r) => LANGS.some((L) => !hasText(`kin_${r}`, L)))).toEqual([]);
   });
 
+  it('every book cited as a source in content/ has an en and es title', () => {
+    const events = path.join(__dirname, '..', 'content', 'events');
+    const books = new Set<string>();
+    for (const f of fs.readdirSync(events, { recursive: true }) as string[]) {
+      if (!f.endsWith('event.yaml')) continue;
+      const e = YAML.parse(fs.readFileSync(path.join(events, f), 'utf8')) as { source?: { book?: string } };
+      if (e.source?.book) books.add(e.source.book);
+    }
+    expect([...books].filter((b) => LANGS.some((L) => !hasText(`book_${b}`, L)))).toEqual([]);
+  });
+
   it('kin phrases: gendered Spanish from the English word, neutral where it has none', () => {
     expect(kinPhrase('betrothed', 'Arwen', 'Aragorn', 'en')).toBe('Arwen, betrothed of Aragorn');
     expect(kinPhrase('betrothed', 'Arwen', 'Aragorn', 'es')).toBe('Arwen y Aragorn, prometidos');

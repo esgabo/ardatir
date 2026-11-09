@@ -133,6 +133,8 @@ body.sb-open .sb-panel { display: flex; }
 .age-head .chev { margin-top: 4px; }
 .node { position: relative; flex: none; width: 9px; height: 9px; margin: 6px 1px 0; border-radius: 50%; border: 1px solid var(--gold-soft); background: var(--side); }
 .node.lit { width: 11px; height: 11px; margin: 5px 0 0; border: 0; background: var(--gold); box-shadow: 0 0 10px rgba(232, 199, 122, 0.6); }
+.node.foretold { border-style: dashed; background: transparent; }
+.node.foretold.lit { border: 1px dashed var(--gold); background: rgba(232, 199, 122, 0.25); }
 .age-text { min-width: 0; display: flex; flex-direction: column; }
 .age-name { font-family: var(--serif); font-size: 19px; font-weight: 600; line-height: 1.2; }
 .node.lit + .age-text .age-name { color: var(--gold); }
@@ -156,6 +158,14 @@ a.ev:hover, button.ev:hover { background: rgba(255, 255, 255, 0.05); }
 .ev.dim[aria-current='page'] { color: var(--gold); }
 .ev-name { flex: 1; min-width: 0; }
 .ev-when { flex: none; font-size: 11px; color: var(--faint); }
+
+/* What is foretold (docs/DESIGN.md §4.8): a small dashed badge, the dashes of what lies outside time. */
+.foretold-badge {
+  flex: none; display: inline-block; padding: 1px 7px; border: 1px dashed rgba(232, 199, 122, 0.55); border-radius: 999px;
+  font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; line-height: 1.5; text-transform: uppercase;
+  color: var(--gold-soft); white-space: nowrap; text-shadow: none; vertical-align: middle;
+}
+.r-ev .foretold-badge { margin-left: 2px; }
 
 /* Story cards */
 .cards { display: flex; flex-direction: column; gap: 8px; }
@@ -328,6 +338,8 @@ body.sb-open .disclaimer { display: none; }
   .text-btn { padding: 0 10px; }
   .meanwhile { left: var(--gap); width: auto; bottom: 88px; }
   .crumbs .crumb, .crumbs .sep { display: none; }
+  /* The page under it says it is foretold; on a phone the bar keeps to one line. */
+  .crumbs .foretold-badge { display: none; }
   .crumbs .here { font-family: var(--serif); font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .timeline { bottom: 40px; }
   .caption { bottom: 100px; }
@@ -366,6 +378,11 @@ body.page-open .crumbs { text-shadow: none; }
 .reader { max-width: 700px; margin: 0 auto; padding: 92px 32px 48px; }
 .r-over { margin: 0 0 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-soft); }
 .r-title { margin: 0; font-family: var(--serif); font-weight: 600; font-size: 50px; line-height: 1.04; color: var(--gold); letter-spacing: 0.005em; text-wrap: balance; }
+.r-foretold {
+  display: flex; align-items: baseline; gap: 10px; margin: 16px 0 0; padding: 10px 14px;
+  border: 1px dashed var(--line); border-radius: 10px; font-size: 13.5px; line-height: 1.5; color: var(--ink);
+}
+.r-foretold .foretold-badge { position: relative; top: -1px; }
 .r-meta { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 18px 0 0; padding: 0; color: var(--muted); font-size: 13px; }
 .r-meta li { display: flex; align-items: center; gap: 7px; }
 .r-meta .icon { width: 16px; height: 16px; color: var(--gold-soft); }
@@ -547,6 +564,7 @@ a.r-person { color: inherit; text-decoration: none; }
 .ln-age .ln-body { padding: 22px 0 10px 12px; }
 .ln-age { --ny: 34px; }
 .ln-age-name { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--gold-soft); }
+.ln-age-note { display: block; margin-top: 2px; font-size: 12px; font-style: italic; color: var(--muted); }
 .ln-gap .ln-body { padding: 10px 0 10px 12px; }
 .ln-gap-text { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--faint); }
 
@@ -591,6 +609,7 @@ a.r-person { color: inherit; text-decoration: none; }
 /* The ages: segments, the timeless ones apart, before the axis */
 .tc-ages { display: flex; gap: 10px; height: 52px; }
 .tc-outside { flex: 0 0 12%; display: flex; gap: 3px; padding-bottom: 6px; }
+.tc-outside.after { flex-basis: 7%; }
 .tc-axis { position: relative; flex: 1; min-width: 0; }
 /* The axis: a thin gold line under the dated ages only. */
 .tc-axis::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); }
@@ -689,6 +708,7 @@ a.r-person { color: inherit; text-decoration: none; }
   .tc-seg-name.full { display: none; }
   .tc-seg-name.short { display: block; font-size: 13px; }
   .tc-outside { flex: 0 0 58px; flex-direction: column; }
+  .tc-outside.after { flex-basis: 50px; }
   .tc-ages { gap: 6px; }
   .tc-seg.timeless { border-radius: 6px; }
   .tc-seg.timeless .tc-seg-name.short { font-size: 10px; line-height: 1; }
