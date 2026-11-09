@@ -9,7 +9,7 @@ characters: [ faramir ]
 arcs: [ the-war-of-the-ring ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Window on the West" }
 title: { en: "Faramir Sees Boromir's Boat", es: "Faramir ve la barca de Boromir" }
 summary:
