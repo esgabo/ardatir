@@ -3,7 +3,7 @@
 
 import { describe, expect, it } from 'vitest';
 import type { Army } from '../src/data/types';
-import { sampleArmy } from '../src/scene/armies';
+import { armyHeadings, sampleArmy } from '../src/scene/armies';
 
 const army: Army = {
   faction: 'goblins', size: 'large', keyframes: [
@@ -37,5 +37,30 @@ describe('sampleArmy', () => {
 
   it('gives the same answer every time (scrubbing and deep links)', () => {
     expect(sampleArmy(army, 0.37)).toEqual(sampleArmy(army, 0.37));
+  });
+});
+
+describe('sampleArmy before its first keyframe', () => {
+  const late: Army = { faction: 'eagles', size: 'medium', keyframes: [
+    { t: 0.3, x: -13, z: -6, action: 'idle' },
+    { t: 0.5, x: -3, z: -4, action: 'fight' },
+    { t: 0.7, x: 2, z: -4, action: 'walk' },
+  ] };
+
+  it('stands at the first keyframe, idle and not marching, until it begins', () => {
+    expect(sampleArmy(late, 0.1)).toMatchObject({ x: -13, z: -6, action: 'idle', moving: false });
+    const mid = sampleArmy(late, 0.4);
+    expect(mid).toMatchObject({ moving: true, action: 'walk' });
+    expect(mid.x).toBeCloseTo(-8);
+    expect(sampleArmy(late, 0.5)).toMatchObject({ x: -3, z: -4, moving: true });
+    // Waiting to fight before it has begun is still waiting: no fight before the first keyframe.
+    const ambush: Army = { faction: 'wargs', size: 'small', keyframes: [{ t: 0.2, x: 1, z: 1 }, { t: 0.4, x: 1, z: 1, action: 'fight' }] };
+    expect(sampleArmy(ambush, 0.1)).toMatchObject({ action: 'idle', moving: false });
+    expect(sampleArmy(ambush, 0.3)).toMatchObject({ action: 'fight', moving: false });
+  });
+
+  it('takes the same answer from precomputed headings', () => {
+    const h = armyHeadings(late);
+    for (const t of [0, 0.3, 0.45, 0.62, 1]) expect(sampleArmy(late, t, h)).toEqual(sampleArmy(late, t));
   });
 });

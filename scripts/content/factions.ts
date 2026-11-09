@@ -4,7 +4,7 @@
 
 import path from 'node:path';
 import {
-  ARMY_ACTIONS, ARMY_SIZES,
+  ARMY_ACTIONS, ARMY_KINDS, ARMY_SIZES,
   type Army, type ArmyAction, type ArmyKeyframe, type ArmySize, type EventSummary, type Faction, type LocalizedText,
 } from '../../src/data/types.ts';
 
@@ -35,6 +35,7 @@ export function readFactions(C: FactionContext, contentDir: string, charIds: Set
     if (!fid) continue;
     if (!/^#[0-9a-f]{6}$/i.test(String(o.color ?? ''))) C.error(f, 'color: the banner colour, as #rrggbb');
     if (typeof o.kind !== 'string' || !KIND.test(o.kind)) C.error(f, 'kind: required, a character kind (elf, man, dwarf, orc, wolf, eagle, ...)');
+    else if (!(ARMY_KINDS as readonly string[]).includes(o.kind)) C.warn(f, `kind: "${o.kind}" has no army look yet (${ARMY_KINDS.join(', ')}): its armies would be drawn as men`);
     let leaders: string[] = [];
     if (o.leaders !== undefined) {
       if (!Array.isArray(o.leaders) || o.leaders.some((x) => typeof x !== 'string')) C.error(f, 'leaders: must be a list of character ids');

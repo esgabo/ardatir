@@ -258,6 +258,9 @@ export const ARMY_SIZES = ['small', 'medium', 'large'] as const;
 export type ArmySize = (typeof ARMY_SIZES)[number];
 export const ARMY_ACTIONS = ['idle', 'walk', 'run', 'fight'] as const;
 export type ArmyAction = (typeof ARMY_ACTIONS)[number];
+/** Faction kinds a diorama has a look for (src/scene/armies.ts); any other kind is drawn as men, and the build warns. */
+export const ARMY_KINDS = ['elf', 'man', 'dwarf', 'goblin', 'orc', 'hobbit', 'wolf', 'warg', 'eagle'] as const;
+export type ArmyKind = (typeof ARMY_KINDS)[number];
 
 /** Where an army's centre is at a moment of an event, and what it is doing. Off the tile = offstage. */
 export interface ArmyKeyframe {

@@ -439,6 +439,13 @@ describe('broken content', () => {
     expect(r.warnings.some((w) => w.includes('factions/proudfoots.yaml: fights in no battle yet'))).toBe(true);
   });
 
+  it('warns about a faction kind with no army look', () => {
+    const r = buildWith([{ file: 'factions/bagginses.yaml', replace: ['kind: hobbit', 'kind: ent'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('factions/bagginses.yaml: kind: "ent" has no army look yet'))).toBe(true);
+    expect(buildWith([]).warnings.some((w) => w.includes('has no army look'))).toBe(false);
+  });
+
   it('warns about missing Spanish and unknown fields', () => {
     const r = buildWith([{ file: 'places/rivendell.yaml', write: 'id: rivendell\nname: { en: Rivendell }\nsummary: { en: A house., es: Una casa. }\nheight: 3\n' }]);
     expect(r.errors).toEqual([]);

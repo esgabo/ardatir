@@ -1,13 +1,14 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import type { Army, ArmyAction, ArmySize, Faction } from '../data/types';
+import type { Army, ArmyAction, ArmyKind, ArmySize, Faction } from '../data/types';
 import { TILE_LIMIT } from '../timeline';
 import { sampleGround } from './diorama';
 import { hash } from './util';
 
 /**
  * A battle's armies (staging.yaml `armies`, docs/DESIGN.md §2): each a block of small figures
- * in its faction's colour, drawn with instancing (two or three draw calls per army), moving
+ * in its faction's colour, drawn with instancing (two or three draw calls per army, one more
+ * for a banner), moving
  * along its keyframes. Where every figure stands is a pure function of the event time `t`;
  * the formation's jitter is seeded by the army, and `ambient` only adds the bob of marching,
  * the jostle of fighting and the beat of wings. A figure off the tile is offstage: not drawn.
@@ -29,7 +30,7 @@ interface Look {
   spacing: number;
 }
 
-const LOOKS: Record<string, Look> = {
+const LOOKS: Record<ArmyKind, Look> = {
   elf: { body: 'foot', height: 0.78, girth: 0.085, head: '#e6d6ad', spear: true, spacing: 0.36 },
   man: { body: 'foot', height: 0.74, girth: 0.09, head: '#b9c0c6', spear: true, spacing: 0.36 },
   dwarf: { body: 'foot', height: 0.52, girth: 0.11, head: '#c3c8cc', spear: false, spacing: 0.34 },
@@ -59,33 +60,45 @@ export interface Armies {
   update(t: number, ambient: number): void;
 }
 
+/** Each segment's heading (its direction of travel; a pause keeps the last one), and the first. Pure. */
+export interface ArmyHeadings { heads: number[]; first: number }
+export function armyHeadings(a: Army): ArmyHeadings {
+  const ks = a.keyframes;
+  const segs: (number | undefined)[] = [];
+  for (let n = 0; n < ks.length - 1; n++) {
+    const dx = ks[n + 1].x - ks[n].x, dz = ks[n + 1].z - ks[n].z;
+    segs.push(Math.hypot(dx, dz) > 1e-3 ? Math.atan2(dx, dz) : undefined);
+  }
+  // Never moves: face the tile's centre. A pause before the first march takes that march's heading.
+  const first = segs.find((x) => x !== undefined) ?? Math.atan2(-ks[0].x, -ks[0].z);
+  let last = first;
+  const heads = segs.map((x) => (last = x ?? last));
+  return { heads, first };
+}
+
 /**
  * Where an army's centre is at `t`, what it is doing, and which way it faces. Pure. Unlike a
  * character's keyframe, an army's `action` says what it does on the way to that keyframe.
+ * Before its first keyframe it stands there, idle. `h` is `armyHeadings(a)`, passed in by the
+ * frame loop so nothing is rebuilt every frame.
  */
-export function sampleArmy(a: Army, t: number): { x: number; z: number; action: ArmyAction; moving: boolean; heading: number } {
+export function sampleArmy(a: Army, t: number, h: ArmyHeadings = armyHeadings(a)): { x: number; z: number; action: ArmyAction; moving: boolean; heading: number } {
   const ks = a.keyframes;
   let i = 0;
   while (i < ks.length - 1 && ks[i + 1].t <= t) i++;
   const k0 = ks[i], k1 = ks[Math.min(i + 1, ks.length - 1)];
   const span = k1.t - k0.t;
+  const before = t < k0.t;
   const u = span > 0 ? Math.min(Math.max((t - k0.t) / span, 0), 1) : 0;
-  const moving = span > 0 && u < 1 && Math.hypot(k1.x - k0.x, k1.z - k0.z) > 1e-3;
+  const moving = !before && span > 0 && u < 1 && Math.hypot(k1.x - k0.x, k1.z - k0.z) > 1e-3;
   const x = k0.x + (k1.x - k0.x) * u, z = k0.z + (k1.z - k0.z) * u;
 
-  // Each segment's heading: its direction of travel; a pause keeps the last one (or takes the next).
-  const segs: (number | undefined)[] = ks.slice(0, -1).map((k, n) => {
-    const dx = ks[n + 1].x - k.x, dz = ks[n + 1].z - k.z;
-    return Math.hypot(dx, dz) > 1e-3 ? Math.atan2(dx, dz) : undefined;
-  });
-  const first = segs.find((s) => s !== undefined) ?? Math.atan2(-x, -z); // never moves: face the tile's centre
-  let last = first;
-  const heads = segs.map((s) => (last = s ?? last));
+  const { heads, first } = h;
   const seg = Math.min(i, heads.length - 1);
   let heading = heads[seg] ?? first;
   // Wheel smoothly into a new heading at the start of the segment that turns.
-  if (seg > 0 && heads[seg - 1] !== undefined && heads[seg - 1] !== heading) {
-    const from = heads[seg - 1]!, w = Math.min(WHEEL, span * 0.5 || WHEEL);
+  if (seg > 0 && heads[seg - 1] !== heading) {
+    const from = heads[seg - 1], w = Math.min(WHEEL, span * 0.5 || WHEEL);
     const p = Math.min(Math.max((t - k0.t) / w, 0), 1);
     let d = heading - from;
     d = Math.atan2(Math.sin(d), Math.cos(d));
@@ -94,7 +107,7 @@ export function sampleArmy(a: Army, t: number): { x: number; z: number; action: 
   // A keyframe's action is what the army does on the way to it: walk or run there, or wait (idle)
   // or fight where it stands. After the last keyframe, it keeps doing what that one says.
   const action: ArmyAction = moving ? (k1.action === 'run' ? 'run' : 'walk')
-    : k1.action === 'fight' ? 'fight' : 'idle';
+    : !before && k1.action === 'fight' ? 'fight' : 'idle';
   return { x, z, action, moving, heading };
 }
 
@@ -189,17 +202,23 @@ function eagleGeometry(): { body: THREE.BufferGeometry; head: THREE.BufferGeomet
 export function createArmies(armies: Army[], factions: Map<string, Faction>, diorama: THREE.Object3D, eventSeed: number): Armies {
   const group = new THREE.Group();
   group.name = 'armies';
+  // One material for every banner of the event: the colours are in the vertices.
+  const bannerMat = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, side: THREE.DoubleSide, roughness: 0.85, metalness: 0.1 });
 
   interface Built {
     army: Army;
     look: Look;
+    seed: number;
+    /** Precomputed once: the army's headings, and how far its front rank stands ahead of its centre. */
+    headings: ArmyHeadings;
+    front: number;
     slots: { x: number; z: number; phase: number }[];
     meshes: THREE.InstancedMesh[];
-    banner?: THREE.Group;
+    banner?: THREE.Mesh;
   }
 
   // Counts by size and body, scaled down together if the event would draw too many.
-  const looks = armies.map((a) => LOOKS[factions.get(a.faction)?.kind ?? ''] ?? DEFAULT_LOOK);
+  const looks = armies.map((a) => LOOKS[(factions.get(a.faction)?.kind ?? '') as ArmyKind] ?? DEFAULT_LOOK);
   const wanted = armies.map((a, n) => COUNT[looks[n].body][a.size]);
   const total = wanted.reduce((s, x) => s + x, 0);
   const scale = total > MAX_FIGURES ? MAX_FIGURES / total : 1;
@@ -227,23 +246,17 @@ export function createArmies(armies: Army[], factions: Map<string, Faction>, dio
       group.add(m);
     }
 
-    // A banner in the faction's colour at the front of every army that marches on foot.
-    let banner: THREE.Group | undefined;
+    // A banner in the faction's colour at the front of every army that marches on foot:
+    // pole, cloth and finial merged into one vertex-coloured mesh (one draw call).
+    let banner: THREE.Mesh | undefined;
     if (look.body === 'foot') {
-      banner = new THREE.Group();
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1.5, 4), new THREE.MeshStandardMaterial({ color: '#3a2e22', flatShading: true }));
-      pole.position.y = 0.75;
-      const cloth = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.3, 3, 1), new THREE.MeshStandardMaterial({ color, flatShading: true, side: THREE.DoubleSide, roughness: 0.9 }));
-      cloth.geometry.translate(0.21, 0, 0);
-      cloth.position.set(0.018, 1.33, 0);
-      cloth.name = 'cloth';
-      const finial = new THREE.Mesh(new THREE.OctahedronGeometry(0.045, 0), new THREE.MeshStandardMaterial({ color: '#e8c77a', flatShading: true, metalness: 0.4 }));
-      finial.position.y = 1.53;
-      banner.add(pole, cloth, finial);
-      banner.traverse((o) => { o.castShadow = true; });
+      banner = new THREE.Mesh(bannerGeometry(color), bannerMat);
+      banner.castShadow = true;
       group.add(banner);
     }
-    return { army, look, slots, meshes, banner };
+    let front = -Infinity;
+    for (const sl of slots) front = Math.max(front, sl.z);
+    return { army, look, seed, headings: armyHeadings(army), front, slots, meshes, banner };
   });
 
   const m4 = new THREE.Matrix4();
@@ -258,23 +271,28 @@ export function createArmies(armies: Army[], factions: Map<string, Faction>, dio
     group,
     update(t, ambient) {
       for (const b of built) {
-        const s = sampleArmy(b.army, t);
+        const s = sampleArmy(b.army, t, b.headings);
         const cos = Math.cos(s.heading), sin = Math.sin(s.heading);
         const fighting = s.action === 'fight' && !s.moving;
         const spread = fighting ? 1.18 : 1;
         const pace = s.action === 'run' ? 13 : 8;
-        b.slots.forEach((slot, k) => {
+        const eagle = b.look.body === 'eagle';
+        for (let k = 0; k < b.slots.length; k++) {
+          const slot = b.slots[k];
           // The slot in the world: across the front (x) and towards the front (z), turned to the heading.
           const lx = slot.x * spread, lz = slot.z * spread;
           let x = s.x + lx * cos + lz * sin;
           let z = s.z - lx * sin + lz * cos;
+          // On the tile or offstage by the slot itself, before any idle motion: what is shown
+          // depends on t alone, never on `ambient`.
+          if (!onTile(x, z)) { for (const m of b.meshes) m.setMatrixAt(k, hidden); continue; }
           let y = 0, yaw = s.heading, flap = 1;
-          if (b.look.body === 'eagle') {
+          if (eagle) {
             // Wheeling over the field: each eagle circles its place, lower when they stoop to strike.
             const r = fighting ? 0.55 : 0.25, a = ambient * (fighting ? 1.3 : 0.8) + slot.phase;
             x += Math.cos(a) * r; z += Math.sin(a) * r;
             if (fighting) yaw = Math.atan2(-Math.sin(a), Math.cos(a));
-            y = (fighting ? EAGLE_HEIGHT - 0.9 : EAGLE_HEIGHT) + Math.sin(ambient * 1.7 + slot.phase) * 0.18 + hash(k, 9, 3) * 0.5;
+            y = (fighting ? EAGLE_HEIGHT - 0.9 : EAGLE_HEIGHT) + Math.sin(ambient * 1.7 + slot.phase) * 0.18 + hash(k, 9, b.seed) * 0.5;
             flap = Math.sin(ambient * (s.moving ? 9 : 5) + slot.phase);
           } else if (s.moving) {
             y = Math.abs(Math.sin(ambient * pace + slot.phase)) * (b.look.body === 'wolf' ? 0.06 : 0.04);
@@ -284,7 +302,6 @@ export function createArmies(armies: Army[], factions: Map<string, Faction>, dio
             x += l * sin; z += l * cos;
             yaw += Math.sin(ambient * 2.1 + slot.phase) * 0.35;
           }
-          if (!onTile(x, z)) { for (const m of b.meshes) m.setMatrixAt(k, hidden); return; }
           const ground = sampleGround(diorama, x, z);
           pos.set(x, ground + y, z);
           q.setFromEuler(e.set(0, yaw, 0));
@@ -292,14 +309,14 @@ export function createArmies(armies: Army[], factions: Map<string, Faction>, dio
           m4.compose(pos, q, scl);
           b.meshes[1].setMatrixAt(k, m4);
           if (b.meshes[2]) b.meshes[2].setMatrixAt(k, m4);
-          if (b.look.body === 'eagle') { scl.set(1, flap, 1); m4.compose(pos, q, scl); }
+          if (eagle) { scl.set(1, flap, 1); m4.compose(pos, q, scl); }
           b.meshes[0].setMatrixAt(k, m4);
-        });
+        }
         for (const m of b.meshes) m.instanceMatrix.needsUpdate = true;
 
         if (b.banner) {
           // At the front of the block, a step ahead of the first rank.
-          const front = Math.max(...b.slots.map((sl) => sl.z)) * spread + 0.25;
+          const front = b.front * spread + 0.25;
           const bx = s.x + front * sin, bz = s.z + front * cos;
           b.banner.visible = onTile(bx, bz);
           b.banner.position.set(bx, sampleGround(diorama, bx, bz) + (s.moving ? Math.abs(Math.sin(ambient * pace)) * 0.03 : 0), bz);
@@ -309,4 +326,25 @@ export function createArmies(armies: Army[], factions: Map<string, Faction>, dio
       }
     },
   };
+}
+
+/** A banner as one geometry: a dark pole, the cloth in the faction's colour streaming along +x, a gold finial. */
+function bannerGeometry(color: THREE.Color): THREE.BufferGeometry {
+  const pole = new THREE.CylinderGeometry(0.018, 0.018, 1.5, 4).toNonIndexed();
+  pole.translate(0, 0.75, 0);
+  const cloth = new THREE.PlaneGeometry(0.42, 0.3, 3, 1).toNonIndexed();
+  cloth.translate(0.21 + 0.018, 1.33, 0);
+  const finial = new THREE.OctahedronGeometry(0.045, 0).toNonIndexed();
+  finial.translate(0, 1.53, 0);
+  const parts: [THREE.BufferGeometry, THREE.Color][] = [[pole, new THREE.Color('#3a2e22')], [cloth, color], [finial, new THREE.Color('#e8c77a')]];
+  for (const [g, c] of parts) {
+    for (const a of Object.keys(g.attributes)) if (a !== 'position' && a !== 'normal') g.deleteAttribute(a);
+    const n = g.attributes.position.count;
+    const col = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) col.set([c.r, c.g, c.b], i * 3);
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  }
+  const merged = mergeGeometries(parts.map(([g]) => g))!;
+  for (const [g] of parts) g.dispose();
+  return merged;
 }
