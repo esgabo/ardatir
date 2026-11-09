@@ -9,8 +9,6 @@ import { initialLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
-import { createCosmosStage } from './scene/cosmos';
-import { createDioramaStage } from './scene/dioramaStage';
 import type { Stage } from './scene/stage';
 import './style.css';
 
@@ -72,27 +70,42 @@ let clock: EventClock;
 /** Playhead in seconds of narration; the animation time state.t is derived from it. */
 let playhead = 0;
 
-function buildStage(event: EventDetail): Stage {
+/**
+ * Each zoom level is its own chunk, loaded the first time it is needed, so the front
+ * page (the cosmos) never downloads the diorama code and vice versa.
+ */
+async function buildStage(event: EventDetail): Promise<Stage> {
   if (event.stage === 'cosmos') {
+    const { createCosmosStage } = await import('./scene/cosmos');
     const L = (k: Parameters<typeof ui>[0]) => ui(k, state.lang);
     return createCosmosStage({
       ambar: L('ambar'), vista: L('vista'), ilmen: L('ilmen'),
       vaiya: L('vaiya'), walls: L('walls'), kuma: L('kuma'),
     });
   }
+  const { createDioramaStage } = await import('./scene/dioramaStage');
   return createDioramaStage(event, characterMap, state.lang);
 }
 
-function loadStage(): void {
+/** Bumped on every loadStage, so a slower stage import can't replace a newer one. */
+let stageGeneration = 0;
+
+async function loadStage(): Promise<void> {
+  const gen = ++stageGeneration;
+  const event = state.event;
+  const next = await buildStage(event);
+  if (gen !== stageGeneration) { next.dispose(); return; }
+
+  // The previous stage keeps rendering until the new one is ready, then is swapped out.
   stage?.dispose();
   controls?.dispose();
   narration?.dispose();
 
-  stage = buildStage(state.event);
+  stage = next;
   controls = new OrbitControls(stage.camera, renderer.domElement);
   controls.target.copy(stage.target);
   controls.enableDamping = true;
-  if (state.event.stage === 'cosmos') {
+  if (event.stage === 'cosmos') {
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.25;
     controls.minDistance = 6;
@@ -103,8 +116,8 @@ function loadStage(): void {
     controls.minZoom = 0.5;
     controls.maxZoom = 4;
   }
-  clock = new EventClock(state.event, state.lang);
-  narration = new Narration(state.event, state.lang, clock);
+  clock = new EventClock(event, state.lang);
+  narration = new Narration(event, state.lang, clock);
   playhead = clock.secondsAt(state.t);
   stage.select?.(state.selected);
   resize();
@@ -136,8 +149,8 @@ async function openEvent(id: string): Promise<void> {
   state.playing = false;
   state.selected = null;
   closeMeanwhile();
-  loadStage();
   writeRoute();
+  await loadStage();
 }
 
 const sidebar = new Sidebar($('sidebar'), {
@@ -152,8 +165,8 @@ const sidebar = new Sidebar($('sidebar'), {
 function setLang(lang: Lang): void {
   state.lang = lang;
   rememberLang(lang);
-  loadStage(); // labels and names are baked into the stage
   writeRoute();
+  void loadStage(); // labels and names are baked into the stage
 }
 
 function formatDate(e: EventSummary): string {
@@ -373,7 +386,7 @@ addEventListener('hashchange', async () => {
     state.event = await loadEvent(r.eventId);
     state.t = r.t ?? 0;
     state.selected = r.follow ?? null;
-    loadStage();
+    await loadStage();
   }
 });
 
@@ -430,7 +443,7 @@ async function start(): Promise<void> {
   await loadIndex();
   state.event = await loadEvent(route.eventId);
   if (state.event.id !== route.eventId) state.t = 0;
-  loadStage();
+  await loadStage();
   writeRoute();
   frame();
 }

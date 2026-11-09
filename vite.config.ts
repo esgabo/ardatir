@@ -37,4 +37,12 @@ function ardatirContent(): Plugin {
 export default defineConfig({
   base: './',
   plugins: [ardatirContent()],
+  build: {
+    rollupOptions: {
+      output: {
+        // three.js changes far less often than the site: its own chunk stays cached between deploys.
+        manualChunks: (id) => (id.includes('/node_modules/three/build/') ? 'three' : undefined),
+      },
+    },
+  },
 });

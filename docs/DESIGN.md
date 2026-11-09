@@ -220,6 +220,7 @@ starts: { fire: 0.4, trolls: 7.2, caught: 13.9 }
 - **One clock.** The playhead runs in seconds of narration; the animation time `t` is derived from it. Between passage starts the animation is stretched to match, so a slower Spanish reading slows the animation and every passage still begins exactly on its moment. Without `starts`, the event is stretched linearly to the recording's `duration`; without a recording, it lasts the staging's `duration`.
 - **On screen** the current passage appears when its voice starts and is revealed word by word as it is read; the unread part waits, dimmed. Without audio the reveal follows the same pacing, so every event works muted.
 - Producing the recordings and their timing files is outside this project (the author uses a Voice Studio in a homelab). Keep the spoken words identical to the passage text.
+- **Scripts out, recordings in.** `npm run narration:export` writes each event's script per language to `out/narration/<event>/<lang>.{txt,json}` for the Voice Studio, with a `textHash` of the text. The hash goes back into `audio/<lang>.yaml` with the recording, and the content build warns when `narration.yaml` no longer matches it (a stale recording). `--changed` exports only what needs (re)recording. Format in `content/README.md`.
 - No cloned voices of real actors.
 
 ## 6. Languages
@@ -242,6 +243,7 @@ The URL always reflects where you are:
 ## 8. Technical shape
 
 - **Static site**: Vite + TypeScript + three.js, no framework. Output is a plain `dist/` folder (GitHub Pages).
+- **Code is split by zoom level**: each stage (`scene/cosmos.ts`, `scene/dioramaStage.ts`) is loaded with a dynamic `import()` the first time it is needed, so the front page never downloads diorama code. three.js core gets its own chunk (`manualChunks` in `vite.config.ts`), cached across deploys; keep every chunk under Vite's 500 kB warning.
 - **Content build** (`scripts/content/`): reads `content/`, validates it, and writes `public/data/` (generated, not committed):
   - `index.json`: ages, characters, places, arcs, journeys, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc and journey. Small enough to load up front; the time cursor and lanes run on it.
   - `events/<id>.json`: one per staged event, with narration, staging and audio timing, loaded when the event opens.

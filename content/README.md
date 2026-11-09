@@ -89,12 +89,22 @@ tracks:
 
 ## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`
 
-Produced outside this project. The words must match `narration.yaml` exactly. The timing file says how long the recording is and the second each passage starts; the animation stretches to match.
+Produced outside this project (the Voice Studio). The words must match `narration.yaml` exactly. The timing file says how long the recording is, the second each passage starts, and which text was read; the animation stretches to match.
 
 ```yaml
 duration: 31.5
 starts: { fire: 0.4, trolls: 7.2 }
+textHash: sha256:758a7a017a977923   # the text this recording reads
 ```
+
+**Getting the script to record:** `npm run narration:export` writes, for every event with a `narration.yaml` and every language:
+
+- `out/narration/<event>/<lang>.txt`: the words to read, one paragraph per passage, in order;
+- `out/narration/<event>/<lang>.json`: `{ event, lang, title, textHash, passages: [{ id, text }] }`, plus `fallback: [ids]` when some passages have no text in that language and use the English.
+
+`out/` is generated and gitignored. Options: `--only <event>` (event id, repeatable), `--lang es` (repeatable), `--changed` (only what needs recording: no recording yet, a stale one, or one without a `textHash`). For example: `npm run narration:export -- --changed --lang es`.
+
+**`textHash`** is `sha256:` followed by the first 16 hex digits of SHA-256 over one line per passage, in order: `<id>`, a tab, the passage's text in that language (English where it is missing), a newline; whitespace in the text is collapsed first, so re-wrapping the YAML doesn't change it. Copy it from the exported `.json` into `audio/<lang>.yaml` when the recording comes back. The build then warns **stale recording** when a passage's words, ids or order change after recording, and warns when a recording has no `textHash`. The code is in `scripts/narration/text.ts`.
 
 ## Journeys
 

@@ -15,7 +15,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "content": "node scripts/content/cli.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "narration:export": "node scripts/narration/export.ts"
   },
   "dependencies": {
     "three": "^0.170.0"

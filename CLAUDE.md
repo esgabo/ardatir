@@ -18,6 +18,7 @@ npm run build      # typecheck + static build into dist/
 npm run preview    # serve dist/ at http://localhost:4173
 npm run content    # validate content/ and write public/data/ (dev and build also do this)
 npm test           # vitest: calendar, best guesses, event clock, content validation (tests/)
+npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event>, --lang es, --changed)
 ```
 
 Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
@@ -55,6 +56,9 @@ scripts/content/
   build.ts           load + validate content/, place on the time axis, reverse links, lookups
   cli.ts             `npm run content`
 tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
+scripts/narration/
+  export.ts          `npm run narration:export`: scripts per event and language for the Voice Studio
+  text.ts            a passage's text per language and the `textHash` that marks a recording stale
 vite.config.ts       runs the content build on start (fails `npm run build` on errors) and on change in dev
 public/data/         GENERATED (gitignored): index.json, events/<id>.json, audio/<id>/<lang>.mp3
 src/
@@ -78,8 +82,9 @@ src/
 - **Everything visible is a pure function of the event time `t` (0 → 1).** That is what makes scrubbing and deep links work. `ambient` seconds may only drive idle motion (shimmer, drift, bobbing), never story state.
 - **The playhead runs in seconds of narration; `t` is derived** via `EventClock.tAt`. Seeking converts back with `secondsAt`. Never advance `t` directly.
 - **Narration timing:** `staging.yaml` gives each passage's `t` (where it belongs in the animation); `audio/<lang>.yaml` gives the second it starts in that recording, keyed by passage id. The build turns both into ordered arrays, and the clock stretches the animation between those points.
+- **Recordings carry a `textHash`** of the words they read (`audio/<lang>.yaml`); the build warns when `narration.yaml` no longer matches. Editing a recorded passage means re-recording it.
 - **The URL is the state**: `#/event/<id>?t=&follow=&lang=`. New view state that matters should be added to the route.
-- **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`.
+- **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.
 - **Date math lives in `src/data/calendar.ts` only.** Spans are widened by precision (a `year` date covers the whole year): that's the honest range.
