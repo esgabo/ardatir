@@ -1,0 +1,8 @@
+id: varda
+name: { en: "Varda", es: "Varda" }
+kind: ainu
+summary:
+  en: "Queen of the Valar and lady of the stars, whose light the Elves love above all."
+  es: "Reina de los Valar y señora de las estrellas, cuya luz aman los Elfos por encima de todo."
+color: "#dfe6ff"
+scale: 2.4

@@ -1,0 +1,32 @@
+stage: diorama
+duration: 24
+narration:
+  worry: 0
+  road: 0.2
+  inn: 0.4
+  plan: 0.6
+  burglar: 0.8
+beats:
+  worry: 0
+  meet: 0.2
+  plan: 0.6
+  hobbit: 0.8
+tracks:
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: 3.5, z: 3.5, action: walk, thought: { en: "If Sauron wakes the dragon, the North is lost.", es: "Si Sauron despierta al dragón, el Norte está perdido." } }
+      - { t: 0.2, x: 1.5, z: 1.5, action: idle }
+      - { t: 0.3, x: 1, z: 1, action: idle }
+      - { t: 0.4, x: -2.5, z: -2.5, action: walk }
+      - { t: 0.6, x: -2.5, z: -2.5, action: talk, thought: { en: "Stealth, and a smell the dragon has never known.", es: "Sigilo, y un olor que el dragón nunca ha conocido." } }
+      - { t: 0.8, x: -2.5, z: -2.5, action: talk, thought: { en: "Bilbo Baggins. He does not know it yet.", es: "Bilbo Bolsón. Aún no lo sabe." } }
+      - { t: 1, x: -2.5, z: -2.5, action: idle }
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 6, z: -4, action: idle, thought: { en: "Erebor never leaves my thoughts.", es: "Erebor nunca sale de mis pensamientos." } }
+      - { t: 0.2, x: 5, z: -3.5, action: walk }
+      - { t: 0.36, x: 1.5, z: 0.5, action: walk, thought: { en: "A wizard, here on the road. Perhaps he can help.", es: "Un mago, aquí en el camino. Quizás pueda ayudarme." } }
+      - { t: 0.4, x: -1.8, z: -2, action: walk }
+      - { t: 0.6, x: -1.8, z: -2, action: talk, thought: { en: "An army of dwarves will take back our home.", es: "Un ejército de enanos recuperará nuestro hogar." } }
+      - { t: 0.8, x: -1.8, z: -2, action: talk }
+      - { t: 1, x: -1.8, z: -2, action: idle }

@@ -1,0 +1,38 @@
+stage: diorama
+duration: 30
+narration:
+  wake: 0
+  camp: 0.2
+  words: 0.42
+  wisdom: 0.62
+  grief: 0.82
+beats:
+  wake: 0
+  camp: 0.2
+  words: 0.42
+  grief: 0.82
+tracks:
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 4.5, z: -2.7, action: hide, thought: { en: "My gold made me blind. I was a fool at the gate.", es: "El oro me cegó. Fui un necio en la puerta." } }
+      - { t: 0.42, x: 4.5, z: -2.7, action: hide, thought: { en: "I do not want to part as enemies. Forgive me.", es: "No quiero separarme como enemigos. Perdóname." } }
+      - { t: 0.62, x: 4.5, z: -2.7, action: hide, thought: { en: "The homely ways of your Shire hold more wisdom than all my gold.", es: "Las costumbres sencillas de tu Comarca guardan más sabiduría que todo mi oro." } }
+      - { t: 0.8, x: 4.5, z: -2.7, action: hide }
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: -5, z: -2, action: hide, thought: { en: "My head aches. Why is the field so quiet?", es: "Me duele la cabeza. ¿Por qué está el campo tan callado?" } }
+      - { t: 0.17, x: -5, z: -2, action: hide }
+      - { t: 0.3, x: 0, z: 1.8, action: walk, thought: { en: "Carried down to the camp. At least I am alive.", es: "Me han bajado al campamento. Al menos estoy vivo." } }
+      - { t: 0.42, x: 3.3, z: -2.1, action: walk }
+      - { t: 0.44, x: 3.3, z: -2.1, action: talk, thought: { en: "Thorin, I am here.", es: "Thorin, estoy aquí." } }
+      - { t: 0.62, x: 3.3, z: -2.1, action: idle, thought: { en: "Home, good food, laughter... he is right.", es: "El hogar, la buena mesa, la risa... tiene razón." } }
+      - { t: 0.8, x: 3.3, z: -2.1, action: idle }
+      - { t: 0.82, x: 3.3, z: -2.1, action: hide, thought: { en: "I will miss him. And I am glad I was here to say goodbye.", es: "Lo echaré de menos. Y me alegro de haber estado aquí para despedirme." } }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: 0.8, z: 2.6, action: idle, thought: { en: "The hobbit lives. Thorin has asked for him.", es: "El hobbit vive. Thorin ha preguntado por él." } }
+      - { t: 0.3, x: 0.8, z: 2.6, action: talk }
+      - { t: 0.42, x: 2.6, z: -0.9, action: walk }
+      - { t: 0.44, x: 2.6, z: -0.9, action: idle }
+      - { t: 0.8, x: 2.6, z: -0.9, action: idle }
+      - { t: 0.88, x: 1.2, z: 1, action: walk, thought: { en: "Let him grieve. He has earned it.", es: "Dejadle llorar. Se lo ha ganado." } }

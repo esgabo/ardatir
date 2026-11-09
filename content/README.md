@@ -87,6 +87,8 @@ tracks:
       - { t: 0, x: -4, z: 3, action: walk, thought: { en: ..., es: ... } }
 ```
 
+The tile runs about -7 to 7 on both axes. A figure whose position is off the tile (say `x: 11, z: 11`) is not drawn: off the tile = offstage. Use it to wait out the scenes before an entrance. A figure moving between two `hide` keyframes stays hidden (it is not shown walking).
+
 ## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`
 
 Produced outside this project (the Voice Studio). The words must match `narration.yaml` exactly. The timing file says how long the recording is, the second each passage starts, and which text was read; the animation stretches to match.

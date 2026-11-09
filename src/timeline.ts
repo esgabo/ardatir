@@ -11,6 +11,13 @@ export interface Pose {
   moving: boolean;
 }
 
+/** Half the diorama tile (size 14) plus a margin: a figure beyond this is offstage and not drawn. */
+export const TILE_LIMIT = 7.2;
+
+export function onTile(pose: { x: number; z: number }): boolean {
+  return Math.abs(pose.x) <= TILE_LIMIT && Math.abs(pose.z) <= TILE_LIMIT;
+}
+
 /** Sample a character's track at normalised time t (0 → 1). Pure, so the scrubber can jump anywhere. */
 export function samplePose(track: Track, t: number): Pose {
   const ks = track.keyframes;
@@ -34,7 +41,7 @@ export function samplePose(track: Track, t: number): Pose {
   return {
     x, z,
     heading: Math.atan2(dx, dz),
-    action: moving ? (b.action === 'run' ? 'run' : 'walk') : (a.action ?? 'idle'),
+    action: moving ? (a.action === 'hide' && b.action === 'hide' ? 'hide' : b.action === 'run' ? 'run' : 'walk') : (a.action ?? 'idle'),
     thought,
     moving,
   };

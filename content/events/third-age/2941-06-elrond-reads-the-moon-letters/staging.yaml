@@ -1,0 +1,48 @@
+stage: diorama
+duration: 36
+narration:
+  valley: 0
+  swords: 0.17
+  map: 0.33
+  letters: 0.5
+  message: 0.67
+  durin: 0.84
+beats:
+  swords: 0.17
+  map: 0.33
+  letters: 0.5
+  durin: 0.84
+tracks:
+  - characterId: elrond
+    keyframes:
+      - { t: 0, x: -3.5, z: -3, action: idle, thought: { en: "Weary travellers have come to my door again.", es: "Otra vez llegan viajeros cansados a mi puerta." } }
+      - { t: 0.17, x: -2.5, z: -2, action: idle }
+      - { t: 0.2, x: -2.5, z: -2, action: talk, thought: { en: "These blades were forged in Gondolin, long ago.", es: "Estas hojas se forjaron en Gondolin hace mucho." } }
+      - { t: 0.33, x: -1.6, z: -1.3, action: idle }
+      - { t: 0.5, x: -1.6, z: -1.3, action: idle, thought: { en: "Under this moon, hidden writing will show.", es: "Bajo esta luna, la escritura oculta aparecerá." } }
+      - { t: 0.67, x: -1.6, z: -1.3, action: talk }
+      - { t: 1, x: -1.6, z: -1.3, action: idle }
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 5, z: 5, action: walk, thought: { en: "At last, a roof and a rest.", es: "Por fin, un techo y descanso." } }
+      - { t: 0.12, x: 0.8, z: 0.8, action: walk }
+      - { t: 0.2, x: 0.2, z: 0.2, action: idle, thought: { en: "We found these blades in the trolls' cave.", es: "Encontramos estas hojas en la cueva de los trolls." } }
+      - { t: 0.33, x: -0.6, z: -0.4, action: talk, thought: { en: "Thrór's map. Can you read what is hidden in it?", es: "El mapa de Thrór. ¿Puedes leer lo que oculta?" } }
+      - { t: 0.5, x: -0.6, z: -0.4, action: idle, thought: { en: "Letters I never saw. The moon shows them.", es: "Letras que nunca vi. La luna las muestra." } }
+      - { t: 0.84, x: -0.6, z: -0.4, action: talk, thought: { en: "Durin's Day. But which one?", es: "El Día de Durin. ¿Pero cuál?" } }
+      - { t: 1, x: -0.6, z: -0.4, action: idle }
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 5.5, z: 4, action: walk, thought: { en: "Elves! And a real house, with beds.", es: "¡Elfos! Y una casa de verdad, con camas." } }
+      - { t: 0.12, x: 1.8, z: 1.5, action: walk }
+      - { t: 0.33, x: 1.5, z: 1.2, action: idle }
+      - { t: 0.5, x: 1.2, z: 0.6, action: idle, thought: { en: "I see them too, pale like silver.", es: "Yo también las veo, pálidas como la plata." } }
+      - { t: 1, x: 1.2, z: 0.6, action: idle }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: 4.5, z: 5.5, action: walk }
+      - { t: 0.12, x: 2.2, z: 2.2, action: walk }
+      - { t: 0.33, x: 0.8, z: -0.6, action: idle }
+      - { t: 0.5, x: 0.8, z: -0.6, action: idle, thought: { en: "Luck, or the right night. The Valar are kind.", es: "Suerte, o la noche justa. Los Valar son amables." } }
+      - { t: 0.67, x: 0.8, z: -0.6, action: talk, thought: { en: "The key and the map. It all begins to fit.", es: "La llave y el mapa. Todo empieza a encajar." } }
+      - { t: 1, x: 0.8, z: -0.6, action: idle }

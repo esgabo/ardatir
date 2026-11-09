@@ -8,9 +8,14 @@ characters: [ bilbo, gandalf, lord-of-the-eagles, thorin, balin, dwalin, fili, k
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 6 }
 title: { en: Rescued by the Eagles, es: Rescatados por las Águilas }
 summary:
   en: "Out of the mountains, the company is treed by wargs while goblins set the forest on fire. The great eagles sweep down, carry them to their eyrie, and bear them on to the Carrock."
   es: "Fuera de las montañas, la compañía queda atrapada en los árboles por los wargos mientras los trasgos incendian el bosque. Las grandes águilas descienden, los llevan a su nido y luego hasta la Carroca."
+beats:
+  - { id: trees, label: { en: "Treed by wargs", es: "Entre las ramas, rodeados" } }
+  - { id: fire, label: { en: "The forest burns", es: "El bosque arde" } }
+  - { id: eagles, label: { en: "The eagles come", es: "Llegan las águilas" } }
+  - { id: carrock, label: { en: "Set down on the Carrock", es: "En la Carroca" } }

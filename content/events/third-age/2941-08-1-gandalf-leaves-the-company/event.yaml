@@ -8,7 +8,7 @@ characters: [ gandalf, bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 7 }
 title:
   en: Gandalf Leaves at the Forest Gate
@@ -22,3 +22,8 @@ links:
     note:
       en: "Gandalf's business in the south: the White Council's move against Dol Guldur."
       es: "El asunto de Gandalf en el sur: la acción del Concilio Blanco contra Dol Guldur."
+beats:
+  - { id: edge, label: { en: "The edge of Mirkwood", es: "El linde del Bosque Negro" } }
+  - { id: leaves, label: { en: "Gandalf leaves", es: "Gandalf se despide" } }
+  - { id: path, label: { en: "Stay on the path", es: "Sin salir del sendero" } }
+  - { id: enter, label: { en: "Into the forest", es: "Hacia el bosque" } }

@@ -72,7 +72,9 @@ src/
   i18n.ts            languages, fallbacks, interface strings
   timeline.ts        samples character tracks (pose, thought) at time t
   scene/stage.ts     the Stage interface every zoom level implements
-  scene/cosmos.ts    the Ainulindalë and Arda with its shells
+  scene/cosmos.ts    the cosmos stage: picks the event's animation; the Ainulindalë
+  scene/cosmosWorld.ts   what every cosmos event shares: the Void, Arda's shells, stars, lights, camera
+  scene/cosmosLamps.ts   the Spring of Arda: the two Lamps, Almaren, their fall (its own chunk)
   scene/dioramaStage.ts, diorama.ts, figure.ts   event dioramas
   sidebar.ts         the collapsible sidebar: rail + panel views built from the index
   reader.ts          an event's page, for events that can't be watched yet (DESIGN §3.4)

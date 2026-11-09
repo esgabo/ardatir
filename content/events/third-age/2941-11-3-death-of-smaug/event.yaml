@@ -8,7 +8,7 @@ characters: [ smaug, bard, the-master ]
 arcs: [ the-quest-of-erebor ]
 journeys: []
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 14 }
 title: { en: Fire and Water, es: Fuego y agua }
 summary:
@@ -25,3 +25,8 @@ links:
     note:
       en: "The thrush overheard Bilbo telling of the bare patch, and carried word to Bard."
       es: El zorzal oyó a Bilbo hablar del hueco desnudo y llevó la noticia a Bardo.
+beats:
+  - { id: warning, label: { en: "Bard sounds the alarm", es: "Bardo da la alarma" } }
+  - { id: fire, label: { en: "The town burns", es: "La ciudad arde" } }
+  - { id: arrow, label: { en: "The black arrow", es: "La flecha negra" } }
+  - { id: fall, label: { en: "The dragon falls", es: "El dragón cae" } }

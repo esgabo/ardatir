@@ -9,9 +9,14 @@ characters: [ bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gl
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 9 }
 title: { en: Barrels Out of Bond, es: Barriles en libertad }
 summary:
   en: "While the guards sleep off the king's wine, Bilbo packs the dwarves into empty barrels and sends them down the river through the water-gate, clinging to the last one himself."
   es: "Mientras los guardias duermen el vino del rey, Bilbo mete a los enanos en barriles vacíos y los echa río abajo por la puerta del agua, agarrado él mismo al último."
+beats:
+  - { id: wine, label: { en: "The keys", es: "Las llaves" } }
+  - { id: barrels, label: { en: "Packed in barrels", es: "Metidos en barriles" } }
+  - { id: last, label: { en: "The last barrel", es: "El último barril" } }
+  - { id: raft, label: { en: "Down the river", es: "Río abajo" } }
