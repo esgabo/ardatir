@@ -6,6 +6,7 @@
 //   #/time/first-age/495   #/time/before-time   a whole year; a timeless age
 //   #/time/7050.2                               an axis position (years of the Sun): the day it falls on
 //   #/time?from=roast-mutton                    from an event: the timeline offers the way back
+//   #/start                                     the opening over the cosmos (a first visit's welcome)
 //
 // Links inside the site are plain hrefs built here, so the back button and sharing just work.
 
@@ -15,12 +16,15 @@ export type Route =
   | { kind: 'event'; eventId?: string; t?: number; follow?: string; lang?: string }
   | { kind: 'lives'; with: string[]; lang?: string }
   /** `where` is the moment's path as written (parsed by moment.ts); absent: the default moment. */
-  | { kind: 'time'; where?: string; zoom?: string; from?: string; lang?: string };
+  | { kind: 'time'; where?: string; zoom?: string; from?: string; lang?: string }
+  /** The opening (docs/DESIGN.md §3.5): the Ainulindalë with a few words, then three ways in. */
+  | { kind: 'start'; lang?: string };
 
 export function parseRoute(hash = location.hash): Route {
   const [path, query = ''] = hash.replace(/^#/, '').split('?');
   const q = new URLSearchParams(query);
   const lang = q.get('lang') ?? undefined;
+  if (/^\/start\/?$/.test(path)) return { kind: 'start', lang };
   if (/^\/lives\/?$/.test(path)) return { kind: 'lives', with: (q.get('with') ?? '').split(',').filter((x) => /^[\w-]+$/.test(x)), lang };
   const tm = path.match(/^\/time(?:\/(.*))?$/);
   if (tm) {
@@ -59,4 +63,9 @@ export function livesHref(ids: string[], lang: Lang): string {
 /** The time cursor at a moment (its readable path, `momentPath` in moment.ts); `zoom` only when not the moment's default scale. */
 export function timeHref(where: string | undefined, lang: Lang, params: { zoom?: string; from?: string } = {}): string {
   return `#/time${where ? `/${where}` : ''}${query(params, lang)}`;
+}
+
+/** The opening over the cosmos: the welcome a first visit sees, reopened from the sidebar. */
+export function startHref(lang: Lang): string {
+  return `#/start${query({}, lang)}`;
 }
