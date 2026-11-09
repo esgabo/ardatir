@@ -40,10 +40,12 @@ Shells are translucent layered spheres you can fly through.
 Story beats at this level:
 
 1. **Ainulindalë**: abstract, not geographic. Streams of light are the Ainur's themes, Melkor's discord is jagged red interference, the Vision is a ghostly preview of the world, and *Eä* condenses Arda out of the Void.
-2. **The Spring of Arda**: the two Lamps light a symmetric world, then fall.
-3. **The Two Trees** in Valinor, then the first rising of the Moon and the Sun.
-4. **Beleriand drowned** at the end of the First Age.
-5. **The fall of Númenor**: the slab bends into a sphere and Valinor is taken out of the world.
+2. **The Spring of Arda** (`the-spring-of-arda`): the two Lamps light a symmetric world, the land greens, Almaren glows where their lights meet; then Utumno rises in the north, the Lamps fall, and fire and new seas break the balanced shape.
+3. **The Two Trees** in Valinor (`the-two-trees`), then the first rising of the Moon and the Sun (`the-first-moon-and-sun`): two events, since they are two scenes ages apart.
+4. **Beleriand drowned** at the end of the First Age (`beleriand-is-drowned`).
+5. **The fall of Númenor**: the slab bends into a sphere and Valinor is taken out of the world (`the-world-is-made-round`, the cosmic side of the island's `downfall-of-numenor`).
+
+They form the arc *The Shape of Arda* with the Ainulindalë. Each is a small event of its own, staged with `stage: cosmos` (so far the Ainulindalë and the Spring of Arda; the others are scripted), so the time cursor and the Meanwhile panel treat them like any other.
 
 ### World
 
@@ -317,7 +319,7 @@ After every navigation, focus moves to the new view's heading (its `h1`), so key
 ## 8. Technical shape
 
 - **Static site**: Vite + TypeScript + three.js, no framework. Output is a plain `dist/` folder (GitHub Pages).
-- **Code is split by zoom level**: each stage (`scene/cosmos.ts`, `scene/dioramaStage.ts`) is loaded with a dynamic `import()` the first time it is needed, so the front page never downloads diorama code. three.js core gets its own chunk (`manualChunks` in `vite.config.ts`), cached across deploys; keep every chunk under Vite's 500 kB warning.
+- **Code is split by zoom level**: each stage (`scene/cosmos.ts`, `scene/dioramaStage.ts`) is loaded with a dynamic `import()` the first time it is needed, so the front page never downloads diorama code. Within the cosmos, each event's animation after the Ainulindalë is its own module (`scene/cosmosLamps.ts`), picked by event id in `scene/cosmos.ts` and loaded the same way; all of them share the Void, the shells and the camera (`scene/cosmosWorld.ts`). three.js core gets its own chunk (`manualChunks` in `vite.config.ts`), cached across deploys; keep every chunk under Vite's 500 kB warning.
 - **Content build** (`scripts/content/`): reads `content/`, validates it, and writes `public/data/` (generated, not committed):
   - `index.json`: ages, characters, places, arcs, journeys, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc and journey, and each character's lane (events and uncovered journey legs, in story order; each waypoint also names the event it matched). Small enough to load up front; the time cursor and lanes run on it.
   - `events/<id>.json`: one per staged event, with narration, staging and audio timing, loaded when the event opens.

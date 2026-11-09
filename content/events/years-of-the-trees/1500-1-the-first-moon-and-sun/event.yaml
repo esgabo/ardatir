@@ -1,0 +1,46 @@
+id: the-first-moon-and-sun
+age: years-of-the-trees
+when:
+  # The Moon rose first, near the end of the Years of the Trees; the Sun's first rising
+  # begins the First Age, so F.A. 1 by definition. Annals of Aman; the conversion to
+  # Sun-years is the axis's concern.
+  start: { age: years-of-the-trees, year: 1500 }
+  end: { age: first-age, year: 1 }
+  precision: year
+place: valinor
+characters: [ yavanna, nienna, varda, tilion, arien ]
+arcs: [ the-shape-of-arda ]
+journeys: []
+tags: [ cosmology, silmarillion ]
+status: scripted
+source: { book: the-silmarillion, chapter: "Of the Sun and Moon and the Hiding of Valinor" }
+title:
+  en: The first Moon and Sun
+  es: La primera Luna y el primer Sol
+summary:
+  en: "From the dying Trees come one last silver flower and one last golden fruit. The Valar make them into the Moon and the Sun, steered by Tilion and Arien across the sky. The Moon rises first; the first sunrise begins the Years of the Sun."
+  es: "De los Árboles moribundos nacen una última flor de plata y un último fruto de oro. Los Valar hacen con ellos la Luna y el Sol, guiados por Tilion y Arien a través del cielo. La Luna sale primero; el primer amanecer da comienzo a los Años del Sol."
+links:
+  - to: the-trees-are-darkened
+    type: caused-by
+    note:
+      en: "The Trees can no longer light Valinor; their last flower and fruit become new lights for all the world."
+      es: "Los Árboles ya no pueden alumbrar Valinor; su última flor y su último fruto se convierten en nuevas luces para todo el mundo."
+  - to: fingolfins-host-enters-middle-earth
+    type: concurrent
+    note:
+      en: "The Sun first rises as Fingolfin's host marches into Middle-earth."
+      es: "El Sol sale por primera vez cuando la hueste de Fingolfin entra en la Tierra Media."
+beats:
+  - id: last-light
+    label:
+      en: The last flower and fruit
+      es: La última flor y el último fruto
+  - id: moonrise
+    label:
+      en: The first Moonrise
+      es: La primera salida de la Luna
+  - id: sunrise
+    label:
+      en: The first Sunrise
+      es: El primer amanecer

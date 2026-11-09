@@ -1,0 +1,8 @@
+id: tilion
+name: { en: "Tilion", es: "Tilion" }
+kind: ainu
+summary:
+  en: "A young hunter among the Maiar, who loved silver and was chosen to steer the Moon."
+  es: "Un joven cazador entre los Maiar, que amaba la plata y fue elegido para guiar la Luna."
+color: "#c8d4e8"
+scale: 2.2
