@@ -11,6 +11,7 @@ import { honestDate, shortDate } from './format';
 import { ICONS } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
 import { linkedEvents, sameTime } from './related';
+import { likelyParts, placementParts, renderParts, whyToggle } from './placement';
 import { hasLane, MAX_LANES } from './lanes';
 import { eventHref, livesHref } from './routes';
 
@@ -57,6 +58,11 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     meta.append(h('li', {}, h('span', { html: ICONS.books }), h('span', {}, [BOOK(ev.source.book, L), chapter].filter(Boolean).join(', '))));
   }
   art.append(meta);
+  // How the event sits on the timeline when its date isn't exact: words, never the guess as a date.
+  if (ev.atReason && ev.atReason.kind !== 'exact') {
+    const parts = placementParts(ev, L);
+    if (parts.length) art.append(h('p', { class: 'r-placed' }, h('span', { class: 'r-placed-label' }, `${S('placedLabel')}: `), ...renderParts(parts, L)));
+  }
   art.append(h('p', { class: 'r-status' }, h('span', { class: 'r-status-mark', 'aria-hidden': 'true' }), S(ev.status === 'outline' ? 'status_outline' : 'status_scripted')));
   art.append(h('p', { class: 'r-summary' }, tr(ev.summary, L)));
 
@@ -134,12 +140,25 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     art.append(box);
   }
 
-  // ---- Around the same time ----
+  // ---- Around the same time: likely (our best guess, explained) and possibly (ranges overlap) ----
   const same = sameTime(ev, 6);
-  if (same.length) {
-    const ul = h('ul', { class: 'r-same' });
-    for (const e of same) ul.append(h('li', {}, eventLink(e, L), h('span', { class: 'r-when' }, [shortDate(e, L), placeName(e.place, L)].filter(Boolean).join('  ·  '))));
-    art.append(h('section', { class: 'r-section' }, heading(S('sameTime')), ul));
+  if (same.likely.length || same.possibly.length) {
+    const box = h('section', { class: 'r-section' }, heading(S('sameTime')));
+    const when = (e: EventSummary) => h('span', { class: 'r-when' }, [shortDate(e, L), placeName(e.place, L)].filter(Boolean).join('  ·  '));
+    if (same.likely.length) {
+      const ul = h('ul', { class: 'r-same' });
+      for (const e of same.likely) {
+        const [btn, note] = whyToggle(`${S('whyLikely')}: ${tr(e.title, L)}`, likelyParts(ev, e, L), L);
+        ul.append(h('li', {}, h('span', { class: 'r-same-row' }, eventLink(e, L), btn), when(e), note));
+      }
+      box.append(h('h3', { class: 'r-sub' }, S('likelySameTime'), h('span', { class: 'guess' }, ` — ${S('ourBestGuess')}`)), ul);
+    }
+    if (same.possibly.length) {
+      const ul = h('ul', { class: 'r-same' });
+      for (const { event: e } of same.possibly) ul.append(h('li', {}, eventLink(e, L), when(e)));
+      box.append(h('h3', { class: 'r-sub' }, S('possiblySameTime')), h('p', { class: 'r-sub-note' }, S('possiblyWhy')), ul);
+    }
+    art.append(box);
   }
 
   // ---- Before and after, in story order ----

@@ -256,6 +256,11 @@ blockquote:empty { display: none; }
 .mw-item.dim .mw-name { color: var(--muted); }
 .mw-item.dim:hover .mw-name { color: var(--ink); }
 .mw-note { font-size: 11px; color: var(--faint); padding-left: 13px; }
+.mw-row { display: flex; align-items: flex-start; gap: 4px; }
+.mw-row .mw-item { flex: 1; min-width: 0; }
+.mw-row .why-btn { margin-top: 7px; }
+.meanwhile .why-note { margin: 2px 8px 6px 21px; font-size: 12px; }
+.mw-sub-note { margin: 0 0 4px; font-size: 11px; color: var(--faint); }
 
 .disclaimer {
   position: fixed; bottom: 6px; left: var(--sb); right: 0; margin: 0; text-align: center;
@@ -390,6 +395,24 @@ body.page-open .crumbs { text-shadow: none; }
 .r-same li { padding: 8px 0; }
 .r-same .r-ev { font-size: 18px; }
 .r-same .r-when { margin-left: 14px; }
+.r-same-row { display: inline-flex; align-items: center; gap: 8px; }
+.r-sub { margin: 4px 0 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--ink); }
+.r-sub .guess, .meanwhile h3 .guess { font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); }
+.r-sub-note { margin: 0 0 4px; font-size: 12px; color: var(--faint); }
+.r-same + .r-sub { margin-top: 22px; }
+.r-placed { margin: 12px 0 0; max-width: 60ch; font-size: 13px; line-height: 1.6; color: var(--muted); text-wrap: pretty; }
+.r-placed-label { color: var(--gold-soft); }
+
+/* "Why we think so": a small info button and the short note it opens (best guesses, #2). */
+.why-btn {
+  flex: none; display: inline-grid; place-items: center; width: 18px; height: 18px; padding: 0;
+  border: 1px solid var(--line); border-radius: 50%; background: none;
+  font-family: var(--serif); font-size: 12px; font-style: italic; font-weight: 600; line-height: 1; color: var(--gold-soft);
+}
+.why-btn:hover, .why-btn[aria-expanded='true'] { border-color: var(--gold-soft); color: var(--gold); background: var(--hl); }
+.why-note { margin: 6px 0 2px 14px; padding-left: 10px; border-left: 1px solid var(--line); font-size: 13px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
+.why-ev a, .r-placed a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.why-ev a:hover, .r-placed a:hover { color: var(--gold); }
 
 .r-arc { padding: 16px 18px; border: 1px solid var(--line-soft); border-radius: 12px; margin-bottom: 12px; }
 .r-arc h3 { margin: 0; font-family: var(--serif); font-size: 23px; font-weight: 600; color: var(--ink); }

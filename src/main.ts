@@ -9,6 +9,7 @@ import { ICONS } from './icons';
 import { initialLang, isLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { renderReader } from './reader';
 import { linkedEvents, sameTime } from './related';
+import { likelyParts, whyToggle } from './placement';
 import { MAX_LANES, PHONE_QUERY, renderLanes } from './lanes';
 import { eventHref, livesHref, parseRoute, type Route } from './routes';
 import { Sidebar } from './sidebar';
@@ -539,11 +540,24 @@ function renderMeanwhile(): void {
     h('a', { class: e.stage ? 'mw-item' : 'mw-item dim', href: eventHref(e.id, L), title: ui(e.stage ? 'playable' : 'readable', L) },
       h('span', { class: 'mw-name' }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), tr(e.title, L)),
       h('span', { class: 'mw-note' }, note ?? '')));
-  const section = (title: string, items: HTMLElement[]) => {
-    if (items.length) meanwhilePanel.append(h('h3', {}, title), h('ul', {}, ...items));
+  const section = (title: string | HTMLElement, items: HTMLElement[], note?: string) => {
+    if (!items.length) return;
+    meanwhilePanel.append(typeof title === 'string' ? h('h3', {}, title) : title);
+    if (note) meanwhilePanel.append(h('p', { class: 'mw-sub-note' }, note));
+    meanwhilePanel.append(h('ul', {}, ...items));
   };
+  const placeOf = (e: EventSummary) => tr(index.places.find((p) => p.id === e.place)?.name, L);
   section(ui('connected', L), linkedEvents(ev).map(({ event: e, link: l }) => row(e, ui(`link_${l.type}` as UiKey, L))));
-  section(ui('sameTime', L), sameTime(ev).map((e) => row(e, tr(index.places.find((p) => p.id === e.place)?.name, L))));
+  // Likely: our best guess, each with a "why" that explains how it was placed (docs/DESIGN.md §4.4).
+  const same = sameTime(ev);
+  section(h('h3', {}, ui('likelySameTime', L), h('span', { class: 'guess' }, ` — ${ui('ourBestGuess', L)}`)), same.likely.map((e) => {
+    const [btn, note] = whyToggle(`${ui('whyLikely', L)}: ${tr(e.title, L)}`, likelyParts(ev, e, L), L);
+    const li = row(e, placeOf(e));
+    const a = li.firstElementChild!;
+    li.replaceChildren(h('div', { class: 'mw-row' }, a, btn), note);
+    return li;
+  }));
+  section(ui('possiblySameTime', L), same.possibly.map(({ event: e }) => row(e, placeOf(e))), ui('possiblyWhy', L));
   if (!meanwhilePanel.childElementCount) meanwhilePanel.append(h('p', { class: 'muted' }, ui('nothingMeanwhile', L)));
 }
 meanwhileBtn.addEventListener('click', () => {
