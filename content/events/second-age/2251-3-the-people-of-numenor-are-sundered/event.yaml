@@ -1,7 +1,7 @@
 id: the-people-of-numenor-are-sundered
 age: second-age
 when:
-  start: { age: second-age, year: 2251 }   # follows the shadow in story order; the Akallabêth places the split in Tar-Ancalimon's days
+  start: { age: second-age, year: 2251 }   # App. B 2251: "division of the Númenóreans begins"; the Akallabêth puts it in Tar-Ancalimon's days (UT 2221–2386)
   end: { age: second-age, year: 2386 }     # Unfinished Tales gives Tar-Ancalimon the years 2221-2386; Appendix B dates the shadow later, so the start is kept at 2251
   precision: approximate
 place: numenor

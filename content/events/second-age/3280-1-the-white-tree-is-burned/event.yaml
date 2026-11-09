@@ -11,8 +11,8 @@ status: outline
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "The White Tree Nimloth is burned", es: "Se quema el Blanco Árbol Nimloth" }
 summary:
-  en: "Sauron persuades the King to cut down Nimloth and burn it on the altar of his temple of Melkor. The Faithful mourn, for the Tree's fate was tied to the line of their kings."
-  es: "Sauron persuade al Rey de que corte a Nimloth y lo queme en el altar de su templo de Melkor. Los Fieles lo lloran, pues el destino del Árbol estaba unido al linaje de sus reyes."
+  en: "Sauron persuades the King to cut down Nimloth and burn it on the altar of his temple of Melkor. The Faithful mourn, for the Tree's fate was tied to the line of the Kings."
+  es: "Sauron persuade al Rey de que corte a Nimloth y lo queme en el altar de su templo de Melkor. Los Fieles lo lloran, pues el destino del Árbol estaba unido al linaje de los Reyes."
 links:
   - to: sauron-is-taken-to-numenor
     type: caused-by

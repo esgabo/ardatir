@@ -14,8 +14,8 @@ summary:
   en: "At Sauron's urging, the great fleet crosses the sea and the King lands on the Undying Lands, claiming them for himself."
   es: "Por consejo de Sauron, la gran flota cruza el mar y el Rey desembarca en las Tierras Imperecederas y las reclama para sí."
 links:
-  - to: amandil-sails-west
+  - to: the-great-armament-sails
     type: caused-by
     note:
-      en: "The Armament sails when Amandil fails."
-      es: "El Armamento zarpa cuando Amandil fracasa."
+      en: "The fleet reaches the shore."
+      es: "La flota alcanza la orilla."

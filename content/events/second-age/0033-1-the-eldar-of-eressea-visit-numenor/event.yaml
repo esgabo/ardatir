@@ -2,10 +2,10 @@ id: the-eldar-of-eressea-visit-numenor
 age: second-age
 when:
   start: { age: second-age, year: 33 }   # the Silmarillion describes the visits as the mark of the island's early centuries, without a year; they end gradually, under Ar-Gimilzôr and after
-  end: { age: second-age, year: 600 }    # the peaceful centuries before the ships go east (c. 600)
+  end: { age: second-age, year: 2899 }    # under Ar-Adûnakhôr the ships from Eressëa come only seldom and in secret
   precision: approximate
 place: andunie
-characters: [ elros ]
+characters: [  ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ silmarillion ]
 status: outline
