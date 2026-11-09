@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import type { Character, EventDetail, Lang } from '../data/types';
 import { t as ui, tr, type UiKey } from '../i18n';
-import { samplePose } from '../timeline';
+import { onTile, samplePose } from '../timeline';
 import { createDiorama, groundHeight } from './diorama';
 import { createFigure, setSelected } from './figure';
 import type { Stage } from './stage';
@@ -47,6 +47,7 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
         const fig = figures.get(track.characterId);
         if (!fig) continue;
         const pose = samplePose(track, t);
+        fig.visible = onTile(pose);
         const bob = pose.moving ? Math.abs(Math.sin(ambient * (pose.action === 'run' ? 14 : 8))) * 0.05 : 0;
         fig.position.set(pose.x, groundHeight(diorama, pose.x, pose.z) + bob, pose.z);
         if (pose.moving) fig.rotation.y = pose.heading;
