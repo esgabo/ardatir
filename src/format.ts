@@ -3,7 +3,7 @@
 // data/calendar.ts. The best guess (`at`) is never shown as a date.
 
 import { index } from './chronicle';
-import type { EventSummary, Lang, Precision, StoryDate } from './data/types';
+import type { Lang, Precision, StoryDate, When } from './data/types';
 import { t as ui, tr } from './i18n';
 
 const cap = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : s);
@@ -37,31 +37,67 @@ export function dateLabel(d: StoryDate, p: Precision, L: Lang): string {
   return cap(inner ? `${inner}, ${yearPart(d, p, L)}` : yearPart(d, p, L));
 }
 
+/** Something dated: an event (`when`), or a journey leg whose end may be known more or less precisely than its start. */
+export type Dated = { age: string; when?: When & { endPrecision?: Precision } };
+
+/** The last year a date at this precision can fall in, as the end of a range: a decade runs to its ninth year. */
+const lastYear = (d: StoryDate, p: Precision) => (p === 'decade' ? d.year + 9 : d.year);
+
 /**
  * An event's honest date: its start, and its end when it lasts, at the precision the
- * sources allow. Timeless events give their age's name.
+ * sources allow. Timeless events give their age's name. A range within one age names the
+ * age once: "Around F.A. 545–587", "Y.T. 1250–1459", "June – 1 Lithe, T.A. 2941".
  */
-export function honestDate(e: Pick<EventSummary, 'age' | 'when'>, L: Lang): string {
+export function honestDate(e: Dated, L: Lang): string {
   if (!e.when) return tr(index.ages.find((a) => a.id === e.age)?.name, L);
   const { start, end, precision: p } = e.when;
   if (!end) return dateLabel(start, p, L);
-  const sameYear = end.age === start.age && end.year === start.year;
-  const a = withinYear(start, p, L), b = withinYear(end, p, L);
-  if (sameYear && a && b) return cap(`${a} – ${b}, ${yearPart(end, p, L)}`);
-  if (end.age === start.age && !a && !b && p === 'year') return `${ageLabel(start.age, L)} ${start.year}–${end.year}`;
-  return `${dateLabel(start, p, L)} – ${dateLabel(end, p, L)}`;
+  const q = e.when.endPrecision ?? p;
+  if (end.age !== start.age) return `${dateLabel(start, p, L)} – ${dateLabel(end, q, L)}`;
+  const a = withinYear(start, p, L), b = withinYear(end, q, L);
+  if (a && b && end.year === start.year) return cap(a === b ? `${a}, ${yearPart(end, q, L)}` : `${a} – ${b}, ${yearPart(end, q, L)}`);
+  if (!a && !b) {
+    const y0 = start.year, y1 = lastYear(end, q);
+    const years = y0 === y1 && p !== 'decade' ? `${y0}` : `${y0}–${y1}`;
+    const around = p === 'approximate' || q === 'approximate' ? `${ui('around', L)} ` : '';
+    return cap(`${around}${ageLabel(start.age, L)} ${years}`);
+  }
+  return `${dateLabel(start, p, L)} – ${dateLabel(end, q, L)}`;
 }
 
-/** A short date for lists: "Apr 2941", "summer 2941", "1 Lithe 2941", "c. 2463". */
-export function shortDate(e: Pick<EventSummary, 'age' | 'when'>, L: Lang): string {
-  const d = e.when?.start;
-  if (!d) return '';
-  const p = e.when!.precision;
+/** The short part finer than the year: "Apr", "summer", "1 Lithe"; empty for a year or coarser. */
+function shortWithinYear(d: StoryDate, p: Precision, L: Lang): string {
+  if (p === 'year' || p === 'decade' || p === 'approximate') return '';
+  if (typeof d.day === 'string') return ui(`day_${d.day}`, L);
+  if (p === 'season' && d.season) return ui(d.season, L);
+  if (d.month) return new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'short' }).replace('.', '');
+  return d.season ? ui(d.season, L) : '';
+}
+
+/** One date, short: "Apr 2941", "c. 2463", "2850–59". */
+function shortOne(d: StoryDate, p: Precision, L: Lang): string {
   if (p === 'approximate') return `${ui('circa', L)} ${d.year}`;
   if (p === 'decade') return `${d.year}–${String(d.year + 9).slice(-2)}`;
-  const inner = typeof d.day === 'string' ? ui(`day_${d.day}`, L)
-    : p === 'year' ? ''
-    : d.month ? new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'short' }).replace('.', '')
-    : d.season ? ui(d.season, L) : '';
-  return [inner, `${d.year}`].filter(Boolean).join(' ');
+  return [shortWithinYear(d, p, L), `${d.year}`].filter(Boolean).join(' ');
+}
+
+/**
+ * A short date for lists: "Apr 2941", "summer 2941", "1 Lithe 2941", "c. 2463", and ranges
+ * when the date has an end: "52–116", "c. 545–587", "1250–1459", "Jun – 1 Lithe 2941".
+ */
+export function shortDate(e: Dated, L: Lang): string {
+  const w = e.when;
+  if (!w) return '';
+  const { start, end, precision: p } = w;
+  if (!end) return shortOne(start, p, L);
+  const q = w.endPrecision ?? p;
+  if (end.age !== start.age) return `${ageLabel(start.age, L)} ${shortOne(start, p, L)} – ${ageLabel(end.age, L)} ${shortOne(end, q, L)}`;
+  const a = shortWithinYear(start, p, L), b = shortWithinYear(end, q, L);
+  if (!a && !b) {
+    const y0 = start.year, y1 = lastYear(end, q);
+    const around = p === 'approximate' || q === 'approximate' ? `${ui('circa', L)} ` : '';
+    return y0 === y1 && p !== 'decade' ? `${around}${y0}` : `${around}${y0}–${y1}`;
+  }
+  if (a && b && start.year === end.year) return a === b ? `${a} ${start.year}` : `${a} – ${b} ${start.year}`;
+  return `${shortOne(start, p, L)} – ${shortOne(end, q, L)}`;
 }

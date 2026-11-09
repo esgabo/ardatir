@@ -184,4 +184,11 @@ describe('yearsBetween', () => {
     expect(yearsBetween(y(2941), y(2941, 'season', { season: 'summer' }))).toBe(0);
     expect(yearsBetween(y(2460, 'approximate'), y(2470))).toBe(4); // c. 2460 may run to the end of 2465: 2466–2469
   });
+  it("counts in the age's own years when given the age: Valian years in the Years of the Trees", () => {
+    const yt = (year: number) => dateSpan({ age: trees.id, year }, 'year', trees)!;
+    // Years 1 and 76: 74 whole Valian years between them (2–75), which are 740 years of the Sun.
+    expect(yearsBetween(yt(1), yt(76), trees)).toBe(74);
+    expect(yearsBetween(yt(1), yt(76))).toBe(740);
+    expect(yearsBetween(y(2463), y(2770), ta)).toBe(306); // a Sun-year age is unchanged
+  });
 });
