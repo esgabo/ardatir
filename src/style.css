@@ -710,12 +710,17 @@ a.r-person { color: inherit; text-decoration: none; }
 
 @media (max-width: 720px) {
   .tc-control { padding: 14px 10px 12px; margin-left: -6px; margin-right: -6px; }
-  .tc-seg { padding: 0 4px; }
+  .tc-seg { padding: 0 2px 0 3px; }
   .tc-seg-name.full { display: none; }
-  .tc-seg-name.short { display: block; font-size: 13px; }
-  .tc-outside { flex: 0 0 58px; flex-direction: column; }
+  .tc-seg-name.short { display: block; font-size: 12px; letter-spacing: -0.01em; }
+  /* Narrow boxes beside the axis (the after one as narrow as "Foretold"), so the short Fourth Age keeps "Fo.A." whole. */
+  .tc-outside { flex: 0 0 46px; flex-direction: column; }
   .tc-outside.after { flex-basis: 44px; }
-  .tc-ages { gap: 6px; }
+  .tc-outside.after .tc-seg { padding: 0 2px; }
+  /* The open Fourth Age is the narrowest dated segment: a size smaller, so "Fo.A." stays whole. */
+  .tc-axis .tc-seg:last-of-type { padding: 0 1px 0 2px; }
+  .tc-axis .tc-seg:last-of-type .tc-seg-name.short { font-size: 11px; }
+  .tc-ages { gap: 4px; }
   .tc-seg.timeless { border-radius: 6px; }
   .tc-seg.timeless .tc-seg-name.short { font-size: 10px; line-height: 1; }
   .tc-moments { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; scrollbar-color: rgba(232, 199, 122, 0.25) transparent; }

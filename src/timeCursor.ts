@@ -269,6 +269,9 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
 
   function step(key: StepKey): void {
     const wasDated = !!st.moment.date;
+    // Read before the step: hiding the scale drops its focus.
+    const active = document.activeElement;
+    const keyed = active === scale || (active instanceof HTMLElement && active.classList.contains('tc-seg'));
     if (!wasDated) {
       // From outside time, along the bar: "later" from before the world to the Years of the Lamps
       // and on into the first age on the axis, "earlier" from what is foretold the last year the axis shows.
@@ -276,8 +279,7 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
       if (to) set(to, to.date ? 'age' : st.zoom);
     } else set(stepMoment(st.moment, st.zoom, key, segs, ages), st.zoom);
     // Keep keyboard focus where the moment went: the scale hides outside time, the segments hold it there.
-    const active = document.activeElement;
-    if (active !== scale && !(active instanceof HTMLElement && active.classList.contains('tc-seg'))) return;
+    if (!keyed) return;
     if (!st.moment.date) segBtns.get(st.moment.age)?.focus({ preventScroll: true });
     else if (!wasDated) scale.focus({ preventScroll: true });
   }
