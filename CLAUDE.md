@@ -4,6 +4,8 @@ Ardatir (*a watch over Arda*, AR-da-teer) is a static website that animates the 
 
 The work runs in three phases: **content** (all events, characters, places, journeys and scripts as data in `content/`), then the **platform** (the site, HUD, navigation, cross-views; the time cursor first), then **event production** (terrain, staging, animation, sound, one event at a time).
 
+**The goal: people should be amazed, and feel good learning these stories.** Prefer beauty, warmth, clarity and accuracy over adding features.
+
 The full design is in [`docs/DESIGN.md`](docs/DESIGN.md). Read it before changing how navigation, the timeline or narration work, and keep it up to date when those decisions change.
 
 ## Setup
@@ -28,6 +30,7 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Three zoom levels**: cosmos → world → event diorama | The cosmos (Arda floating in its shells, per the *Ambarkanta*) is the front door; the Ainulindalë is the first event. |
 | **Low-poly faceted diorama style** | Faceted terrain with cut earth sides; characters and trees slightly higher-poly than terrain. |
 | **Film-like proportions** for characters | Low-poly, but not chibi/big-headed. Relative heights come from `Character.scale`. |
+| **Characters modelled in Blender, exported as glTF**, with shared rigs per body type | The look the project needs can't come from code primitives. Today's figures and terrain are placeholders (`docs/DESIGN.md` §9). |
 | **Start with *The Hobbit*** for event dioramas | First book to cover end to end. |
 | **English default, Spanish second** | Every content text is `LocalizedText` (`{ en, es? }`); `en` is required. |
 | **Narration = our own script**, shown on screen in sync with the animation and optional audio | Audio files are provided per event and language; how they are produced is outside this project (the author uses a Voice Studio in a homelab). |

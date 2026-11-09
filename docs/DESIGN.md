@@ -2,6 +2,8 @@
 
 *A watch over Arda.* A static website where you travel through the space and time of Tolkien's world and watch its events play out as animated, low-poly isometric dioramas, told by narration in our own words.
 
+**The goal: people should be amazed, and feel good learning these stories.** Every choice is weighed against that: beauty and craft over feature count, warmth over spectacle, clarity over density. A visitor who knows nothing of Tolkien should come away delighted and curious; one who knows the books well should find them treated with care and accuracy.
+
 ## 1. How the project is built: three phases
 
 1. **Content.** Every age, event, character, place, journey and narration script, written and validated as data in `content/`. This is the source of truth; everything else reads from it.
@@ -214,7 +216,18 @@ The URL always reflects where you are:
 - Runs automatically with `npm run dev` (rebuilds on change) and `npm run build`; `npm run content` checks content on its own.
 - Overlap queries ("what's happening at this moment?") run in the browser over the sorted index; with hundreds of events that's instant, so no precomputed overlap table is stored.
 
-## 9. IP guidelines (fan project)
+## 9. Art direction
+
+Everything on screen today is a **placeholder** (stand-in figures, generic terrain, sliding movement). The real look is built in phase 3, judged against an art-direction document and a reference board (`docs/ART.md`, to be written).
+
+- **Characters are modelled in Blender** and exported as **glTF**: low-poly but carefully shaped, with film-like (not chibi) proportions, faceted flat-shaded surfaces, and slightly more detail on characters and trees than on terrain.
+- **Shared rigs and animation sets** per body type (hobbit, dwarf, man/elf, wizard, troll), so one set of clips (idle, walk, run, talk, gesture, fight, hide…) serves many characters. Animation playback stays a pure function of the event time `t`.
+- **Kits for places**: the Shire (hobbit-holes with round doors, hills, gardens, hedges), Rivendell, Mirkwood, Lake-town, the Mountain, built from reusable pieces.
+- **Designs come from Tolkien's descriptions**, not from the films or series: proportions and mood may echo film-like realism, but no recognisable film designs or likenesses.
+- **Light and mood carry the story**: time of day (the dawn that turns the trolls to stone), weather, warm interiors, colour grading per place.
+- **Budgets**: models stay small enough for a static site on ordinary laptops and phones (compressed glTF, shared textures or flat colours, no Git LFS, since GitHub Pages doesn't serve it).
+
+## 10. IP guidelines (fan project)
 
 - Non-commercial; no ads, merchandise or paywall.
 - Summaries, thoughts and narration in our own words; quotations short and rare. `source` fields cite book and chapter for accuracy, never text.
@@ -222,7 +235,7 @@ The URL always reflects where you are:
 - No imagery or likenesses from the films or series.
 - Clear disclaimer: not affiliated with the Tolkien Estate, Middle-earth Enterprises, or any studio.
 
-## 10. Decision log
+## 11. Decision log
 
 | Date | Decision |
 |---|---|
@@ -240,8 +253,10 @@ The URL always reflects where you are:
 | 2026-11-08 | Story order is authored by the folder sort key, not inferred from dates. |
 | 2026-11-08 | Every event and waypoint has an honest range and a best-guess moment; the cursor shows "likely" and "possibly" separately. |
 | 2026-11-08 | *The Hobbit* is the first book outlined end to end, with its backstory (Smaug's coming, Azanulbizar, Thráin, the Ring's finding). |
+| 2026-11-09 | Goal stated: people should be amazed and feel good learning these stories. |
+| 2026-11-09 | Characters are modelled in Blender and exported as glTF; current visuals are placeholders. |
 
-## 11. Open questions
+## 12. Open questions
 
 - **Journeys**: do long travels (Frodo's road to Mordor) play only on the world map as a moving path, or do some legs (Moria, the Dead Marshes) get their own dioramas?
 - **Factions** for battles: format to be defined when the first battle is staged.
