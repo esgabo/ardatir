@@ -1,0 +1,16 @@
+id: theoden-in-the-druadan-forest
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 13 }
+  precision: day
+place: druadan-forest
+characters: [ theoden, eomer, merry, ghan-buri-ghan ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ merrys-ride-with-theoden ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Ride of the Rohirrim" }
+title: { en: "Théoden Meets the Wild Men", es: "Théoden se encuentra con los Hombres Salvajes" }
+summary:
+  en: "The Rohirrim find the road ahead blocked. Ghân-buri-Ghân of the Wild Men offers to lead them by a hidden way around the enemy, to the Pelennor."
+  es: "Los Rohirrim hallan el camino bloqueado. Ghân-buri-Ghân, de los Hombres Salvajes, se ofrece a guiarlos por una senda oculta que rodea al enemigo hasta el Pelennor."

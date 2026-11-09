@@ -1,0 +1,16 @@
+id: the-ring-is-destroyed
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 25 }
+  precision: day
+place: mount-doom
+characters: [ frodo, sam, gollum ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "Mount Doom" }
+title: { en: "The Destruction of the Ring", es: "La destrucción del Anillo" }
+summary:
+  en: "At the Cracks of Doom Frodo cannot let the Ring go and claims it for his own. Gollum bites off his finger and, dancing in triumph, falls into the fire with the Ring."
+  es: "En las Grietas del Destino Frodo no puede soltar el Anillo y lo reclama como suyo. Gollum le arranca el dedo de un mordisco y, bailando de triunfo, cae al fuego con el Anillo."

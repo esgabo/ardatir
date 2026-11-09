@@ -1,0 +1,22 @@
+id: the-morgul-host-sets-out
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 10 }
+  precision: day
+place: minas-morgul
+characters: [ frodo, sam, gollum, witch-king ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-two-towers, chapter: "The Stairs of Cirith Ungol" }
+title: { en: "The Host of Minas Morgul Sets Out", es: "La hueste de Minas Morgul se pone en marcha" }
+summary:
+  en: "At the Cross-roads and the Morgul Vale, Frodo feels the Ring's pull and the Witch-king's gaze as a great black army marches out of the city to war."
+  es: "En la Encrucijada y en el Valle de Morgul, Frodo siente la llamada del Anillo y la mirada del Rey Brujo mientras un gran ejército negro marcha desde la ciudad hacia la guerra."
+links:
+  - to: siege-of-minas-tirith-begins
+    type: enables
+    note:
+      en: "The army that passes Frodo is the one that besieges Minas Tirith four days later."
+      es: "El ejército que pasa ante Frodo es el que sitiará Minas Tirith cuatro días después."

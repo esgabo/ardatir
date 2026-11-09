@@ -1,0 +1,18 @@
+id: across-the-dead-marshes
+age: third-age
+when:
+  # Appendix B: Frodo begins crossing at dawn on 1 March and reaches the far side on the 2nd.
+  start: { age: third-age, year: 3019, month: 3, day: 1 }
+  end: { age: third-age, year: 3019, month: 3, day: 2 }
+  precision: day
+place: dead-marshes
+characters: [ frodo, sam, gollum ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-two-towers, chapter: "The Passage of the Marshes" }
+title: { en: "Across the Dead Marshes", es: "A través de las Ciénagas de los Muertos" }
+summary:
+  en: "Gollum leads the hobbits along hidden paths between stagnant pools where the pale faces of the long dead drift beneath the water."
+  es: "Gollum guía a los hobbits por sendas ocultas entre charcas estancadas, bajo cuyas aguas flotan los pálidos rostros de los muertos de antaño."

@@ -1,0 +1,18 @@
+id: frodo-and-sam-among-the-orcs
+age: third-age
+when:
+  # Appendix B: forced into an orc company on the 18th, they escape on the 19th.
+  start: { age: third-age, year: 3019, month: 3, day: 18 }
+  end: { age: third-age, year: 3019, month: 3, day: 19 }
+  precision: day
+place: mordor
+characters: [ frodo, sam ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Land of Shadow" }
+title: { en: "Frodo and Sam Among the Orcs", es: "Frodo y Sam entre los orcos" }
+summary:
+  en: "Frodo and Sam, exhausted, are caught up in a marching orc company and forced along the road to Udûn. They get away in the confusion when a fight breaks out."
+  es: "Frodo y Sam, exhaustos, son arrastrados por una compañía de orcos en marcha por el camino hacia Udûn. Escapan en la confusión de una pelea."

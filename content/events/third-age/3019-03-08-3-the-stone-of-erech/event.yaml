@@ -1,0 +1,17 @@
+id: the-stone-of-erech
+age: third-age
+when:
+  # Midnight, per Appendix B.
+  start: { age: third-age, year: 3019, month: 3, day: 8 }
+  precision: day
+place: erech
+characters: [ aragorn, legolas, gimli, halbarad, king-of-the-dead ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Passing of the Grey Company" }
+title: { en: "The Stone of Erech", es: "La Piedra de Erech" }
+summary:
+  en: "At the black stone of Isildur, Aragorn calls the shadow-host to fulfil their ancient oath. They will fight for him, and he will then release them."
+  es: "Ante la piedra negra de Isildur, Aragorn convoca a la hueste de sombras para que cumpla su antiguo juramento. Lucharán por él, y después los liberará."

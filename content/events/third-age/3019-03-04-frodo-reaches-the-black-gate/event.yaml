@@ -1,0 +1,18 @@
+id: frodo-reaches-the-black-gate
+age: third-age
+when:
+  # Appendix B: he reaches the slag-mounds before the Morannon on the 4th, hides in sight of it on the 5th and leaves at dusk.
+  start: { age: third-age, year: 3019, month: 3, day: 4 }
+  end: { age: third-age, year: 3019, month: 3, day: 5 }
+  precision: day
+place: morannon
+characters: [ frodo, sam, gollum ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-two-towers, chapter: "The Black Gate is Closed" }
+title: { en: "The Black Gate Is Closed", es: "La Puerta Negra está cerrada" }
+summary:
+  en: "At the Morannon the hobbits see that the gate cannot be forced. Frodo accepts Gollum's offer of a secret way into Mordor, far to the south."
+  es: "Ante el Morannon, los hobbits ven que la puerta no puede forzarse. Frodo acepta la oferta de Gollum de un camino secreto hacia Mordor, lejos al sur."

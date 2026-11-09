@@ -1,0 +1,16 @@
+id: frodo-meets-faramir
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 7 }
+  precision: day
+place: henneth-annun
+characters: [ frodo, sam, gollum, faramir ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-two-towers, chapter: "The Window on the West" }
+title: { en: "Frodo Meets Faramir", es: "Frodo conoce a Faramir" }
+summary:
+  en: "Rangers of Gondor capture the hobbits in Ithilien and bring them to Faramir at the hidden cave of Henneth Annûn. He asks hard questions and listens to the answers."
+  es: "Montaraces de Gondor capturan a los hobbits en Ithilien y los llevan ante Faramir, en la cueva oculta de Henneth Annûn. Hace preguntas duras y escucha las respuestas."

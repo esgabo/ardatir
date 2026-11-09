@@ -1,0 +1,16 @@
+id: gandalf-heals-theoden
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 2 }
+  precision: day
+place: edoras
+characters: [ gandalf, theoden, grima, eowyn, aragorn, legolas, gimli ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ aragorn-legolas-and-gimlis-road, gandalf-the-whites-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The King of the Golden Hall" }
+title: { en: "Gandalf Heals Théoden", es: "Gandalf sana a Théoden" }
+summary:
+  en: "Gandalf breaks Saruman's hold on the old king. Théoden stands straight, calls for his sword, and Gríma is driven from the hall."
+  es: "Gandalf quiebra el dominio de Saruman sobre el viejo rey. Théoden se yergue, pide su espada, y Gríma es expulsado del salón."

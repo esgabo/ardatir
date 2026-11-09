@@ -1,0 +1,18 @@
+id: merry-offers-his-sword-to-theoden
+age: third-age
+when:
+  # The Muster of Rohan places this in Dunharrow, on the eve of the ride (the evening of the 9th into the morning of the 10th).
+  start: { age: third-age, year: 3019, month: 3, day: 9 }
+  end: { age: third-age, year: 3019, month: 3, day: 10 }
+  precision: day
+place: dunharrow
+characters: [ merry, theoden, eowyn ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ merrys-ride-with-theoden ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Muster of Rohan" }
+title: { en: "Merry Offers His Sword to Théoden", es: "Merry ofrece su espada a Théoden" }
+summary:
+  en: "Merry, who has come to love the old king, offers him his service. Théoden accepts, but says that Merry must stay behind and not go to battle."
+  es: "Merry, que ha llegado a querer al viejo rey, le ofrece sus servicios. Théoden acepta, pero dice que Merry debe quedarse atrás y no ir a la batalla."
