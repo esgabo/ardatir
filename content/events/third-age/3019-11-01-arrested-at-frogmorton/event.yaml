@@ -8,7 +8,7 @@ characters: [ frodo, sam, merry, pippin ]
 arcs: [ the-war-of-the-ring, after-the-war, the-scouring-of-the-shire ]
 journeys: [ the-scouring-road ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Scouring of the Shire" }
 title: { en: "Arrested at Frogmorton", es: "Detenidos en Rancho del Sapo" }
 summary:

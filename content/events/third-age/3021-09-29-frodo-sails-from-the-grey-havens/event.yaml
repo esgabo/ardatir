@@ -8,7 +8,7 @@ characters: [ frodo, bilbo, gandalf, elrond, galadriel, sam, merry, pippin ]
 arcs: [ the-war-of-the-ring, after-the-war ]
 journeys: [ to-the-grey-havens ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Grey Havens" }
 title: { en: "The Grey Havens", es: "Los Puertos Grises" }
 summary:
