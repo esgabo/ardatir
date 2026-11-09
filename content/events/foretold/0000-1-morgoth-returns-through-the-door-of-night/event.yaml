@@ -1,0 +1,27 @@
+id: morgoth-returns-through-the-door-of-night
+age: foretold
+place: door-of-night
+characters: [ melkor ]
+arcs: [ the-end-of-days ]
+tags: [ silmarillion, prophecy ]
+status: scripted
+# The Second Prophecy of Mandos, in the 1937 Quenta Silmarillion's conclusion (The Lost Road).
+# The same opening is already in the Sketch of the Mythology and the Quenta (The Shaping of
+# Middle-earth). The published Silmarillion keeps only the guard on the Walls of the World
+# ("Of the Voyage of Eärendil"), not the return.
+source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
+foretoldBy: mandos
+title: { en: "Morgoth returns through the Door of Night", es: "Morgoth regresa por la Puerta de la Noche" }
+summary:
+  en: "When the world has grown old and the Powers are weary, the watch on the Walls of the World falls asleep. Morgoth, thrust out into the Void long ago, finds the Door of Night unguarded and comes back into the world."
+  es: "Cuando el mundo haya envejecido y los Poderes estén cansados, la guardia de los Muros del Mundo se dormirá. Morgoth, arrojado al Vacío hace mucho, hallará sin vigilancia la Puerta de la Noche y volverá al mundo."
+links:
+  - to: morgoth-is-cast-out
+    type: caused-by
+    note:
+      en: "He comes back through the same door he was thrust out of at the end of the First Age."
+      es: "Vuelve por la misma puerta por la que fue arrojado al final de la Primera Edad."
+beats:
+  - { id: old-world, label: { en: The world grown old, es: El mundo envejecido } }
+  - { id: the-door, label: { en: The Door of Night, es: La Puerta de la Noche } }
+  - { id: return, label: { en: Morgoth returns, es: Morgoth regresa } }

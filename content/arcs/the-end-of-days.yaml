@@ -1,0 +1,14 @@
+id: the-end-of-days
+# Which version we tell, and why (#57). The published Silmarillion only hints at the end: Morgoth
+# thrust through the Door of Night with Eärendil keeping watch ("Of the Voyage of Eärendil"), the
+# Second Music ("Ainulindalë"), Men in the Second Music ("Of the Beginning of Days"). The fuller
+# prophecy (Morgoth's return, Túrin's blow, the Silmarils recovered, the Trees rekindled) is the
+# Second Prophecy of Mandos that ends Tolkien's drafts: the Sketch of the Mythology and the Quenta
+# (The Shaping of Middle-earth), then the 1937 Quenta Silmarillion (The Lost Road), which we follow
+# as the latest full telling. The later Valaquenta (Morgoth's Ring) says the healing of the Marring
+# was not revealed in the Dooms of Mandos, and Christopher Tolkien left the prophecy out of the
+# published book; Morgoth's Ring (the Athrabeth) speaks instead of a hope of Arda Healed.
+title: { en: "The End of Days", es: "El Fin de los Días" }
+summary:
+  en: "The Last Battle and what follows, as Mandos foretold it in Tolkien's drafts: Morgoth's return, his end at Túrin's hand, the Silmarils recovered and the Two Trees rekindled; then the Second Music of the Ainur. Prophecy, not history."
+  es: "La Última Batalla y lo que vendrá después, tal como lo predijo Mandos en los borradores de Tolkien: el regreso de Morgoth, su fin a manos de Túrin, los Silmarils recuperados y los Dos Árboles encendidos de nuevo; y luego la Segunda Música de los Ainur. Profecía, no historia."

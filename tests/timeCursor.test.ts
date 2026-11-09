@@ -11,7 +11,7 @@ import { DEFAULT_MOMENT, momentOfEvent, momentPath, momentSpan, parseMoment } fr
 import { MOMENTS } from '../src/moments.ts';
 import { atMoment } from '../src/related.ts';
 import { parseRoute, timeHref } from '../src/routes.ts';
-import { buildSegments, defaultZoom, fitZoom, pickAt, scaleWindow, stepMoment, zoomsFor, type Zoom } from '../src/timeAxis.ts';
+import { axisExtent, buildSegments, defaultZoom, fitZoom, pickAt, scaleWindow, stepMoment, stepOutside, zoomsFor, type Zoom } from '../src/timeAxis.ts';
 import { entryMoment, resolveMoment, segments } from '../src/timeCursor.ts';
 import { atHome, whereabouts, whereOnJourney } from '../src/whereabouts.ts';
 import type { Journey, Waypoint } from '../src/data/types.ts';
@@ -110,8 +110,38 @@ describe('the control', () => {
     for (const x of dated) expect(x.width).toBeGreaterThan(0.1);
     expect(dated.find((x) => x.age.id === 'second-age')!.width).toBeGreaterThan(dated.find((x) => x.age.id === 'first-age')!.width);
     const last = dated[dated.length - 1];
-    expect(last.left + last.width).toBeCloseTo(1, 9);
+    expect(axisExtent(s)).toEqual({ left: dated[0].left, right: last.left + last.width });
     expect(dated.map((x) => x.years)).toEqual([1500, 590, 3441, 3021, 120]);
+  });
+
+  it('what is foretold comes last, timeless, apart after the axis (#57)', () => {
+    const s = segs();
+    const end = s[s.length - 1];
+    expect([end.age.id, end.timeless, end.after, end.age.foretold]).toEqual(['foretold', true, true, true]);
+    expect(s.filter((x) => x.after).map((x) => x.age.id)).toEqual(['foretold']);
+    expect(end.left).toBeGreaterThan(axisExtent(s).right); // a gap after the axis
+    expect(end.left + end.width).toBeCloseTo(1, 9);
+    expect(s[0].after).toBeUndefined();
+    // Its moment is the age itself, outside time, like before-time.
+    expect(momentSpan(P('foretold'), index.ages)).toBeUndefined();
+    expect(momentPath(momentOfEvent(index.events.find((e) => e.id === 'turin-slays-morgoth')!, index.ages))).toBe('foretold');
+    expect(resolveMoment('foretold')).toEqual({ age: 'foretold' });
+  });
+
+  it('steps out of timeless ages towards the axis only', () => {
+    const s = segs();
+    const entry = (a: { id: string }) => ({ age: a.id, marker: true }) as never;
+    expect(stepOutside(P('before-time'), 'next', s, index.ages, entry)).toEqual({ age: 'years-of-the-trees', marker: true });
+    expect(stepOutside(P('before-time'), 'prev', s, index.ages, entry)).toBeUndefined();
+    expect(momentPath(stepOutside(P('foretold'), 'prev', s, index.ages, entry)!)).toBe('fourth-age/120');
+    expect(stepOutside(P('foretold'), 'next', s, index.ages, entry)).toBeUndefined();
+    expect(stepOutside(P('third-age/3019'), 'next', s, index.ages, entry)).toBeUndefined();
+  });
+
+  it('a bar without foretold ages keeps the axis to the end', () => {
+    const s = buildSegments(index.ages.filter((a) => !a.foretold), 7053);
+    expect(s.some((x) => x.after)).toBe(false);
+    expect(axisExtent(s).right).toBeCloseTo(1, 9);
   });
 
   it('only whole years and centuries in Valian years; default scales follow the precision', () => {

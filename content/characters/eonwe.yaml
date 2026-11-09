@@ -1,0 +1,11 @@
+id: eonwe
+# Eönwë, as in the published Silmarillion. The drafts that tell the Last Battle (the Quenta in
+# The Shaping of Middle-earth, the Quenta Silmarillion in The Lost Road) call him Fionwë; we keep
+# one name for the same herald, so his lane joins up if the War of Wrath gets him too.
+name: { en: "Eönwë", es: "Eönwë" }
+kind: maia
+summary:
+  en: "Herald of Manwë and banner-bearer of the Valar. In the early drafts of the prophecy he is called Fionwë."
+  es: "Heraldo de Manwë y abanderado de los Valar. En los primeros borradores de la profecía se le llama Fionwë."
+color: "#d8d0b0"
+scale: 2.2
