@@ -210,6 +210,7 @@ a.ev:hover, button.ev:hover { background: rgba(255, 255, 255, 0.05); }
   position: fixed; z-index: 4; width: min(320px, calc(100vw - var(--sb) - 2 * var(--gap)));
   background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; backdrop-filter: blur(6px);
 }
+.card-fold { display: none; }
 .panel h1, .panel h2 { font-family: var(--serif); font-weight: 600; margin: 0; color: var(--gold); line-height: 1.15; }
 .panel h1 { font-size: 26px; }
 .panel h2 { font-size: 22px; }
@@ -762,4 +763,19 @@ a.r-person { color: inherit; text-decoration: none; }
 /* On a desktop the card's summary keeps to three lines, so the card leaves the stage room. */
 @media (min-width: 721px) {
   #event-summary { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+}
+
+/* Desktop event card: lighter and see-through, so the scene shows behind it; folds to title and date. */
+@media (min-width: 721px) {
+  #event-panel { background: rgba(13, 15, 23, 0.72); backdrop-filter: blur(8px); padding-right: 44px; }
+  .card-fold {
+    display: flex; position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; padding: 0;
+    align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 8px;
+    background: transparent; color: var(--muted); cursor: pointer;
+  }
+  .card-fold:hover { color: var(--gold); }
+  .card-fold .icon { width: 16px; height: 16px; transform: rotate(-90deg); transition: transform 0.15s; }
+  #event-panel.folded .card-fold .icon { transform: rotate(90deg); }
+  #event-panel.folded #event-summary, #event-panel.folded #event-sides { display: none; }
+  #event-panel.folded h1 { font-size: 20px; }
 }

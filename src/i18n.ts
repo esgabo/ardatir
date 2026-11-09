@@ -104,6 +104,8 @@ const UI = {
   resultsPlaces: { en: 'Places', es: 'Lugares' },
   collapse: { en: 'Collapse sidebar', es: 'Plegar barra lateral' },
   expand: { en: 'Expand sidebar', es: 'Desplegar barra lateral' },
+  collapseCard: { en: 'Collapse event card', es: 'Plegar la ficha del evento' },
+  expandCard: { en: 'Expand event card', es: 'Desplegar la ficha del evento' },
   openMenu: { en: 'Open menu', es: 'Abrir menú' },
   closeMenu: { en: 'Close menu', es: 'Cerrar menú' },
   otherEvents: { en: 'Other events', es: 'Otros eventos' },
