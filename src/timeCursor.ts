@@ -6,7 +6,7 @@
 // The logic lives in moment.ts, timeAxis.ts and whereabouts.ts (tested); this draws it.
 
 import { characterMap, eventById, index } from './chronicle';
-import { valianYears } from './data/calendar';
+import { EPS, overlaps, valianYears, within } from './data/calendar';
 import type { Age, EventSummary, Lang, Waypoint } from './data/types';
 import { h } from './dom';
 import { dateLabel, honestDate, momentLabel, monthShort, placeInSentence } from './format';
@@ -52,19 +52,33 @@ export function segments(): Segment[] {
 
 const ageOf = (id: string) => index.ages.find((a) => a.id === id);
 
-/** The year a visitor lands on in an age: where its first dated event begins, else year 1. */
+/**
+ * The year a visitor lands on in an age: where its first well-dated event begins (an honest
+ * range of at most one of the age's years: not a decade, an approximate date or a range of
+ * years, like the Bombadil poems placed anywhere in sixteen centuries), else its earliest
+ * dated event, else year 1.
+ */
 export function entryMoment(age: Age): Moment {
   if (!age.axis) return { age: age.id };
-  const first = index.events.filter((e) => e.age === age.id && e.when).sort((a, b) => a.span!.from - b.span!.from)[0];
+  const dated = index.events.filter((e) => e.age === age.id && e.when && e.span).sort((a, b) => a.span!.from - b.span!.from);
+  const narrow = (e: EventSummary) => e.span!.to - e.span!.from <= age.axis!.yearLength + EPS;
+  const first = dated.find(narrow) ?? dated[0];
   return momentOf({ age: age.id, year: first?.when?.start.year ?? 1 }, index.ages);
 }
 
-/** A moment from the URL: the readable path (or an axis position); an age alone opens at its entry year. Undefined: not a moment. */
+/**
+ * A moment from the URL: the readable path (or an axis position); an age alone opens at its
+ * entry year; a year past what the control shows of the open-ended last age (the Fourth)
+ * becomes the last year shown. Undefined: not a moment.
+ */
 export function resolveMoment(where: string | undefined): Moment | undefined {
   const m = parseMoment(where ?? '', index.ages);
   if (!m) return undefined;
   const age = ageOf(m.age)!;
-  return m.date || !age.axis ? m : entryMoment(age);
+  if (!age.axis) return m;
+  if (!m.date) return entryMoment(age);
+  const shown = segments().find((s) => s.age.id === m.age)?.years;
+  return shown !== undefined && m.date.year > shown ? momentOf({ age: m.age, year: shown }, index.ages) : m;
 }
 
 /** The href of a moment at a scale (the scale only when it isn't the moment's default). */
@@ -132,7 +146,7 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
   if (fromEv) art.append(h('a', { class: 'tc-back', href: eventHref(fromEv.id, L) }, `← ${fillText('backTo', L, { e: tr(fromEv.title, L) })}`));
 
   const over = h('p', { class: 'r-over' });
-  const title = h('h1', { class: 'r-title tc-title', tabindex: '-1', 'aria-live': 'polite' });
+  const title = h('h1', { class: 'r-title tc-title', tabindex: '-1' });
   const note = h('p', { class: 'tc-note' });
   art.append(over, title, note);
 
@@ -327,7 +341,7 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
     const dots = h('span', { class: 'tc-dots', 'aria-hidden': 'true' });
     const seen = new Set<number>();
     for (const e of index.events) {
-      if (e.at === undefined || e.at < w.from || e.at >= w.to) continue;
+      if (e.at === undefined || !within(e.at, w)) continue;
       const f = Math.round(fractionIn(w, e.at) * 400);
       if (seen.has(f)) continue;
       seen.add(f);
@@ -448,7 +462,7 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
     // The event happening at that stop, when there is one at this moment.
     const stop = w.kind === 'at' ? first : w.guess?.atStop ? w.guess.reached : undefined;
     const ev = stop?.event ? eventById(stop.event) : undefined;
-    if (ev?.span && ev.span.from < span.to && span.from < ev.span.to) card.append(h('p', { class: 'tc-there' }, h('span', { class: 'r-label' }, S('thereEvent')), eventLink(ev, L)));
+    if (ev?.span && overlaps(ev.span, span)) card.append(h('p', { class: 'tc-there' }, h('span', { class: 'r-label' }, S('thereEvent')), eventLink(ev, L)));
     card.append(h('p', { class: 'r-quiet tc-journeys' }, g.journeys.map((j) => tr(j.title, L)).join('  ·  ')));
     return card;
   }

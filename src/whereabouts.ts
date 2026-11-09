@@ -5,7 +5,7 @@
 // as our guess. Journeys with the same answer are one group (the dwarves and Bilbo at
 // Rivendell), so the list reads by company, not by character. Pure: no DOM, tested.
 
-import { overlaps, within } from './data/calendar';
+import { EPS, overlaps, within } from './data/calendar';
 import type { Character, EventSummary, Journey, Span, Waypoint } from './data/types';
 
 export interface Where {
@@ -39,10 +39,11 @@ export function whereOnJourney(j: Journey, m: Span, withGuess = false): Where | 
   let lo: number, hi: number;
   if (cover.length) { lo = cover[0]; hi = cover[cover.length - 1]; }
   else {
-    // Between two stops: the last one certainly over, and the first one certainly not begun.
+    // Between two stops: the last one certainly over, and the first one certainly not begun
+    // (touching the moment counts as outside it: EPS, see calendar.ts).
     lo = -1;
-    ws.forEach((w, i) => { if (w.span.to <= m.from) lo = i; });
-    hi = ws.findIndex((w, i) => i > lo && w.span.from >= m.to);
+    ws.forEach((w, i) => { if (w.span.to <= m.from + EPS) lo = i; });
+    hi = ws.findIndex((w, i) => i > lo && w.span.from >= m.to - EPS);
     if (lo < 0 || hi < 0) return undefined;
   }
   const stops = distinctPlaces(ws.slice(lo, hi + 1));
@@ -73,18 +74,28 @@ const whereKey = (w: Where) => [
  * Everyone's whereabouts during a moment, by company: journeys under way, grouped where
  * their answer is the same. Largest companies first. `withGuess` adds best guesses (for a
  * moment of a day or a month; a whole year is too wide for a guess to say anything).
+ * Each character is listed once: on a handoff day (one journey ends where the next begins,
+ * Gandalf leaving the hobbits on 30 Oct 3019) the journey that is starting wins, the one
+ * that begins latest. A journey left with no one of its own is dropped.
  */
 export function whereabouts(journeys: Journey[], m: Span, withGuess = false): WhereGroup[] {
+  const under = journeys.map((j) => ({ j, where: whereOnJourney(j, m, withGuess) })).filter((x): x is { j: Journey; where: Where } => !!x.where);
+  const start = (j: Journey) => j.span?.from ?? j.waypoints[0]?.span.from ?? -Infinity;
+  const owner = new Map<string, Journey>();
+  for (const { j } of under) for (const c of j.characters) {
+    const o = owner.get(c);
+    if (!o || start(j) > start(o)) owner.set(c, j);
+  }
   const groups = new Map<string, WhereGroup>();
-  for (const j of journeys) {
-    const where = whereOnJourney(j, m, withGuess);
-    if (!where) continue;
+  for (const { j, where } of under) {
+    const mine = j.characters.filter((c) => owner.get(c) === j);
+    if (!mine.length) continue;
     const k = whereKey(where);
     const g = groups.get(k);
     if (g) {
       g.journeys.push(j);
-      for (const c of j.characters) if (!g.characters.includes(c)) g.characters.push(c);
-    } else groups.set(k, { journeys: [j], characters: [...j.characters], where });
+      for (const c of mine) if (!g.characters.includes(c)) g.characters.push(c);
+    } else groups.set(k, { journeys: [j], characters: mine, where });
   }
   return [...groups.values()].sort((a, b) => b.characters.length - a.characters.length);
 }

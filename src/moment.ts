@@ -57,9 +57,10 @@ export function momentPath(m: Moment): string {
 /**
  * Read a moment from the URL: the readable form (any of `momentPath`'s), or a bare axis
  * position (`7050.2`, as years of the Sun), which becomes the day it falls on. A dated age
- * with no date gives `{ age }` (the caller picks a year in it). Undefined when the path names
- * no age, or a day that does not exist (month 13, an Overlithe in a year without one, a year
- * past the age's end).
+ * with no date gives `{ age }` (the caller picks a year in it). A year past the age's end
+ * becomes its last year (the open-ended last age is clamped by the caller, to what the control
+ * shows); an Overlithe in a year without one becomes Mid-year's Day, as `stepDate` does.
+ * Undefined when the path names no age, or a day that does not exist (month 13, 31 March).
  */
 export function parseMoment(path: string, ages: AgeLike[]): Moment | undefined {
   const p = decodeURIComponent(path).replace(/^\/+|\/+$/g, '');
@@ -76,16 +77,16 @@ export function parseMoment(path: string, ages: AgeLike[]): Moment | undefined {
   const m = /^(\d+)(?:-([a-z0-9-]+))?$/.exec(rest);
   if (!m) return undefined;
   const year = Number(m[1]);
+  if (year < 1) return undefined;
   const count = ageYearCount(age, ages);
-  if (year < 1 || (count !== undefined && year > count)) return undefined;
+  if (count !== undefined && year > count) return momentOf({ age: age.id, year: count }, ages);
   const tail = m[2];
   let date: StoryDate = { age: age.id, year };
   if (tail) {
     const md = /^(\d{1,2})(?:-(\d{1,2}))?$/.exec(tail);
     if ((SEASONS as readonly string[]).includes(tail)) date = { ...date, season: tail as Season };
     else if ((EXTRA_DAYS as readonly string[]).includes(tail)) {
-      if (tail === 'overlithe' && !hasOverlithe(year)) return undefined;
-      date = { ...date, day: tail as ExtraDay };
+      date = { ...date, day: tail === 'overlithe' && !hasOverlithe(year) ? 'midyear' : tail as ExtraDay };
     } else if (md) {
       const month = Number(md[1]);
       if (month < 1 || month > 12) return undefined;

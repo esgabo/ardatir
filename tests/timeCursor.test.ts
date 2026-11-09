@@ -12,6 +12,7 @@ import { MOMENTS } from '../src/moments.ts';
 import { atMoment } from '../src/related.ts';
 import { parseRoute, timeHref } from '../src/routes.ts';
 import { buildSegments, defaultZoom, fitZoom, pickAt, scaleWindow, stepMoment, zoomsFor, type Zoom } from '../src/timeAxis.ts';
+import { entryMoment, resolveMoment, segments } from '../src/timeCursor.ts';
 import { atHome, whereabouts, whereOnJourney } from '../src/whereabouts.ts';
 import type { Journey, Waypoint } from '../src/data/types.ts';
 
@@ -45,9 +46,10 @@ describe('moments in the URL', () => {
   it('rejects days that do not exist, and keeps only whole years in Valian years', () => {
     expect(parseMoment('third-age/3019-13', index.ages)).toBeUndefined();
     expect(parseMoment('third-age/3019-02-31', index.ages)).toBeUndefined();
-    expect(parseMoment('third-age/3019-overlithe', index.ages)).toBeUndefined(); // 3019 has no Overlithe
-    expect(parseMoment('third-age/3020-overlithe', index.ages)).toBeDefined();
-    expect(parseMoment('first-age/591', index.ages)).toBeUndefined(); // the First Age has 590 years
+    expect(momentPath(P('third-age/3019-overlithe'))).toBe('third-age/3019-midyear'); // 3019 has no Overlithe: as stepDate does
+    expect(momentPath(P('third-age/3020-overlithe'))).toBe('third-age/3020-overlithe');
+    expect(momentPath(P('first-age/591'))).toBe('first-age/590'); // the First Age has 590 years: its last
+    expect(momentPath(P('third-age/4000-03-15'))).toBe('third-age/3021');
     expect(parseMoment('middle-age/3', index.ages)).toBeUndefined();
     expect(parseMoment('before-time/3', index.ages)).toBeUndefined();
     expect(momentPath(P('years-of-the-trees/1495-03-02'))).toBe('years-of-the-trees/1495');
@@ -77,6 +79,24 @@ describe('moments in the URL', () => {
     expect(parseRoute('#/time')).toEqual({ kind: 'time', where: undefined, zoom: undefined, from: undefined, lang: undefined });
     expect(timeHref('first-age/495', 'es', { zoom: 'age' })).toBe('#/time/first-age/495?zoom=age&lang=es');
     expect(parseMoment(DEFAULT_MOMENT, index.ages)).toBeDefined();
+  });
+});
+
+describe('opening the time cursor', () => {
+  it('a year past what the open Fourth Age shows becomes the last year shown, never an inverted window', () => {
+    const shown = segments().find((s) => s.age.id === 'fourth-age')!.years!;
+    const m = resolveMoment('fourth-age/500')!;
+    expect(m.date!.year).toBe(shown);
+    const w = scaleWindow(m, defaultZoom(m), segments())!;
+    expect(w.to).toBeGreaterThan(w.from);
+    expect(resolveMoment('fourth-age/61')!.date!.year).toBe(61);
+  });
+
+  it('an age opens on its first well-dated event, not on a poem placed anywhere in sixteen centuries', () => {
+    const ta = index.ages.find((a) => a.id === 'third-age')!;
+    expect(entryMoment(ta).date!.year).not.toBe(1636);
+    const first = index.events.filter((e) => e.age === 'third-age' && e.span && e.span.to - e.span.from <= 1 + 1e-9).sort((a, b) => a.span!.from - b.span!.from)[0];
+    expect(entryMoment(ta).date!.year).toBe(first.when!.start.year);
   });
 });
 
@@ -179,6 +199,30 @@ describe('where everyone is', () => {
     expect(g[0].where.stops[0].place).toBe('bag-end');
     expect(g[0].characters).toEqual(expect.arrayContaining(['bilbo', 'gandalf', 'thorin']));
     expect(g[0].journeys).toHaveLength(3);
+  });
+
+  it('27 September 3018: the hobbits at Tom\'s in the Old Forest, Old Man Willow (the day before) not happening then', () => {
+    const g = groupsAt('third-age/3018-09-27');
+    const hobbits = g.find((x) => x.characters.includes('frodo'))!;
+    expect(hobbits.where).toMatchObject({ kind: 'at' });
+    expect(hobbits.where.stops.map((s) => s.place)).toEqual(['old-forest']);
+    const m = atMoment(momentSpan(P('third-age/3018-09-27'), index.ages)!);
+    expect([...m.likely, ...m.possibly].map((e) => e.id)).not.toContain('old-man-willow');
+    expect(m.likely.map((e) => e.id)).toContain('tom-bombadils-tales');
+  });
+
+  it('1 November 3019: the hobbits in the Shire, Gandalf with Tom, each in one group', () => {
+    const g = groupsAt('third-age/3019-11-01');
+    expect(g.filter((x) => x.characters.includes('gandalf'))).toHaveLength(1);
+    expect(g.find((x) => x.characters.includes('frodo'))!.where.stops.map((s) => s.place)).toEqual(['the-shire']);
+    expect(g.find((x) => x.characters.includes('gandalf'))!.where.stops.map((s) => s.place)).toEqual(['old-forest']);
+  });
+
+  it('on a handoff day each character is listed once, on the journey that is starting (30 October 3019)', () => {
+    const g = groupsAt('third-age/3019-10-30');
+    for (const c of ['gandalf', 'frodo', 'sam']) expect(g.filter((x) => x.characters.includes(c)), c).toHaveLength(1);
+    expect(g.find((x) => x.characters.includes('gandalf'))!.journeys.map((j) => j.id)).toEqual(['gandalf-goes-to-bombadil']);
+    expect(g.find((x) => x.characters.includes('frodo'))!.journeys.map((j) => j.id)).toEqual(['the-scouring-road']);
   });
 
   it('a whole year makes no guess', () => {
