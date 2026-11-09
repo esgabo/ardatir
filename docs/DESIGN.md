@@ -242,6 +242,7 @@ The URL always reflects where you are:
 ## 8. Technical shape
 
 - **Static site**: Vite + TypeScript + three.js, no framework. Output is a plain `dist/` folder (GitHub Pages).
+- **Code is split by zoom level**: each stage (`scene/cosmos.ts`, `scene/dioramaStage.ts`) is loaded with a dynamic `import()` the first time it is needed, so the front page never downloads diorama code. three.js core gets its own chunk (`manualChunks` in `vite.config.ts`), cached across deploys; keep every chunk under Vite's 500 kB warning.
 - **Content build** (`scripts/content/`): reads `content/`, validates it, and writes `public/data/` (generated, not committed):
   - `index.json`: ages, characters, places, arcs, journeys, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc and journey. Small enough to load up front; the time cursor and lanes run on it.
   - `events/<id>.json`: one per staged event, with narration, staging and audio timing, loaded when the event opens.
