@@ -7,7 +7,7 @@ place: aman
 characters: [ manwe ]   # Eärendil joins only at the last battle
 arcs: [ the-war-of-wrath ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
 title: { en: "The host of the Valar sets sail", es: "La hueste de los Valar se hace a la mar" }
 summary:
