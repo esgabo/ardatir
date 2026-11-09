@@ -94,16 +94,18 @@ The ways in live in a **sidebar on the left**, not in dropdowns. The 3D stage fi
 |---|---|
 | **Ages** | The ages as a vertical thread of nodes. The current age is lit and opens into its arcs, then their events, with the event on screen highlighted. |
 | **Stories** | The arcs as cards: age, name, one line of summary. |
-| **Lives** | Characters grouped by story; pick several as chips and show their lanes side by side (§3.2). Kin suggests more lanes. |
+| **Lives** | Characters in the current event first, then everyone; each opens into summary, kin and their events in order. Picking several as chips to show their lanes side by side comes with character lanes (§3.2). |
 | **Books** | Each book opens into chapters (from events' `source`), linking to the events they cover. |
-| **Places** | Places grouped by region, plus a way into the world map of the age. |
+| **Places** | Places with their events, alphabetical for now; grouped by region, with a way into the world map, once the world map exists. |
+
+Events that can be watched (staged) are links marked with a filled diamond; outlines are listed dimmed so the whole story is visible. Search matches event, character and place names in the current language, ignoring accents.
 
 **Over the stage:**
 
 - Top left, a **breadcrumb** of where you are (*Third Age › The Quest of Erebor › Roast Mutton*); top right, a **zoom switch**, *Cosmos · World · Event*.
 - The event card sits under the breadcrumb, the selected character's card on the right (§2, Event).
 - The narration caption above the timeline bar.
-- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** (the time cursor list, §3.1) and mute. In the cosmos and world levels the bar spans the ages instead.
+- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** and mute. Until the time cursor (§3.1) exists, Meanwhile lists the event's links and the events whose honest range overlaps it. Later, in the cosmos and world levels, the bar spans the ages instead.
 
 **Phones.** The rail and panel become one **drawer** opened from a menu button: the views as a tab strip under the search, the language switch in the footer.
 

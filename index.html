@@ -10,43 +10,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body>
+    <aside id="sidebar" class="sidebar"></aside>
+    <div id="scrim" class="scrim"></div>
+
     <div id="viewport"></div>
     <div id="flash"></div>
 
-    <header class="top">
-      <div class="brand">
-        <h1>Ardatir</h1>
-        <p id="tagline"></p>
+    <div class="stage-top">
+      <button id="menu" class="menu-btn" type="button"></button>
+      <nav id="crumbs" class="crumbs"></nav>
+      <div id="zoom" class="zoom" role="group">
+        <button type="button" data-zoom="cosmos"></button>
+        <button type="button" data-zoom="world" aria-disabled="true"></button>
+        <button type="button" data-zoom="event"></button>
       </div>
-      <div class="controls">
-        <select id="event-select"></select>
-        <select id="lang-select"></select>
-      </div>
-    </header>
+    </div>
 
-    <aside id="event-panel" class="panel">
-      <h2 id="event-title"></h2>
+    <section id="event-panel" class="panel">
+      <h1 id="event-title"></h1>
       <p id="event-date" class="muted"></p>
       <p id="event-summary"></p>
-    </aside>
+    </section>
 
-    <aside id="selection-panel" class="panel" hidden>
-      <h3 id="sel-title"></h3>
+    <section id="selection-panel" class="panel" hidden>
+      <h2 id="sel-title"></h2>
       <p id="sel-subtitle" class="muted"></p>
       <p id="sel-body"></p>
       <blockquote id="sel-thought"></blockquote>
-    </aside>
+    </section>
 
     <div id="caption" class="caption"></div>
 
+    <section id="meanwhile-panel" class="panel meanwhile" hidden></section>
+
     <footer class="timeline">
-      <button id="play" type="button">▶</button>
+      <button id="prev" class="icon-btn" type="button"></button>
+      <button id="play" class="play-btn" type="button"></button>
+      <button id="next" class="icon-btn" type="button"></button>
       <div class="track">
         <input id="scrubber" type="range" min="0" max="1000" value="0" step="1" />
         <div id="beats" class="beats"></div>
       </div>
       <span id="time-label" class="time"></span>
-      <button id="mute" type="button" hidden>🔊</button>
+      <button id="meanwhile" class="text-btn" type="button" aria-expanded="false"></button>
+      <button id="mute" class="icon-btn" type="button" hidden></button>
     </footer>
 
     <p id="disclaimer" class="disclaimer"></p>

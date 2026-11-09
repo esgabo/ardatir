@@ -1,9 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
-import { characterMap, index, loadEvent, loadIndex } from './chronicle';
+import { characterMap, index, loadEvent, loadIndex, playable } from './chronicle';
 import { LANGS, type EventDetail, type EventSummary, type Lang } from './data/types';
-import { initialLang, LANG_NAMES, rememberLang, t as ui, tr } from './i18n';
+import { overlaps } from './data/calendar';
+import { ICONS } from './icons';
+import { initialLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
+import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
 import { createCosmosStage } from './scene/cosmos';
@@ -57,10 +60,10 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 viewport.appendChild(renderer.domElement);
 
 const labelRenderer = new CSS2DRenderer();
-labelRenderer.domElement.style.position = 'fixed';
+labelRenderer.domElement.style.position = 'absolute';
 labelRenderer.domElement.style.inset = '0';
 labelRenderer.domElement.style.pointerEvents = 'none';
-document.body.appendChild(labelRenderer.domElement);
+viewport.appendChild(labelRenderer.domElement);
 
 let stage: Stage;
 let controls: OrbitControls;
@@ -117,8 +120,41 @@ const spoken = document.createElement('span');
 const unspoken = document.createElement('span');
 unspoken.className = 'unspoken';
 caption.append(spoken, unspoken);
-const eventSelect = $<HTMLSelectElement>('event-select');
-const langSelect = $<HTMLSelectElement>('lang-select');
+const prevBtn = $<HTMLButtonElement>('prev');
+const nextBtn = $<HTMLButtonElement>('next');
+const meanwhileBtn = $<HTMLButtonElement>('meanwhile');
+const meanwhilePanel = $('meanwhile-panel');
+const menuBtn = $<HTMLButtonElement>('menu');
+
+/** The last diorama visited, so the zoom switch can return to it from the cosmos. */
+let lastDiorama: string | undefined;
+
+async function openEvent(id: string): Promise<void> {
+  if (id === state.event.id) return;
+  state.event = await loadEvent(id);
+  state.t = 0;
+  state.playing = false;
+  state.selected = null;
+  closeMeanwhile();
+  loadStage();
+  writeRoute();
+}
+
+const sidebar = new Sidebar($('sidebar'), {
+  lang: () => state.lang,
+  currentId: () => state.event?.id ?? '',
+  openEvent: (id) => { void openEvent(id); },
+  openHome: () => { const c = playable().find((e) => e.stage === 'cosmos'); if (c) void openEvent(c.id); },
+  toggleLang: () => setLang(LANGS[(LANGS.indexOf(state.lang) + 1) % LANGS.length]),
+  layoutChanged: () => { if (stage) resize(); },
+});
+
+function setLang(lang: Lang): void {
+  state.lang = lang;
+  rememberLang(lang);
+  loadStage(); // labels and names are baked into the stage
+  writeRoute();
+}
 
 function formatDate(e: EventSummary): string {
   const L = state.lang;
@@ -138,28 +174,46 @@ function formatDate(e: EventSummary): string {
 function renderStatic(): void {
   const L = state.lang;
   document.documentElement.lang = L;
-  $('tagline').textContent = ui('tagline', L);
   $('disclaimer').textContent = ui('disclaimer', L);
   scrubber.setAttribute('aria-label', ui('progress', L));
-  eventSelect.setAttribute('aria-label', ui('events', L));
-  langSelect.setAttribute('aria-label', ui('language', L));
+  const L_ = (k: UiKey) => ui(k, L);
+  prevBtn.innerHTML = ICONS.prev; prevBtn.setAttribute('aria-label', L_('prevEvent')); prevBtn.title = L_('prevEvent');
+  nextBtn.innerHTML = ICONS.next; nextBtn.setAttribute('aria-label', L_('nextEvent')); nextBtn.title = L_('nextEvent');
+  const list = playable();
+  const i = list.findIndex((e) => e.id === state.event.id);
+  prevBtn.disabled = i <= 0;
+  nextBtn.disabled = i < 0 || i >= list.length - 1;
+  meanwhileBtn.innerHTML = `${ICONS.clock}<span>${L_('meanwhile')}</span>`;
+  menuBtn.innerHTML = ICONS.menu; menuBtn.setAttribute('aria-label', L_('openMenu'));
 
-  eventSelect.innerHTML = '';
-  for (const age of index.ages) {
-    const evs = index.events.filter((ev) => ev.age === age.id);
-    if (!evs.length) continue;
-    const group = document.createElement('optgroup');
-    group.label = tr(age.name, L);
-    for (const e of evs) {
-      // Outline and scripted events are listed but can't be played yet.
-      const opt = new Option(tr(e.title, L) + (e.stage ? '' : ` · ${ui('notStaged', L)}`), e.id, false, e.id === state.event.id);
-      opt.disabled = !e.stage;
-      group.append(opt);
-    }
-    eventSelect.append(group);
+  // Breadcrumb: age › arc › event.
+  const crumbs = $('crumbs');
+  crumbs.setAttribute('aria-label', L_('breadcrumb'));
+  crumbs.innerHTML = '';
+  const age = index.ages.find((a) => a.id === state.event.age);
+  const arc = index.arcs.find((a) => state.event.arcs.includes(a.id));
+  const crumb = (text: string, onClick: () => void) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'crumb'; b.textContent = text;
+    b.addEventListener('click', onClick);
+    crumbs.append(b, Object.assign(document.createElement('span'), { className: 'sep', textContent: '›', ariaHidden: 'true' }));
+  };
+  if (age) crumb(tr(age.name, L), () => sidebar.show('ages', `age:${age.id}`));
+  if (arc) crumb(tr(arc.title, L), () => sidebar.show('stories', `arc:${arc.id}`));
+  crumbs.append(Object.assign(document.createElement('span'), { className: 'here', textContent: tr(state.event.title, L) }));
+
+  // Zoom switch: the cosmos, the world (not built yet) and event dioramas.
+  const zoom = $('zoom');
+  zoom.setAttribute('aria-label', L_('zoom'));
+  const level = state.event.stage === 'cosmos' ? 'cosmos' : 'event';
+  for (const b of zoom.querySelectorAll<HTMLButtonElement>('button')) {
+    const z = b.dataset.zoom as 'cosmos' | 'world' | 'event';
+    b.textContent = L_(`zoom_${z}`);
+    b.setAttribute('aria-pressed', String(z === level));
+    if (z === 'world') b.title = L_('worldSoon');
   }
-  langSelect.innerHTML = '';
-  for (const lang of LANGS) langSelect.append(new Option(LANG_NAMES[lang], lang, false, lang === L));
+  if (state.event.stage !== 'cosmos') lastDiorama = state.event.id;
+  sidebar.render();
 
   $('event-title').textContent = tr(state.event.title, L);
   $('event-date').textContent = formatDate(state.event);
@@ -183,9 +237,9 @@ function renderStatic(): void {
 function updateDynamic(): void {
   const L = state.lang;
   scrubber.value = String(Math.round(state.t * 1000));
-  playBtn.textContent = state.playing ? '❚❚' : '▶';
+  playBtn.innerHTML = state.playing ? ICONS.pause : ICONS.play;
   playBtn.setAttribute('aria-label', ui(state.playing ? 'pause' : 'play', L));
-  muteBtn.textContent = narration?.muted ? '🔇' : '🔊';
+  muteBtn.innerHTML = narration?.muted ? ICONS.muted : ICONS.sound;
   muteBtn.setAttribute('aria-label', ui(narration?.muted ? 'unmute' : 'mute', L));
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
@@ -238,22 +292,80 @@ playBtn.addEventListener('click', () => setPlaying(!state.playing));
 muteBtn.addEventListener('click', () => { narration.muted = !narration.muted; updateDynamic(); });
 scrubber.addEventListener('input', () => { seekTo(Number(scrubber.value) / 1000); });
 scrubber.addEventListener('change', writeRoute);
-eventSelect.addEventListener('change', async () => {
-  state.event = await loadEvent(eventSelect.value);
-  state.t = 0;
-  state.playing = false;
-  state.selected = null;
-  loadStage();
-  writeRoute();
+prevBtn.addEventListener('click', () => step(-1));
+nextBtn.addEventListener('click', () => step(1));
+function step(dir: number): void {
+  const list = playable();
+  const i = list.findIndex((e) => e.id === state.event.id);
+  const target = list[i + dir];
+  if (target) void openEvent(target.id);
+}
+menuBtn.addEventListener('click', () => sidebar.setDrawer(true));
+$('scrim').addEventListener('click', () => sidebar.setDrawer(false));
+$('zoom').addEventListener('click', (e) => {
+  const z = (e.target as HTMLElement).closest<HTMLButtonElement>('button')?.dataset.zoom;
+  if (z === 'cosmos') { const c = playable().find((x) => x.stage === 'cosmos'); if (c) void openEvent(c.id); }
+  if (z === 'event' && state.event.stage === 'cosmos') {
+    const d = lastDiorama ?? playable().find((x) => x.stage !== 'cosmos')?.id;
+    if (d) void openEvent(d);
+  }
 });
-langSelect.addEventListener('change', () => {
-  state.lang = langSelect.value as Lang;
-  rememberLang(state.lang);
-  loadStage(); // labels and names are baked into the stage
-  writeRoute();
+
+// ---------- Meanwhile: what is linked to this event, and what overlaps it in time ----------
+function closeMeanwhile(): void {
+  meanwhilePanel.hidden = true;
+  meanwhileBtn.setAttribute('aria-expanded', 'false');
+}
+function renderMeanwhile(): void {
+  const L = state.lang;
+  const ev = state.event;
+  meanwhilePanel.innerHTML = '';
+  const row = (e: EventSummary, note?: string) => {
+    const li = document.createElement('li');
+    const el = document.createElement(e.stage ? 'button' : 'span');
+    el.className = e.stage ? 'mw-item' : 'mw-item dim';
+    if (!e.stage) el.title = ui('notStaged', L);
+    el.innerHTML = '<span class="mw-name"></span><span class="mw-note"></span>';
+    el.querySelector('.mw-name')!.textContent = tr(e.title, L);
+    el.querySelector('.mw-note')!.textContent = note ?? '';
+    if (e.stage) el.addEventListener('click', () => { void openEvent(e.id); });
+    li.append(el);
+    return li;
+  };
+  const section = (title: string, items: HTMLElement[]) => {
+    if (!items.length) return;
+    const h = document.createElement('h3'); h.textContent = title;
+    const ul = document.createElement('ul'); ul.append(...items);
+    meanwhilePanel.append(h, ul);
+  };
+  const byId = (id: string) => index.events.find((e) => e.id === id);
+  const linked = ev.links.map((l) => [byId(l.to), l] as const).filter(([e]) => !!e);
+  section(ui('connected', L), linked.map(([e, l]) => row(e!, ui(`link_${l.type}` as UiKey, L))));
+  const linkedIds = new Set(ev.links.map((l) => l.to));
+  const same = ev.span
+    ? index.events.filter((e) => e.id !== ev.id && !linkedIds.has(e.id) && e.span && overlaps(e.span, ev.span!))
+      .sort((a, b) => Math.abs((a.at ?? 0) - (ev.at ?? 0)) - Math.abs((b.at ?? 0) - (ev.at ?? 0))).slice(0, 8)
+    : [];
+  section(ui('sameTime', L), same.map((e) => {
+    const place = index.places.find((p) => p.id === e.place);
+    return row(e, tr(place?.name, L));
+  }));
+  if (!meanwhilePanel.childElementCount) {
+    const p = document.createElement('p'); p.className = 'muted'; p.textContent = ui('nothingMeanwhile', L);
+    meanwhilePanel.append(p);
+  }
+}
+meanwhileBtn.addEventListener('click', () => {
+  const open = meanwhilePanel.hidden;
+  if (open) renderMeanwhile();
+  meanwhilePanel.hidden = !open;
+  meanwhileBtn.setAttribute('aria-expanded', String(open));
 });
+
 addEventListener('keydown', (e) => {
-  if (e.code === 'Space' && !(e.target instanceof HTMLSelectElement)) { e.preventDefault(); setPlaying(!state.playing); }
+  const tgt = e.target as HTMLElement;
+  if (e.code === 'Escape') { closeMeanwhile(); sidebar.setDrawer(false); }
+  if (e.code === 'Space' && !tgt.closest('input, textarea, select, button, a')) { e.preventDefault(); setPlaying(!state.playing); }
 });
 addEventListener('hashchange', async () => {
   const r = parseRoute();
@@ -271,7 +383,8 @@ let down: { x: number; y: number } | null = null;
 renderer.domElement.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY }; });
 renderer.domElement.addEventListener('pointerup', (e) => {
   if (!down || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 5 || !stage.pick) return;
-  const ndc = new THREE.Vector2((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  const r = renderer.domElement.getBoundingClientRect();
+  const ndc = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(ndc, stage.camera);
   state.selected = stage.pick(ray);
   stage.select?.(state.selected);
@@ -281,11 +394,13 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 
 // ---------- Loop ----------
 function resize(): void {
-  renderer.setSize(innerWidth, innerHeight);
-  labelRenderer.setSize(innerWidth, innerHeight);
-  stage.resize(innerWidth, innerHeight);
+  const w = viewport.clientWidth || innerWidth, h = viewport.clientHeight || innerHeight;
+  renderer.setSize(w, h);
+  labelRenderer.setSize(w, h);
+  stage.resize(w, h);
 }
 addEventListener('resize', resize);
+new ResizeObserver(() => { if (stage) resize(); }).observe(viewport);
 
 const flash = $('flash');
 const frameClock = new THREE.Clock();

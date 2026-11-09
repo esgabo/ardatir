@@ -1,0 +1,371 @@
+// The collapsible sidebar: an icon rail of views plus a panel showing the chosen
+// view (docs/DESIGN.md §3.3). Built from the content index; no framework.
+
+import { index } from './chronicle';
+import type { Character, EventSummary, Lang } from './data/types';
+import { ICONS, type IconName } from './icons';
+import { t as ui, tr, type UiKey } from './i18n';
+
+export const VIEWS = ['ages', 'stories', 'lives', 'books', 'places'] as const;
+export type View = (typeof VIEWS)[number];
+
+const VIEW_ICON: Record<View, IconName> = { ages: 'ages', stories: 'stories', lives: 'lives', books: 'books', places: 'places' };
+const BOOK_ORDER = ['the-hobbit', 'the-fellowship-of-the-ring', 'the-two-towers', 'the-return-of-the-king', 'the-lord-of-the-rings', 'the-silmarillion', 'unfinished-tales'];
+const STORAGE_KEY = 'ardatir.sidebar';
+
+export interface SidebarHost {
+  lang(): Lang;
+  currentId(): string;
+  openEvent(id: string): void;
+  openHome(): void;
+  toggleLang(): void;
+  /** Called whenever the sidebar's width changes. */
+  layoutChanged(): void;
+}
+
+type Child = Node | string | null | undefined | false;
+
+function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string | boolean | undefined> = {}, ...children: Child[]): HTMLElementTagNameMap[K] {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v === undefined || v === false) continue;
+    if (k === 'html') el.innerHTML = String(v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of children) if (c) el.append(c);
+  return el;
+}
+
+const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+export class Sidebar {
+  view: View = 'ages';
+  open = true;
+  /** Phone drawer state (below the mobile breakpoint the sidebar is a drawer). */
+  drawer = false;
+  query = '';
+  private expanded = new Set<string>();
+  private revealedFor = '';
+  private panelBody!: HTMLElement;
+
+  constructor(private root: HTMLElement, private host: SidebarHost) {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
+      if (saved && (VIEWS as readonly string[]).includes(saved.view)) this.view = saved.view;
+      if (saved && typeof saved.open === 'boolean') this.open = saved.open;
+    } catch { /* storage unavailable: defaults */ }
+  }
+
+  private L(key: UiKey): string { return ui(key, this.host.lang()); }
+
+  private save(): void {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ view: this.view, open: this.open })); } catch { /* ignore */ }
+  }
+
+  private applyLayout(): void {
+    document.body.classList.toggle('sb-open', this.open);
+    document.body.classList.toggle('drawer-open', this.drawer);
+    this.host.layoutChanged();
+  }
+
+  /** Open a view (and the panel), optionally expanding one of its groups. */
+  show(view: View, expandKey?: string): void {
+    this.view = view;
+    this.open = true;
+    this.drawer = true;
+    this.query = '';
+    if (expandKey) this.expanded.add(expandKey);
+    this.save();
+    this.render();
+  }
+
+  toggle(): void { this.open = !this.open; this.save(); this.render(); }
+  setDrawer(on: boolean): void { this.drawer = on; this.render(); }
+
+  /** Expand the groups that lead to the current event, once per event. */
+  private revealCurrent(): void {
+    const id = this.host.currentId();
+    if (this.revealedFor === id) return;
+    this.revealedFor = id;
+    const e = index.events.find((x) => x.id === id);
+    if (!e) return;
+    this.expanded.add(`age:${e.age}`);
+    for (const a of e.arcs) { this.expanded.add(`age:${e.age}/arc:${a}`); this.expanded.add(`arc:${a}`); }
+    if (e.place) this.expanded.add(`place:${e.place}`);
+    if (e.source) { this.expanded.add(`book:${e.source.book}`); this.expanded.add(`book:${e.source.book}/ch:${e.source.chapter ?? ''}`); }
+  }
+
+  render(): void {
+    const L = this.host.lang();
+    this.revealCurrent();
+    this.root.innerHTML = '';
+    this.root.setAttribute('aria-label', this.L('navigation'));
+
+    // ---- Rail ----
+    const rail = h('nav', { class: 'rail', 'aria-label': this.L('navigation') });
+    const home = h('button', { type: 'button', class: 'rail-home', 'aria-label': this.L('home'), title: this.L('home'), html: ICONS.star });
+    home.addEventListener('click', () => { this.host.openHome(); this.setDrawer(false); });
+    rail.append(home);
+    for (const v of VIEWS) {
+      const on = v === this.view && (this.open || this.drawer);
+      const b = h('button', { type: 'button', class: 'rail-item', 'aria-pressed': on ? 'true' : 'false', 'data-hint': this.L(`hint_${v}` as UiKey) },
+        h('span', { html: ICONS[VIEW_ICON[v]] }), h('span', { class: 'rail-label' }, this.L(`view_${v}` as UiKey)));
+      b.addEventListener('click', () => {
+        if (v === this.view && this.open && !this.drawer) { this.toggle(); return; }
+        this.view = v; this.open = true; this.query = ''; this.save(); this.render();
+      });
+      rail.append(b);
+    }
+    rail.append(h('span', { class: 'rail-spacer' }));
+    const lang = h('button', { type: 'button', class: 'rail-lang', 'aria-label': this.L('language'), title: this.L('language') }, L.toUpperCase());
+    lang.addEventListener('click', () => this.host.toggleLang());
+    const tog = h('button', { type: 'button', class: 'rail-toggle', 'aria-expanded': this.open ? 'true' : 'false', 'aria-label': this.L(this.open ? 'collapse' : 'expand'), title: this.L(this.open ? 'collapse' : 'expand'), html: ICONS.sidebar });
+    tog.addEventListener('click', () => this.toggle());
+    rail.append(lang, tog);
+
+    // ---- Panel ----
+    const panel = h('div', { class: 'sb-panel' });
+    const close = h('button', { type: 'button', class: 'sb-close', 'aria-label': this.L('closeMenu'), html: ICONS.close });
+    close.addEventListener('click', () => this.setDrawer(false));
+    const input = h('input', { type: 'search', placeholder: this.L('search'), 'aria-label': this.L('search'), value: this.query }) as HTMLInputElement;
+    input.value = this.query;
+    input.addEventListener('input', () => { this.query = input.value; this.renderBody(); });
+    panel.append(
+      h('header', { class: 'sb-head' },
+        h('div', { class: 'sb-brand' }, h('div', { class: 'wordmark' }, 'Ardatir'), h('div', { class: 'tagline' }, this.L('tagline'))),
+        close),
+      h('label', { class: 'sb-search', html: ICONS.search }, input),
+      h('div', { class: 'sb-title' }, h('span', {}, this.L(`title_${this.view}` as UiKey)), h('span', { class: 'rule' }), h('span', { class: 'diamond' })),
+    );
+    this.panelBody = h('div', { class: 'sb-body' });
+    // Language switch for the phone drawer (the rail's EN/ES button covers larger screens).
+    const langs = h('div', { class: 'foot-lang', role: 'group', 'aria-label': this.L('language') });
+    for (const code of ['en', 'es'] as const) {
+      const b = h('button', { type: 'button', 'aria-pressed': code === L ? 'true' : 'false' }, code === 'en' ? 'English' : 'Español');
+      b.addEventListener('click', () => { if (code !== this.host.lang()) this.host.toggleLang(); });
+      langs.append(b);
+    }
+    panel.append(this.panelBody, h('footer', { class: 'sb-foot' }, langs, h('span', {}, this.L('disclaimer'))));
+
+    this.root.append(rail, panel);
+    this.renderBody();
+    this.applyLayout();
+    const cur = this.panelBody.querySelector('[aria-current="page"]');
+    cur?.scrollIntoView({ block: 'nearest' });
+  }
+
+  private renderBody(): void {
+    const body = this.panelBody;
+    body.innerHTML = '';
+    body.parentElement?.querySelector('.sb-title')?.toggleAttribute('hidden', !!this.query.trim());
+    if (this.query.trim()) { body.append(this.searchResults(this.query.trim())); return; }
+    const build = { ages: () => this.agesView(), stories: () => this.storiesView(), lives: () => this.livesView(), books: () => this.booksView(), places: () => this.placesView() }[this.view];
+    body.append(build());
+  }
+
+  // ---------- Building blocks ----------
+
+  private eventRow(e: EventSummary): HTMLElement {
+    const L = this.host.lang();
+    const label = [h('span', { class: 'ev-name' }, tr(e.title, L)), h('span', { class: 'ev-when' }, this.shortDate(e))];
+    const current = e.id === this.host.currentId();
+    if (!e.stage) {
+      return h('li', {}, h('span', { class: 'ev dim', title: this.L('notStaged') }, ...label));
+    }
+    const a = h('a', { class: 'ev', href: `#/event/${e.id}`, 'aria-current': current ? 'page' : undefined, title: this.L('playable') },
+      h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), ...label);
+    a.addEventListener('click', (ev) => { ev.preventDefault(); this.host.openEvent(e.id); this.drawer = false; this.render(); });
+    return h('li', {}, a);
+  }
+
+  private eventList(ids: string[] | EventSummary[]): HTMLElement {
+    const evs = (ids as (string | EventSummary)[])
+      .map((x) => (typeof x === 'string' ? index.events.find((e) => e.id === x) : x))
+      .filter((e): e is EventSummary => !!e);
+    if (!evs.length) return h('p', { class: 'sb-empty' }, this.L('noEvents'));
+    return h('ul', { class: 'ev-list' }, ...evs.map((e) => this.eventRow(e)));
+  }
+
+  /** An expandable group: a header button and children built only when open. */
+  private group(key: string, head: Node[], children: () => Node, cls = 'grp'): HTMLElement {
+    const open = this.expanded.has(key);
+    const li = h('li', { class: `${cls}${open ? ' open' : ''}` });
+    const btn = h('button', { type: 'button', class: `${cls}-head`, 'aria-expanded': open ? 'true' : 'false' }, h('span', { class: 'chev', html: ICONS.chevron }), ...head);
+    btn.addEventListener('click', () => {
+      if (this.expanded.has(key)) this.expanded.delete(key); else this.expanded.add(key);
+      const fresh = this.group(key, head, children, cls);
+      li.replaceWith(fresh);
+    });
+    li.append(btn);
+    if (open) li.append(children());
+    return li;
+  }
+
+  private shortDate(e: EventSummary): string {
+    const d = e.when?.start;
+    if (!d) return '';
+    const L = this.host.lang();
+    const age = index.ages.find((a) => a.id === d.age);
+    const month = d.month ? new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'short' }).replace('.', '') : d.season ? ui(d.season, L) : '';
+    return [month, `${d.year}`].filter(Boolean).join(' ') || tr(age?.abbr, L);
+  }
+
+  // ---------- Views ----------
+
+  private agesView(): HTMLElement {
+    const L = this.host.lang();
+    const current = index.events.find((e) => e.id === this.host.currentId());
+    const ol = h('ol', { class: 'thread' });
+    for (const age of [...index.ages].sort((a, b) => a.order - b.order)) {
+      const evs = index.events.filter((e) => e.age === age.id);
+      const lit = current?.age === age.id;
+      const key = `age:${age.id}`;
+      const head = [
+        h('span', { class: `node${lit ? ' lit' : ''}`, 'aria-hidden': 'true' }),
+        h('span', { class: 'age-text' }, h('span', { class: 'age-name' }, tr(age.name, L)), h('span', { class: 'age-sub' }, tr(age.summary, L))),
+      ];
+      ol.append(this.group(key, head, () => {
+        if (!evs.length) return h('p', { class: 'sb-empty' }, this.L('noEvents'));
+        const arcs = index.arcs.filter((a) => evs.some((e) => e.arcs.includes(a.id)));
+        const list = h('ul', { class: 'sub' });
+        for (const arc of arcs) {
+          const inAge = arc.events.filter((id) => evs.some((e) => e.id === id));
+          list.append(this.group(`${key}/arc:${arc.id}`, [h('span', { class: 'grp-name' }, tr(arc.title, L))], () => this.eventList(inAge)));
+        }
+        const loose = evs.filter((e) => !e.arcs.length);
+        if (loose.length && arcs.length) list.append(this.group(`${key}/other`, [h('span', { class: 'grp-name' }, this.L('otherEvents'))], () => this.eventList(loose)));
+        else if (loose.length) list.append(h('li', {}, this.eventList(loose)));
+        return list;
+      }, 'age'));
+    }
+    return ol;
+  }
+
+  private storiesView(): HTMLElement {
+    const L = this.host.lang();
+    const current = this.host.currentId();
+    const ul = h('ul', { class: 'cards' });
+    for (const arc of index.arcs) {
+      const first = index.events.find((e) => e.id === arc.events[0]);
+      const age = index.ages.find((a) => a.id === first?.age);
+      const here = arc.events.includes(current);
+      ul.append(this.group(`arc:${arc.id}`, [
+        h('span', { class: `card-text${here ? ' here' : ''}` },
+          h('span', { class: 'card-age' }, tr(age?.name, L)),
+          h('span', { class: 'card-name' }, tr(arc.title, L)),
+          h('span', { class: 'card-sub' }, tr(arc.summary, L))),
+      ], () => this.eventList(arc.events), 'card'));
+    }
+    return ul;
+  }
+
+  private characterGroup(c: Character): HTMLElement {
+    const L = this.host.lang();
+    const kindKey = `kind_${c.kind}` as UiKey;
+    const kind = ui(kindKey, L) || c.kind;
+    return this.group(`char:${c.id}`, [
+      h('span', { class: 'who' }, h('span', { class: 'who-name' }, tr(c.name, L)), h('span', { class: 'who-kind' }, kind)),
+    ], () => {
+      const box = h('div', { class: 'who-body' }, h('p', {}, tr(c.summary, L)));
+      if (c.kin?.length) {
+        const kin = h('p', { class: 'kin' }, `${this.L('kinOf')}: `);
+        c.kin.forEach((k, i) => {
+          const other = index.characters.find((x) => x.id === k.id);
+          if (!other) return;
+          const b = h('button', { type: 'button', class: 'linkish' }, tr(other.name, L));
+          b.addEventListener('click', () => {
+            this.expanded.add(`char:${other.id}`);
+            this.renderBody();
+            this.panelBody.querySelector(`[data-key="char:${other.id}"]`)?.scrollIntoView({ block: 'nearest' });
+          });
+          if (i) kin.append(', ');
+          kin.append(b);
+        });
+        box.append(kin);
+      }
+      box.append(this.eventList(index.byCharacter[c.id] ?? []));
+      return box;
+    }, 'grp');
+  }
+
+  private livesView(): HTMLElement {
+    const L = this.host.lang();
+    const current = index.events.find((e) => e.id === this.host.currentId());
+    const byName = (a: Character, b: Character) => tr(a.name, L).localeCompare(tr(b.name, L), L);
+    const here = index.characters.filter((c) => current?.characters.includes(c.id)).sort(byName);
+    const rest = index.characters.filter((c) => !here.includes(c) && (index.byCharacter[c.id]?.length ?? 0) > 0).sort(byName);
+    const box = h('div', {});
+    const section = (title: string, list: Character[]) => {
+      if (!list.length) return;
+      box.append(h('div', { class: 'sb-section' }, title));
+      const ul = h('ul', { class: 'groups' });
+      for (const c of list) { const g = this.characterGroup(c); g.dataset.key = `char:${c.id}`; ul.append(g); }
+      box.append(ul);
+    };
+    section(current ? tr(current.title, L) : '', here);
+    section(this.L('resultsLives'), rest);
+    return box;
+  }
+
+  private booksView(): HTMLElement {
+    const L = this.host.lang();
+    const books = [...new Set(index.events.map((e) => e.source?.book).filter((b): b is string => !!b))]
+      .sort((a, b) => (BOOK_ORDER.indexOf(a) + 1 || 99) - (BOOK_ORDER.indexOf(b) + 1 || 99));
+    const ul = h('ul', { class: 'groups' });
+    for (const book of books) {
+      const evs = index.events.filter((e) => e.source?.book === book);
+      const title = ui(`book_${book}` as UiKey, L) || book;
+      ul.append(this.group(`book:${book}`, [h('span', { class: 'book-name' }, title)], () => {
+        const chapters = [...new Set(evs.map((e) => e.source?.chapter ?? ''))]
+          .sort((a, b) => (typeof a === 'number' && typeof b === 'number' ? a - b : 0));
+        const sub = h('ul', { class: 'sub' });
+        for (const ch of chapters) {
+          const label = typeof ch === 'number' ? `${this.L('chapter')} ${ch}` : String(ch || '—');
+          sub.append(this.group(`book:${book}/ch:${ch}`, [h('span', { class: 'grp-name' }, label)],
+            () => this.eventList(evs.filter((e) => (e.source?.chapter ?? '') === ch))));
+        }
+        return sub;
+      }));
+    }
+    return ul;
+  }
+
+  private placesView(): HTMLElement {
+    const L = this.host.lang();
+    const places = index.places.filter((p) => (index.byPlace[p.id]?.length ?? 0) > 0)
+      .sort((a, b) => tr(a.name, L).localeCompare(tr(b.name, L), L));
+    const ul = h('ul', { class: 'groups' });
+    for (const p of places) {
+      ul.append(this.group(`place:${p.id}`, [
+        h('span', { class: 'who' }, h('span', { class: 'who-name' }, tr(p.name, L)), h('span', { class: 'who-kind' }, String(index.byPlace[p.id].length))),
+      ], () => h('div', { class: 'who-body' }, h('p', {}, tr(p.summary, L)), this.eventList(index.byPlace[p.id]))));
+    }
+    return ul;
+  }
+
+  private searchResults(q: string): HTMLElement {
+    const L = this.host.lang();
+    const f = fold(q);
+    const hit = (s: string) => fold(s).includes(f);
+    const events = index.events.filter((e) => hit(tr(e.title, L))).slice(0, 20);
+    const chars = index.characters.filter((c) => hit(tr(c.name, L))).slice(0, 12);
+    const places = index.places.filter((p) => hit(tr(p.name, L))).slice(0, 12);
+    const box = h('div', { class: 'results' });
+    if (!events.length && !chars.length && !places.length) { box.append(h('p', { class: 'sb-empty' }, this.L('noResults'))); return box; }
+    if (events.length) box.append(h('div', { class: 'sb-section' }, this.L('resultsEvents')), this.eventList(events));
+    const jump = (title: string, items: { id: string; name: string }[], view: View, prefix: string) => {
+      if (!items.length) return;
+      box.append(h('div', { class: 'sb-section' }, title));
+      const ul = h('ul', { class: 'ev-list' });
+      for (const it of items) {
+        const b = h('button', { type: 'button', class: 'ev' }, h('span', { class: 'ev-name' }, it.name));
+        b.addEventListener('click', () => { this.view = view; this.query = ''; this.expanded.add(`${prefix}:${it.id}`); this.save(); this.render(); });
+        ul.append(h('li', {}, b));
+      }
+      box.append(ul);
+    };
+    jump(this.L('resultsLives'), chars.map((c) => ({ id: c.id, name: tr(c.name, L) })), 'lives', 'char');
+    jump(this.L('resultsPlaces'), places.map((p) => ({ id: p.id, name: tr(p.name, L) })), 'places', 'place');
+    return box;
+  }
+}

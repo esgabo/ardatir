@@ -66,7 +66,9 @@ src/
   scene/stage.ts     the Stage interface every zoom level implements
   scene/cosmos.ts    the Ainulindalë and Arda with its shells
   scene/dioramaStage.ts, diorama.ts, figure.ts   event dioramas
-  main.ts            app shell: routing, playback loop, panels
+  sidebar.ts         the collapsible sidebar: rail + panel views built from the index
+  icons.ts           inline stroke SVG icons
+  main.ts            app shell: routing, playback loop, panels, breadcrumb, zoom switch, Meanwhile
 ```
 
 ### Rules the code depends on
