@@ -1,0 +1,15 @@
+id: nienor-comes-to-brethil
+age: first-age
+when:
+  start: { age: first-age, year: 499 }   # year of Nienor's coming; forgotten after Glaurung's spell
+  precision: approximate
+place: brethil
+characters: [ nienor, brandir, turin, glaurung ]
+arcs: [ the-children-of-hurin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Nienor comes to Brethil", es: "Nienor llega a Brethil" }
+summary:
+  en: "Nienor, who has lost her memory to Glaurung's spell, is found in the woods by Brandir. He names her Níniel, and Túrin soon falls in love with her."
+  es: "Nienor, que ha perdido la memoria por el hechizo de Glaurung, es hallada en el bosque por Brandir. La llama Níniel, y Túrin no tarda en enamorarse de ella."

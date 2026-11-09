@@ -1,0 +1,21 @@
+id: beren-and-luthien-return
+age: first-age
+when:
+  start: { age: first-age, year: 467 }   # immediately after Mandos's judgement
+  precision: approximate
+place: doriath
+characters: [ beren, luthien, thingol ]
+arcs: [ beren-and-luthien ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+title: { en: "Beren and Lúthien return", es: "Beren y Lúthien regresan" }
+summary:
+  en: "They awake in the woods of Doriath. Thingol accepts the Silmaril, and the two spend their remaining days in Ossiriand, free of the world's troubles."
+  es: "Despiertan en los bosques de Doriath. Thingol acepta el Silmaril, y los dos pasan el tiempo que les queda en Ossiriand, lejos de los males del mundo."
+links:
+  - to: luthien-before-mandos
+    type: caused-by
+    note:
+      en: "The gift of a second life."
+      es: "El don de una segunda vida."

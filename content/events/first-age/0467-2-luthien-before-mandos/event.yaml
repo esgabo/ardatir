@@ -1,0 +1,21 @@
+id: luthien-before-mandos
+age: first-age
+when:
+  start: { age: first-age, year: 467 }   # immediately after Beren's death
+  precision: approximate
+place: aman
+characters: [ luthien, mandos, beren ]
+arcs: [ beren-and-luthien ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+title: { en: "Lúthien before Mandos", es: "Lúthien ante Mandos" }
+summary:
+  en: "Lúthien's spirit goes to the halls of Mandos and sings of her grief until the Vala is moved. He offers her and Beren a second life in Middle-earth, mortal and with no return to the Elves."
+  es: "El espíritu de Lúthien va a las moradas de Mandos y canta su pena hasta conmover al Vala. Este les ofrece a ella y a Beren una segunda vida en la Tierra Media, mortales y sin regreso entre los Elfos."
+links:
+  - to: death-of-beren-and-huan
+    type: caused-by
+    note:
+      en: "She follows Beren into death."
+      es: "Sigue a Beren en la muerte."

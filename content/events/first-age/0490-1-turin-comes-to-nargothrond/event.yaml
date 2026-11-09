@@ -1,0 +1,22 @@
+id: turin-comes-to-nargothrond
+age: first-age
+when:
+  start: { age: first-age, year: 490 }   # after healing and the journey with Gwindor
+  precision: approximate
+place: nargothrond
+characters: [ turin, gwindor, finduilas, orodreth ]
+arcs: [ the-children-of-hurin ]
+journeys: [ turins-wanderings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Túrin comes to Nargothrond", es: "Túrin llega a Nargothrond" }
+summary:
+  en: "Taking the name Agarwaen, Túrin is admitted to the hidden city. His skill in war wins him the ear of King Orodreth, and Finduilas begins to love him."
+  es: "Con el nombre de Agarwaen, Túrin es admitido en la ciudad oculta. Su destreza guerrera le gana el oído del rey Orodreth, y Finduilas empieza a amarlo."
+links:
+  - to: turin-slays-beleg
+    type: caused-by
+    note:
+      en: "Gwindor brings him to heal."
+      es: "Gwindor lo lleva para que se cure."
