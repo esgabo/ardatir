@@ -9,7 +9,7 @@ characters: [ aragorn, halbarad, legolas, gimli, eowyn ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [ aragorn-legolas-and-gimlis-road ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Passing of the Grey Company" }
 title: { en: "Aragorn at Dunharrow", es: "Aragorn en el Sagrario" }
 summary:
