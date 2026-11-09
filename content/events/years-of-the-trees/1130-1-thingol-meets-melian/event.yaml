@@ -7,7 +7,7 @@ place: nan-elmoth
 characters: [ thingol, melian ]
 arcs: [ the-great-journey ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Thingol and Melian" }
 title: { en: "Elwë meets Melian", es: "Elwë conoce a Melian" }
 summary:

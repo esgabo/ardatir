@@ -7,7 +7,7 @@ place: tirion
 characters: [ feanor, fingolfin, finwe ]
 arcs: [ the-flight-of-the-noldor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Silmarils and the Unrest of the Noldor" }
 title: { en: "Fëanor draws his sword on Fingolfin", es: "Fëanor desenvaina su espada contra Fingolfin" }
 summary:

@@ -8,7 +8,7 @@ place: tirion
 characters: [ melkor, feanor, fingolfin ]
 arcs: [ the-flight-of-the-noldor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Silmarils and the Unrest of the Noldor" }
 title: { en: "Melkor sows discord among the Noldor", es: "Melkor siembra la discordia entre los Noldor" }
 summary:

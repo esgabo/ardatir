@@ -7,7 +7,7 @@ place: mithrim
 characters: [ feanor, maedhros, gothmog, melkor ]
 arcs: [ the-flight-of-the-noldor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Return of the Noldor" }
 title: { en: "The Battle under Stars", es: "La Batalla bajo las Estrellas" }
 summary:
