@@ -4,7 +4,7 @@ when:
   start: { age: third-age, year: 3019, month: 3, day: 28 }
   precision: day
 place: dol-guldur
-characters: [ celeborn, galadriel, thranduil ]
+characters: [ celeborn, galadriel ]
 arcs: [ the-war-of-the-ring ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
@@ -12,5 +12,5 @@ status: outline
 source: { book: the-lord-of-the-rings, chapter: "Appendix B" }
 title: { en: "The Destruction of Dol Guldur", es: "La destrucción de Dol Guldur" }
 summary:
-  en: "Celeborn crosses the Anduin with the Galadhrim and begins to cast down the walls of Dol Guldur, where Galadriel throws open the pits."
-  es: "Celeborn cruza el Anduin con los Galadhrim y comienza a derribar los muros de Dol Guldur, donde Galadriel abre las mazmorras."
+  en: "Celeborn leads the Galadhrim over the Anduin and takes Dol Guldur. Galadriel throws down its walls and lays bare its pits."
+  es: "Celeborn guía a los Galadhrim al otro lado del Anduin y toma Dol Guldur. Galadriel derriba sus muros y deja al descubierto sus fosos."

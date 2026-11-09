@@ -4,7 +4,7 @@ when:
   start: { age: third-age, year: 3019, month: 9, day: 21 }
   precision: day
 place: rivendell
-characters: [ frodo, sam, merry, pippin, gandalf, bilbo, elrond, galadriel, celeborn ]
+characters: [ frodo, sam, merry, pippin, gandalf, bilbo, elrond ]
 arcs: [ the-war-of-the-ring, after-the-war ]
 journeys: [ the-road-home ]
 tags: [ lord-of-the-rings ]

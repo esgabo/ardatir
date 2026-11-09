@@ -6,7 +6,7 @@ when:
 place: lothlorien
 characters: [ frodo, sam, galadriel ]
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
-journeys: [ the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-after-moria ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "The Mirror of Galadriel" }

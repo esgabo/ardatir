@@ -1,8 +1,8 @@
 id: gandalf-meets-radagast
 age: third-age
 when:
-  # Midsummer's Eve (1 Lithe), 3018, from Gandalf's own account at the Council. The place is not named, so none is given.
-  start: { age: third-age, year: 3018, day: 1-lithe }
+  # App. B: Mid-year's Day; on the Greenway south of Bree (Council of Elrond). No place file for the Greenway yet, so none is given.
+  start: { age: third-age, year: 3018, day: midyear }
   precision: day
 characters: [ gandalf, radagast ]
 arcs: [ the-war-of-the-ring ]

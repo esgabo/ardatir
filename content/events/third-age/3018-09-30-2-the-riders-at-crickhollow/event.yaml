@@ -1,0 +1,18 @@
+id: the-riders-at-crickhollow
+age: third-age
+when:
+  # Early hours of the 30th, per Appendix B.
+  start: { age: third-age, year: 3018, month: 9, day: 30 }
+  precision: day
+place: crickhollow
+characters: [ nazgul, fatty-bolger ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ ]
+tags: [ lord-of-the-rings ]
+status: outline
+# Told afterwards, at Rivendell, in "Flight to the Ford".
+source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
+title: { en: "The Riders at Crickhollow", es: "Los Jinetes en Cricava" }
+summary:
+  en: "Black Riders force the door of the little house at Crickhollow in the dark, but Fatty Bolger has already slipped out the back. He runs for help, the horn-call of Buckland rings out over the land, and the Riders flee north."
+  es: "En la oscuridad, los Jinetes Negros fuerzan la puerta de la casita de Cricava, pero Gordo Bolger ya ha escapado por detrás. Corre a pedir ayuda, el cuerno de Los Gamos resuena por toda la región y los Jinetes huyen hacia el norte."

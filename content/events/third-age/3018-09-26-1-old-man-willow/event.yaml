@@ -6,7 +6,7 @@ when:
 place: old-forest
 characters: [ frodo, sam, merry, pippin, tom-bombadil ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
-journeys: [ the-road-to-rivendell ]
+journeys: [ the-road-to-bree ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "The Old Forest" }

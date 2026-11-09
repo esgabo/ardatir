@@ -1,0 +1,8 @@
+id: gollum-follows-the-ring
+title: { en: "Gollum Follows the Ring", es: "Gollum sigue al Anillo" }
+characters: [ gollum ]
+# After Shelob's Lair Gollum trails the two across Mordor, mostly unseen, and falls on them again on the slopes of Mount Doom on 25 March.
+waypoints:
+  - { place: shelobs-lair, date: { age: third-age, year: 3019, month: 3, day: 13 }, precision: day }
+  - { place: mordor, date: { age: third-age, year: 3019, month: 3, day: 16 }, end: { age: third-age, year: 3019, month: 3, day: 24 }, precision: day }
+  - { place: mount-doom, date: { age: third-age, year: 3019, month: 3, day: 25 }, precision: day }

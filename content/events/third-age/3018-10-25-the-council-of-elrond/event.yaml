@@ -6,7 +6,7 @@ when:
 place: rivendell
 characters: [ elrond, gandalf, frodo, bilbo, aragorn, boromir, legolas, gimli, gloin ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
-journeys: [ the-road-to-rivendell, gandalfs-road-3018 ]
+journeys: [ with-strider-to-rivendell, gandalfs-road-3018 ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }

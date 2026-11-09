@@ -6,7 +6,7 @@ when:
 place: parth-galen
 characters: [ boromir, aragorn, merry, pippin, ugluk ]
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
-journeys: [ the-fellowship-of-the-ring, boromirs-road, merry-and-pippins-road ]
+journeys: [ the-fellowship-after-moria, boromirs-road, merry-and-pippins-road ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-two-towers, chapter: "The Departure of Boromir" }

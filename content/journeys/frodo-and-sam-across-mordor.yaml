@@ -1,0 +1,9 @@
+id: frodo-and-sam-across-mordor
+title: { en: "Frodo and Sam across Mordor", es: "Frodo y Sam a través de Mordor" }
+characters: [ frodo, sam ]
+# From Shelob's Lair and the tower of Cirith Ungol across the plain of Mordor to Mount Doom.
+waypoints:
+  - { place: shelobs-lair, date: { age: third-age, year: 3019, month: 3, day: 13 }, precision: day }
+  - { place: cirith-ungol, date: { age: third-age, year: 3019, month: 3, day: 13 }, end: { age: third-age, year: 3019, month: 3, day: 15 }, precision: day }
+  - { place: mordor, date: { age: third-age, year: 3019, month: 3, day: 16 }, end: { age: third-age, year: 3019, month: 3, day: 24 }, precision: day }
+  - { place: mount-doom, date: { age: third-age, year: 3019, month: 3, day: 25 }, precision: day }

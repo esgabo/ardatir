@@ -7,7 +7,7 @@ when:
 place: mount-doom
 characters: [ frodo, sam, gandalf, gwaihir ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
-journeys: [ the-ring-to-mordor, gandalf-the-whites-road ]
+journeys: [ frodo-and-sam-across-mordor, gandalf-the-whites-road ]
 tags: [ lord-of-the-rings, the-ring ]
 status: outline
 source: { book: the-return-of-the-king, chapter: "The Field of Cormallen" }

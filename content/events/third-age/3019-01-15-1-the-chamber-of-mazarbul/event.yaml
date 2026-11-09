@@ -1,7 +1,7 @@
 id: the-chamber-of-mazarbul
 age: third-age
 when:
-  start: { age: third-age, year: 3019, month: 1, day: 14 }
+  start: { age: third-age, year: 3019, month: 1, day: 15 }
   precision: day
 place: moria
 characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir ]

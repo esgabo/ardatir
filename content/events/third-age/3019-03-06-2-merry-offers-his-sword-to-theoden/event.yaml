@@ -1,0 +1,17 @@
+id: merry-offers-his-sword-to-theoden
+age: third-age
+when:
+  # At the Hornburg on the morning of the 6th, before the king rides for Harrowdale.
+  start: { age: third-age, year: 3019, month: 3, day: 6 }
+  precision: day
+place: helms-deep
+characters: [ merry, theoden, eowyn ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ merrys-ride-with-theoden ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Passing of the Grey Company" }
+title: { en: "Merry Offers His Sword to Théoden", es: "Merry ofrece su espada a Théoden" }
+summary:
+  en: "Merry, moved by love for the old king, lays his sword on Théoden's knees. Théoden takes him into his service as esquire of Rohan."
+  es: "Merry, movido por el cariño al viejo rey, pone su espada sobre las rodillas de Théoden. Théoden lo toma a su servicio como escudero de Rohan."

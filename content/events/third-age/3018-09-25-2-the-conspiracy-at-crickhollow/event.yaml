@@ -6,7 +6,7 @@ when:
 place: crickhollow
 characters: [ frodo, sam, pippin, merry, fatty-bolger ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
-journeys: [ the-road-to-rivendell ]
+journeys: [ the-road-to-crickhollow, the-road-to-bree ]
 tags: [ lord-of-the-rings ]
 status: outline
 source: { book: the-fellowship-of-the-ring, chapter: "A Conspiracy Unmasked" }

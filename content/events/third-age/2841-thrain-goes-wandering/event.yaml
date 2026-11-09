@@ -1,11 +1,11 @@
 id: thrain-goes-wandering
 age: third-age
 when:
-  # Year only. Appendix A has Thráin restless and setting out; the issue tracking this outline dates his departure to 2845. Capture in Dol Guldur follows (see gandalf-finds-thrain, 2850).
-  start: { age: third-age, year: 2845 }
+  # App. B: 2841 he sets out for Erebor, pursued; 2845 imprisoned in Dol Guldur.
+  start: { age: third-age, year: 2841 }
   precision: year
 place: ered-luin
-characters: [ thrain, balin, oin ]
+characters: [ thrain, balin, dwalin ]
 arcs: [ durins-folk-in-exile ]
 journeys: [  ]
 tags: [ lord-of-the-rings, hobbit ]

@@ -1,9 +1,10 @@
 id: merrys-ride-with-theoden
 title: { en: "Merry's Ride with Théoden", es: "La cabalgata de Merry con Théoden" }
 characters: [ merry, theoden ]
-# From Isengard, where Merry meets the king, to Dunharrow, the Drúadan Forest and the Pelennor.
+# From Isengard, where Merry meets the king, by the Hornburg (where he swears to Théoden) to Dunharrow, the Drúadan Forest and the Pelennor.
 waypoints:
   - { place: isengard, date: { age: third-age, year: 3019, month: 3, day: 5 }, precision: day }
+  - { place: helms-deep, date: { age: third-age, year: 3019, month: 3, day: 6 }, precision: day }
   - { place: dunharrow, date: { age: third-age, year: 3019, month: 3, day: 9 }, end: { age: third-age, year: 3019, month: 3, day: 10 }, precision: day }
   - { place: druadan-forest, date: { age: third-age, year: 3019, month: 3, day: 13 }, precision: day }
   - { place: pelennor-fields, date: { age: third-age, year: 3019, month: 3, day: 15 }, precision: day }
