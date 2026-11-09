@@ -9,9 +9,14 @@ characters: [ bilbo, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bif
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 8 }
 title: { en: The Spiders of Mirkwood, es: Las arañas del Bosque Negro }
 summary:
   en: "Lost after leaving the path, the dwarves are caught by giant spiders. Bilbo, alone with his ring and his little sword, which he now names Sting, draws the spiders off and cuts his friends free."
   es: "Perdidos tras abandonar el sendero, los enanos son atrapados por arañas gigantes. Bilbo, solo con su anillo y su pequeña espada, a la que ahora llama Dardo, distrae a las arañas y libera a sus amigos."
+beats:
+  - { id: feast, label: { en: "Lights in the dark", es: "Luces en la oscuridad" } }
+  - { id: web, label: { en: "Caught in the webs", es: "Atrapados en las telarañas" } }
+  - { id: sting, label: { en: "Sting is named", es: "Dardo recibe su nombre" } }
+  - { id: rescue, label: { en: "Bilbo cuts them free", es: "Bilbo los libera" } }

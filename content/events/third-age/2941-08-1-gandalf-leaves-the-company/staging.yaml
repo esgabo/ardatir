@@ -1,0 +1,150 @@
+stage: diorama
+duration: 30
+narration:
+  edge: 0
+  ponies: 0.2
+  leaving: 0.4
+  warning: 0.6
+  into: 0.8
+beats:
+  edge: 0
+  leaves: 0.4
+  path: 0.6
+  enter: 0.8
+tracks:
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 3.0, z: 3.75, action: walk, thought: { en: "Mirkwood at last. The Mountain is beyond it.", es: "El Bosque Negro al fin. La Montaña está más allá." } }
+      - { t: 0.17, x: 0.0, z: 0.75, action: walk }
+      - { t: 0.2, x: 0.0, z: 0.75, action: idle }
+      - { t: 0.4, x: 0.0, z: 0.75, action: idle }
+      - { t: 0.6, x: 0.0, z: 0.75, action: idle, thought: { en: "We keep our promise. Ponies back, path ahead.", es: "Cumplimos la promesa. Ponis de vuelta, sendero adelante." } }
+      - { t: 0.8, x: 0.0, z: 0.75, action: idle }
+      - { t: 1, x: -6.0, z: -5.25, action: walk }
+  - characterId: balin
+    keyframes:
+      - { t: 0, x: 3.75, z: 3.75, action: walk }
+      - { t: 0.17, x: 0.75, z: 0.75, action: walk }
+      - { t: 0.2, x: 0.75, z: 0.75, action: idle }
+      - { t: 0.4, x: 0.75, z: 0.75, action: idle }
+      - { t: 0.6, x: 0.75, z: 0.75, action: idle }
+      - { t: 0.8, x: 0.75, z: 0.75, action: idle }
+      - { t: 1, x: -5.25, z: -5.25, action: walk }
+  - characterId: dwalin
+    keyframes:
+      - { t: 0, x: 4.5, z: 3.75, action: walk }
+      - { t: 0.17, x: 1.5, z: 0.75, action: walk }
+      - { t: 0.2, x: 1.5, z: 0.75, action: idle }
+      - { t: 0.4, x: 1.5, z: 0.75, action: idle }
+      - { t: 0.6, x: 1.5, z: 0.75, action: idle }
+      - { t: 0.8, x: 1.5, z: 0.75, action: idle }
+      - { t: 1, x: -4.5, z: -5.25, action: walk }
+  - characterId: fili
+    keyframes:
+      - { t: 0, x: 5.25, z: 3.75, action: walk }
+      - { t: 0.17, x: 2.25, z: 0.75, action: walk }
+      - { t: 0.2, x: 2.25, z: 0.75, action: idle }
+      - { t: 0.4, x: 2.25, z: 0.75, action: idle }
+      - { t: 0.6, x: 2.25, z: 0.75, action: idle }
+      - { t: 0.8, x: 2.25, z: 0.75, action: idle }
+      - { t: 1, x: -3.75, z: -5.25, action: walk }
+  - characterId: kili
+    keyframes:
+      - { t: 0, x: 6.0, z: 3.75, action: walk }
+      - { t: 0.17, x: 3.0, z: 0.75, action: walk }
+      - { t: 0.2, x: 3.0, z: 0.75, action: idle }
+      - { t: 0.4, x: 3.0, z: 0.75, action: idle }
+      - { t: 0.6, x: 3.0, z: 0.75, action: idle }
+      - { t: 0.8, x: 3.0, z: 0.75, action: idle }
+      - { t: 1, x: -3.0, z: -5.25, action: walk }
+  - characterId: dori
+    keyframes:
+      - { t: 0, x: 3.0, z: 4.5, action: walk }
+      - { t: 0.17, x: 0.0, z: 1.5, action: walk }
+      - { t: 0.2, x: 0.0, z: 1.5, action: idle }
+      - { t: 0.4, x: 0.0, z: 1.5, action: idle }
+      - { t: 0.6, x: 0.0, z: 1.5, action: idle }
+      - { t: 0.8, x: 0.0, z: 1.5, action: idle }
+      - { t: 1, x: -6.0, z: -4.5, action: walk }
+  - characterId: nori
+    keyframes:
+      - { t: 0, x: 3.75, z: 4.5, action: walk }
+      - { t: 0.17, x: 0.75, z: 1.5, action: walk }
+      - { t: 0.2, x: 0.75, z: 1.5, action: idle }
+      - { t: 0.4, x: 0.75, z: 1.5, action: idle }
+      - { t: 0.6, x: 0.75, z: 1.5, action: idle }
+      - { t: 0.8, x: 0.75, z: 1.5, action: idle }
+      - { t: 1, x: -5.25, z: -4.5, action: walk }
+  - characterId: ori
+    keyframes:
+      - { t: 0, x: 4.5, z: 4.5, action: walk }
+      - { t: 0.17, x: 1.5, z: 1.5, action: walk }
+      - { t: 0.2, x: 1.5, z: 1.5, action: idle }
+      - { t: 0.4, x: 1.5, z: 1.5, action: idle }
+      - { t: 0.6, x: 1.5, z: 1.5, action: idle }
+      - { t: 0.8, x: 1.5, z: 1.5, action: idle }
+      - { t: 1, x: -4.5, z: -4.5, action: walk }
+  - characterId: oin
+    keyframes:
+      - { t: 0, x: 5.25, z: 4.5, action: walk }
+      - { t: 0.17, x: 2.25, z: 1.5, action: walk }
+      - { t: 0.2, x: 2.25, z: 1.5, action: idle }
+      - { t: 0.4, x: 2.25, z: 1.5, action: idle }
+      - { t: 0.6, x: 2.25, z: 1.5, action: idle }
+      - { t: 0.8, x: 2.25, z: 1.5, action: idle }
+      - { t: 1, x: -3.75, z: -4.5, action: walk }
+  - characterId: gloin
+    keyframes:
+      - { t: 0, x: 6.0, z: 4.5, action: walk }
+      - { t: 0.17, x: 3.0, z: 1.5, action: walk }
+      - { t: 0.2, x: 3.0, z: 1.5, action: idle }
+      - { t: 0.4, x: 3.0, z: 1.5, action: idle }
+      - { t: 0.6, x: 3.0, z: 1.5, action: idle }
+      - { t: 0.8, x: 3.0, z: 1.5, action: idle }
+      - { t: 1, x: -3.0, z: -4.5, action: walk }
+  - characterId: bifur
+    keyframes:
+      - { t: 0, x: 3.38, z: 5.25, action: walk }
+      - { t: 0.17, x: 0.38, z: 2.25, action: walk }
+      - { t: 0.2, x: 0.38, z: 2.25, action: idle }
+      - { t: 0.4, x: 0.38, z: 2.25, action: idle }
+      - { t: 0.6, x: 0.38, z: 2.25, action: idle }
+      - { t: 0.8, x: 0.38, z: 2.25, action: idle }
+      - { t: 1, x: -5.62, z: -3.75, action: walk }
+  - characterId: bofur
+    keyframes:
+      - { t: 0, x: 4.12, z: 5.25, action: walk }
+      - { t: 0.17, x: 1.12, z: 2.25, action: walk }
+      - { t: 0.2, x: 1.12, z: 2.25, action: idle }
+      - { t: 0.4, x: 1.12, z: 2.25, action: idle }
+      - { t: 0.6, x: 1.12, z: 2.25, action: idle }
+      - { t: 0.8, x: 1.12, z: 2.25, action: idle }
+      - { t: 1, x: -4.88, z: -3.75, action: walk }
+  - characterId: bombur
+    keyframes:
+      - { t: 0, x: 4.88, z: 5.25, action: walk }
+      - { t: 0.17, x: 1.88, z: 2.25, action: walk }
+      - { t: 0.2, x: 1.88, z: 2.25, action: idle }
+      - { t: 0.4, x: 1.88, z: 2.25, action: idle }
+      - { t: 0.6, x: 1.88, z: 2.25, action: idle }
+      - { t: 0.8, x: 1.88, z: 2.25, action: idle }
+      - { t: 1, x: -4.12, z: -3.75, action: walk }
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 5.62, z: 5.25, action: walk }
+      - { t: 0.17, x: 2.62, z: 2.25, action: walk }
+      - { t: 0.2, x: 2.62, z: 2.25, action: idle }
+      - { t: 0.4, x: 2.62, z: 2.25, action: idle, thought: { en: "Gandalf, leaving? Now?", es: "¿Gandalf se va? ¿Ahora?" } }
+      - { t: 0.6, x: 2.62, z: 2.25, action: idle }
+      - { t: 0.8, x: 2.62, z: 2.25, action: idle, thought: { en: "I wish I were at home with a kettle.", es: "Ojalá estuviera en casa con una tetera." } }
+      - { t: 1, x: -3.38, z: -3.75, action: walk }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: 6, z: 6, action: walk, thought: { en: "They are brave, and they have no idea what is in there.", es: "Son valientes, y no tienen idea de lo que hay ahí." } }
+      - { t: 0.17, x: 3.4, z: 3.4, action: walk }
+      - { t: 0.2, x: 3.4, z: 3.4, action: idle }
+      - { t: 0.4, x: 3.4, z: 3.4, action: talk, thought: { en: "Urgent business in the south. I cannot stay.", es: "Un asunto urgente en el sur. No puedo quedarme." } }
+      - { t: 0.6, x: 3.4, z: 3.4, action: talk, thought: { en: "Stay on the path, whatever you hear.", es: "Quédense en el sendero, oigan lo que oigan." } }
+      - { t: 0.8, x: 3.4, z: 3.4, action: idle }
+      - { t: 0.9, x: 5, z: 0, action: run }
+      - { t: 1, x: 6.3, z: -5, action: run }
