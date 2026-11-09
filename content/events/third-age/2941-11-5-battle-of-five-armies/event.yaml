@@ -4,7 +4,9 @@ when:
   # late autumn, with winter close
   start: { age: third-age, year: 2941, season: autumn }
   precision: season
-place: erebor
+# Hobbit ch. 17: the fighting is in the valley between the Mountain's southern spurs, before the Front
+# Gate and by Ravenhill, around the ruins of Dale; not inside the Mountain
+place: dale
 characters: [ thorin, dain, bard, thranduil, gandalf, bilbo, bolg, beorn, lord-of-the-eagles, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, gandalfs-road-2941 ]

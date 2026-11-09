@@ -142,7 +142,7 @@ Clips needed beyond the base set, from the events: `sit` and `eat` (the party, B
 | Asset | Name | Body / rig | Events | Priority | Status | Machine | Issue | Notes |
 |---|---|---|---|---|---|---|---|---|
 | `troll` | Trolls: Bert, Tom, William | troll (one body, 3 variants) | `roast-mutton`, `the-troll-gold` | P1 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Living (night) and stone (dawn onwards) versions; the stone ones stay as scenery in the-troll-gold. |
-| `gollum` | Gollum | own rig (small, four-limbed) | `riddles-in-the-dark` | P2 | brief | local | [#39](https://github.com/esgabo/ardatir/issues/39) | Pale, thin, large eyes, long hands and feet. Boat is a prop below. |
+| `gollum` | Gollum | own rig (small, four-limbed) | `riddles-in-the-dark` | P2 | brief | local | [#39](https://github.com/esgabo/ardatir/issues/39) | Pale, thin, large eyes, long hands and feet. Boat is a prop below. One content character, two models: young Sméagol (`smeagol`, row above) for `smeagol-takes-the-ring`, Gollum for the rest. |
 | `great-goblin` | The Great Goblin | goblin (new rig, or dwarf rig variant) | `captured-in-goblin-town` | P2 | brief | local | [#41](https://github.com/esgabo/ardatir/issues/41) | Large; keep the proportions rule. |
 | `goblins` | Goblins (rank and file, few variants) | goblin | `captured-in-goblin-town`, `rescued-by-the-eagles`, `battle-of-five-armies` | P2 | brief | local | [#41](https://github.com/esgabo/ardatir/issues/41) | Crowd units: keep cheap. |
 | `wargs` | Wargs | quadruped (wolf) | `rescued-by-the-eagles`, `battle-of-five-armies` | P2 | brief | local | [#41](https://github.com/esgabo/ardatir/issues/41) | Big grey wolves, crowd units. |
@@ -243,11 +243,8 @@ Assets the content needs that no issue covers yet. Natural homes: extra dwarves 
 Content notes:
 
 - [#36](https://github.com/esgabo/ardatir/issues/36) says The Hobbit has 29 events; the `hobbit` tag gives 30. The extra one is probably `smeagol-takes-the-ring` (also tagged `lord-of-the-rings`, sourced from the Fellowship), which [#39](https://github.com/esgabo/ardatir/issues/39) does list.
+- Fixed in [#53](https://github.com/esgabo/ardatir/issues/53): Thorin and Bilbo added to `thorin-is-laid-to-rest`; Elrond, Galadriel and Círdan to `white-council-drives-out-sauron`; the three stone trolls to `the-troll-gold`; `battle-of-five-armies` moved from `erebor` to `dale`; the `gollum` summary now covers both forms.
 - `gollum` is one content character but needs two models: young Sméagol for the Ring event and the creature for the riddles (per-event model override, [#20](https://github.com/esgabo/ardatir/issues/20)).
-- `white-council-drives-out-sauron` lists only Gandalf and Saruman, no Elrond or other Council members; fine for assets, but check the scene.
-- `thorin-is-laid-to-rest` has Bard, the Elvenking and Dáin but not Thorin; the tomb is an environment piece in [#49](https://github.com/esgabo/ardatir/issues/49).
-- `the-troll-gold` has no trolls in its character list, but the stone trolls stand there; counted as needed.
-- `battle-of-five-armies` is placed at `erebor`, while [#49](https://github.com/esgabo/ardatir/issues/49) puts the fighting in the valley by Dale.
 - `battle-of-dale`, `battle-of-pelargir` and `battle-of-the-pelennor-fields` are not *The Hobbit* and are left out (Dale, Dáin and Gandalf are reused there later).
 
 Also: the rig gaps above (goblin, quadruped, small bird), and [#23](https://github.com/esgabo/ardatir/issues/23) and [#45](https://github.com/esgabo/ardatir/issues/45) only partly cover the props the Unexpected Party needs.

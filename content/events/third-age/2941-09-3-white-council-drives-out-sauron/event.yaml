@@ -5,7 +5,11 @@ when:
   start: { age: third-age, year: 2941 }
   precision: year
 place: dol-guldur
-characters: [ gandalf, saruman ]
+# Appendix B (2941) and The Silmarillion name only "the White Council" as driving Sauron out, with
+# Saruman's devices; no list of who marched. Elrond, Galadriel and Círdan are named as members of the
+# Council in The Silmarillion ("Of the Rings of Power and the Third Age") and Appendix B (2463, 2953),
+# so they are added as the Council. Radagast is left out: he was never a member of the Council.
+characters: [ gandalf, saruman, elrond, galadriel, cirdan ]
 arcs: []
 journeys: [ gandalfs-road-2941 ]
 tags: [ hobbit, lord-of-the-rings ]
