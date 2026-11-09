@@ -9,7 +9,7 @@ characters: [ theoden, gandalf, saruman, grima, aragorn, legolas, gimli, merry, 
 arcs: [ the-war-of-the-ring, the-war-in-rohan ]
 journeys: [ aragorn-legolas-and-gimlis-road, gandalf-the-whites-road, merry-and-pippins-road, pippins-road-to-gondor, merrys-ride-with-theoden ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Voice of Saruman" }
 title: { en: "Parley at Orthanc", es: "Parlamento en Orthanc" }
 summary:
