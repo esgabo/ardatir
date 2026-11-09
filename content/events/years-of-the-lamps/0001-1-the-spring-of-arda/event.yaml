@@ -1,0 +1,49 @@
+id: the-spring-of-arda
+age: years-of-the-lamps
+# No `when`: the Years of the Lamps are timeless here (no reliable year count survives;
+# see content/ages/years-of-the-lamps.yaml). The Annals of Aman give the Lamps a long span
+# of Valian Years, but the published Silmarillion gives none, so we claim no date.
+place: almaren
+characters: [ aule, varda, manwe, yavanna, tulkas, melkor ]
+arcs: [ the-shape-of-arda ]
+journeys: []
+tags: [ cosmology, silmarillion ]
+status: scripted
+source: { book: the-silmarillion, chapter: "Of the Beginning of Days" }
+title:
+  en: The Spring of Arda
+  es: La Primavera de Arda
+summary:
+  en: "Aulë makes two great Lamps, Illuin in the north and Ormal in the south, and their light wakes the first growing things. The Valar dwell on the isle of Almaren where the lights meet, until Melkor throws the Lamps down and their fire breaks the even shape of the world."
+  es: "Aulë hace dos grandes Lámparas, Illuin en el norte y Ormal en el sur, y su luz despierta las primeras cosas que crecen. Los Valar habitan en la isla de Almaren, donde las luces se juntan, hasta que Melkor derriba las Lámparas y su fuego quiebra la forma armoniosa del mundo."
+links:
+  - to: ainulindale
+    type: enabled-by
+    note:
+      en: "Some of the Ainur went down into the world they had sung, to shape it."
+      es: "Algunos de los Ainur descendieron al mundo que habían cantado, para darle forma."
+beats:
+  - id: lamps
+    label:
+      en: The Lamps are raised
+      es: Se alzan las Lámparas
+  - id: spring
+    label:
+      en: The Spring of Arda
+      es: La Primavera de Arda
+  - id: almaren
+    label:
+      en: Almaren
+      es: Almaren
+  - id: utumno
+    label:
+      en: Utumno
+      es: Utumno
+  - id: fall
+    label:
+      en: The Lamps fall
+      es: Caen las Lámparas
+  - id: darkness
+    label:
+      en: Under the stars
+      es: Bajo las estrellas

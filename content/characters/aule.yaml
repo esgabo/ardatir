@@ -1,0 +1,8 @@
+id: aule
+name: { en: "Aulë", es: "Aulë" }
+kind: ainu
+summary:
+  en: "The smith of the Valar, master of the substance of the earth and of every craft."
+  es: "El herrero de los Valar, señor de la sustancia de la tierra y de todos los oficios."
+color: "#b07a48"
+scale: 2.4

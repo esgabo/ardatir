@@ -1,0 +1,8 @@
+id: arien
+name: { en: "Arien", es: "Arien" }
+kind: ainu
+summary:
+  en: "A maiden of the Maiar, a spirit of fire who had tended the golden flowers of Laurelin, chosen to guide the Sun."
+  es: "Una doncella de los Maiar, espíritu de fuego, que cuidaba las flores doradas de Laurelin y fue elegida para guiar el Sol."
+color: "#f0b040"
+scale: 2.2
