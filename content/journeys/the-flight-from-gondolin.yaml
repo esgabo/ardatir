@@ -1,0 +1,6 @@
+id: the-flight-from-gondolin
+title: { en: "The Flight from Gondolin", es: "La huida de Gondolin" }
+characters: [ tuor, idril, earendil ]
+waypoints:
+  - { place: gondolin, date: { age: first-age, year: 510 }, precision: year }
+  - { place: havens-of-sirion, date: { age: first-age, year: 511 }, end: { age: first-age, year: 537 }, precision: year }

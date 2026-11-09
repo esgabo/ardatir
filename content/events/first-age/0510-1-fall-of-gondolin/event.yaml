@@ -1,0 +1,22 @@
+id: fall-of-gondolin
+age: first-age
+when:
+  start: { age: first-age, year: 510, season: summer }   # the attack comes at the summer festival of the Gates of Summer
+  precision: season
+place: gondolin
+characters: [ turgon, tuor, idril, maeglin, gothmog, earendil ]
+arcs: [ the-fall-of-gondolin ]
+journeys: [ the-flight-from-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Tuor and the Fall of Gondolin" }
+title: { en: "The fall of Gondolin", es: "La caída de Gondolin" }
+summary:
+  en: "Morgoth's army of orcs, balrogs and dragons breaks into the hidden city at midsummer. Turgon dies in the ruins of his tower, and Gondolin burns."
+  es: "El ejército de Morgoth, de orcos, balrogs y dragones, irrumpe en la ciudad oculta a mediados del verano. Turgon muere entre las ruinas de su torre, y Gondolin arde."
+links:
+  - to: maeglin-betrays-gondolin
+    type: caused-by
+    note:
+      en: "The enemy knows the way."
+      es: "El enemigo conoce el camino."

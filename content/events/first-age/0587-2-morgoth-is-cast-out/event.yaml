@@ -1,0 +1,21 @@
+id: morgoth-is-cast-out
+age: first-age
+when:
+  start: { age: first-age, year: 587 }   # the same year
+  precision: approximate
+place: angband
+characters: [ melkor ]
+arcs: [ the-war-of-wrath ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
+title: { en: "Morgoth is cast out", es: "Morgoth es arrojado fuera" }
+summary:
+  en: "Angband is broken open. Morgoth is bound with the chain Angainor, his crown is beaten into a collar, and he is thrust beyond the Door of Night into the Void."
+  es: "Angband es abierta. Morgoth es atado con la cadena Angainor, su corona se convierte en un collar, y lo arrojan por la Puerta de la Noche al Vacío."
+links:
+  - to: ancalagon-falls
+    type: caused-by
+    note:
+      en: "With his last strength gone, Morgoth yields."
+      es: "Sin fuerzas, Morgoth se rinde."

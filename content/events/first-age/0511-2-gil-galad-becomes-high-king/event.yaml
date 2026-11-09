@@ -1,0 +1,21 @@
+id: gil-galad-becomes-high-king
+age: first-age
+when:
+  start: { age: first-age, year: 511 }   # after Turgon's death; in the Havens of Sirion
+  precision: approximate
+place: havens-of-sirion
+characters: [ gil-galad, cirdan ]
+arcs: [  ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
+title: { en: "Gil-galad becomes High King", es: "Gil-galad se convierte en rey supremo" }
+summary:
+  en: "With Turgon dead, the Noldor of Beleriand turn to Gil-galad, who rules from the Isle of Balar under Círdan's care."
+  es: "Muerto Turgon, los Noldor de Beleriand se vuelven hacia Gil-galad, que gobierna desde la isla de Balar bajo el cuidado de Círdan."
+links:
+  - to: fall-of-gondolin
+    type: caused-by
+    note:
+      en: "The throne falls vacant."
+      es: "El trono queda vacante."

@@ -1,0 +1,22 @@
+id: tuor-and-idril-reach-the-havens
+age: first-age
+when:
+  start: { age: first-age, year: 511 }   # the refugees reach the Sirion after a season on the road
+  precision: approximate
+place: havens-of-sirion
+characters: [ tuor, idril, earendil ]
+arcs: [ the-fall-of-gondolin ]
+journeys: [ the-flight-from-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Tuor and the Fall of Gondolin" }
+title: { en: "The refugees reach the Havens of Sirion", es: "Los refugiados llegan a los Puertos del Sirion" }
+summary:
+  en: "The survivors of Gondolin join the people of Doriath by the sea. Tuor builds a ship, and in time he and Idril sail west, never to be seen again."
+  es: "Los supervivientes de Gondolin se unen a la gente de Doriath junto al mar. Tuor construye una nave, y con el tiempo él e Idril zarpan al oeste y no se les vuelve a ver."
+links:
+  - to: tuor-leads-the-survivors-from-gondolin
+    type: caused-by
+    note:
+      en: "The end of the road."
+      es: "El final del camino."

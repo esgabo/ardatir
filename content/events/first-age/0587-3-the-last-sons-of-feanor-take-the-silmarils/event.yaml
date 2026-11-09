@@ -1,0 +1,21 @@
+id: the-last-sons-of-feanor-take-the-silmarils
+age: first-age
+when:
+  start: { age: first-age, year: 587 }   # right after the fall of Morgoth
+  precision: approximate
+place: beleriand
+characters: [ maedhros, maglor ]
+arcs: [ the-war-of-wrath, the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
+title: { en: "The last sons of Fëanor take the Silmarils", es: "Los últimos hijos de Fëanor toman los Silmarils" }
+summary:
+  en: "Maedhros and Maglor steal the two remaining Silmarils from the camp of the Valar and are burned by them. Maedhros leaps into a chasm of fire, and Maglor casts his jewel into the sea."
+  es: "Maedhros y Maglor roban los dos Silmarils que quedan del campamento de los Valar y estos los queman. Maedhros se arroja a un abismo de fuego y Maglor lanza su joya al mar."
+links:
+  - to: morgoth-is-cast-out
+    type: caused-by
+    note:
+      en: "The oath's last act."
+      es: "El último acto del juramento."

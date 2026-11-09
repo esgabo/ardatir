@@ -1,0 +1,21 @@
+id: tuor-weds-idril
+age: first-age
+when:
+  start: { age: first-age, year: 502 }   # a few years after Tuor reaches Gondolin; the year is not given
+  precision: approximate
+place: gondolin
+characters: [ tuor, idril, turgon ]
+arcs: [ the-fall-of-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Tuor and the Fall of Gondolin" }
+title: { en: "Tuor weds Idril", es: "Tuor se casa con Idril" }
+summary:
+  en: "Tuor lives in Gondolin for years and earns the trust of Turgon. He marries Idril, the king's daughter, the first union of Man and Elf since Beren and Lúthien."
+  es: "Tuor vive años en Gondolin y gana la confianza de Turgon. Se casa con Idril, la hija del rey, la primera unión entre un Hombre y una Elfa desde Beren y Lúthien."
+links:
+  - to: tuor-reaches-gondolin
+    type: caused-by
+    note:
+      en: "He stays after delivering his message."
+      es: "Se queda tras entregar su mensaje."
