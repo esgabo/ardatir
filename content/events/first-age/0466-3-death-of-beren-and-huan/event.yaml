@@ -8,7 +8,7 @@ characters: [ beren, huan, carcharoth, thingol, luthien ]
 arcs: [ beren-and-luthien ]
 journeys: [ berens-quest ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
 title: { en: "The hunt of Carcharoth", es: "La caza de Carcharoth" }
 summary:

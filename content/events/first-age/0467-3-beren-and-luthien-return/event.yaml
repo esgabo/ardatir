@@ -7,7 +7,7 @@ place: doriath
 characters: [ beren, luthien, thingol ]
 arcs: [ beren-and-luthien ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
 title: { en: "Beren and Lúthien return", es: "Beren y Lúthien regresan" }
 summary:
