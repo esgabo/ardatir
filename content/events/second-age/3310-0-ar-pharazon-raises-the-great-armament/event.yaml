@@ -1,0 +1,22 @@
+id: ar-pharazon-raises-the-great-armament
+age: second-age
+when:
+  start: { age: second-age, year: 3310 }   # Appendix B: the building of the Great Armament begins in 3310
+  end: { age: second-age, year: 3319 }     # the fleet sails in 3319
+  precision: approximate
+place: numenor
+characters: [ ar-pharazon, sauron ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Ar-Pharazôn raises the Great Armament", es: "Ar-Pharazôn arma la Gran Armada" }
+summary:
+  en: "Sauron whispers that the Undying Lands can be taken, and with them endless life. For years the forests are felled and the smiths work, until the greatest fleet Men have ever built fills the western havens."
+  es: "Sauron susurra que las Tierras Imperecederas pueden tomarse, y con ellas la vida sin fin. Durante años se talan bosques y trabajan los herreros, hasta que la mayor flota que han construido los Hombres llena los puertos occidentales."
+links:
+  - to: sauron-is-taken-to-numenor
+    type: caused-by
+    note:
+      en: "Sauron plays on the aging King's fear of death."
+      es: "Sauron aviva el miedo a la muerte del Rey envejecido."

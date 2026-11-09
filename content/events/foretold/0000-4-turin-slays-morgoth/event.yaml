@@ -1,0 +1,33 @@
+id: turin-slays-morgoth
+age: foretold
+place: valinor
+characters: [ turin, melkor, tulkas, eonwe ]
+arcs: [ the-end-of-days ]
+tags: [ silmarillion, prophecy, battle ]
+status: scripted
+# The Second Prophecy of Mandos (1937 Quenta Silmarillion, The Lost Road), as already in the Quenta
+# (The Shaping of Middle-earth): Túrin's black sword gives Morgoth his death, and the
+# children of Húrin and all Men are avenged. The published Silmarillion has none of this. The
+# sword is Gurthang, named in the published "Of Túrin Turambar"; the prophecy says only that it
+# is black.
+# A late note (The Peoples of Middle-earth, "The Problem of Ros") changes this: Túrin returns from the dead in the Last Battle to slay the dragon Ancalagon, not Morgoth. We keep the 1937 telling.
+source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
+foretoldBy: mandos
+title: { en: "Túrin slays Morgoth", es: "Túrin mata a Morgoth" }
+summary:
+  en: "Túrin's black sword ends Morgoth for good. The house of Húrin, and every Man who suffered under him, has its reckoning at last."
+  es: "La espada negra de Túrin acaba con Morgoth para siempre. La casa de Húrin, y todo Hombre que sufrió bajo él, obtiene al fin su desquite."
+links:
+  - to: morgoth-curses-hurin-and-his-kin
+    type: caused-by
+    note:
+      en: "The curse on Húrin's house is answered: the son Morgoth hunted all his life deals the last blow."
+      es: "La maldición sobre la casa de Húrin recibe respuesta: el hijo al que Morgoth persiguió toda su vida da el último golpe."
+  - to: turins-end
+    type: enabled-by
+    note:
+      en: "Túrin died at Cabed-en-Aras; it is from the Halls of Mandos that he comes back to fight."
+      es: "Túrin murió en Cabed-en-Aras; vuelve a luchar desde las Estancias de Mandos."
+beats:
+  - { id: the-blow, label: { en: The black sword, es: La espada negra } }
+  - { id: avenged, label: { en: Avenged, es: Vengados } }

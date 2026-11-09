@@ -133,6 +133,8 @@ body.sb-open .sb-panel { display: flex; }
 .age-head .chev { margin-top: 4px; }
 .node { position: relative; flex: none; width: 9px; height: 9px; margin: 6px 1px 0; border-radius: 50%; border: 1px solid var(--gold-soft); background: var(--side); }
 .node.lit { width: 11px; height: 11px; margin: 5px 0 0; border: 0; background: var(--gold); box-shadow: 0 0 10px rgba(232, 199, 122, 0.6); }
+.node.foretold { border-style: dashed; background: transparent; }
+.node.foretold.lit { border: 1px dashed var(--gold); background: rgba(232, 199, 122, 0.25); }
 .age-text { min-width: 0; display: flex; flex-direction: column; }
 .age-name { font-family: var(--serif); font-size: 19px; font-weight: 600; line-height: 1.2; }
 .node.lit + .age-text .age-name { color: var(--gold); }
@@ -156,6 +158,15 @@ a.ev:hover, button.ev:hover { background: rgba(255, 255, 255, 0.05); }
 .ev.dim[aria-current='page'] { color: var(--gold); }
 .ev-name { flex: 1; min-width: 0; }
 .ev-when { flex: none; font-size: 11px; color: var(--faint); }
+
+/* What is foretold (docs/DESIGN.md §4.8): a small dashed badge, the dashes of what lies outside time. */
+.foretold-badge {
+  flex: none; display: inline-block; padding: 1px 7px; border: 1px dashed rgba(232, 199, 122, 0.55); border-radius: 999px;
+  font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; line-height: 1.5; text-transform: uppercase;
+  color: var(--gold-soft); white-space: nowrap; text-shadow: none; vertical-align: middle;
+}
+.r-ev .foretold-badge { margin-left: 2px; }
+.r-nav-title .foretold-badge { margin-left: 8px; position: relative; top: -2px; }
 
 /* Story cards */
 .cards { display: flex; flex-direction: column; gap: 8px; }
@@ -320,7 +331,12 @@ body.sb-open .disclaimer { display: none; }
   .foot-lang button[aria-pressed='true'] { background: rgba(232, 199, 122, 0.16); color: var(--gold); font-weight: 600; }
   .menu-btn { display: flex; }
   .zoom button { padding: 0 8px; }
-  #event-panel { top: auto; bottom: 150px; }
+  /* The event card: one slim line under the top bar (the bar already names the event), out of the
+     way of the caption; the selection panel takes its place when someone is picked. */
+  #event-panel { top: 64px; bottom: auto; left: var(--gap); right: var(--gap); width: auto; padding: 6px 12px; border-radius: 10px; }
+  #event-panel #event-title { display: none; }
+  #event-panel #event-date { margin: 0; }
+  body:has(#selection-panel:not([hidden])) #event-panel { display: none; }
   #event-summary { display: none; }
   #selection-panel { top: 70px; left: var(--gap); width: auto; }
   .caption { font-size: 17px; bottom: 84px; }
@@ -328,10 +344,11 @@ body.sb-open .disclaimer { display: none; }
   .text-btn { padding: 0 10px; }
   .meanwhile { left: var(--gap); width: auto; bottom: 88px; }
   .crumbs .crumb, .crumbs .sep { display: none; }
+  /* The page under it says it is foretold; on a phone the bar keeps to one line. */
+  .crumbs .foretold-badge { display: none; }
   .crumbs .here { font-family: var(--serif); font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .timeline { bottom: 40px; }
   .caption { bottom: 100px; }
-  #event-panel { bottom: 168px; }
   .meanwhile { bottom: 102px; }
   .disclaimer, body.sb-open .disclaimer { display: block; font-size: 10px; padding: 0 12px; }
 }
@@ -366,6 +383,11 @@ body.page-open .crumbs { text-shadow: none; }
 .reader { max-width: 700px; margin: 0 auto; padding: 92px 32px 48px; }
 .r-over { margin: 0 0 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-soft); }
 .r-title { margin: 0; font-family: var(--serif); font-weight: 600; font-size: 50px; line-height: 1.04; color: var(--gold); letter-spacing: 0.005em; text-wrap: balance; }
+.r-foretold {
+  display: flex; align-items: baseline; gap: 10px; margin: 16px 0 0; padding: 10px 14px;
+  border: 1px dashed var(--line); border-radius: 10px; font-size: 13.5px; line-height: 1.5; color: var(--ink);
+}
+.r-foretold .foretold-badge { position: relative; top: -1px; }
 .r-meta { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 18px 0 0; padding: 0; color: var(--muted); font-size: 13px; }
 .r-meta li { display: flex; align-items: center; gap: 7px; }
 .r-meta .icon { width: 16px; height: 16px; color: var(--gold-soft); }
@@ -547,6 +569,7 @@ a.r-person { color: inherit; text-decoration: none; }
 .ln-age .ln-body { padding: 22px 0 10px 12px; }
 .ln-age { --ny: 34px; }
 .ln-age-name { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--gold-soft); }
+.ln-age-note { display: block; margin-top: 2px; font-size: 12px; font-style: italic; color: var(--muted); }
 .ln-gap .ln-body { padding: 10px 0 10px 12px; }
 .ln-gap-text { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--faint); }
 
@@ -591,6 +614,7 @@ a.r-person { color: inherit; text-decoration: none; }
 /* The ages: segments, the timeless ones apart, before the axis */
 .tc-ages { display: flex; gap: 10px; height: 52px; }
 .tc-outside { flex: 0 0 12%; display: flex; gap: 3px; padding-bottom: 6px; }
+.tc-outside.after { flex-basis: 7%; }
 .tc-axis { position: relative; flex: 1; min-width: 0; }
 /* The axis: a thin gold line under the dated ages only. */
 .tc-axis::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); }
@@ -619,7 +643,8 @@ a.r-person { color: inherit; text-decoration: none; }
 .tc-zooms button[aria-pressed='true'] { background: rgba(232, 199, 122, 0.16); color: var(--gold); font-weight: 600; }
 .tc-zooms button:not(:disabled):hover { color: var(--ink); }
 .tc-step { width: 40px; height: 40px; flex: none; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line-soft); border-radius: 50%; background: transparent; color: var(--gold-soft); }
-.tc-step:hover { border-color: var(--gold-soft); color: var(--gold); }
+.tc-step:not(:disabled):hover { border-color: var(--gold-soft); color: var(--gold); }
+.tc-step:disabled { opacity: 0.35; cursor: default; }
 .tc-step:first-child .icon { transform: scaleX(-1); }
 .tc-step .icon { width: 18px; height: 18px; }
 
@@ -685,11 +710,17 @@ a.r-person { color: inherit; text-decoration: none; }
 
 @media (max-width: 720px) {
   .tc-control { padding: 14px 10px 12px; margin-left: -6px; margin-right: -6px; }
-  .tc-seg { padding: 0 4px; }
+  .tc-seg { padding: 0 2px 0 3px; }
   .tc-seg-name.full { display: none; }
-  .tc-seg-name.short { display: block; font-size: 13px; }
-  .tc-outside { flex: 0 0 58px; flex-direction: column; }
-  .tc-ages { gap: 6px; }
+  .tc-seg-name.short { display: block; font-size: 12px; letter-spacing: -0.01em; }
+  /* Narrow boxes beside the axis (the after one as narrow as "Foretold"), so the short Fourth Age keeps "Fo.A." whole. */
+  .tc-outside { flex: 0 0 46px; flex-direction: column; }
+  .tc-outside.after { flex-basis: 44px; }
+  .tc-outside.after .tc-seg { padding: 0 2px; }
+  /* The open Fourth Age is the narrowest dated segment: a size smaller, so "Fo.A." stays whole. */
+  .tc-axis .tc-seg:last-of-type { padding: 0 1px 0 2px; }
+  .tc-axis .tc-seg:last-of-type .tc-seg-name.short { font-size: 11px; }
+  .tc-ages { gap: 4px; }
   .tc-seg.timeless { border-radius: 6px; }
   .tc-seg.timeless .tc-seg-name.short { font-size: 10px; line-height: 1; }
   .tc-moments { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; scrollbar-color: rgba(232, 199, 122, 0.25) transparent; }
@@ -700,4 +731,35 @@ a.r-person { color: inherit; text-decoration: none; }
   .tc-scale { padding: 6px 6px 0; }
   .tc-tick-label { font-size: 10px; }
   .tc-where-h { font-size: 19px; }
+}
+
+/* ---------- A battle's sides: factions as banner-colour chips (docs/DESIGN.md §2, battles) ---------- */
+.fx { white-space: nowrap; color: var(--ink); }
+.fx-dot {
+  display: inline-block; width: 8px; height: 8px; margin: 0 6px 1px 3px; vertical-align: middle; transform: rotate(45deg); border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(236, 230, 216, 0.35);
+}
+.fx-line { line-height: 1.6; }
+.fx-against { font-style: italic; color: var(--gold-soft); }
+/* On the event card each side starts its own line, "against" between them. */
+.event-sides .fx-against { display: block; }
+.event-sides { margin-top: 8px !important; font-size: 11.5px !important; line-height: 1.6 !important; color: var(--muted); }
+.r-meta .r-sides { flex-basis: 100%; align-items: flex-start; }
+.r-meta .r-sides .icon { margin-top: 3px; }
+.r-factions .r-person { border-left: 3px solid var(--fx, var(--line)); }
+.r-faction .r-person-name .fx { font: inherit; color: var(--ink); white-space: normal; }
+.r-faction .r-person-name .fx-dot { display: none; }
+.r-faction .r-person-sum { -webkit-line-clamp: 4; }
+.r-faction .r-person-sum a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.r-faction .r-person-sum a:hover { color: var(--gold); }
+.r-against { margin: 14px 0; text-align: center; font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--gold-soft); }
+.r-when-sides { display: block; margin-top: 2px; color: var(--muted); }
+.r-when-sides .fx { color: var(--muted); }
+.sb-faction { margin: 8px 0 4px; font-size: 13px; }
+@media (max-width: 720px) {
+  .event-sides { display: none; }
+}
+/* On a desktop the card's summary keeps to three lines, so the card leaves the stage room. */
+@media (min-width: 721px) {
+  #event-summary { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 }

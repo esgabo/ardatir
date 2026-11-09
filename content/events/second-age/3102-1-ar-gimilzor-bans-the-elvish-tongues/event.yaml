@@ -1,0 +1,22 @@
+id: ar-gimilzor-bans-the-elvish-tongues
+age: second-age
+when:
+  start: { age: second-age, year: 3102 }   # his reign: 3102-3177 (Unfinished Tales); Appendix B gives his death as 3175
+  end: { age: second-age, year: 3177 }    # UT; App. B's 3175 (Tar-Palantír's repentance) implies earlier
+  precision: approximate
+place: armenelos
+characters: [ ar-gimilzor ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Ar-Gimilzôr bans the Elvish tongues", es: "Ar-Gimilzôr prohíbe las lenguas élficas" }
+summary:
+  en: "The King forbids anyone to speak the Elven tongues and will not let the Eldar land. The Faithful are watched and hated, and the Elves of Eressëa now come only in secret. He drives the Faithful he can find east to Rómenna, under watch."
+  es: "El Rey prohíbe hablar las lenguas élficas y no deja desembarcar a los Eldar. Los Fieles son vigilados y odiados, y los Elfos de Eressëa solo vienen ya en secreto. Destierra a los Fieles que encuentra al este, a Rómenna, bajo vigilancia."
+links:
+  - to: the-people-of-numenor-are-sundered
+    type: enabled-by
+    note:
+      en: "The split between the King's Men and the Faithful is what he turns into persecution."
+      es: "La división entre los Hombres del Rey y los Fieles es lo que él convierte en persecución."

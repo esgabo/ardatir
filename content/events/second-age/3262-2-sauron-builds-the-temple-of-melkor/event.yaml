@@ -1,0 +1,27 @@
+id: sauron-builds-the-temple-of-melkor
+age: second-age
+when:
+  start: { age: second-age, year: 3262 }   # after Sauron reaches Armenelos; before Nimloth falls (c. 3280)
+  end: { age: second-age, year: 3280 }
+  precision: approximate
+place: armenelos
+characters: [ sauron, ar-pharazon ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Sauron builds the Temple of Melkor", es: "Sauron construye el Templo de Melkor" }
+summary:
+  en: "Sauron persuades the King that Melkor is the true lord of the world. On the hill of Armenelos rises a vast domed Temple, where fires burn and men are sacrificed, and the King and most of his people kneel."
+  es: "Sauron persuade al Rey de que Melkor es el verdadero señor del mundo. En la colina de Armenelos se alza un vasto Templo con cúpula, donde arden fuegos y se sacrifica a hombres, y el Rey y la mayoría de su pueblo se arrodillan."
+links:
+  - to: sauron-is-taken-to-numenor
+    type: caused-by
+    note:
+      en: "Sauron's counsel turns the King to Melkor."
+      es: "El consejo de Sauron vuelve al Rey hacia Melkor."
+  - to: the-white-tree-is-burned
+    type: enables
+    note:
+      en: "Nimloth's wood feeds the Temple's first fire."
+      es: "La madera de Nimloth alimenta el primer fuego del Templo."

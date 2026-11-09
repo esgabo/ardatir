@@ -7,15 +7,17 @@ import {
   ageYearCount, axisToDate, dayWindowSlots, monthStart, SEASON_START, slotDay, slotIsDay, slotStart, stepDate,
 } from './data/calendar';
 import type { Age, StoryDate } from './data/types';
-import { finePrecision, momentOf, type Moment } from './moment';
+import { finePrecision, momentOf, sameMoment, type Moment } from './moment';
 
 /** The years an open-ended age (the Fourth) spans on the control: Appendix B's tale ends in Fo.A. 120. */
 export const OPEN_AGE_YEARS = 120;
 
 export interface Segment {
   age: Age;
-  /** Timeless ages sit before the axis, as their own segments, not on it. */
+  /** Timeless ages sit beside the axis, as their own segments, not on it. */
   timeless: boolean;
+  /** A timeless age after the axis (what is foretold), not before it. */
+  after?: boolean;
   /** The age's own years (Valian years in the Years of the Trees). */
   years?: number;
   /** Axis span, for dated ages. */
@@ -26,19 +28,23 @@ export interface Segment {
   width: number;
 }
 
-/** Room between the timeless segments and the axis, as a share of the bar. */
+/** Room between the timeless segments and the axis, on each side, as a share of the bar. */
 const TIMELESS_GAP = 0.02;
 const TIMELESS_WEIGHT = 1.25;
 
 /**
  * The overview: every age as a segment. Lengths differ hugely (1500 Valian years, 590, 3441,
  * 3021 years), so widths follow the logarithm of each age's own years: every age gets room
- * to be read and picked, and longer ages are still wider. Timeless ages come first, apart.
- * `contentEnd` (an axis position) stretches the open-ended last age to cover all content.
+ * to be read and picked, and longer ages are still wider. Timeless ages stand apart: those
+ * ordered before the dated ages first (before the world), those after them last (what is
+ * foretold). `contentEnd` (an axis position) stretches the open-ended last age to cover all content.
  */
 export function buildSegments(agesIn: Age[], contentEnd?: number): Segment[] {
   const ages = [...agesIn].sort((a, b) => a.order - b.order);
-  const timeless = ages.filter((a) => !a.axis);
+  const datedOrders = ages.filter((a) => a.axis).map((a) => a.order);
+  const lastDated = datedOrders.length ? Math.max(...datedOrders) : Infinity;
+  const timeless = ages.filter((a) => !a.axis && a.order < lastDated);
+  const afterAxis = ages.filter((a) => !a.axis && a.order > lastDated);
   const dated = ages.filter((a) => a.axis).sort((a, b) => a.axis!.start - b.axis!.start);
   const rows = dated.map((age) => {
     const L = age.axis!.yearLength;
@@ -49,15 +55,41 @@ export function buildSegments(agesIn: Age[], contentEnd?: number): Segment[] {
     }
     return { age, years, from: age.axis!.start, to: age.axis!.start + years * L, weight: Math.max(2, Math.log10(years)) };
   });
-  const total = timeless.length * TIMELESS_WEIGHT + rows.reduce((s, r) => s + r.weight, 0);
-  const gap = timeless.length ? TIMELESS_GAP : 0;
-  const unit = (1 - gap) / total;
+  const total = (timeless.length + afterAxis.length) * TIMELESS_WEIGHT + rows.reduce((s, r) => s + r.weight, 0);
+  const gap = timeless.length ? TIMELESS_GAP : 0, gapAfter = afterAxis.length ? TIMELESS_GAP : 0;
+  const unit = (1 - gap - gapAfter) / total;
   const out: Segment[] = [];
   let left = 0;
   for (const age of timeless) { out.push({ age, timeless: true, left, width: TIMELESS_WEIGHT * unit }); left += TIMELESS_WEIGHT * unit; }
   left += gap;
   for (const r of rows) { out.push({ age: r.age, timeless: false, years: r.years, from: r.from, to: r.to, left, width: r.weight * unit }); left += r.weight * unit; }
+  left += gapAfter;
+  for (const age of afterAxis) { out.push({ age, timeless: true, after: true, left, width: TIMELESS_WEIGHT * unit }); left += TIMELESS_WEIGHT * unit; }
   return out;
+}
+
+/** The part of the overview the axis takes (from its first dated age to the end of its last), 0–1. */
+export function axisExtent(segs: Segment[]): { left: number; right: number } {
+  const dated = segs.filter((s) => !s.timeless);
+  if (!dated.length) return { left: 0, right: 1 };
+  const last = dated[dated.length - 1];
+  return { left: dated[0].left, right: last.left + last.width };
+}
+
+/**
+ * Stepping from a timeless moment, outside the axis, along the bar in order: before the world →
+ * the Years of the Lamps → the first year of the Trees ("later" into a dated age enters it at
+ * `entry`); from what is foretold "earlier" goes to the last year the axis shows. Undefined
+ * when there is nowhere to go that way (before the beginning, past the end).
+ */
+export function stepOutside(m: Moment, key: StepKey, segs: Segment[], ages: Age[], entry: (age: Age) => Moment): Moment | undefined {
+  const i = segs.findIndex((s) => s.age.id === m.age);
+  if (i < 0 || !segs[i].timeless) return undefined;
+  const fwd = key === 'next' || key === 'bigNext' || key === 'end';
+  const to = segs[i + (fwd ? 1 : -1)];
+  if (!to) return undefined;
+  if (to.timeless) return { age: to.age.id };
+  return fwd ? entry(to.age) : momentOf({ age: to.age.id, year: to.years! }, ages);
 }
 
 /** Where a moment sits on the overview bar (0–1), at the start of its honest range; undefined for a timeless moment. */
@@ -210,12 +242,45 @@ export const STEP_KEYS: Record<string, StepKey> = {
  * a year / a month. Home/End: the first or last unit the scale shows.
  */
 export function stepMoment(m: Moment, zoom: Zoom, key: StepKey, segs: Segment[], ages: Age[]): Moment {
-  const d = m.date;
   const seg = segFor(segs, m.age);
-  if (!d || !seg) return m;
+  if (!m.date || !seg) return m;
+  // Off either end of the axis, into the timeless segment beside it: past the last day the
+  // axis shows to what is foretold, back past its first year to the Years of the Lamps.
+  const dated = segs.filter((s) => !s.timeless);
+  const fwd = key === 'next' || key === 'bigNext' || key === 'end';
+  const outside = fwd ? segs[segs.indexOf(dated[dated.length - 1]) + 1] : segs[segs.indexOf(dated[0]) - 1];
+  const edge = fwd ? seg === dated[dated.length - 1] && m.date.year === seg.years : seg === dated[0] && m.date.year === 1;
+  const over = { past: false };
+  const to = stepOnAxis(m, zoom, key, seg, segs, ages, over);
+  if (!outside?.timeless || !edge) return to;
+  if (fwd) {
+    // The last year: a step that would run past it leaves; End leaves once already at the end.
+    const leaves = key === 'end'
+      ? sameMoment(to, m) && runsPast(m, zoom, seg, segs, ages)
+      : over.past;
+    return leaves ? { age: outside.age.id } : to;
+  }
+  // The first year: a step that cannot move back leaves; Home leaves once already at the start.
+  const stuck = key === 'home' ? sameMoment(to, m) && sameMoment(stepOnAxis(m, zoom, 'prev', seg, segs, ages, over), m) : sameMoment(to, m);
+  return stuck ? { age: outside.age.id } : to;
+}
+
+function runsPast(m: Moment, zoom: Zoom, seg: Segment, segs: Segment[], ages: Age[]): boolean {
+  const probe = { past: false };
+  stepOnAxis(m, zoom, 'next', seg, segs, ages, probe);
+  return probe.past;
+}
+
+/** One step on the scale, within the axis; `over.past` is set when it had to stop at the axis's end. */
+function stepOnAxis(m: Moment, zoom: Zoom, key: StepKey, seg: Segment, segs: Segment[], ages: Age[], over: { past: boolean }): Moment {
+  const d = m.date!;
   const count = seg.years!;
   const yearOnly = (date: StoryDate) => momentOf({ age: date.age, year: date.year }, ages);
-  const clamp = (x: Moment) => clampToSegments(x, segs, ages);
+  const clamp = (x: Moment) => {
+    const c = clampToSegments(x, segs, ages);
+    if (c !== x) over.past = true;
+    return c;
+  };
   if (zoom === 'age' || zoom === 'century') {
     if (key === 'home' || key === 'end') {
       const [y0, y1] = zoom === 'age' ? [1, count] : centuryOf(d.year, count);

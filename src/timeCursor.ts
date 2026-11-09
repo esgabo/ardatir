@@ -1,5 +1,6 @@
 // The time cursor (docs/DESIGN.md §3.1): pick any moment and see what is happening then,
-// everywhere. A control spans the ages (the timeless ones before the axis), with a finer
+// everywhere. A control spans the ages (the timeless ones beside the axis: before the world
+// first, what is foretold last), with a finer
 // scale inside the chosen age down to a single day; below it, the events likely and possibly
 // happening then, and where everyone is, from the journeys. Dates shown are honest ranges
 // only; best guesses (`at`) place and order things and are explained, never shown as dates.
@@ -16,10 +17,12 @@ import { hasLane, MAX_LANES } from './lanes';
 import { finePrecision, momentOf, momentPath, momentSpan, parseMoment, sameMoment, type Moment } from './moment';
 import { MOMENTS, momentKey } from './moments';
 import { likelyAtParts, whyToggle } from './placement';
+import { foretoldBadge } from './foretold';
 import { atMoment } from './related';
+import { sidesLine } from './sides';
 import { eventHref, livesHref, timeHref } from './routes';
 import {
-  buildSegments, defaultZoom, fitZoom, fractionIn, overviewPosition, pickAt, scaleWindow, STEP_KEYS, stepMoment, ZOOMS, zoomsFor,
+  axisExtent, buildSegments, defaultZoom, fitZoom, fractionIn, overviewPosition, pickAt, scaleWindow, STEP_KEYS, stepMoment, stepOutside, ZOOMS, zoomsFor,
   type ScaleWindow, type Segment, type StepKey, type Tick, type Zoom,
 } from './timeAxis';
 import { atHome, whereabouts, type WhereGroup } from './whereabouts';
@@ -97,9 +100,10 @@ function heading(text: string, extra?: Node): HTMLElement {
   return h('h2', { class: 'r-h' }, h('span', {}, text, extra ?? null), h('span', { class: 'rule', 'aria-hidden': 'true' }), h('span', { class: 'diamond', 'aria-hidden': 'true' }));
 }
 
-function eventLink(e: EventSummary, L: Lang): HTMLAnchorElement {
+/** A link to an event; prophecy carries its badge, unless the whole list is already said to be foretold (`mark: false`). */
+function eventLink(e: EventSummary, L: Lang, mark = true): HTMLAnchorElement {
   return h('a', { class: `r-ev${e.stage ? ' staged' : ''}`, href: eventHref(e.id, L), title: ui(e.stage ? 'playable' : 'readable', L) },
-    h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'r-ev-name' }, tr(e.title, L)));
+    h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'r-ev-name' }, tr(e.title, L)), mark && foretoldBadge(e, L));
 }
 
 const cap = (x: string) => x[0].toUpperCase() + x.slice(1);
@@ -153,23 +157,27 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
   // ---- The control: the ages, the scale, the moments to visit ----
   const control = h('section', { class: 'tc-control', 'aria-label': S('timeline') });
 
-  // The overview: every age as a segment, timeless ones first, apart from the axis.
+  // The overview: every age as a segment, the timeless ones apart from the axis.
   const bar = h('div', { class: 'tc-ages', role: 'group', 'aria-label': S('theAges') });
   const mark = h('span', { class: 'tc-mark', 'aria-hidden': 'true' });
-  // Timeless ages in a box of their own before the axis; the dated ages share the rest.
+  // Timeless ages in boxes of their own: before the world before the axis, what is foretold
+  // after it (dashed, like them: never on the axis). The dated ages share the rest.
   const outside = h('div', { class: 'tc-outside' });
+  const outsideAfter = h('div', { class: 'tc-outside after' });
   const axis = h('div', { class: 'tc-axis' });
-  const axisLeft = segs.find((s) => !s.timeless)?.left ?? 0;
+  const { left: axisLeft, right: axisRight } = axisExtent(segs);
   /** A position on the whole overview (buildSegments) as a share of the axis box. */
-  const onAxis = (f: number) => (f - axisLeft) / (1 - axisLeft);
+  const onAxis = (f: number) => (f - axisLeft) / (axisRight - axisLeft);
   const segBtns = new Map<string, HTMLButtonElement>();
   for (const s of segs) {
     const name = tr(s.age.name, L);
     const short = s.timeless ? ui(`ageShort_${s.age.id}` as UiKey, L) || name : tr(s.age.abbr, L) || name;
     const years = s.years === undefined ? '' : fillText(valianYears(s.age) ? 'ageValianYears' : 'ageYears', L, { n: s.years.toLocaleString(L) });
     const b = h('button', {
-      type: 'button', class: `tc-seg${s.timeless ? ' timeless' : ''}`, style: s.timeless ? undefined : `left: ${onAxis(s.left) * 100}%; width: ${(s.width / (1 - axisLeft)) * 100}%`,
-      'aria-label': [name, s.timeless ? S('outsideTime') : years].filter(Boolean).join(', '), title: [name, years].filter(Boolean).join(' · '),
+      type: 'button', class: `tc-seg${s.timeless ? ' timeless' : ''}${s.age.foretold ? ' foretold' : ''}`,
+      style: s.timeless ? undefined : `left: ${onAxis(s.left) * 100}%; width: ${(s.width / (axisRight - axisLeft)) * 100}%`,
+      'aria-label': [name, s.age.foretold ? S('foretoldHint') : s.timeless ? S('outsideTime') : years].filter(Boolean).join(', '),
+      title: [name, s.age.foretold ? S('foretoldHint') : years].filter(Boolean).join(' · '),
     }, h('span', { class: 'tc-seg-name full' }, name), h('span', { class: 'tc-seg-name short', 'aria-hidden': 'true' }, short));
     // Where events are, faintly, so busy stretches show (placed by best guess; no dates said).
     if (!s.timeless) {
@@ -184,6 +192,11 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
       }
       b.append(dots);
     }
+    // On a timeless segment the arrows step along the bar (there is no scale to hold focus).
+    if (s.timeless) b.addEventListener('keydown', (e) => {
+      const k = STEP_KEYS[e.key];
+      if (k) { e.preventDefault(); step(k); }
+    });
     b.addEventListener('click', (ev) => {
       if (s.timeless) { set({ age: s.age.id }, st.zoom); return; }
       const r = b.getBoundingClientRect();
@@ -192,11 +205,12 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
       set(momentOf({ age: s.age.id, year: Math.floor(f * s.years!) + 1 }, ages), 'age');
     });
     segBtns.set(s.age.id, b);
-    (s.timeless ? outside : axis).append(b);
+    (s.after ? outsideAfter : s.timeless ? outside : axis).append(b);
   }
   axis.append(mark);
   if (outside.childElementCount) bar.append(outside);
   bar.append(axis);
+  if (outsideAfter.childElementCount) bar.append(outsideAfter);
   control.append(bar);
 
   // Scale buttons, with a step either side for touch.
@@ -254,13 +268,20 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
   }
 
   function step(key: StepKey): void {
-    if (!st.moment.date) {
-      // From outside time, "later" enters the first age on the axis.
-      const first = segs.find((s) => !s.timeless);
-      if (key === 'next' && first) set(entryMoment(first.age), 'age');
-      return;
-    }
-    set(stepMoment(st.moment, st.zoom, key, segs, ages), st.zoom);
+    const wasDated = !!st.moment.date;
+    // Read before the step: hiding the scale drops its focus.
+    const active = document.activeElement;
+    const keyed = active === scale || (active instanceof HTMLElement && active.classList.contains('tc-seg'));
+    if (!wasDated) {
+      // From outside time, along the bar: "later" from before the world to the Years of the Lamps
+      // and on into the first age on the axis, "earlier" from what is foretold the last year the axis shows.
+      const to = stepOutside(st.moment, key, segs, ages, entryMoment);
+      if (to) set(to, to.date ? 'age' : st.zoom);
+    } else set(stepMoment(st.moment, st.zoom, key, segs, ages), st.zoom);
+    // Keep keyboard focus where the moment went: the scale hides outside time, the segments hold it there.
+    if (!keyed) return;
+    if (!st.moment.date) segBtns.get(st.moment.age)?.focus({ preventScroll: true });
+    else if (!wasDated) scale.focus({ preventScroll: true });
   }
 
   scale.addEventListener('keydown', (e) => {
@@ -297,7 +318,7 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
     const label = momentLabel(m, L);
     over.textContent = `${S('title_time')}  ·  ${tr(age.name, L)}`;
     title.textContent = label;
-    const notes = [S(m.date ? (`momentNote_${m.precision}` as UiKey) : 'momentNote_timeless')];
+    const notes = [S(m.date ? (`momentNote_${m.precision}` as UiKey) : age.foretold ? 'momentNote_foretold' : 'momentNote_timeless')];
     if (m.date && !finePrecision(age)) notes.push(S('valianNote'));
     note.textContent = notes.join(' ');
 
@@ -310,7 +331,10 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
 
     // Scale.
     const dated = !!m.date;
-    scaleRow.hidden = !dated;
+    // Outside time the ‹ › steps stay (along the bar); the scales and the slider go.
+    zoomGroup.hidden = !dated;
+    earlier.disabled = !dated && !stepOutside(m, 'prev', segs, ages, entryMoment);
+    later.disabled = !dated && !stepOutside(m, 'next', segs, ages, entryMoment);
     scale.hidden = !dated;
     control.querySelector('.tc-keys')!.toggleAttribute('hidden', !dated);
     const allowed = zoomsFor(age);
@@ -360,12 +384,12 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
     const age = ageOf(m.age)!;
     const span = momentSpan(m, ages);
     if (!span) {
-      // Outside time: the age's own events.
+      // Outside time: the age's own events (what is foretold, said to be prophecy).
       const evs = index.events.filter((e) => e.age === m.age);
-      const box = h('section', { class: 'r-section' }, heading(S('outsideTime')), h('p', { class: 'tc-age-sum' }, tr(age.summary, L)));
+      const box = h('section', { class: 'r-section' }, heading(S(age.foretold ? 'foretoldTitle' : 'outsideTime')), h('p', { class: 'tc-age-sum' }, tr(age.summary, L)));
       if (evs.length) {
         const ul = h('ul', { class: 'r-same' });
-        for (const e of evs) ul.append(h('li', {}, eventLink(e, L), h('span', { class: 'r-when' }, tr(e.summary, L))));
+        for (const e of evs) ul.append(h('li', {}, eventLink(e, L, !age.foretold), h('span', { class: 'r-when' }, tr(e.summary, L))));
         box.append(ul);
       } else box.append(h('p', { class: 'r-quiet' }, S('noEvents')));
       results.append(box);
@@ -373,7 +397,8 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
     }
     const label = momentLabel(m, L);
     // Full honest dates: on the time cursor a day is what tells events apart.
-    const when = (e: EventSummary) => h('span', { class: 'r-when' }, [honestDate(e, L), placeName(e.place, L)].filter(Boolean).join('  ·  '));
+    const when = (e: EventSummary) => h('span', { class: 'r-when' }, [honestDate(e, L), placeName(e.place, L)].filter(Boolean).join('  ·  '),
+      e.sides && h('span', { class: 'r-when-sides' }, sidesLine(e, L)));
     const am = atMoment(span);
     if (am.likely.length) {
       const ul = h('ul', { class: 'r-same' });

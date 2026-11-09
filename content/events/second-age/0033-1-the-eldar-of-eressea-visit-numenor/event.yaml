@@ -1,0 +1,16 @@
+id: the-eldar-of-eressea-visit-numenor
+age: second-age
+when:
+  start: { age: second-age, year: 33 }   # the Silmarillion describes the visits as the mark of the island's early centuries, without a year; they end gradually, under Ar-Gimilzôr and after
+  end: { age: second-age, year: 2899 }    # under Ar-Adûnakhôr the ships from Eressëa come only seldom and in secret
+  precision: approximate
+place: andunie
+characters: [  ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The Eldar of Eressëa visit Númenor", es: "Los Eldar de Eressëa visitan Númenor" }
+summary:
+  en: "In the early centuries, Elven ships come from Tol Eressëa to the western shore and are welcomed as friends. They teach songs and lore and bring gifts: flowers, singing birds and a seedling of the White Tree of Eressëa, which grows into Nimloth in the King's courtyard."
+  es: "En los primeros siglos, naves élficas llegan desde Tol Eressëa a la costa occidental y son recibidas como amigas. Enseñan cantos y saberes y traen regalos: flores, aves canoras y un retoño del Blanco Árbol de Eressëa, que crece como Nimloth en el patio del Rey."

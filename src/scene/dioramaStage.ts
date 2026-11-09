@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import type { Character, EventDetail, Lang } from '../data/types';
+import type { Character, EventDetail, Faction, Lang } from '../data/types';
+import { createArmies } from './armies';
 import { t as ui, tr, type UiKey } from '../i18n';
 import { onTile, samplePose } from '../timeline';
 import { createDiorama, groundHeight } from './diorama';
@@ -7,8 +8,15 @@ import { createFigure, setSelected } from './figure';
 import type { Stage } from './stage';
 import { disposeTree } from './util';
 
+/**
+ * How much wider the view gets per share of the viewport the event card covers. Tuned so the
+ * whole tile clears the card, right corner uncropped, at 1280×720, 1440×900 and 1920×1080 with
+ * the sidebar open or collapsed (the tightest: 1280×720 open, a 560 px wide free space).
+ */
+const INSET_ZOOM = 2;
+
 /** An event staged on an isometric low-poly diorama tile with animated characters. */
-export function createDioramaStage(event: EventDetail, characters: Map<string, Character>, lang: Lang): Stage {
+export function createDioramaStage(event: EventDetail, characters: Map<string, Character>, lang: Lang, factions = new Map<string, Faction>()): Stage {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#1b1e26');
 
@@ -30,6 +38,10 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
   const diorama = createDiorama({ seed });
   scene.add(diorama);
 
+  // A battle's armies: blocks of small figures in their factions' colours (named characters keep their tracks).
+  const armies = event.armies?.length ? createArmies(event.armies, factions, diorama, seed) : undefined;
+  if (armies) scene.add(armies.group);
+
   const figures = new Map<string, THREE.Group>();
   for (const track of event.tracks) {
     const ch = characters.get(track.characterId);
@@ -43,6 +55,7 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
     scene, camera, target,
 
     update(t, ambient) {
+      armies?.update(t, ambient);
       for (const track of event.tracks) {
         const fig = figures.get(track.characterId);
         if (!fig) continue;
@@ -78,10 +91,14 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
       };
     },
 
-    resize(w, h) {
+    resize(w, h, inset = 0) {
+      // Frame the tile in the part of the viewport the event card leaves free: widen the view
+      // and shift it so the tile's centre sits in the middle of what is left (inset / 2 across).
       const aspect = w / h;
-      const view = 9;
-      Object.assign(camera, { left: -view * aspect, right: view * aspect, top: view, bottom: -view });
+      const f = Math.min(Math.max(inset / w, 0), 0.5);
+      const view = 9 * (1 + INSET_ZOOM * f);
+      const dx = f * view * aspect;
+      Object.assign(camera, { left: -view * aspect - dx, right: view * aspect - dx, top: view, bottom: -view });
       camera.updateProjectionMatrix();
     },
 

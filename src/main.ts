@@ -6,9 +6,11 @@ import { characterMap, eventById, index, loadEvent, loadIndex, playable } from '
 import { LANGS, type EventDetail, type EventSummary, type Lang } from './data/types';
 import { h } from './dom';
 import { honestDate } from './format';
+import { foretoldBadge } from './foretold';
 import { ICONS } from './icons';
 import { initialLang, isLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { renderReader } from './reader';
+import { sidesLine } from './sides';
 import { linkedEvents, sameTime } from './related';
 import { likelyParts, whyToggle } from './placement';
 import { MAX_LANES, PHONE_QUERY, renderLanes } from './lanes';
@@ -117,7 +119,7 @@ async function buildStage(event: EventDetail): Promise<Stage> {
     });
   }
   const { createDioramaStage } = await import('./scene/dioramaStage');
-  return createDioramaStage(event, characterMap, state.lang);
+  return createDioramaStage(event, characterMap, state.lang, new Map((index.factions ?? []).map((f) => [f.id, f])));
 }
 
 /** Bumped on every loadStage (and when a page opens), so a slower load can't replace a newer view. */
@@ -412,6 +414,8 @@ function renderCrumbs(ageId: string | undefined, arcIds: string[], here: string)
   if (age) crumb(tr(age.name, L), () => sidebar.show('ages', `age:${age.id}`));
   if (arc) crumb(tr(arc.title, L), () => sidebar.show('stories', `arc:${arc.id}`));
   crumbs.append(h('span', { class: 'here' }, here));
+  // What is foretold is marked even here: the crumbs name an age that is prophecy, not history.
+  if (age?.foretold) crumbs.append(h('span', { class: 'foretold-badge', title: ui('foretoldHint', L) }, ui('foretold', L)));
 }
 
 /** Zoom switch: the cosmos, the world (not built yet) and events. */
@@ -455,6 +459,9 @@ function renderStatic(): void {
   $('event-title').textContent = tr(state.event.title, L);
   $('event-date').textContent = honestDate(state.event, L);
   $('event-summary').textContent = tr(state.event.summary, L);
+  const sides = sidesLine(state.event, L);
+  $('event-sides').replaceChildren(...sides ? [sides] : []);
+  $('event-sides').hidden = !sides;
 
   buildBeats();
 
@@ -617,7 +624,7 @@ function renderMeanwhile(): void {
   // Every event is a link: staged ones open their stage, the others their page.
   const row = (e: EventSummary, note?: string) => h('li', {},
     h('a', { class: e.stage ? 'mw-item' : 'mw-item dim', href: eventHref(e.id, L), title: ui(e.stage ? 'playable' : 'readable', L) },
-      h('span', { class: 'mw-name' }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), tr(e.title, L)),
+      h('span', { class: 'mw-name' }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), tr(e.title, L), foretoldBadge(e, L)),
       h('span', { class: 'mw-note' }, note ?? '')));
   const section = (title: string | HTMLElement, items: HTMLElement[], note?: string) => {
     if (!items.length) return;
@@ -675,10 +682,18 @@ function resize(): void {
   const w = viewport.clientWidth || innerWidth, h = viewport.clientHeight || innerHeight;
   renderer.setSize(w, h);
   labelRenderer.setSize(w, h);
-  stage.resize(w, h);
+  stage.resize(w, h, cardInset());
+}
+/** How far the event card reaches into the stage from the left, on a desktop (0 on phones or when hidden). */
+function cardInset(): number {
+  const card = $('event-panel');
+  if (!matchMedia('(min-width: 721px)').matches || card.hidden || !card.getClientRects().length) return 0;
+  return Math.max(0, card.getBoundingClientRect().right - viewport.getBoundingClientRect().left);
 }
 addEventListener('resize', () => { if (stage) resize(); });
-new ResizeObserver(() => { if (stage) resize(); }).observe(viewport);
+const sizes = new ResizeObserver(() => { if (stage) resize(); });
+sizes.observe(viewport);
+sizes.observe($('event-panel'));
 
 const flash = $('flash');
 const frameClock = new THREE.Clock();

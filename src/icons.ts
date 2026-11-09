@@ -25,6 +25,8 @@ export const ICONS = {
   next: svg('<path d="M6 6l9 6-9 6zM16 6h2v12h-2z"/>', true),
   // The time cursor: a ruler, and the moment marked above it with a diamond.
   time: svg('<path d="M3 17h18M5 15v4M9 16v2M15 16v2M19 15v4M12 11v8"/><path d="M12 3l3 3.5-3 3.5-3-3.5z"/>'),
+  // A battle's sides: two crossed swords.
+  sides: svg('<path d="M4 4l11 11M13 17l4-4M16.5 16.5l3 3"/><path d="M20 4L9 15M7 13l4 4M7.5 16.5l-3 3"/>'),
   clock: svg('<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/>'),
   sound: svg('<path d="M4 9h3l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>'),
   muted: svg('<path d="M4 9h3l5-4v14l-5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/>'),

@@ -12,7 +12,7 @@ const ages = [
 ];
 
 beforeAll(async () => {
-  const ix = { ages, characters: [], places: [], arcs: [], journeys: [], events: [], byCharacter: {}, lanes: {}, byPlace: {} } as unknown as ContentIndex;
+  const ix = { ages, characters: [], places: [], arcs: [], journeys: [], events: [], byCharacter: {}, lanes: {}, byPlace: {}, factions: [], byFaction: {} } as unknown as ContentIndex;
   vi.stubGlobal('fetch', async () => ({ ok: true, json: async () => ix }));
   await loadIndex();
   vi.unstubAllGlobals();

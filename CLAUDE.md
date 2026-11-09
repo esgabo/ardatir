@@ -17,7 +17,7 @@ npm run typecheck  # tsc --noEmit
 npm run build      # typecheck + static build into dist/
 npm run preview    # serve dist/ at http://localhost:4173
 npm run content    # validate content/ and write public/data/ (dev and build also do this)
-npm test           # vitest: calendar, best guesses, event clock, content validation (tests/)
+npm test           # vitest: calendar, best guesses, event clock, armies, content validation (tests/)
 npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event>, --lang es, --changed)
 ```
 
@@ -46,16 +46,19 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Time cursor is the first platform feature**, then character lanes | Decided 2026-11-08. |
 | **Navigation is a collapsible left sidebar** (icon rail + panel: Ages, Time, Stories, Lives, Books, Places), not dropdowns | Keeps the 3D stage clear while making every way in visible. Fantasy look kept light: a few small ornaments, no textures. See `docs/DESIGN.md` §3.3. Decided 2026-11-09. |
 | **"Likely at the same time" is a labelled, explained guess**: never for two scenes sharing a character (unless linked `concurrent`/`crossing`); otherwise best guesses within ±3 / ±15 / ±45 days for day / month / season (the vaguer of the two); never for a year or vaguer | Story order already says which of a character's scenes comes first; a fixed window was too loose for vague dates (the secret door "during" Lake-town, #2). Gap-to-anchors was hard to explain, exact-only made "likely" vanish. Every guess records why it landed there (`atReason`) and the site says so in words. See `docs/DESIGN.md` §4.4.1. Decided 2026-11-09. |
+| **Factions are one file per side** (`content/factions/`: name, banner colour, kind, summary, leaders), reused across battles; a battle's `sides` are groups of allied factions; staging places `armies` (faction, size, keyframes) as blocks of small figures in the faction's colour | Pages and the time cursor can say who fought whom, battles are findable by faction, and a diorama can show hosts without giving every soldier a track. Named characters keep their own tracks and lead them. One being who comes alone (Beorn) is a character, a host (the Eagles) a faction. See `docs/DESIGN.md` §2 (battles) and §4.9. Decided 2026-11-09 (#18). |
 | **The time cursor is a page at a readable moment** (`#/time/third-age/3019-03-15`, `…/3019`, `…/before-time`): the ages as log-width segments (timeless ones apart, before the axis) and a finer scale down to a day; likely / possibly by `nearnessDuring`; whereabouts from journeys by company, honest first | Ages differ a hundredfold in length, so each needs room; a moment is said exactly as precisely as it was picked; "somewhere between" when the sources allow several stops, with our guess labelled. See `docs/DESIGN.md` §3.1. Decided 2026-11-09. |
+| **What is foretold is its own timeless age, after the Fourth Age** (`content/ages/foretold.yaml`, `foretold: true`): the Dagor Dagorath and the Second Music, never on the dated axis; every event in it cites its `source` and may name who foretold it (`foretoldBy`); marked as prophecy wherever it appears (a *Foretold* badge, *Foretold by Mandos, not told as history. Source: …* on its page, a dashed segment after the axis) | Prophecy must never read as history. The flag lives on the age so no event can forget it. We tell the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*, *The Lost Road*), one scene per event, so its strongest moments can each be animated. See `docs/DESIGN.md` §4.8. Decided 2026-11-09 (#57). |
 
 ## Architecture
 
 ```
 content/             THE SOURCE OF TRUTH (YAML); see content/README.md
-  ages/ characters/ places/ arcs/ journeys/ factions/
+  ages/ characters/ places/ arcs/ journeys/ factions/   (factions: sides in battles)
   events/<age>/<sort-key>-<id>/  event.yaml, narration.yaml, staging.yaml, audio/<lang>.{mp3,yaml}
 scripts/content/
   build.ts           load + validate content/, place on the time axis, reverse links, lookups, character lanes
+  factions.ts        factions, a battle's `sides` and its staging `armies` (read and checked for build.ts); byFaction
   cli.ts             `npm run content`
 tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
 scripts/narration/
@@ -76,6 +79,7 @@ src/
   scene/cosmosWorld.ts   what every cosmos event shares: the Void, Arda's shells, stars, lights, camera
   scene/cosmosLamps.ts   the Spring of Arda: the two Lamps, Almaren, their fall (its own chunk)
   scene/dioramaStage.ts, diorama.ts, figure.ts   event dioramas
+  scene/armies.ts    a battle's armies: instanced blocks of small figures in their faction's colour, banners (pure in t)
   sidebar.ts         the collapsible sidebar: rail + panel views built from the index
   reader.ts          an event's page, for events that can't be watched yet (DESIGN §3.4)
   lanes.ts           character lanes: lives side by side, crossings, kin suggestions (DESIGN §3.2)
@@ -87,8 +91,10 @@ src/
   moments.ts         the "moments to visit" shortcuts
   routes.ts          parse the URL, build every in-site href
   format.ts          honest dates in words (labels only; the math is in calendar.ts)
+  sides.ts           a battle's sides in words, with banner-colour chips (pages, event card, time cursor, search)
   related.ts         an event's links and what overlaps it, likely vs possibly (Meanwhile, event pages)
   placement.ts       a best guess in words: how an event is placed (from atReason), why another is "likely"
+  foretold.ts        what is foretold (DESIGN §4.8): is an event prophecy, its badge, "Foretold by …, not told as history. Source: …"
   dom.ts, icons.ts   a tiny element builder; inline stroke SVG icons
   main.ts            app shell: routing, pages vs stage, playback loop, panels, breadcrumb, zoom switch, Meanwhile
 ```
@@ -114,8 +120,9 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 
 - **One event = one scene.** If it has several places or several days of distinct action, split it and group the pieces with an arc.
 - **Link what time can't show**: `enabled-by` / `caused-by` for consequences, `concurrent` for parallel action elsewhere. Don't link events just because they're close in time; the time cursor finds those.
-- **Every event gets `when` with an honest `precision`.** Only timeless ages (before the world) have none. When unsure of a season, claim only the year and add a comment saying why. A strong text cue may justify more ("just before June" → May), with the cue in a comment.
+- **Every event gets `when` with an honest `precision`.** Only timeless ages (before the world, and what is foretold after it) have none. When unsure of a season, claim only the year and add a comment saying why. A strong text cue may justify more ("just before June" → May), with the cue in a comment.
 - **Name the folder by story order**, then check the build's ordering warnings.
+- **Battles list their `sides`** (groups of allied factions, `content/factions/`). A host under one banner is a faction; one being who comes alone (Beorn) is a character. Armies in `staging.yaml` take keyframes like tracks, but an army keyframe's `action` is what it does on the way there.
 - **Journeys follow who travels together.** Split them where companions part (Gandalf leaves the dwarves at Mirkwood).
 - **Our own words only.** Summaries, thoughts and narration are original paraphrase. No reading Tolkien's text aloud, and quotations at most a few words, rarely. When an in-character line drifts close to the book's wording, rephrase it.
 - **Names follow published translations** in each language (Bilbo Bolsón, Bolsón Cerrado, Thorin Escudo de Roble, Guillermo). When you can't confirm a Spanish term against the published edition, use your best guess and add it, with every file that uses it, to the checklist in issue [#51](https://github.com/esgabo/ardatir/issues/51).
@@ -144,4 +151,3 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 
 - Do long journeys (Frodo's road to Mordor) play only on the world map as a moving path, or do some legs get their own dioramas?
 - The world view (middle zoom level) isn't built yet; places have no map coordinates until the original world map exists.
-- Factions format, to be defined with the first staged battle.

@@ -1,0 +1,23 @@
+id: the-mountains-of-valinor-are-levelled
+age: foretold
+place: pelori
+characters: []
+arcs: [ the-end-of-days ]
+tags: [ silmarillion, prophecy, cosmology ]
+status: scripted
+# The end of the Second Prophecy of Mandos (1937 Quenta Silmarillion, The Lost Road; also in the
+# Quenta, The Shaping of Middle-earth): the Mountains of Valinor are levelled so the light of the
+# Trees goes out over all the world; the Valar grow young again, the Elves awake and their dead
+# arise. Of Men the prophecy says nothing, save Túrin, whom the 1937 text names among the sons of
+# the Valar. Morgoth's Ring (the Athrabeth Finrod ah Andreth) later thinks of the end differently,
+# as Arda Healed; we keep the drafts' scene.
+source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
+foretoldBy: mandos
+title: { en: "The Mountains of Valinor are levelled", es: "Las Montañas de Valinor son allanadas" }
+summary:
+  en: "The Pelóri fall, and the light of the Trees spreads across the whole world. The Valar are made young, and the Elves wake with all their dead. Of Men the prophecy names only Túrin."
+  es: "Las Pelóri caen, y la luz de los Árboles se extiende por el mundo entero. Los Valar rejuvenecen, y los Elfos despiertan con todos sus muertos. De los Hombres, la profecía solo nombra a Túrin."
+beats:
+  - { id: levelled, label: { en: The mountains brought low, es: Las montañas abatidas } }
+  - { id: light, label: { en: Light over the world, es: Luz sobre el mundo } }
+  - { id: young, label: { en: All made young, es: Todo rejuvenece } }

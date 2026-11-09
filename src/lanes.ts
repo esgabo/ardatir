@@ -9,6 +9,7 @@ import { valianYears } from './data/calendar';
 import type { Character, Lang } from './data/types';
 import { h } from './dom';
 import { shortDate } from './format';
+import { foretoldBadge, isForetold } from './foretold';
 import { ICONS } from './icons';
 import { kinPhrase, t as ui, tr, type UiKey } from './i18n';
 import { buildRows, laneInitials, matchRank } from './laneRows';
@@ -32,11 +33,12 @@ export const laneColor = (i: number) => PALETTE[i % PALETTE.length];
 /** Characters that have a lane worth showing. */
 export const hasLane = (id: string) => (index.lanes[id]?.length ?? 0) > 0;
 
-/** Up to one pair of characters per age who share the most events: a way in for new visitors. */
+/** Up to one pair of characters per age who share the most events: a way in for new visitors. History only, not prophecy. */
 function crossingPairs(): { a: Character; b: Character; n: number }[] {
   const best = new Map<string, { a: string; b: string; n: number }>();
   const counts = new Map<string, number>();
   for (const e of index.events) {
+    if (isForetold(e)) continue;
     const cs = e.characters.filter(hasLane);
     for (let i = 0; i < cs.length; i++) for (let j = i + 1; j < cs.length; j++) {
       const k = `${e.age}|${[cs[i], cs[j]].sort().join('|')}`;
@@ -163,7 +165,7 @@ export function renderLanes(root: HTMLElement, idsIn: string[], host: LanesHost)
       }
       body.append(
         h('a', { class: `r-ev ln-title${e.stage ? ' staged' : ''}`, href: eventHref(e.id, L), title: S(e.stage ? 'playable' : 'readable') },
-          h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'r-ev-name' }, tr(e.title, L))),
+          h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'r-ev-name' }, tr(e.title, L)), foretoldBadge(e, L)),
         h('span', { class: 'r-when' }, [shortDate(e, L), placeName(e.place)].filter(Boolean).join('  ·  ')));
     } else if (r.kind === 'leg') {
       const w = r.waypoint;
@@ -173,6 +175,8 @@ export function renderLanes(root: HTMLElement, idsIn: string[], host: LanesHost)
         h('span', { class: 'r-when' }, [shortDate({ age: w.date.age, when }, L), tr(r.journey.title, L)].filter(Boolean).join('  ·  ')));
     } else if (r.kind === 'age') {
       body.append(h('span', { class: 'ln-age-name' }, tr(r.age.name, L)));
+      // Past the end of history: say once, at the heading, that what follows is prophecy.
+      if (r.age.foretold) body.append(h('span', { class: 'ln-age-note' }, S('foretoldHint')));
     } else {
       const v = valianYears(r.age);
       const text = r.years === 1 ? S(v ? 'valianYearLater' : 'yearLater')

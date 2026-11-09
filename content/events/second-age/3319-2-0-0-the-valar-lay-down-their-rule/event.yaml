@@ -1,0 +1,26 @@
+id: the-valar-lay-down-their-rule
+age: second-age
+when:
+  start: { age: second-age, year: 3319 }
+  precision: year
+place: aman
+characters: [ manwe, iluvatar, ar-pharazon ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The Valar lay down their rule", es: "Los Valar renuncian a su gobierno" }
+summary:
+  en: "When the King lands on Aman, Manwë and the Valar lay down their guardianship of the world. They call on Ilúvatar, who answers by breaking the fleet and changing the world."
+  es: "Cuando el Rey desembarca en Aman, Manwë y los Valar renuncian a su guarda del mundo. Claman a Ilúvatar, que responde destruyendo la flota y cambiando el mundo."
+links:
+  - to: ar-pharazon-sets-foot-on-aman
+    type: caused-by
+    note:
+      en: "The landing is what they cannot answer themselves."
+      es: "El desembarco es algo a lo que ellos mismos no pueden responder."
+  - to: the-world-is-made-round
+    type: causes
+    note:
+      en: "Ilúvatar's answer reshapes the world."
+      es: "La respuesta de Ilúvatar remodela el mundo."

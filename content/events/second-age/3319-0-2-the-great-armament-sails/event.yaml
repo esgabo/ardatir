@@ -1,0 +1,21 @@
+id: the-great-armament-sails
+age: second-age
+when:
+  start: { age: second-age, year: 3319 }
+  precision: year
+place: numenor
+characters: [ ar-pharazon, sauron ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The Great Armament sails", es: "La Gran Armada zarpa" }
+summary:
+  en: "Ar-Pharazôn raises his banner and the fleet puts out to sea, bound for the West. Sauron stays behind on the island, and the whole of Númenor watches the ships vanish over the horizon."
+  es: "Ar-Pharazôn alza su estandarte y la flota se hace a la mar rumbo al Oeste. Sauron se queda en la isla, y todo Númenor ve las naves desaparecer en el horizonte."
+links:
+  - to: ar-pharazon-raises-the-great-armament
+    type: caused-by
+    note:
+      en: "The fleet built over the years sets sail."
+      es: "La flota construida a lo largo de los años se hace a la mar."

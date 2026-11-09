@@ -1,0 +1,22 @@
+id: the-last-battle-is-gathered
+age: foretold
+place: valinor
+characters: [ tulkas, eonwe, turin, melkor ]
+arcs: [ the-end-of-days ]
+tags: [ silmarillion, prophecy, battle ]
+status: scripted
+# The Second Prophecy of Mandos (1937 Quenta Silmarillion, The Lost Road, p. 333), as in the 1930
+# Quenta (The Shaping of Middle-earth), which calls Túrin "Conqueror of Fate". In the 1926 Sketch
+# there is no Tulkas: Fionwë fights Morgoth with Túrin. The drafts name the herald Fionwë: our
+# Eönwë (characters/eonwe.yaml). The name Dagor Dagorath is Tolkien's only in "The Istari"
+# (Unfinished Tales); the drafts say the Last Battle.
+source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
+foretoldBy: mandos
+title: { en: "The Last Battle is gathered", es: "Se reúne la Última Batalla" }
+summary:
+  en: "The last battle of all is fought on the fields of Valinor. Tulkas takes on Morgoth once more, with Eönwë beside him on one side, and on the other Túrin, son of Húrin, returned from the Halls of Mandos."
+  es: "La última de todas las batallas se libra en los campos de Valinor. Tulkas se enfrenta de nuevo a Morgoth, con Eönwë a un lado y, al otro, Túrin, hijo de Húrin, que ha vuelto de las Estancias de Mandos."
+beats:
+  - { id: fields, label: { en: The fields of Valinor, es: Los campos de Valinor } }
+  - { id: tulkas, label: { en: Tulkas and Morgoth, es: Tulkas y Morgoth } }
+  - { id: turin, label: { en: Túrin returns, es: Vuelve Túrin } }

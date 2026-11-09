@@ -1,0 +1,8 @@
+id: men-of-lake-town
+name: { en: Men of Lake-town, es: Hombres de la Ciudad del Lago }
+color: "#3f6fb0"
+kind: man
+summary:
+  en: The people of Esgaroth on the Long Lake, who follow Bard after the dragon burns their town.
+  es: La gente de Esgaroth en el Lago Largo, que sigue a Bardo después de que el dragón incendia su ciudad.
+leaders: [ bard ]

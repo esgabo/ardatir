@@ -1,0 +1,6 @@
+id: bagginses
+name: { en: The Bagginses, es: Los Bolsón }
+color: "#6a8a3a"
+kind: hobbit
+summary: { en: Respectable hobbits., es: Hobbits respetables. }
+leaders: [ bilbo ]

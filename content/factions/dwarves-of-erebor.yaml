@@ -1,0 +1,8 @@
+id: dwarves-of-erebor
+name: { en: Dwarves of Erebor, es: Enanos de Erebor }
+color: "#c9963a"
+kind: dwarf
+summary:
+  en: "The dwarves of the restored Kingdom under the Mountain, under King Dáin."
+  es: "Los enanos del restaurado Reino bajo la Montaña, con el rey Dáin."
+leaders: [ dain ]

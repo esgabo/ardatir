@@ -1,0 +1,22 @@
+id: the-people-of-numenor-are-sundered
+age: second-age
+when:
+  start: { age: second-age, year: 2251 }   # App. B 2251: "division of the Númenóreans begins"; the Akallabêth puts it in Tar-Ancalimon's days (UT 2221–2386)
+  end: { age: second-age, year: 2386 }     # Unfinished Tales gives Tar-Ancalimon the years 2221-2386; Appendix B dates the shadow later, so the start is kept at 2251
+  precision: approximate
+place: numenor
+characters: [ tar-ancalimon ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The King's Men and the Faithful", es: "Los Hombres del Rey y los Fieles" }
+summary:
+  en: "As the fear of death grows, Númenor divides. Most follow the King, resent the Ban and turn from the Valar. A smaller people, the Faithful, still keep the old friendship with the Elves and give thanks to Ilúvatar."
+  es: "A medida que crece el miedo a la muerte, Númenor se divide. La mayoría sigue al Rey, resiente la Prohibición y se aparta de los Valar. Un pueblo menor, los Fieles, conserva la vieja amistad con los Elfos y da gracias a Ilúvatar."
+links:
+  - to: the-shadow-falls-on-numenor
+    type: caused-by
+    note:
+      en: "The fear of death that poisons the island drives the split."
+      es: "El miedo a la muerte que envenena la isla provoca la división."

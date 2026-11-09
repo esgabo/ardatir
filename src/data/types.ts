@@ -58,8 +58,14 @@ export interface Age {
   name: LocalizedText;
   abbr?: LocalizedText;
   summary: LocalizedText;
-  /** Timeless ages (before the world) have no axis. */
+  /** Timeless ages (before the world, and what is foretold after it) have no axis. */
   axis?: { start: number; yearLength: number };
+  /**
+   * What is foretold, not told as history (the Last Battle, the Second Music): a timeless age
+   * placed after the dated ones. Every event in it is prophecy, and the site says so wherever
+   * it shows one (docs/DESIGN.md §4.8).
+   */
+  foretold?: boolean;
 }
 
 export interface Kin {
@@ -93,6 +99,22 @@ export interface Place {
   summary: LocalizedText;
   /** Position on Ardatir's own world map, once it exists. */
   world?: { x: number; z: number };
+}
+
+/**
+ * A side in battles (content/factions/<id>.yaml): who fights together under one banner,
+ * reused across battles (the Dwarves of the Iron Hills at Azanulbizar and the Five Armies).
+ */
+export interface Faction {
+  id: string;
+  name: LocalizedText;
+  /** Banner colour, #rrggbb: chips on pages, the army's figures and banner on a diorama. */
+  color: string;
+  /** What they are, as a character kind (elf, man, dwarf, orc, wolf, eagle…): it shapes the army's figures. */
+  kind: string;
+  summary: LocalizedText;
+  /** Characters who lead it (character ids), in any battle. */
+  leaders: string[];
 }
 
 export interface Arc {
@@ -200,9 +222,16 @@ export interface EventSummary {
   tags: string[];
   status: Status;
   source?: { book: string; chapter?: string | number };
+  /** In a foretold age: who foretells it (a character id, e.g. Mandos), when the source names one. */
+  foretoldBy?: string;
   title: LocalizedText;
   summary: LocalizedText;
   links: EventLink[];
+  /**
+   * A battle's sides: groups of allied faction ids, each group against the others
+   * (`[[elves, men, dwarves], [goblins, wargs]]`). Absent for events that aren't battles.
+   */
+  sides?: string[][];
   /** Present when the event can be played. */
   stage?: StageKind;
   /** Languages with a narration recording. */
@@ -223,6 +252,29 @@ export interface Keyframe {
 export interface Track {
   characterId: string;
   keyframes: Keyframe[];
+}
+
+export const ARMY_SIZES = ['small', 'medium', 'large'] as const;
+export type ArmySize = (typeof ARMY_SIZES)[number];
+export const ARMY_ACTIONS = ['idle', 'walk', 'run', 'fight'] as const;
+export type ArmyAction = (typeof ARMY_ACTIONS)[number];
+/** Faction kinds a diorama has a look for (src/scene/armies.ts); any other kind is drawn as men, and the build warns. */
+export const ARMY_KINDS = ['elf', 'man', 'dwarf', 'goblin', 'orc', 'hobbit', 'wolf', 'warg', 'eagle'] as const;
+export type ArmyKind = (typeof ARMY_KINDS)[number];
+
+/** Where an army's centre is at a moment of an event, and what it is doing. Off the tile = offstage. */
+export interface ArmyKeyframe {
+  t: number;
+  x: number;
+  z: number;
+  action?: ArmyAction;
+}
+
+/** A faction's host on a diorama, drawn as a block of small figures in its colour; named characters keep their own tracks. */
+export interface Army {
+  faction: string;
+  size: ArmySize;
+  keyframes: ArmyKeyframe[];
 }
 
 export interface Beat {
@@ -257,6 +309,8 @@ export interface EventDetail extends EventSummary {
   narration: NarrationSegment[];
   beats: Beat[];
   tracks: Track[];
+  /** A battle's armies (staging.yaml `armies`), when it has any. */
+  armies?: Army[];
   audioFiles: Partial<Record<Lang, NarrationAudio>>;
 }
 
@@ -285,4 +339,8 @@ export interface ContentIndex {
    */
   lanes: Record<string, LaneEntry[]>;
   byPlace: Record<string, string[]>;
+  /** The sides in battles. */
+  factions: Faction[];
+  /** Derived: each faction's battles (events whose `sides` name it), in story order. */
+  byFaction: Record<string, string[]>;
 }

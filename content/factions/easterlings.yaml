@@ -1,0 +1,7 @@
+id: easterlings
+name: { en: Easterlings, es: Orientales }
+color: "#8a3a52"
+kind: man
+summary:
+  en: Men from the lands east of Rhovanion who marched for Sauron in the War of the Ring.
+  es: Hombres de las tierras al este de Rhovanion que marcharon por Sauron en la Guerra del Anillo.

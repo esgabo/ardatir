@@ -11,8 +11,8 @@ status: outline
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "Amandil sails west", es: "Amandil navega hacia el oeste" }
 summary:
-  en: "With the Armament nearly ready, Amandil leaves in secret to plead with the Valar. He is never seen again, and his son Elendil prepares ships for the Faithful."
-  es: "Con el Armamento casi listo, Amandil parte en secreto para rogar a los Valar. No vuelve a ser visto, y su hijo Elendil prepara naves para los Fieles."
+  en: "As the Great Armament is being built, Amandil leaves in secret to plead with the Valar. He is never seen again, and his son Elendil prepares ships for the Faithful."
+  es: "Mientras se construye la Gran Armada, Amandil parte en secreto para rogar a los Valar. No vuelve a ser visto, y su hijo Elendil prepara naves para los Fieles."
 links:
   - to: the-white-tree-is-burned
     type: caused-by

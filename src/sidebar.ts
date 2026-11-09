@@ -7,11 +7,13 @@ import { ICONS, type IconName } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
 import { fold, h } from './dom';
 import { shortDate } from './format';
+import { foretoldBadge } from './foretold';
 import { hasLane, laneColor, MAX_LANES } from './lanes';
 import { eventHref, livesHref, timeHref } from './routes';
 import { momentLabel } from './format';
 import { momentOfEvent, parseMoment } from './moment';
 import { MOMENTS } from './moments';
+import { factionChip } from './sides';
 import { shortcutLabel, type TimeState } from './timeCursor';
 
 export const VIEWS = ['ages', 'time', 'stories', 'lives', 'books', 'places'] as const;
@@ -188,23 +190,24 @@ export class Sidebar {
    * Every event is a link: staged ones open their stage (filled diamond), the others their
    * page (hollow diamond, a little dimmer), so the whole story can be followed.
    */
-  private eventRow(e: EventSummary): HTMLElement {
+  private eventRow(e: EventSummary, mark = true): HTMLElement {
     const L = this.host.lang();
     const current = e.id === this.host.currentId();
     const a = h('a', {
       class: e.stage ? 'ev' : 'ev dim', href: eventHref(e.id, L), 'data-fk': `ev:${e.id}`, 'aria-current': current ? 'page' : undefined,
       title: this.L(e.stage ? 'playable' : 'readable'),
-    }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, tr(e.title, L)), h('span', { class: 'ev-when' }, shortDate(e, L)));
+    }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, tr(e.title, L)), (mark && foretoldBadge(e, L)) || h('span', { class: 'ev-when' }, shortDate(e, L)));
     a.addEventListener('click', (ev) => { ev.preventDefault(); this.drawer = false; this.host.openEvent(e.id); });
     return h('li', {}, a);
   }
 
-  private eventList(ids: string[] | EventSummary[]): HTMLElement {
+  /** `mark: false` leaves out the Foretold badges, where the list sits under the foretold age itself. */
+  private eventList(ids: string[] | EventSummary[], mark = true): HTMLElement {
     const evs = (ids as (string | EventSummary)[])
       .map((x) => (typeof x === 'string' ? index.events.find((e) => e.id === x) : x))
       .filter((e): e is EventSummary => !!e);
     if (!evs.length) return h('p', { class: 'sb-empty' }, this.L('noEvents'));
-    return h('ul', { class: 'ev-list' }, ...evs.map((e) => this.eventRow(e)));
+    return h('ul', { class: 'ev-list' }, ...evs.map((e) => this.eventRow(e, mark)));
   }
 
   /** An expandable group: a header button and children built only when open. */
@@ -235,8 +238,9 @@ export class Sidebar {
       const evs = index.events.filter((e) => e.age === age.id);
       const lit = current?.age === age.id;
       const key = `age:${age.id}`;
+      // What is foretold: a hollow, dashed node at the end of the thread, past history.
       const head = [
-        h('span', { class: `node${lit ? ' lit' : ''}`, 'aria-hidden': 'true' }),
+        h('span', { class: `node${lit ? ' lit' : ''}${age.foretold ? ' foretold' : ''}`, 'aria-hidden': 'true' }),
         h('span', { class: 'age-text' }, h('span', { class: 'age-name' }, tr(age.name, L)), h('span', { class: 'age-sub' }, tr(age.summary, L))),
       ];
       ol.append(this.group(key, head, () => {
@@ -245,11 +249,11 @@ export class Sidebar {
         const list = h('ul', { class: 'sub' });
         for (const arc of arcs) {
           const inAge = arc.events.filter((id) => evs.some((e) => e.id === id));
-          list.append(this.group(`${key}/arc:${arc.id}`, [h('span', { class: 'grp-name' }, tr(arc.title, L))], () => this.eventList(inAge)));
+          list.append(this.group(`${key}/arc:${arc.id}`, [h('span', { class: 'grp-name' }, tr(arc.title, L))], () => this.eventList(inAge, !age.foretold)));
         }
         const loose = evs.filter((e) => !e.arcs.length);
-        if (loose.length && arcs.length) list.append(this.group(`${key}/other`, [h('span', { class: 'grp-name' }, this.L('otherEvents'))], () => this.eventList(loose)));
-        else if (loose.length) list.append(h('li', {}, this.eventList(loose)));
+        if (loose.length && arcs.length) list.append(this.group(`${key}/other`, [h('span', { class: 'grp-name' }, this.L('otherEvents'))], () => this.eventList(loose, !age.foretold)));
+        else if (loose.length) list.append(h('li', {}, this.eventList(loose, !age.foretold)));
         return list;
       }, 'age'));
     }
@@ -270,15 +274,15 @@ export class Sidebar {
     }
     box.append(card);
     const current = index.events.find((e) => e.id === this.host.currentId());
-    const link = (href: string, name: string, when: string, here = false) => {
+    const link = (href: string, name: string, when: string, here = false, badge: HTMLElement | null = null) => {
       const a = h('a', { class: 'ev', href, 'aria-current': here ? 'page' : undefined },
-        h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, name), h('span', { class: 'ev-when' }, when));
+        h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, name), badge, h('span', { class: 'ev-when' }, when));
       a.addEventListener('click', () => this.setDrawer(false));
       return h('li', {}, a);
     };
     if (current && !open) {
       box.append(h('div', { class: 'sb-section' }, this.L('thisEventsMoment')),
-        h('ul', { class: 'ev-list' }, link(this.host.timeHrefFor(current), tr(current.title, L), momentLabel(momentOfEvent(current, index.ages), L))));
+        h('ul', { class: 'ev-list' }, link(this.host.timeHrefFor(current), tr(current.title, L), momentLabel(momentOfEvent(current, index.ages), L), false, foretoldBadge(current, L))));
     }
     box.append(h('div', { class: 'sb-section' }, this.L('momentsToVisit')));
     const ul = h('ul', { class: 'ev-list' });
@@ -436,8 +440,9 @@ export class Sidebar {
     const events = index.events.filter((e) => hit(tr(e.title, L))).slice(0, 20);
     const chars = index.characters.filter((c) => hit(tr(c.name, L))).slice(0, 12);
     const places = index.places.filter((p) => hit(tr(p.name, L))).slice(0, 12);
+    const factions = (index.factions ?? []).filter((x) => hit(tr(x.name, L))).slice(0, 8);
     const box = h('div', { class: 'results' });
-    if (!events.length && !chars.length && !places.length) { box.append(h('p', { class: 'sb-empty' }, this.L('noResults'))); return box; }
+    if (!events.length && !chars.length && !places.length && !factions.length) { box.append(h('p', { class: 'sb-empty' }, this.L('noResults'))); return box; }
     if (events.length) box.append(h('div', { class: 'sb-section' }, this.L('resultsEvents')), this.eventList(events));
     const jump = (title: string, items: { id: string; name: string }[], view: View, prefix: string) => {
       if (!items.length) return;
@@ -452,6 +457,9 @@ export class Sidebar {
     };
     jump(this.L('resultsLives'), chars.map((c) => ({ id: c.id, name: tr(c.name, L) })), 'lives', 'char');
     jump(this.L('resultsPlaces'), places.map((p) => ({ id: p.id, name: tr(p.name, L) })), 'places', 'place');
+    // Sides in battles: each faction with the battles it fought in.
+    if (factions.length) box.append(h('div', { class: 'sb-section' }, this.L('resultsFactions')));
+    for (const x of factions) box.append(h('div', { class: 'sb-faction' }, factionChip(x, L)), this.eventList(index.byFaction?.[x.id] ?? []));
     return box;
   }
 }

@@ -22,6 +22,17 @@ type Change =
 const PARTY = 'events/third-age/2941-04-26-the-party';
 const LETTERS = 'events/third-age/2941-06-moon-letters/event.yaml';
 const ROAD = 'journeys/the-road.yaml';
+const END = 'events/foretold/0001-the-end/event.yaml';
+/** A foretold age after the axis, with one event in it (docs/DESIGN.md §4.8). */
+const FORETOLD: Change[] = [
+  { file: 'ages/foretold.yaml', write: 'id: foretold\norder: 7\nname: { en: What Is Foretold, es: Lo Profetizado }\nsummary: { en: Prophecy., es: Profecía. }\ntimeless: true\nforetold: true\n' },
+  { file: END, write: [
+    'id: the-end', 'age: foretold', 'characters: [ gandalf ]', 'status: outline', 'foretoldBy: bilbo',
+    'source: { book: the-lost-road, chapter: Quenta Silmarillion }',
+    'title: { en: The End, es: El Fin }', 'summary: { en: It will come., es: Vendrá. }',
+    'links:', '  - { to: leaving, type: caused-by }', '',
+  ].join('\n') },
+];
 
 /** Build a copy of the valid fixture with some changes applied. */
 let n = 0;
@@ -223,6 +234,27 @@ describe('the valid fixture', () => {
     expect(w.at).toBe(ev('moon-letters').at);
   });
 
+  it('places what is foretold after the axis, as prophecy, after every journey leg', () => {
+    const ok = buildWith([...FORETOLD, { file: ROAD, replace: [
+      'season: autumn }, precision: season }',
+      'season: autumn }, precision: season }\n  - { place: bag-end, date: { age: third-age, year: 2941, season: winter }, precision: season }',
+    ] }]);
+    expect(ok.errors).toEqual([]);
+    expect(ok.warnings).toEqual([]);
+    expect(ok.index.ages.at(-1)).toMatchObject({ id: 'foretold', foretold: true });
+    expect(ok.index.ages.at(-1)!.axis).toBeUndefined();
+    const end = ok.index.events.at(-1)!;
+    expect(end).toMatchObject({ id: 'the-end', foretoldBy: 'bilbo', source: { book: 'the-lost-road' } });
+    expect(end.span).toBeUndefined();
+    expect(end.at).toBeUndefined();
+    // A link from prophecy into history is kept, with its reverse.
+    expect(ok.index.events.find((e) => e.id === 'leaving')!.links).toContainEqual(expect.objectContaining({ to: 'the-end', type: 'causes', reverse: true }));
+    // The winter leg comes before the prophecy in the lane, though the prophecy has no guess to sort by.
+    expect(ok.index.lanes.gandalf.slice(-2)).toEqual([{ journey: 'the-road', waypoint: 2 }, { event: 'the-end' }]);
+    // Other ages carry no flag.
+    expect(ok.index.ages.find((a) => a.id === 'before-time')!.foretold).toBeUndefined();
+  });
+
   it('lets a waypoint end at its own precision', () => {
     const ok = buildWith([{ file: ROAD, replace: [
       'date: { age: third-age, year: 2941, season: summer }, end: { age: third-age, year: 2941, season: autumn }, precision: season',
@@ -241,6 +273,17 @@ describe('the valid fixture', () => {
   it('accepts Overlithe in a leap year', () => {
     const ok = buildWith([{ file: LETTERS, replace: ['year: 2941, day: 1-lithe', 'year: 2940, day: overlithe'] }]);
     expect(ok.errors).toEqual([]);
+  });
+
+  it('reads factions, a battle\'s sides and its armies, and finds a faction\'s battles', () => {
+    expect(r.index.factions.map((f) => f.id)).toEqual(['bagginses', 'sackville-bagginses']);
+    expect(r.index.factions[0]).toEqual({ id: 'bagginses', name: { en: 'The Bagginses', es: 'Los Bolsón' }, color: '#6a8a3a', kind: 'hobbit', summary: { en: 'Respectable hobbits.', es: 'Hobbits respetables.' }, leaders: ['bilbo'] });
+    expect(r.index.factions[1].leaders).toEqual([]);
+    expect(ev('the-party').sides).toEqual([['bagginses'], ['sackville-bagginses']]);
+    expect(ev('moon-letters').sides).toBeUndefined();
+    expect(r.index.byFaction).toEqual({ bagginses: ['the-party'], 'sackville-bagginses': ['the-party'] });
+    const d = r.details.find((x) => x.id === 'the-party')!;
+    expect(d.armies).toEqual([{ faction: 'bagginses', size: 'small', keyframes: [{ t: 0, x: -3, z: 2 }, { t: 0.5, x: -1, z: 1, action: 'walk' }] }]);
   });
 
   it('reads a recording with uneven starts', () => {
@@ -282,6 +325,13 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'staged without staging', changes: [{ file: `${PARTY}/staging.yaml`, remove: true }], error: 'status "staged" needs a staging.yaml' },
   { name: 'timeless event with a date', changes: [{ file: 'events/before-time/0000-the-music/event.yaml', replace: ['status: outline', 'status: outline\nwhen: { start: { age: third-age, year: 1 }, precision: year }'] }], error: 'age "before-time" is timeless; remove the date' },
 
+  // What is foretold
+  { name: 'foretold age with an axis', changes: [...FORETOLD, { file: 'ages/foretold.yaml', replace: ['timeless: true', 'axis: { start: 9000 }'] }], error: 'a foretold age must be timeless' },
+  { name: 'foretold age before a dated age', changes: [...FORETOLD, { file: 'ages/foretold.yaml', replace: ['order: 7', 'order: 1'] }], error: 'order: a foretold age comes after every dated age' },
+  { name: 'foretold event without a source', changes: [...FORETOLD, { file: END, replace: ['source: { book: the-lost-road, chapter: Quenta Silmarillion }', ''] }], error: 'source: required for what is foretold' },
+  { name: 'foretoldBy outside a foretold age', changes: [{ file: LETTERS, replace: ['status: outline', 'status: outline\nforetoldBy: gandalf'] }], error: 'foretoldBy: only for events in a foretold age' },
+  { name: 'foretoldBy an unknown character', changes: [...FORETOLD, { file: END, replace: ['foretoldBy: bilbo', 'foretoldBy: mandos'] }], error: 'foretoldBy: unknown character "mandos"' },
+
   // Dates
   { name: 'precision day without a day', changes: [{ file: `${PARTY}/event.yaml`, replace: ['month: 4, day: 26 }', 'month: 4 }'] }], error: 'precision "day" needs a day' },
   { name: 'precision month without a month', changes: [{ file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['precision: season', 'precision: month'] }], error: 'precision "month" needs a month' },
@@ -307,6 +357,19 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'waypoint end at the wrong endPrecision', changes: [{ file: ROAD, replace: ['season: autumn }, precision: season', 'season: autumn }, precision: season, endPrecision: day'] }], error: 'waypoints[1].end: precision "day" needs a day' },
   { name: 'waypoint end inside its coarser date', changes: [{ file: ROAD, replace: ['end: { age: third-age, year: 2941, season: autumn }, precision: season', 'end: { age: third-age, year: 2941, month: 7, day: 3 }, precision: season, endPrecision: day'] }], error: 'waypoints[1].end ends before its date does' },
   { name: 'waypoint end in an unknown age', changes: [{ file: ROAD, replace: ['end: { age: third-age,', 'end: { age: fifth-age,'] }], error: 'waypoints[1].end.age: unknown age "fifth-age"' },
+
+  // Factions, sides and armies
+  { name: 'faction without English', changes: [{ file: 'factions/bagginses.yaml', replace: ['name: { en: The Bagginses, es: Los Bolsón }', 'name: { es: Los Bolsón }'] }], error: 'factions/bagginses.yaml: name: needs an English text (en)' },
+  { name: 'faction with a bad colour', changes: [{ file: 'factions/bagginses.yaml', replace: ['"#6a8a3a"', 'green'] }], error: 'color: the banner colour, as #rrggbb' },
+  { name: 'faction without kind', changes: [{ file: 'factions/bagginses.yaml', replace: ['kind: hobbit\n', ''] }], error: 'kind: required, a character kind' },
+  { name: 'faction with an unknown leader', changes: [{ file: 'factions/bagginses.yaml', replace: ['[ bilbo ]', '[ bilbo, lobelia ]'] }], error: 'leaders: unknown character "lobelia"' },
+  { name: 'sides with an unknown faction', changes: [{ file: `${PARTY}/event.yaml`, replace: ['[ sackville-bagginses ]', '[ sackville-bagginses, proudfoots ]'] }], error: 'sides: unknown faction "proudfoots"' },
+  { name: 'a faction on two sides', changes: [{ file: `${PARTY}/event.yaml`, replace: ['[ sackville-bagginses ]', '[ sackville-bagginses, bagginses ]'] }], error: 'sides: "bagginses" is listed twice' },
+  { name: 'only one side', changes: [{ file: `${PARTY}/event.yaml`, replace: ['sides: [ [ bagginses ], [ sackville-bagginses ] ]', 'sides: [ [ bagginses, sackville-bagginses ] ]'] }], error: 'sides: a list of at least two sides' },
+  { name: 'army of a faction not on the sides', changes: [{ file: `${PARTY}/event.yaml`, replace: ['sides: [ [ bagginses ], [ sackville-bagginses ] ]', ''] }], error: 'armies[0]: "bagginses" is not on the event\'s sides' },
+  { name: 'army of an unknown size', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['size: small', 'size: huge'] }], error: 'armies[0].size: one of small, medium, large' },
+  { name: 'army keyframes not rising', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['{ t: 0.5, x: -1', '{ t: -0.2, x: -1'] }], error: 'armies[0].keyframes[1]: t must rise from 0 to 1' },
+  { name: 'army with an unknown action', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['action: walk }\n', 'action: talk }\n'] }], error: 'armies[0].keyframes[1].action: one of idle, walk, run, fight' },
 
   // Staging and recordings
   { name: 'unknown stage', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['stage: diorama', 'stage: film'] }], error: 'stage: one of cosmos, diorama' },
@@ -368,6 +431,19 @@ describe('broken content', () => {
       expect(r.errors).toEqual([]);
       expect(r.warnings.some((w) => w.includes('en.yaml: stale recording'))).toBe(true);
     });
+  });
+
+  it('warns about a faction in no battle', () => {
+    const r = buildWith([{ file: 'factions/proudfoots.yaml', write: 'id: proudfoots\nname: { en: The Proudfoots, es: Los Ganapié }\ncolor: "#444444"\nkind: hobbit\nsummary: { en: Big feet., es: Pies grandes. }\n' }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('factions/proudfoots.yaml: fights in no battle yet'))).toBe(true);
+  });
+
+  it('warns about a faction kind with no army look', () => {
+    const r = buildWith([{ file: 'factions/bagginses.yaml', replace: ['kind: hobbit', 'kind: ent'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('factions/bagginses.yaml: kind: "ent" has no army look yet'))).toBe(true);
+    expect(buildWith([]).warnings.some((w) => w.includes('has no army look'))).toBe(false);
   });
 
   it('warns about missing Spanish and unknown fields', () => {

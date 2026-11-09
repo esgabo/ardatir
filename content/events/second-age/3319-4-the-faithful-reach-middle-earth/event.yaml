@@ -1,0 +1,27 @@
+id: the-faithful-reach-middle-earth
+age: second-age
+when:
+  start: { age: second-age, year: 3319 }   # the storm carries them away in the year of the Downfall; the voyage's length is not given
+  precision: year
+place: grey-havens   # the landing waypoint of Elendil's flight; Mithlond lies in Lindon
+characters: [ elendil, gil-galad ]
+arcs: [ the-downfall-of-numenor ]
+journeys: [ elendils-flight-from-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The Faithful reach Middle-earth", es: "Los Fieles llegan a la Tierra Media" }
+summary:
+  en: "Elendil's ships are cast up on the coast of Lindon, and Gil-galad befriends the survivors of the drowned island. The storm has carried Isildur and Anárion away to the south."
+  es: "Las naves de Elendil son arrojadas a la costa de Lindon, y Gil-galad acoge como amigo a los supervivientes de la isla sumergida. La tormenta ha llevado a Isildur y Anárion hacia el sur."
+links:
+  - to: elendil-escapes-the-downfall
+    type: caused-by
+    note:
+      en: "The wave that carries them out of Númenor brings them here."
+      es: "La ola que los saca de Númenor los trae hasta aquí."
+  - to: elendil-founds-arnor
+    type: enables
+    note:
+      en: "From this landing Elendil goes on to found his kingdom."
+      es: "Desde este desembarco Elendil pasa a fundar su reino."

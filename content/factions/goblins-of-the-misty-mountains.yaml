@@ -1,0 +1,10 @@
+id: goblins-of-the-misty-mountains
+name: { en: Goblins of the Misty Mountains, es: Trasgos de las Montañas Nubladas }
+color: "#4a4a36"
+kind: goblin
+# Hobbit ch. 17: after the Great Goblin's death they gathered from all the mountains, mustered in the
+# north under Bolg, and came south for the Mountain's treasure.
+summary:
+  en: "The goblins of the mountains, gathered in the north under Bolg to avenge the Great Goblin and take the Mountain's treasure."
+  es: "Los trasgos de las montañas, reunidos en el norte bajo Bolg para vengar al Gran Trasgo y apoderarse del tesoro de la Montaña."
+leaders: [ bolg ]
