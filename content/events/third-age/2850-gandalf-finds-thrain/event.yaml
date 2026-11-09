@@ -8,7 +8,7 @@ characters: [ gandalf, thrain ]
 arcs: [ durins-folk-in-exile ]
 journeys: []
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-lord-of-the-rings, chapter: Appendix B }
 title:
   en: Gandalf Finds Thráin in Dol Guldur
