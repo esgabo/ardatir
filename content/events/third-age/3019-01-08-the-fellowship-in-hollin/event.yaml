@@ -1,0 +1,17 @@
+id: the-fellowship-in-hollin
+age: third-age
+when:
+  # Appendix B gives 8 January for reaching Hollin.
+  start: { age: third-age, year: 3019, month: 1, day: 8 }
+  precision: day
+place: hollin
+characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-of-the-ring ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "A Journey in the Dark" }
+title: { en: "The Fellowship in Hollin", es: "La Comunidad en Eregion" }
+summary:
+  en: "The nine reach the empty heathland of Hollin. Crows from Dunland wheel overhead, a sign that spies are watching the Company."
+  es: "Los nueve llegan a los páramos vacíos de Eregion. Unos cuervos de Dunland dan vueltas sobre ellos, señal de que hay espías vigilando a la Compañía."

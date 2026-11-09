@@ -1,0 +1,9 @@
+id: merry-and-pippins-road
+title: { en: "Merry and Pippin's Road", es: "El camino de Merry y Pippin" }
+characters: [ merry, pippin ]
+# Carried off by the Uruk-hai from Parth Galen, they escape into Fangorn and come to Isengard with the Ents.
+waypoints:
+  - { place: parth-galen, date: { age: third-age, year: 3019, month: 2, day: 26 }, precision: day }
+  - { place: rohan, date: { age: third-age, year: 3019, month: 2, day: 27 }, end: { age: third-age, year: 3019, month: 2, day: 28 }, precision: day }
+  - { place: fangorn, date: { age: third-age, year: 3019, month: 2, day: 29 }, end: { age: third-age, year: 3019, month: 3, day: 2 }, precision: day }
+  - { place: isengard, date: { age: third-age, year: 3019, month: 3, day: 2 }, end: { age: third-age, year: 3019, month: 3, day: 5 }, precision: day }

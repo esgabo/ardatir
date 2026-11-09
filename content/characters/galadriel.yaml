@@ -1,0 +1,10 @@
+id: galadriel
+name: { en: "Galadriel", es: "Galadriel" }
+kind: elf
+summary:
+  en: "Lady of Lothlórien, who bears one of the Three Rings and counsels the Fellowship."
+  es: "Señora de Lothlórien, portadora de uno de los Tres Anillos, que aconseja a la Compañía."
+color: "#e0d9a8"
+scale: 1.9
+kin:
+  - { id: celeborn, as: husband }

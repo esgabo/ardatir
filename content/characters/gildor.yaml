@@ -1,0 +1,8 @@
+id: gildor
+name: { en: "Gildor Inglorion", es: "Gildor Inglorion" }
+kind: elf
+summary:
+  en: "An Elf-lord of the High Elves, who gives the hobbits shelter and counsel in the Woody End."
+  es: "Un señor de los Altos Elfos, que da a los hobbits cobijo y consejo en el Bosque Cerrado."
+color: "#7a8aaa"
+scale: 1.85

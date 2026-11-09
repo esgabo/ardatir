@@ -1,0 +1,8 @@
+id: grishnakh
+name: { en: "Grishnákh", es: "Grishnákh" }
+kind: orc
+summary:
+  en: "An orc of Mordor, covetous of the Ring, who tries to steal the captives away."
+  es: "Un orco de Mordor, codicioso del Anillo, que intenta arrebatar a los cautivos."
+color: "#4a3a2a"
+scale: 1.4

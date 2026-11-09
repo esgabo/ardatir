@@ -1,0 +1,16 @@
+id: the-chamber-of-mazarbul
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 1, day: 14 }
+  precision: day
+place: moria
+characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-of-the-ring ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "A Journey in the Dark" }
+title: { en: "The Chamber of Mazarbul", es: "La Cámara de Mazarbul" }
+summary:
+  en: "In Balin's tomb the Company reads the last pages of the dwarves' colony. Then drums sound in the deep and orcs break into the chamber."
+  es: "En la tumba de Balin, la Compañía lee las últimas páginas de la colonia enana. Entonces suenan tambores en lo hondo y los orcos irrumpen en la cámara."

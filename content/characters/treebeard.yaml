@@ -1,0 +1,8 @@
+id: treebeard
+name: { en: "Treebeard", es: "Bárbol" }
+kind: ent
+summary:
+  en: "Eldest of the Ents, shepherd of Fangorn, who rouses his people against Isengard."
+  es: "El más anciano de los Ents, pastor de Fangorn, que mueve a su pueblo contra Isengard."
+color: "#5a6a3a"
+scale: 3.6

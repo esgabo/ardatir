@@ -1,0 +1,17 @@
+id: gollum-escapes-mirkwood
+age: third-age
+when:
+  # Appendix B places the attack on Thranduil and Gollum's escape in the same entry as Osgiliath.
+  start: { age: third-age, year: 3018, month: 6, day: 20 }
+  precision: day
+place: mirkwood
+characters: [ gollum, thranduil ]
+arcs: [ the-war-of-the-ring ]
+journeys: [  ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
+title: { en: "Gollum Escapes from Mirkwood", es: "Gollum escapa del Bosque Negro" }
+summary:
+  en: "While Orcs attack the Elvenking's guards, Gollum slips away from his captors in the confusion and is lost to sight."
+  es: "Mientras los Orcos atacan a los guardias del Rey Elfo, Gollum se escabulle de sus captores en la confusión y se pierde de vista."

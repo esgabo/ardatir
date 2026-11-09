@@ -1,0 +1,10 @@
+id: celeborn
+name: { en: "Celeborn", es: "Celeborn" }
+kind: elf
+summary:
+  en: "Lord of Lothlórien, husband of Galadriel."
+  es: "Señor de Lothlórien, esposo de Galadriel."
+color: "#b8c0c8"
+scale: 1.9
+kin:
+  - { id: galadriel, as: wife }

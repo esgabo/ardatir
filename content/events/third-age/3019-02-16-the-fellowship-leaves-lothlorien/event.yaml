@@ -1,0 +1,16 @@
+id: the-fellowship-leaves-lothlorien
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 16 }
+  precision: day
+place: lothlorien
+characters: [ frodo, sam, merry, pippin, aragorn, legolas, gimli, boromir, galadriel, celeborn, gollum ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-of-the-ring ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Farewell to Lórien" }
+title: { en: "Farewell to Lothlórien", es: "Despedida de Lothlórien" }
+summary:
+  en: "Galadriel and Celeborn give gifts and set the Company afloat in grey boats on the Anduin. Gollum, hidden, watches them go."
+  es: "Galadriel y Celeborn hacen regalos y ponen a la Compañía a flote en barcas grises sobre el Anduin. Gollum los ve partir desde su escondite."

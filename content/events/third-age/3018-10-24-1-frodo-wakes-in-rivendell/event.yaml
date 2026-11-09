@@ -1,0 +1,16 @@
+id: frodo-wakes-in-rivendell
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 10, day: 24 }
+  precision: day
+place: rivendell
+characters: [ frodo, gandalf, elrond, bilbo, sam ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-rivendell ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Many Meetings" }
+title: { en: "Frodo Wakes in Rivendell", es: "Frodo despierta en Rivendel" }
+summary:
+  en: "Healed by Elrond after days of fever, Frodo wakes to find Gandalf at his side, and Bilbo, older and sleepy, singing by the fire."
+  es: "Curado por Elrond tras días de fiebre, Frodo despierta con Gandalf a su lado, y con Bilbo, más viejo y soñoliento, cantando junto al fuego."

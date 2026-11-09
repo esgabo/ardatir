@@ -1,0 +1,16 @@
+id: gandalf-escapes-orthanc
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 9, day: 18 }
+  precision: day
+place: orthanc
+characters: [ gandalf, saruman, gwaihir ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ gandalfs-road-3018 ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
+title: { en: "Gwaihir Rescues Gandalf", es: "Gwaihir rescata a Gandalf" }
+summary:
+  en: "Before dawn Gwaihir the Eagle, sent by Radagast, lifts Gandalf from the pinnacle of Orthanc and carries him away."
+  es: "Antes del alba, el águila Gwaihir, enviada por Radagast, levanta a Gandalf de la cima de Orthanc y se lo lleva."

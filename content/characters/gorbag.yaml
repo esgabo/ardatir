@@ -1,0 +1,8 @@
+id: gorbag
+name: { en: "Gorbag", es: "Gorbag" }
+kind: orc
+summary:
+  en: "An orc captain from Minas Morgul, rival of Shagrat."
+  es: "Un capitán orco de Minas Morgul, rival de Shagrat."
+color: "#3a3a2e"
+scale: 1.6

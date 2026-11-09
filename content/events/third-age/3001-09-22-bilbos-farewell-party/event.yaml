@@ -1,0 +1,16 @@
+id: bilbos-farewell-party
+age: third-age
+when:
+  start: { age: third-age, year: 3001, month: 9, day: 22 }
+  precision: day
+place: bag-end
+characters: [ bilbo, frodo, gandalf ]
+arcs: [  ]
+journeys: [  ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "A Long-expected Party" }
+title: { en: "Bilbo's Farewell Party", es: "La fiesta de despedida de Bilbo" }
+summary:
+  en: "At his grand eleventy-first birthday party Bilbo vanishes with a flash and a puff of smoke. He leaves Bag End, and quietly the Ring, to Frodo."
+  es: "En su gran fiesta del cumpleaños ciento once, Bilbo desaparece entre un destello y una nube de humo. Deja Bolsón Cerrado, y en silencio el Anillo, a Frodo."

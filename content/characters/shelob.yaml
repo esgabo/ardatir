@@ -1,0 +1,8 @@
+id: shelob
+name: { en: "Shelob", es: "Ella-Laraña" }
+kind: creature
+summary:
+  en: "The great spider that guards the pass of Cirith Ungol."
+  es: "La gran araña que guarda el paso de Cirith Ungol."
+color: "#2a2a30"
+scale: 3

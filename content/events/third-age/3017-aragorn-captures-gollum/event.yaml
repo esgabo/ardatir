@@ -1,0 +1,17 @@
+id: aragorn-captures-gollum
+age: third-age
+when:
+  # Appendix B gives the year; Gollum, freed from Mordor, is taken in the Dead Marshes and handed to Thranduil.
+  start: { age: third-age, year: 3017 }
+  precision: year
+place: dead-marshes
+characters: [ aragorn, gollum ]
+arcs: [  ]
+journeys: [  ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Shadow of the Past" }
+title: { en: "Aragorn Takes Gollum", es: "Aragorn captura a Gollum" }
+summary:
+  en: "After years of hunting, Aragorn catches the half-starved Gollum creeping through the Dead Marshes, and brings him north to the Elves of Mirkwood."
+  es: "Tras años de búsqueda, Aragorn atrapa a un Gollum medio muerto de hambre que se arrastra por las Ciénagas de los Muertos y lo lleva al norte, ante los Elfos del Bosque Negro."

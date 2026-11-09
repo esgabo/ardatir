@@ -1,0 +1,8 @@
+id: gwaihir
+name: { en: "Gwaihir", es: "Gwaihir" }
+kind: eagle
+summary:
+  en: "The Windlord, greatest of the Eagles of the Misty Mountains."
+  es: "El Señor de los Vientos, el mayor de las Águilas de las Montañas Nubladas."
+color: "#a08a5a"
+scale: 3

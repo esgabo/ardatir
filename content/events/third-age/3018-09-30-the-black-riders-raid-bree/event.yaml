@@ -1,0 +1,17 @@
+id: the-black-riders-raid-bree
+age: third-age
+when:
+  # Early hours of the 30th, per Appendix B (Crickhollow and the inn raided).
+  start: { age: third-age, year: 3018, month: 9, day: 30 }
+  precision: day
+place: prancing-pony
+characters: [ nazgul, fatty-bolger, butterbur ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "A Knife in the Dark" }
+title: { en: "The Black Riders Raid Bree and Crickhollow", es: "Los Jinetes Negros asaltan Bree y Cricava" }
+summary:
+  en: "In the night the Riders slash the hobbits' empty beds at the inn, while at Crickhollow Fatty Bolger drives them off by raising the alarm."
+  es: "De noche, los Jinetes acuchillan las camas vacías de los hobbits en la posada, mientras que en Cricava Fatty Bolger los ahuyenta dando la alarma."

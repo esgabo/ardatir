@@ -1,0 +1,11 @@
+id: faramir
+name: { en: "Faramir", es: "Faramir" }
+kind: man
+summary:
+  en: "Boromir's younger brother, Captain of Gondor, gentle and wise."
+  es: "Hermano menor de Boromir, capitán de Gondor, de trato amable y sabio."
+color: "#5a6a4a"
+scale: 1.8
+kin:
+  - { id: denethor, as: father }
+  - { id: boromir, as: brother }

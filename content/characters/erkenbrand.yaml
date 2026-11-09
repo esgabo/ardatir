@@ -1,0 +1,8 @@
+id: erkenbrand
+name: { en: "Erkenbrand", es: "Erkenbrand" }
+kind: man
+summary:
+  en: "Lord of the Westfold, who rallies his scattered men to the Hornburg's aid."
+  es: "Señor del Folde Oeste, que reúne a sus hombres dispersos en auxilio del Cuernavilla."
+color: "#7a6a3a"
+scale: 1.85

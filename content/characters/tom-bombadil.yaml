@@ -1,0 +1,10 @@
+id: tom-bombadil
+name: { en: "Tom Bombadil", es: "Tom Bombadil" }
+kind: other
+summary:
+  en: "A merry, ancient master of the Old Forest, on whom the Ring has no hold."
+  es: "Un alegre y antiguo señor del Bosque Viejo, sobre quien el Anillo no tiene poder."
+color: "#c0a030"
+scale: 1.2
+kin:
+  - { id: goldberry, as: wife }

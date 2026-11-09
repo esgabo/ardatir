@@ -1,0 +1,16 @@
+id: frodo-and-sam-in-the-emyn-muil
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 26 }
+  precision: day
+place: emyn-muil
+characters: [ frodo, sam ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-two-towers, chapter: "The Taming of Sméagol" }
+title: { en: "Frodo and Sam Enter the Emyn Muil", es: "Frodo y Sam entran en las Emyn Muil" }
+summary:
+  en: "The two hobbits cross the river and climb into the bare, razor-edged hills. They wander for days among cliffs, unable to find a way down to the east."
+  es: "Los dos hobbits cruzan el río y trepan por las colinas desnudas, afiladas como cuchillos. Vagan días entre acantilados sin hallar un modo de bajar hacia el este."

@@ -1,0 +1,11 @@
+id: arwen
+name: { en: "Arwen", es: "Arwen" }
+kind: elf
+summary:
+  en: "Elrond's daughter, betrothed to Aragorn, who chooses a mortal life for his sake."
+  es: "Hija de Elrond, prometida de Aragorn, que elige una vida mortal por él."
+color: "#4a4a6a"
+scale: 1.8
+kin:
+  - { id: elrond, as: father }
+  - { id: aragorn, as: betrothed }

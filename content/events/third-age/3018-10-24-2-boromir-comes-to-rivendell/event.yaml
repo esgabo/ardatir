@@ -1,0 +1,17 @@
+id: boromir-comes-to-rivendell
+age: third-age
+when:
+  # At night, per Appendix B.
+  start: { age: third-age, year: 3018, month: 10, day: 24 }
+  precision: day
+place: rivendell
+characters: [ boromir, elrond ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ boromirs-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
+title: { en: "Boromir Arrives in Rivendell", es: "Boromir llega a Rivendel" }
+summary:
+  en: "After a hundred days alone, Boromir reaches Rivendell, worn out, on the eve of the great Council."
+  es: "Tras cien días solo, Boromir llega a Rivendel, agotado, en vísperas del gran Concilio."

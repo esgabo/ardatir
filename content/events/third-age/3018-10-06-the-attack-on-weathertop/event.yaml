@@ -1,0 +1,22 @@
+id: the-attack-on-weathertop
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 10, day: 6 }
+  precision: day
+place: weathertop
+characters: [ frodo, sam, merry, pippin, aragorn, witch-king, nazgul ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-rivendell ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "A Knife in the Dark" }
+title: { en: "The Attack on Weathertop", es: "El ataque en la Cima de los Vientos" }
+summary:
+  en: "Five Nazgûl surround the camp at night. Frodo puts on the Ring and is stabbed by the Witch-king with a Morgul-blade before Aragorn drives them off with fire."
+  es: "Cinco Nazgûl rodean el campamento de noche. Frodo se pone el Anillo y el Rey Brujo lo apuñala con una hoja de Morgul, hasta que Aragorn los ahuyenta con fuego."
+links:
+  - to: gandalf-at-amon-sul
+    type: concurrent
+    note:
+      en: "Three nights earlier the same Ringwraiths had cornered Gandalf on this very hill."
+      es: "Tres noches antes, los mismos Espectros del Anillo habían acorralado a Gandalf en esta misma colina."

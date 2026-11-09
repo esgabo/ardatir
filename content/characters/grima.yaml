@@ -1,0 +1,8 @@
+id: grima
+name: { en: "Gríma Wormtongue", es: "Gríma Lengua de Serpiente" }
+kind: man
+summary:
+  en: "Théoden's counsellor, secretly in the pay of Saruman."
+  es: "Consejero de Théoden, secretamente al servicio de Saruman."
+color: "#6a6a50"
+scale: 1.7
