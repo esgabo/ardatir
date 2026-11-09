@@ -102,7 +102,7 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 - **Name the folder by story order**, then check the build's ordering warnings.
 - **Journeys follow who travels together.** Split them where companions part (Gandalf leaves the dwarves at Mirkwood).
 - **Our own words only.** Summaries, thoughts and narration are original paraphrase. No reading Tolkien's text aloud, and quotations at most a few words, rarely. When an in-character line drifts close to the book's wording, rephrase it.
-- **Names follow published translations** in each language (Bilbo Bolsón, Bolsón Cerrado, Thorin Escudo de Roble, Guillermo).
+- **Names follow published translations** in each language (Bilbo Bolsón, Bolsón Cerrado, Thorin Escudo de Roble, Guillermo). When you can't confirm a Spanish term against the published edition, use your best guess and add it, with every file that uses it, to the checklist in issue [#51](https://github.com/esgabo/ardatir/issues/51).
 - **Cite, don't quote:** `source: { book, chapter }` is for checking accuracy.
 - **Narration passages** are short (one to three sentences) and placed at the animation moment they describe. Keep the beat markers (`beats`) aligned with them.
 - **Every text needs `en`**; add `es` alongside it when writing new content.
