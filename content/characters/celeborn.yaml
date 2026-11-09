@@ -8,3 +8,4 @@ color: "#b8c0c8"
 scale: 1.9
 kin:
   - { id: galadriel, as: wife }
+pronounce: { en: KEL-eh-born, es: KE-le-born }   # how to say it: syllables, the stressed one in capitals

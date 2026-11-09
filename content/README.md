@@ -164,6 +164,16 @@ kin:
 home: old-forest                     # optional: a place they stay in (see below)
 ```
 
+### How to say a name: `pronounce`
+
+Characters, places and ages with a hard name (and events whose title is one, like the Ainulindalë) may say how to pronounce it, for readers of each language:
+
+```yaml
+pronounce: { en: ee-LOO-va-tar, es: i-LÚ-va-tar }
+```
+
+Write it in the *AR-da* style: syllables joined by hyphens, the **stressed syllable in capitals**, exactly one per word, words separated by spaces (`KIR-ith OON-gol`); letters only. Each language respells for its own readers: Spanish writes *th* as *z* (`ZIN-gol`), *h* as *j* (`JÚ-rin`), a hard *g* before *e*/*i* as *gu* (`e-RE-gui-on`), *w* as *u* (`MAN-ue`). Stress follows Tolkien's rules for the Elvish tongues (*The Return of the King*, Appendix E: the second-last syllable when it is long, else the one before it). The site shows it as a small hint after the name; the build refuses a respelling without exactly one stressed syllable per word.
+
 `home` is for characters who don't travel: Tom Bombadil stays in his own country (save his trip to Maggot's in a hobbit rhyme). Between their first and last events (honest ranges), when no journey of theirs covers the moment, the time cursor shows them *in their own country* at that place, in a quiet "At home" group. It must be a known place id. Travellers don't need it: their journeys say where they are.
 
 ## Factions: sides in battles

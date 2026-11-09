@@ -9,6 +9,7 @@ source: { book: the-silmarillion, chapter: Ainulindalë }
 title:
   en: The Ainulindalë
   es: El Ainulindalë
+pronounce: { en: eye-noo-LIN-da-leh, es: ai-nu-LIN-da-le }   # the name only, without "The"
 summary:
   en: "Ilúvatar gives the Ainur a great theme to sing. Melkor weaves his own discord into it, the Music is shown to them as a Vision of a world, and Ilúvatar gives that world being: Eä."
   es: "Ilúvatar da a los Ainur un gran tema para cantar. Melkor entreteje en él su propia discordia, la Música se les muestra como la Visión de un mundo, e Ilúvatar le da existencia a ese mundo: Eä."
