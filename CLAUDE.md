@@ -29,7 +29,7 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Plain Vite + TypeScript + three.js, no UI framework** | Kept simple on purpose. Don't add React/Svelte/Astro without asking. |
 | **Three zoom levels**: cosmos → world → event diorama | The cosmos (Arda floating in its shells, per the *Ambarkanta*) is the front door; the Ainulindalë is the first event. |
 | **Low-poly faceted diorama style** | Faceted terrain with cut earth sides; characters and trees slightly higher-poly than terrain. |
-| **Film-like proportions** for characters | Low-poly, but not chibi/big-headed. Relative heights come from `Character.scale`. |
+| **Film-like proportions, simplified faces** for characters | Low-poly with enough detail to look good; no enlarged heads; faces kept simple, expression through posture and animation. Relative heights come from `Character.scale`. |
 | **Characters modelled in Blender, exported as glTF**, with shared rigs per body type | The look the project needs can't come from code primitives. Today's figures and terrain are placeholders (`docs/DESIGN.md` §9). |
 | **Start with *The Hobbit*** for event dioramas | First book to cover end to end. |
 | **English default, Spanish second** | Every content text is `LocalizedText` (`{ en, es? }`); `en` is required. |

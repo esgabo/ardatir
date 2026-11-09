@@ -220,7 +220,9 @@ The URL always reflects where you are:
 
 Everything on screen today is a **placeholder** (stand-in figures, generic terrain, sliding movement). The real look is built in phase 3, judged against an art-direction document and a reference board (`docs/ART.md`, to be written).
 
-- **Characters are modelled in Blender** and exported as **glTF**: low-poly but carefully shaped, with film-like (not chibi) proportions, faceted flat-shaded surfaces, and slightly more detail on characters and trees than on terrain.
+- **Characters are modelled in Blender** and exported as **glTF**: low-poly, but with **enough detail to look good**: spend polygons where they carry character (hair in chunky faceted curls, beards, hats, coat tails, hands, feet) and keep the rest simple. Faceted flat-shaded surfaces; slightly more detail on characters and trees than on terrain.
+- **Proportions are film-like**: realistic heights and builds, no enlarged heads; hobbits look like small adults, not toys.
+- **Faces are simplified**: clear shapes for nose, brow and beard, small modest eyes, no detailed likeness. Expression comes from posture and animation more than from faces.
 - **Shared rigs and animation sets** per body type (hobbit, dwarf, man/elf, wizard, troll), so one set of clips (idle, walk, run, talk, gesture, fight, hide…) serves many characters. Animation playback stays a pure function of the event time `t`.
 - **Kits for places**: the Shire (hobbit-holes with round doors, hills, gardens, hedges), Rivendell, Mirkwood, Lake-town, the Mountain, built from reusable pieces.
 - **Designs come from Tolkien's descriptions**, not from the films or series: proportions and mood may echo film-like realism, but no recognisable film designs or likenesses.
@@ -255,6 +257,7 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 | 2026-11-08 | *The Hobbit* is the first book outlined end to end, with its backstory (Smaug's coming, Azanulbizar, Thráin, the Ring's finding). |
 | 2026-11-09 | Goal stated: people should be amazed and feel good learning these stories. |
 | 2026-11-09 | Characters are modelled in Blender and exported as glTF; current visuals are placeholders. |
+| 2026-11-09 | Character style: low-poly with enough detail to look good; film-like proportions (no enlarged heads); simplified faces. |
 
 ## 12. Open questions
 
