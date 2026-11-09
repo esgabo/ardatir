@@ -1,0 +1,8 @@
+id: tulkas
+name: { en: "Tulkas", es: "Tulkas" }
+kind: ainu
+summary:
+  en: "The strongest of the Valar, who took Melkor captive."
+  es: "El más fuerte de los Valar, que tomó prisionero a Melkor."
+color: "#c8c0a8"
+scale: 2.4

@@ -1,0 +1,8 @@
+id: maglor
+name: { en: "Maglor", es: "Maglor" }
+kind: elf
+summary:
+  en: "Second son of Fëanor, a great singer who outlived his brothers."
+  es: "Segundo hijo de Fëanor, gran cantor que sobrevivió a sus hermanos."
+color: "#5a7a9a"
+scale: 1.85

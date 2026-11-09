@@ -1,0 +1,8 @@
+id: carcharoth
+name: { en: "Carcharoth", es: "Carcharoth" }
+kind: beast
+summary:
+  en: "The great wolf of Angband who bit off Beren's hand with the Silmaril in it."
+  es: "El gran lobo de Angband que mordió la mano de Beren con el Silmaril dentro."
+color: "#4a4a4a"
+scale: 3

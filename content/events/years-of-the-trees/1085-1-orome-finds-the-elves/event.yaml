@@ -1,0 +1,21 @@
+id: orome-finds-the-elves
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1085 }   # soon after the awakening; the year is only a guess
+  precision: approximate
+place: cuivienen
+characters: [ orome, melkor ]
+arcs: [ the-great-journey ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Coming of the Elves and the Captivity of Melkor" }
+title: { en: "Oromë finds the Elves", es: "Oromë encuentra a los Elfos" }
+summary:
+  en: "The Vala Oromë, hunting far from Valinor, comes upon the Elves by chance. Some already fear shadowy riders sent by Melkor, but he calls them to the light of the West."
+  es: "El Vala Oromë, de caza lejos de Valinor, topa por azar con los Elfos. Algunos ya temen a jinetes sombríos enviados por Melkor, pero él los invita a la luz del Oeste."
+links:
+  - to: awakening-of-the-elves
+    type: caused-by
+    note:
+      en: "Oromë can only find them because they have awakened."
+      es: "Oromë solo puede hallarlos porque han despertado."

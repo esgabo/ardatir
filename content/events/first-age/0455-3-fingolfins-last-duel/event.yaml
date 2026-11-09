@@ -1,0 +1,21 @@
+id: fingolfins-last-duel
+age: first-age
+when:
+  start: { age: first-age, year: 455 }   # soon after the Bragollach; FA 455 or just after
+  precision: year
+place: angband
+characters: [ fingolfin, melkor, gothmog ]
+arcs: [ the-siege-of-angband ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
+title: { en: "Fingolfin's last duel", es: "El último duelo de Fingolfin" }
+summary:
+  en: "Grieving, Fingolfin rides alone to Angband and challenges Morgoth to single combat. He wounds the Dark Lord seven times before he falls."
+  es: "Afligido, Fingolfin cabalga solo hasta Angband y reta a Morgoth a combate singular. Hiere al Señor Oscuro siete veces antes de caer."
+links:
+  - to: dagor-bragollach
+    type: caused-by
+    note:
+      en: "The disaster drives him to despair."
+      es: "El desastre lo empuja a la desesperación."

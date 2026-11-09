@@ -1,0 +1,8 @@
+id: thingol
+name: { en: "Thingol", es: "Thingol" }
+kind: elf
+summary:
+  en: "Elwë, King of Doriath, lord of the Sindar and husband of Melian the Maia."
+  es: "Elwë, rey de Doriath, señor de los Sindar y esposo de la maia Melian."
+color: "#5a7a9a"
+scale: 2

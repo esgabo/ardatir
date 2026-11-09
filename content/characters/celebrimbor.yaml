@@ -1,0 +1,8 @@
+id: celebrimbor
+name: { en: "Celebrimbor", es: "Celebrimbor" }
+kind: elf
+summary:
+  en: "Grandson of Fëanor and master smith of Eregion, maker of the Three Rings."
+  es: "Nieto de Fëanor y maestro herrero de Eregion, forjador de los Tres Anillos."
+color: "#5a7a9a"
+scale: 1.85

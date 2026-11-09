@@ -1,0 +1,8 @@
+id: orodreth
+name: { en: "Orodreth", es: "Orodreth" }
+kind: elf
+summary:
+  en: "King of Nargothrond after Finrod, father of Finduilas."
+  es: "Rey de Nargothrond tras Finrod, padre de Finduilas."
+color: "#5a7a9a"
+scale: 1.85

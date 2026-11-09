@@ -1,0 +1,8 @@
+id: brandir
+name: { en: "Brandir", es: "Brandir" }
+kind: man
+summary:
+  en: "Lame lord of the Haladin in Brethil, who loved Nienor."
+  es: "El cojo señor de los Haladin en Brethil, que amó a Nienor."
+color: "#7a6a4a"
+scale: 1.6

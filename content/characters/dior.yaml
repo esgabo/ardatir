@@ -1,0 +1,8 @@
+id: dior
+name: { en: "Dior", es: "Dior" }
+kind: elf
+summary:
+  en: "Son of Beren and Lúthien and heir of Thingol, slain in Doriath over the Silmaril."
+  es: "Hijo de Beren y Lúthien y heredero de Thingol, muerto en Doriath por el Silmaril."
+color: "#5a7a9a"
+scale: 1.85

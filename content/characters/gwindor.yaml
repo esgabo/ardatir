@@ -1,0 +1,8 @@
+id: gwindor
+name: { en: "Gwindor", es: "Gwindor" }
+kind: elf
+summary:
+  en: "Elf of Nargothrond, escaped from Angband, who brought Túrin to his city."
+  es: "Elfo de Nargothrond, huido de Angband, que llevó a Túrin a su ciudad."
+color: "#5a7a9a"
+scale: 1.85

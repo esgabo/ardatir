@@ -1,0 +1,8 @@
+id: earendil
+name: { en: "Eärendil", es: "Eärendil" }
+kind: man
+summary:
+  en: "Half-elven son of Tuor and Idril, the Mariner who sailed to Valinor to plead for aid against Morgoth."
+  es: "El Marinero, hijo medio elfo de Tuor e Idril, que navegó a Valinor para pedir auxilio contra Morgoth."
+color: "#7a6a4a"
+scale: 1.8

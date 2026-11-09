@@ -1,0 +1,15 @@
+id: finrod-meets-beor
+age: first-age
+when:
+  start: { age: first-age, year: 310 }   # the first Men enter Beleriand late in the Siege; the year is approximate
+  precision: approximate
+place: beleriand
+characters: [ finrod, beor ]
+arcs: [  ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Men" }
+title: { en: "Finrod meets Bëor", es: "Finrod conoce a Bëor" }
+summary:
+  en: "Finrod finds the first Men in East Beleriand and befriends their leader Bëor. Bëor's people serve him in the wars that follow."
+  es: "Finrod halla a los primeros Hombres en Beleriand oriental y se hace amigo de su jefe, Bëor. El pueblo de Bëor lo servirá en las guerras que siguen."

@@ -1,0 +1,21 @@
+id: sauron-takes-tol-sirion
+age: first-age
+when:
+  start: { age: first-age, year: 457 }   # after the Bragollach
+  precision: approximate
+place: tol-sirion
+characters: [ sauron, orodreth ]
+arcs: [ the-siege-of-angband ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
+title: { en: "Sauron takes Tol Sirion", es: "Sauron toma Tol Sirion" }
+summary:
+  en: "Sauron seizes Finrod's island tower and makes it a place of dread, shutting the pass into Beleriand's heartland."
+  es: "Sauron se apodera de la torre isla de Finrod y la convierte en un lugar de espanto, cerrando el paso al corazón de Beleriand."
+links:
+  - to: dagor-bragollach
+    type: caused-by
+    note:
+      en: "A fruit of the broken Siege."
+      es: "Un fruto del Sitio roto."

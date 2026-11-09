@@ -1,0 +1,21 @@
+id: fingon-rescues-maedhros
+age: first-age
+when:
+  start: { age: first-age, year: 5 }   # some years after the capture
+  precision: approximate
+place: thangorodrim
+characters: [ fingon, maedhros, melkor ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Return of the Noldor" }
+title: { en: "Fingon rescues Maedhros", es: "Fingon rescata a Maedhros" }
+summary:
+  en: "Fingon climbs Thangorodrim alone, and an eagle of Manwë carries him to his friend. Maedhros begs to be killed, but Fingon cuts off the hand that is chained and carries him home."
+  es: "Fingon sube solo a Thangorodrim, y un águila de Manwë lo lleva hasta su amigo. Maedhros ruega que lo maten, pero Fingon corta la mano encadenada y lo lleva a casa."
+links:
+  - to: maedhros-is-taken-by-morgoth
+    type: caused-by
+    note:
+      en: "The rescue answers the capture."
+      es: "El rescate responde a la captura."

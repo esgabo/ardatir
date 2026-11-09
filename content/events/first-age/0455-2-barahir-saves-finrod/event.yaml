@@ -1,0 +1,21 @@
+id: barahir-saves-finrod
+age: first-age
+when:
+  start: { age: first-age, year: 455 }   # during the Bragollach
+  precision: year
+place: dorthonion
+characters: [ barahir, finrod ]
+arcs: [ the-siege-of-angband ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+title: { en: "Barahir saves Finrod", es: "Barahir salva a Finrod" }
+summary:
+  en: "At the Fen of Serech, Barahir cuts through the orcs to rescue Finrod. In gratitude, Finrod gives him his ring and swears friendship to his house."
+  es: "En la Ciénaga de Serech, Barahir se abre paso entre los orcos para salvar a Finrod. En agradecimiento, Finrod le entrega su anillo y jura amistad a su casa."
+links:
+  - to: dagor-bragollach
+    type: caused-by
+    note:
+      en: "Part of the rout."
+      es: "Parte de la derrota."

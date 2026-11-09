@@ -1,0 +1,8 @@
+id: ancalagon
+name: { en: "Ancalagon", es: "Ancalagon" }
+kind: dragon
+summary:
+  en: "Greatest of the winged dragons, hurled down by Eärendil in the War of Wrath."
+  es: "El mayor de los dragones alados, derribado por Eärendil en la Guerra de la Cólera."
+color: "#6a8a3a"
+scale: 12

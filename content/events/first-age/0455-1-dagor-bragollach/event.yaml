@@ -1,0 +1,15 @@
+id: dagor-bragollach
+age: first-age
+when:
+  start: { age: first-age, year: 455 }   # begins at midwinter; kept at year precision since the war lasts through the year
+  precision: year
+place: dorthonion
+characters: [ fingolfin, maedhros, finrod, barahir, melkor, glaurung ]
+arcs: [ the-siege-of-angband ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
+title: { en: "Dagor Bragollach, the Battle of Sudden Flame", es: "Dagor Bragollach, la Batalla de la Llama Repentina" }
+summary:
+  en: "In the dead of winter, rivers of fire pour out of Angband. The plain of Ard-galen burns, Glaurung comes forth, and the Siege of Angband is broken."
+  es: "En pleno invierno, ríos de fuego brotan de Angband. La llanura de Ard-galen arde, sale Glaurung, y el Sitio de Angband queda roto."

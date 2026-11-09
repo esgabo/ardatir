@@ -1,0 +1,8 @@
+id: barahir
+name: { en: "Barahir", es: "Barahir" }
+kind: man
+summary:
+  en: "Chieftain of the House of Bëor, saved Finrod's life and was given the Ring that bears his name."
+  es: "Caudillo de la Casa de Bëor, salvó la vida de Finrod y recibió el Anillo que lleva su nombre."
+color: "#7a6a4a"
+scale: 1.8

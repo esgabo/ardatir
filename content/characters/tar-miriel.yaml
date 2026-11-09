@@ -1,0 +1,8 @@
+id: tar-miriel
+name: { en: "Tar-Míriel", es: "Tar-Míriel" }
+kind: man
+summary:
+  en: "Rightful queen of Númenor, forced to wed her cousin Ar-Pharazôn."
+  es: "Reina legítima de Númenor, obligada a casarse con su primo Ar-Pharazôn."
+color: "#7a6a4a"
+scale: 1.75

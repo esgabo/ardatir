@@ -1,0 +1,8 @@
+id: sauron
+name: { en: "Sauron", es: "Sauron" }
+kind: ainu
+summary:
+  en: "The greatest servant of Morgoth, a deceiver who forged the One Ring."
+  es: "El mayor servidor de Morgoth, un embaucador que forjó el Anillo Único."
+color: "#c8c0a8"
+scale: 2.4

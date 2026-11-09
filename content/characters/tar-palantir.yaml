@@ -1,0 +1,8 @@
+id: tar-palantir
+name: { en: "Tar-Palantir", es: "Tar-Palantir" }
+kind: man
+summary:
+  en: "Penitent king of Númenor who tried to turn his people back to the Valar."
+  es: "Rey arrepentido de Númenor que intentó devolver a su pueblo a los Valar."
+color: "#7a6a4a"
+scale: 2

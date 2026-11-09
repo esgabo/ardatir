@@ -1,0 +1,15 @@
+id: aredhel-is-snared-by-eol
+age: first-age
+when:
+  start: { age: first-age, year: 316 }   # the story of Maeglin has no stated year; placed roughly in the middle of the Siege
+  precision: approximate
+place: nan-elmoth
+characters: [ aredhel, eol ]
+arcs: [ the-fall-of-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Maeglin" }
+title: { en: "Aredhel is snared by Eöl", es: "Eöl atrapa a Aredhel" }
+summary:
+  en: "Restless within Gondolin's walls, Aredhel rides out alone and strays into Nan Elmoth. Eöl, the Dark Elf, draws her into his house and she cannot leave."
+  es: "Inquieta entre los muros de Gondolin, Aredhel sale sola a caballo y se extravía en Nan Elmoth. Eöl, el Elfo Oscuro, la atrae a su casa y ella no puede marcharse."

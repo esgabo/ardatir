@@ -1,0 +1,8 @@
+id: beleg
+name: { en: "Beleg Strongbow", es: "Beleg Arcofirme" }
+kind: elf
+summary:
+  en: "A Sindarin march-warden of Doriath, the truest friend Túrin ever had."
+  es: "Un guardián fronterizo sindarin de Doriath, el amigo más fiel que tuvo Túrin."
+color: "#5a7a9a"
+scale: 1.85

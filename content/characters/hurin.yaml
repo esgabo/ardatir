@@ -1,0 +1,8 @@
+id: hurin
+name: { en: "Húrin", es: "Húrin" }
+kind: man
+summary:
+  en: "Lord of Dor-lómin, father of Túrin and Nienor, who defied Morgoth to the end."
+  es: "Señor de Dor-lómin, padre de Túrin y Nienor, que desafió a Morgoth hasta el final."
+color: "#7a6a4a"
+scale: 1.8

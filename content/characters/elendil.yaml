@@ -1,0 +1,8 @@
+id: elendil
+name: { en: "Elendil", es: "Elendil" }
+kind: man
+summary:
+  en: "Leader of the Faithful of Númenor, who fled the Downfall and founded Arnor and Gondor."
+  es: "Caudillo de los Fieles de Númenor, que huyó de la Caída y fundó Arnor y Gondor."
+color: "#7a6a4a"
+scale: 2
