@@ -112,13 +112,23 @@ describe('estimateWaypoints', () => {
     expect(j.waypoints[1].at).toBe(YEAR + 0.7);
   });
 
+  it('prefers a matching event to the middle of a short waypoint', () => {
+    // A stay of about a month (an anchor by width) still takes the event inside it: Rivendell, June to 1 Lithe.
+    const stay = { from: YEAR + 151 * DAY, to: YEAR + 182 * DAY };
+    const e = ev('letters', day(181), ['gandalf'], { place: 'rivendell', journeys: ['j'], at: YEAR + 181.5 * DAY });
+    const j = journey([wp('bag-end', day(10)), wp('rivendell', stay), wp('goblin-town', summer)]);
+    estimateWaypoints([j], [e]);
+    expect(j.waypoints[1].at).toBe(YEAR + 181.5 * DAY);
+  });
+
   it('respects a waypoint range: an event guessed outside it is not used', () => {
+    // The event's guess (0.2) comes after the previous waypoint (day 10), and its span overlaps the
+    // waypoint's, so only the range check keeps it from being taken: 0.2 is before summer–autumn.
     const e = ev('council', wholeYear, ['gandalf'], { place: 'dol-guldur', journeys: ['j'], at: YEAR + 0.2 });
     const range = { from: YEAR + 0.41, to: YEAR + 0.92 };
-    const j = journey([wp('bag-end', day(100)), wp('dol-guldur', range), wp('rivendell', day(340))]);
+    const j = journey([wp('bag-end', day(10)), wp('dol-guldur', range), wp('rivendell', day(340))]);
     estimateWaypoints([j], [e]);
     const w = j.waypoints[1];
-    expect(w.at).not.toBe(YEAR + 0.2);
     expect(w.at).toBeGreaterThanOrEqual(range.from);
     expect(w.at).toBeLessThanOrEqual(range.to);
   });
@@ -135,12 +145,14 @@ describe('estimateWaypoints', () => {
   });
 
   it('never guesses a waypoint before the one before it when its range allows', () => {
-    // b's matching event is guessed late in the year; c (whole year, unmatched, last) must not fall before it.
-    const e = ev('x', wholeYear, ['gandalf'], { place: 'b', journeys: ['j'], at: YEAR + 0.9 });
-    const j = journey([wp('a', day(10)), wp('b', wholeYear), wp('c', { from: YEAR + 0.5, to: YEAR + 1 })]);
+    // a's matching event is guessed late (0.9); c is an exact anchor earlier than that (day 250).
+    // b, unmatched between them, is spaced between 0.9 and c's 0.68, which lands before a:
+    // the forward pass lifts it to a's moment, as its range (0.5–1) allows.
+    const e = ev('x', wholeYear, ['gandalf'], { place: 'a', journeys: ['j'], at: YEAR + 0.9 });
+    const j = journey([wp('a', wholeYear), wp('b', { from: YEAR + 0.5, to: YEAR + 1 }), wp('c', day(250))]);
     estimateWaypoints([j], [e]);
-    expect(j.waypoints[1].at).toBe(YEAR + 0.9);
-    expect(j.waypoints[2].at).toBeGreaterThanOrEqual(YEAR + 0.9);
-    expect(j.waypoints[2].at).toBeLessThanOrEqual(YEAR + 1);
+    expect(j.waypoints[0].at).toBe(YEAR + 0.9);
+    expect(j.waypoints[1].at).toBeGreaterThanOrEqual(YEAR + 0.9);
+    expect(j.waypoints[1].at).toBeLessThanOrEqual(YEAR + 1);
   });
 });
