@@ -91,6 +91,11 @@ export interface Character {
    * shows them there when no journey of theirs covers the moment, within the span of their events.
    */
   home?: string;
+  /**
+   * The character's glTF model, as a URL under the site root (`data/models/characters/bilbo/bilbo.glb`),
+   * from `model:` (a path under assets/). Without one, the diorama draws the placeholder figure.
+   */
+  model?: string;
 }
 
 export interface Place {
@@ -252,6 +257,8 @@ export interface Keyframe {
 export interface Track {
   characterId: string;
   keyframes: Keyframe[];
+  /** This event's model for the character, overriding `Character.model` (same URL form). */
+  model?: string;
 }
 
 export const ARMY_SIZES = ['small', 'medium', 'large'] as const;

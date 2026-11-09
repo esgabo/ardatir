@@ -2,3 +2,6 @@ id: gandalf
 name: { en: Gandalf, es: Gandalf }
 kind: wizard
 summary: { en: A wizard., es: Un mago. }
+color: "#8a8a9a"
+scale: 1.5
+model: characters/test-figure/test-figure.glb   # the test model (scripts/models/make-test-model.ts), never a real character's

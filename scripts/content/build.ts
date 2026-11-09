@@ -15,6 +15,7 @@ import {
 } from '../../src/data/types.ts';
 import { narrationHash, TEXT_HASH } from '../narration/text.ts';
 import { battlesByFaction, readArmies, readFactions, readSides } from './factions.ts';
+import { checkSources, readModel } from './models.ts';
 
 export interface BuildResult {
   index: ContentIndex;
@@ -56,6 +57,10 @@ class Report {
 
 export function buildContent(contentDir: string): BuildResult {
   const R = new Report(path.dirname(contentDir));
+  // Models live beside content/, in assets/ (docs/MODELS.md); the build copies the ones in use.
+  const assetsDir = path.join(path.dirname(contentDir), 'assets');
+  const copies: BuildResult['copies'] = [];
+  checkSources(R, assetsDir);
 
   // ---------- generic readers ----------
   const readYaml = (file: string): unknown => {
@@ -179,7 +184,7 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'characters'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin', 'home'], 'character');
+    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin', 'home', 'model'], 'character');
     const cid = id(f, o.id, charIds, 'character');
     if (!cid) continue;
     if (typeof o.kind !== 'string') R.error(f, 'kind: required (hobbit, elf, man, ...)');
@@ -187,10 +192,11 @@ export function buildContent(contentDir: string): BuildResult {
     if (o.scale !== undefined && !(typeof o.scale === 'number' && o.scale > 0)) R.error(f, 'scale: a positive number');
     const kin = Array.isArray(o.kin) ? o.kin.filter(isObj).map((k) => ({ id: String(k.id), as: String(k.as) })) : undefined;
     if (o.home !== undefined && typeof o.home !== 'string') R.error(f, 'home: a place id');
+    const model = o.model === undefined ? undefined : readModel(R, f, o.model, 'model', assetsDir, copies, 'characters');
     characters.push({
       id: cid, name: text(f, o.name, 'name')!, kind: String(o.kind), summary: text(f, o.summary, 'summary')!,
       ...o.color ? { color: String(o.color) } : {}, ...o.scale ? { scale: Number(o.scale) } : {}, ...kin ? { kin } : {},
-      ...typeof o.home === 'string' ? { home: o.home } : {},
+      ...typeof o.home === 'string' ? { home: o.home } : {}, ...model ? { model } : {},
     });
     charFile.set(cid, f);
   }
@@ -439,7 +445,6 @@ export function buildContent(contentDir: string): BuildResult {
 
   // ---------- staging, audio → details ----------
   const details: EventDetail[] = [];
-  const copies: BuildResult['copies'] = [];
   for (const r of raws) {
     const s = r.staging;
     if (!s) continue;
@@ -476,6 +481,9 @@ export function buildContent(contentDir: string): BuildResult {
     (Array.isArray(s.tracks) ? s.tracks : []).forEach((tr, i) => {
       if (!isObj(tr) || typeof tr.characterId !== 'string' || !Array.isArray(tr.keyframes)) { R.error(sf, `tracks[${i}]: expected { characterId, keyframes }`); return; }
       if (!r.summary.characters.includes(tr.characterId)) R.error(sf, `tracks[${i}]: "${tr.characterId}" is not in the event's characters`);
+      keys(sf, tr, ['characterId', 'keyframes', 'model'], `tracks[${i}]`);
+      // This event's own model for the character (Bilbo in a barrel), instead of their usual one.
+      const model = tr.model === undefined ? undefined : readModel(R, sf, tr.model, `tracks[${i}].model`, assetsDir, copies, 'characters');
       const kfs: Keyframe[] = [];
       let lt = -1;
       tr.keyframes.forEach((k, j) => {
@@ -485,7 +493,7 @@ export function buildContent(contentDir: string): BuildResult {
         lt = k.t;
         kfs.push({ t: k.t, x: k.x, z: k.z, ...k.action ? { action: k.action as Keyframe['action'] } : {}, ...k.thought ? { thought: text(sf, k.thought, `${what}.thought`) } : {} });
       });
-      tracks.push({ characterId: tr.characterId, keyframes: kfs });
+      tracks.push({ characterId: tr.characterId, keyframes: kfs, ...model ? { model } : {} });
     });
 
     const armies = readArmies(FC, sf, s.armies, r.summary);
