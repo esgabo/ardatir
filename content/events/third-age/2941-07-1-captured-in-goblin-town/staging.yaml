@@ -1,0 +1,203 @@
+stage: diorama
+duration: 36
+narration:
+  storm: 0
+  crack: 0.17
+  flash: 0.33
+  hall: 0.5
+  gandalf: 0.67
+  lost: 0.83
+beats:
+  cave: 0
+  seized: 0.17
+  great: 0.5
+  flee: 0.83
+tracks:
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 2.38, z: 1.88, action: idle, thought: { en: "Rain, rain. Any cave will do tonight.", es: "Lluvia y más lluvia. Cualquier cueva sirve esta noche." } }
+      - { t: 0.15, x: 2.38, z: 1.88, action: hide }
+      - { t: 0.2, x: 2.38, z: 1.88, action: hide }
+      - { t: 0.3, x: -1.12, z: -1.12, action: run }
+      - { t: 0.5, x: -4.12, z: -4.12, action: idle, thought: { en: "They will not take Orcrist from me.", es: "No me quitarán Orcrist." } }
+      - { t: 0.62, x: -4.12, z: -4.12, action: idle }
+      - { t: 0.7, x: -4.12, z: -3.73, action: idle }
+      - { t: 0.8, x: -2.12, z: -1.12, action: run }
+      - { t: 0.9, x: 1.88, z: 1.88, action: run }
+      - { t: 1, x: 4.08, z: 4.08, action: run }
+  - characterId: balin
+    keyframes:
+      - { t: 0, x: 3.12, z: 1.88, action: idle }
+      - { t: 0.15, x: 3.12, z: 1.88, action: hide }
+      - { t: 0.2, x: 3.12, z: 1.88, action: hide }
+      - { t: 0.3, x: -0.38, z: -1.12, action: run }
+      - { t: 0.5, x: -3.38, z: -4.12, action: idle }
+      - { t: 0.62, x: -3.38, z: -4.12, action: idle }
+      - { t: 0.7, x: -3.38, z: -3.73, action: idle }
+      - { t: 0.8, x: -1.38, z: -1.12, action: run }
+      - { t: 0.9, x: 2.62, z: 1.88, action: run }
+      - { t: 1, x: 4.83, z: 4.08, action: run }
+  - characterId: dwalin
+    keyframes:
+      - { t: 0, x: 3.88, z: 1.88, action: idle }
+      - { t: 0.15, x: 3.88, z: 1.88, action: hide }
+      - { t: 0.2, x: 3.88, z: 1.88, action: hide }
+      - { t: 0.3, x: 0.38, z: -1.12, action: run }
+      - { t: 0.5, x: -2.62, z: -4.12, action: idle }
+      - { t: 0.62, x: -2.62, z: -4.12, action: idle }
+      - { t: 0.7, x: -2.62, z: -3.73, action: idle }
+      - { t: 0.8, x: -0.62, z: -1.12, action: run }
+      - { t: 0.9, x: 3.38, z: 1.88, action: run }
+      - { t: 1, x: 5.58, z: 4.08, action: run }
+  - characterId: fili
+    keyframes:
+      - { t: 0, x: 4.62, z: 1.88, action: idle }
+      - { t: 0.15, x: 4.62, z: 1.88, action: hide }
+      - { t: 0.2, x: 4.62, z: 1.88, action: hide }
+      - { t: 0.3, x: 1.12, z: -1.12, action: run }
+      - { t: 0.5, x: -1.88, z: -4.12, action: idle }
+      - { t: 0.62, x: -1.88, z: -4.12, action: idle }
+      - { t: 0.7, x: -1.88, z: -3.73, action: idle }
+      - { t: 0.8, x: 0.12, z: -1.12, action: run }
+      - { t: 0.9, x: 4.12, z: 1.88, action: run }
+      - { t: 1, x: 6.33, z: 4.08, action: run }
+  - characterId: kili
+    keyframes:
+      - { t: 0, x: 2.38, z: 2.62, action: idle }
+      - { t: 0.15, x: 2.38, z: 2.62, action: hide }
+      - { t: 0.2, x: 2.38, z: 2.62, action: hide }
+      - { t: 0.3, x: -1.12, z: -0.38, action: run }
+      - { t: 0.5, x: -4.12, z: -3.38, action: idle }
+      - { t: 0.62, x: -4.12, z: -3.38, action: idle }
+      - { t: 0.7, x: -4.12, z: -2.98, action: idle }
+      - { t: 0.8, x: -2.12, z: -0.38, action: run }
+      - { t: 0.9, x: 1.88, z: 2.62, action: run }
+      - { t: 1, x: 4.08, z: 4.83, action: run }
+  - characterId: dori
+    keyframes:
+      - { t: 0, x: 3.12, z: 2.62, action: idle }
+      - { t: 0.15, x: 3.12, z: 2.62, action: hide }
+      - { t: 0.2, x: 3.12, z: 2.62, action: hide }
+      - { t: 0.3, x: -0.38, z: -0.38, action: run }
+      - { t: 0.5, x: -3.38, z: -3.38, action: idle }
+      - { t: 0.62, x: -3.38, z: -3.38, action: idle }
+      - { t: 0.7, x: -3.38, z: -2.98, action: idle }
+      - { t: 0.8, x: -1.38, z: -0.38, action: run, thought: { en: "Hold on, Bilbo... where is he?", es: "Aguanta, Bilbo... ¿dónde está?" } }
+      - { t: 0.9, x: 2.62, z: 2.62, action: run }
+      - { t: 1, x: 4.83, z: 4.83, action: run }
+  - characterId: nori
+    keyframes:
+      - { t: 0, x: 3.88, z: 2.62, action: idle }
+      - { t: 0.15, x: 3.88, z: 2.62, action: hide }
+      - { t: 0.2, x: 3.88, z: 2.62, action: hide }
+      - { t: 0.3, x: 0.38, z: -0.38, action: run }
+      - { t: 0.5, x: -2.62, z: -3.38, action: idle }
+      - { t: 0.62, x: -2.62, z: -3.38, action: idle }
+      - { t: 0.7, x: -2.62, z: -2.98, action: idle }
+      - { t: 0.8, x: -0.62, z: -0.38, action: run }
+      - { t: 0.9, x: 3.38, z: 2.62, action: run }
+      - { t: 1, x: 5.58, z: 4.83, action: run }
+  - characterId: ori
+    keyframes:
+      - { t: 0, x: 4.62, z: 2.62, action: idle }
+      - { t: 0.15, x: 4.62, z: 2.62, action: hide }
+      - { t: 0.2, x: 4.62, z: 2.62, action: hide }
+      - { t: 0.3, x: 1.12, z: -0.38, action: run }
+      - { t: 0.5, x: -1.88, z: -3.38, action: idle }
+      - { t: 0.62, x: -1.88, z: -3.38, action: idle }
+      - { t: 0.7, x: -1.88, z: -2.98, action: idle }
+      - { t: 0.8, x: 0.12, z: -0.38, action: run }
+      - { t: 0.9, x: 4.12, z: 2.62, action: run }
+      - { t: 1, x: 6.33, z: 4.83, action: run }
+  - characterId: oin
+    keyframes:
+      - { t: 0, x: 2.38, z: 3.38, action: idle }
+      - { t: 0.15, x: 2.38, z: 3.38, action: hide }
+      - { t: 0.2, x: 2.38, z: 3.38, action: hide }
+      - { t: 0.3, x: -1.12, z: 0.38, action: run }
+      - { t: 0.5, x: -4.12, z: -2.62, action: idle }
+      - { t: 0.62, x: -4.12, z: -2.62, action: idle }
+      - { t: 0.7, x: -4.12, z: -2.23, action: idle }
+      - { t: 0.8, x: -2.12, z: 0.38, action: run }
+      - { t: 0.9, x: 1.88, z: 3.38, action: run }
+      - { t: 1, x: 4.08, z: 5.58, action: run }
+  - characterId: gloin
+    keyframes:
+      - { t: 0, x: 3.12, z: 3.38, action: idle }
+      - { t: 0.15, x: 3.12, z: 3.38, action: hide }
+      - { t: 0.2, x: 3.12, z: 3.38, action: hide }
+      - { t: 0.3, x: -0.38, z: 0.38, action: run }
+      - { t: 0.5, x: -3.38, z: -2.62, action: idle }
+      - { t: 0.62, x: -3.38, z: -2.62, action: idle }
+      - { t: 0.7, x: -3.38, z: -2.23, action: idle }
+      - { t: 0.8, x: -1.38, z: 0.38, action: run }
+      - { t: 0.9, x: 2.62, z: 3.38, action: run }
+      - { t: 1, x: 4.83, z: 5.58, action: run }
+  - characterId: bifur
+    keyframes:
+      - { t: 0, x: 3.88, z: 3.38, action: idle }
+      - { t: 0.15, x: 3.88, z: 3.38, action: hide }
+      - { t: 0.2, x: 3.88, z: 3.38, action: hide }
+      - { t: 0.3, x: 0.38, z: 0.38, action: run }
+      - { t: 0.5, x: -2.62, z: -2.62, action: idle }
+      - { t: 0.62, x: -2.62, z: -2.62, action: idle }
+      - { t: 0.7, x: -2.62, z: -2.23, action: idle }
+      - { t: 0.8, x: -0.62, z: 0.38, action: run }
+      - { t: 0.9, x: 3.38, z: 3.38, action: run }
+      - { t: 1, x: 5.58, z: 5.58, action: run }
+  - characterId: bofur
+    keyframes:
+      - { t: 0, x: 4.62, z: 3.38, action: idle }
+      - { t: 0.15, x: 4.62, z: 3.38, action: hide }
+      - { t: 0.2, x: 4.62, z: 3.38, action: hide }
+      - { t: 0.3, x: 1.12, z: 0.38, action: run }
+      - { t: 0.5, x: -1.88, z: -2.62, action: idle }
+      - { t: 0.62, x: -1.88, z: -2.62, action: idle }
+      - { t: 0.7, x: -1.88, z: -2.23, action: idle }
+      - { t: 0.8, x: 0.12, z: 0.38, action: run }
+      - { t: 0.9, x: 4.12, z: 3.38, action: run }
+      - { t: 1, x: 6.33, z: 5.58, action: run }
+  - characterId: bombur
+    keyframes:
+      - { t: 0, x: 3.5, z: 4.12, action: idle }
+      - { t: 0.15, x: 3.5, z: 4.12, action: hide }
+      - { t: 0.2, x: 3.5, z: 4.12, action: hide }
+      - { t: 0.3, x: 0.0, z: 1.12, action: run }
+      - { t: 0.5, x: -3.0, z: -1.88, action: idle }
+      - { t: 0.62, x: -3.0, z: -1.88, action: idle }
+      - { t: 0.7, x: -3.0, z: -1.48, action: idle }
+      - { t: 0.8, x: -1.0, z: 1.12, action: run }
+      - { t: 0.9, x: 3.0, z: 4.12, action: run }
+      - { t: 1, x: 5.2, z: 6.33, action: run }
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 4.6, z: 3.8, action: idle, thought: { en: "Thunder and stone-giants. I want my own bed.", es: "Truenos y gigantes de piedra. Quiero mi cama." } }
+      - { t: 0.15, x: 4.6, z: 3.8, action: hide }
+      - { t: 0.2, x: 4.4, z: 3.6, action: run, thought: { en: "A crack in the wall! They are coming!", es: "¡Una grieta en la pared! ¡Vienen!" } }
+      - { t: 0.3, x: 0.8, z: 0.8, action: run }
+      - { t: 0.5, x: -2, z: -1.5, action: idle }
+      - { t: 0.7, x: -2.2, z: -1.8, action: idle }
+      - { t: 0.8, x: -1.2, z: 0.4, action: run }
+      - { t: 0.83, x: -1.5, z: 0.5, action: hide, thought: { en: "Where is everyone? It is so dark.", es: "¿Dónde están todos? Está tan oscuro." } }
+      - { t: 1, x: -1.5, z: 0.5, action: hide }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: 3, z: 2.2, action: idle, thought: { en: "Stay close. This place does not feel safe.", es: "Quédense cerca. Este lugar no me da confianza." } }
+      - { t: 0.15, x: 3, z: 2.2, action: hide }
+      - { t: 0.22, x: 3, z: 2.2, action: fight }
+      - { t: 0.3, x: 6, z: -2, action: run }
+      - { t: 0.45, x: 6.2, z: -5.5, action: hide }
+      - { t: 0.6, x: 5, z: -4.5, action: walk, thought: { en: "Time to come back for them.", es: "Es hora de volver por ellos." } }
+      - { t: 0.67, x: -3.5, z: -3.5, action: run }
+      - { t: 0.7, x: -4, z: -4, action: fight }
+      - { t: 0.78, x: -3.5, z: -3.2, action: run, thought: { en: "Run, all of you!", es: "¡Corran, todos!" } }
+      - { t: 0.9, x: 2, z: 2, action: run }
+      - { t: 1, x: 5.8, z: 4.5, action: run }
+  - characterId: great-goblin
+    keyframes:
+      - { t: 0, x: -5.5, z: -5.5, action: idle }
+      - { t: 0.5, x: -5.5, z: -5.5, action: idle, thought: { en: "Orcrist! The Goblin-cleaver. Take them!", es: "¡Orcrist! La matagoblins. ¡Apresadlos!" } }
+      - { t: 0.6, x: -5.2, z: -5.2, action: talk }
+      - { t: 0.67, x: -5, z: -5, action: fight }
+      - { t: 0.72, x: -5, z: -5, action: hide }
+      - { t: 1, x: -5, z: -5, action: hide }

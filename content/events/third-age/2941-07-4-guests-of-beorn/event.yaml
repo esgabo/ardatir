@@ -8,9 +8,14 @@ characters: [ beorn, gandalf, bilbo, thorin, balin, dwalin, fili, kili, dori, no
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 7 }
 title: { en: Guests of Beorn, es: Huéspedes de Beorn }
 summary:
   en: "Gandalf wins them shelter with Beorn by telling their tale while the dwarves turn up two at a time. The skin-changer feeds them, checks their story by night as a bear, and sends them on with ponies and food."
   es: "Gandalf les consigue refugio en casa de Beorn contando la historia de sus aventuras mientras los presenta de pocos en pocos. El cambiapieles los alimenta, comprueba su relato de noche convertido en oso y los despide con ponis y comida."
+beats:
+  - { id: pairs, label: { en: "The tale, and dwarves in pairs", es: "El cuento y los enanos de a dos" } }
+  - { id: feast, label: { en: "Beorn's supper", es: "La cena de Beorn" } }
+  - { id: bear, label: { en: "The bear in the night", es: "El oso en la noche" } }
+  - { id: ponies, label: { en: "Ponies and a warning", es: "Ponis y una advertencia" } }
