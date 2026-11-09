@@ -19,7 +19,7 @@ tracks:
       - { t: 0, x: -5, z: -5, action: idle, thought: { en: "The dwarves are many, but the high ground is mine.", es: "Los enanos son muchos, pero la altura es mía." } }
       - { t: 0.29, x: -3.2, z: -3.2, action: walk }
       - { t: 0.4, x: -2.6, z: -2.6, action: fight }
-      - { t: 0.55, x: -2.6, z: -2.6, action: fight, thought: { en: "Come to me, sons of dwarf-kings.", es: "Vengan a mí, hijos de reyes enanos." } }
+      - { t: 0.55, x: -2.6, z: -2.6, action: fight, thought: { en: "Come to me, sons of dwarf-kings.", es: "Venid a mí, hijos de reyes enanos." } }
       - { t: 0.62, x: -3, z: -3.5, action: hide }
       - { t: 1, x: -3, z: -3.5, action: hide }
   - characterId: thrain

@@ -20,14 +20,14 @@ tracks:
       - { t: 0.5, x: -3, z: -3.2, action: talk }
       - { t: 0.56, x: -5, z: -2, action: walk }
       - { t: 0.62, x: -5.5, z: 2, action: run }
-      - { t: 0.7, x: -1, z: 5.5, action: run, thought: { en: "Bear tracks around the house, as I thought.", es: "Pasos de oso alrededor de la casa, como pensaba." } }
+      - { t: 0.7, x: -1, z: 5.5, action: run, thought: { en: "Goblins and wargs, they said. I will see for myself.", es: "Trasgos y huargos, dijeron. Lo veré con mis propios ojos." } }
       - { t: 0.78, x: 5, z: 3, action: run }
       - { t: 0.84, x: -3.5, z: -3.2, action: walk }
       - { t: 0.9, x: -3.5, z: -3.2, action: talk, thought: { en: "Their tale was true. Ponies, then, and food.", es: "Su historia era cierta. Ponis, entonces, y comida." } }
       - { t: 1, x: -3.5, z: -3.2, action: idle }
   - characterId: gandalf
     keyframes:
-      - { t: 0, x: 5, z: 5, action: walk, thought: { en: "Beorn dislikes crowds. We will arrive in pairs.", es: "Beorn detesta las multitudes. Llegaremos de a pares." } }
+      - { t: 0, x: 5, z: 5, action: walk, thought: { en: "Beorn dislikes crowds. We will arrive in pairs.", es: "Beorn detesta las multitudes. Llegaremos por parejas." } }
       - { t: 0.17, x: -2.2, z: -1.5, action: walk }
       - { t: 0.2, x: -2.5, z: -2, action: talk }
       - { t: 0.33, x: -3, z: 0.5, action: talk }

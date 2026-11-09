@@ -17,7 +17,7 @@ tracks:
     keyframes:
       - { t: 0, x: 5, z: 2.6, action: hide }
       - { t: 0.12, x: 0, z: -3.6, action: walk }
-      - { t: 0.14, x: 0, z: -3.6, action: hide, thought: { en: "Home. At last, under my own mountain.", es: "En casa. Por fin, bajo mi propia montaña." } }
+      - { t: 0.14, x: 0, z: -3.6, action: hide }
   - characterId: bilbo
     keyframes:
       - { t: 0, x: 3.6, z: 3.4, action: walk, thought: { en: "I should like to follow him as far as I can.", es: "Quisiera acompañarlo hasta donde pueda." } }
@@ -37,7 +37,7 @@ tracks:
   - characterId: thranduil
     keyframes:
       - { t: 0, x: 5.5, z: -2.5, action: walk }
-      - { t: 0.35, x: 1.1, z: -2.4, action: talk, thought: { en: "Take this blade back, dwarf-king. It will warn of enemies.", es: "Recuperad esta espada, rey enano. Avisará de los enemigos." } }
+      - { t: 0.35, x: 1.1, z: -2.4, action: talk, thought: { en: "Take this blade back, dwarf-king. It will warn of enemies.", es: "Recupera esta espada, rey enano. Avisará de los enemigos." } }
       - { t: 0.55, x: 1.7, z: -2.4, action: idle, thought: { en: "A feud ends here, over a grave.", es: "Una enemistad termina aquí, junto a una tumba." } }
       - { t: 0.72, x: 1.6, z: 0.9, action: walk }
       - { t: 0.88, x: 1.5, z: 0.5, action: idle, thought: { en: "Let there be friendship between the Mountain and the forest.", es: "Que haya amistad entre la Montaña y el bosque." } }

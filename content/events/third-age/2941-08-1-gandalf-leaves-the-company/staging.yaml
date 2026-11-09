@@ -144,7 +144,7 @@ tracks:
       - { t: 0.17, x: 3.4, z: 3.4, action: walk }
       - { t: 0.2, x: 3.4, z: 3.4, action: idle }
       - { t: 0.4, x: 3.4, z: 3.4, action: talk, thought: { en: "Urgent business in the south. I cannot stay.", es: "Un asunto urgente en el sur. No puedo quedarme." } }
-      - { t: 0.6, x: 3.4, z: 3.4, action: talk, thought: { en: "Stay on the path, whatever you hear.", es: "Quédense en el sendero, oigan lo que oigan." } }
+      - { t: 0.6, x: 3.4, z: 3.4, action: talk, thought: { en: "Stay on the path, whatever you hear.", es: "Quedaos en el sendero, oigáis lo que oigáis." } }
       - { t: 0.8, x: 3.4, z: 3.4, action: idle }
       - { t: 0.9, x: 5, z: 0, action: run }
       - { t: 1, x: 6.3, z: -5, action: run }

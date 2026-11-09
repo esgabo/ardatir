@@ -18,9 +18,9 @@ tracks:
   - characterId: bilbo
     keyframes:
       - { t: 0, x: 5, z: -4.5, action: hide, thought: { en: "My head... and nothing but dark.", es: "Mi cabeza... y solo oscuridad." } }
-      - { t: 0.07, x: 4.8, z: -4.2, action: walk }
-      - { t: 0.14, x: 3, z: -2, action: walk, thought: { en: "This little ring is cold. I will keep it.", es: "Este anillito está frío. Me lo quedaré." } }
-      - { t: 0.28, x: 0.5, z: 0.5, action: walk, thought: { en: "Water, as black as ink.", es: "Agua, negra como la tinta." } }
+      - { t: 0.07, x: 4.8, z: -4.2, action: walk, thought: { en: "This little ring is cold. I will keep it.", es: "Este anillito está frío. Me lo quedaré." } }
+      - { t: 0.14, x: 3, z: -2, action: walk, thought: { en: "Water, as black as ink.", es: "Agua, negra como la tinta." } }
+      - { t: 0.28, x: 0.5, z: 0.5, action: walk, thought: { en: "Someone is out there on the water, whispering.", es: "Hay alguien ahí en el agua, susurrando." } }
       - { t: 0.43, x: -1.5, z: 1.5, action: talk, thought: { en: "Riddles. I know a few. Surely.", es: "Acertijos. Conozco unos cuantos. Seguro." } }
       - { t: 0.57, x: -1.5, z: 1.5, action: talk, thought: { en: "What have I got in my pocket? Why, it is nothing!", es: "¿Qué llevo en el bolsillo? ¡Si no es nada!" } }
       - { t: 0.71, x: -0.5, z: -0.5, action: run, thought: { en: "It makes me vanish! Quick, away!", es: "¡Me hace desaparecer! ¡Rápido, fuera!" } }
@@ -31,10 +31,10 @@ tracks:
     keyframes:
       - { t: 0, x: -4.5, z: 4, action: idle, thought: { en: "Hungry, always hungry. Blind fish again.", es: "Hambriento, siempre hambriento. Otra vez peces ciegos." } }
       - { t: 0.28, x: -4, z: 3.5, action: talk, thought: { en: "Who walks into my dark? A tasty visitor.", es: "¿Quién entra en mi oscuridad? Una visita sabrosa." } }
-      - { t: 0.43, x: -3, z: 2.5, action: talk, thought: { en: "If I win, we eat it. If it wins, a door.", es: "Si gano, nos lo comemos. Si pierde, una puerta." } }
+      - { t: 0.43, x: -3, z: 2.5, action: talk, thought: { en: "If I win, we eat it. If it wins, a door.", es: "Si gano, nos lo comemos. Si gana, una puerta." } }
       - { t: 0.57, x: -3, z: 2.5, action: talk, thought: { en: "What does it have in its pocket? Not fair!", es: "¿Qué tiene en el bolsillo? ¡No vale!" } }
       - { t: 0.65, x: -4.5, z: 4.5, action: walk, thought: { en: "Gone! My precious is gone!", es: "¡Se fue! ¡Mi tesoro se fue!" } }
       - { t: 0.78, x: -0.5, z: 0, action: run }
       - { t: 0.86, x: 4.2, z: -4, action: run }
-      - { t: 0.9, x: 4.6, z: -4.4, action: hide, thought: { en: "Thief! We hates it forever!", es: "¡Ladrón! ¡Lo odiaremos siempre!" } }
+      - { t: 0.9, x: 4.6, z: -4.4, action: hide, thought: { en: "Thief! Gollum will never forget!", es: "¡Ladrón! ¡Gollum no lo olvidará nunca!" } }
       - { t: 1, x: 4.6, z: -4.4, action: hide }

@@ -182,7 +182,7 @@ tracks:
       - { t: 1, x: -1.5, z: 0.5, action: hide }
   - characterId: gandalf
     keyframes:
-      - { t: 0, x: 3, z: 2.2, action: idle, thought: { en: "Stay close. This place does not feel safe.", es: "Quédense cerca. Este lugar no me da confianza." } }
+      - { t: 0, x: 3, z: 2.2, action: idle, thought: { en: "Stay close. This place does not feel safe.", es: "Quedaos cerca. Este lugar no me da confianza." } }
       - { t: 0.15, x: 3, z: 2.2, action: hide }
       - { t: 0.22, x: 3, z: 2.2, action: fight }
       - { t: 0.3, x: 6, z: -2, action: run }
@@ -190,13 +190,13 @@ tracks:
       - { t: 0.6, x: 5, z: -4.5, action: walk, thought: { en: "Time to come back for them.", es: "Es hora de volver por ellos." } }
       - { t: 0.67, x: -3.5, z: -3.5, action: run }
       - { t: 0.7, x: -4, z: -4, action: fight }
-      - { t: 0.78, x: -3.5, z: -3.2, action: run, thought: { en: "Run, all of you!", es: "¡Corran, todos!" } }
+      - { t: 0.78, x: -3.5, z: -3.2, action: run, thought: { en: "Run, all of you!", es: "¡Corred, todos!" } }
       - { t: 0.9, x: 2, z: 2, action: run }
       - { t: 1, x: 5.8, z: 4.5, action: run }
   - characterId: great-goblin
     keyframes:
       - { t: 0, x: -5.5, z: -5.5, action: idle }
-      - { t: 0.5, x: -5.5, z: -5.5, action: idle, thought: { en: "Orcrist! The Goblin-cleaver. Take them!", es: "¡Orcrist! La matagoblins. ¡Apresadlos!" } }
+      - { t: 0.5, x: -5.5, z: -5.5, action: idle, thought: { en: "Orcrist! The Goblin-cleaver. Take them!", es: "¡Orcrist! ¡La Hendedora de Trasgos! ¡Apresadlos!" } }
       - { t: 0.6, x: -5.2, z: -5.2, action: talk }
       - { t: 0.67, x: -5, z: -5, action: fight }
       - { t: 0.72, x: -5, z: -5, action: hide }

@@ -13,8 +13,8 @@ status: staged
 source: { book: the-lord-of-the-rings, chapter: "Appendix A (Durin's Folk)" }
 title: { en: "Thrór Dies at Moria", es: "Muerte de Thrór en Moria" }
 summary:
-  en: "Old Thrór, wandering from the Mountain he lost, walks into Moria. The orc-chief Azog kills him at the gate and flings his body out in contempt."
-  es: "El viejo Thrór, errante lejos de la Montaña perdida, entra en Moria. El jefe orco Azog lo mata en la puerta y arroja su cuerpo con desprecio."
+  en: "Old Thrór, wandering from the Mountain he lost, walks into Moria. The orc-chief Azog kills him inside and flings his body out in contempt."
+  es: "El viejo Thrór, errante lejos de la Montaña perdida, entra en Moria. El jefe orco Azog lo mata dentro y arroja su cuerpo con desprecio."
 links:
   - to: battle-of-azanulbizar
     type: causes

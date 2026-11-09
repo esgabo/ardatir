@@ -26,7 +26,7 @@ tracks:
     keyframes:
       - { t: 0, x: 5, z: 5, action: walk, thought: { en: "At last, a roof and a rest.", es: "Por fin, un techo y descanso." } }
       - { t: 0.12, x: 0.8, z: 0.8, action: walk }
-      - { t: 0.2, x: 0.2, z: 0.2, action: idle, thought: { en: "The goblin swords came from the trolls' cave.", es: "Las espadas trasgas vinieron de la cueva de los trolls." } }
+      - { t: 0.2, x: 0.2, z: 0.2, action: idle, thought: { en: "We found these blades in the trolls' cave.", es: "Encontramos estas hojas en la cueva de los trolls." } }
       - { t: 0.33, x: -0.6, z: -0.4, action: talk, thought: { en: "Thrór's map. Can you read what is hidden in it?", es: "El mapa de Thrór. ¿Puedes leer lo que oculta?" } }
       - { t: 0.5, x: -0.6, z: -0.4, action: idle, thought: { en: "Letters I never saw. The moon shows them.", es: "Letras que nunca vi. La luna las muestra." } }
       - { t: 0.84, x: -0.6, z: -0.4, action: talk, thought: { en: "Durin's Day. But which one?", es: "El Día de Durin. ¿Pero cuál?" } }

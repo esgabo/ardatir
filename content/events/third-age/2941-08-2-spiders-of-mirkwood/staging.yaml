@@ -149,7 +149,7 @@ tracks:
   - characterId: bilbo
     keyframes:
       - { t: 0, x: 5.8, z: 5.6, action: walk, thought: { en: "The path is so dark and so long.", es: "El sendero es oscuro y larguísimo." } }
-      - { t: 0.14, x: 2.5, z: 2.5, action: walk, thought: { en: "Wait! Where have they all gone?", es: "¡Esperen! ¿Adónde se han ido?" } }
+      - { t: 0.14, x: 2.5, z: 2.5, action: walk, thought: { en: "Wait! Where have they all gone?", es: "¡Esperad! ¿Adónde se han ido?" } }
       - { t: 0.25, x: 2, z: 1.5, action: hide }
       - { t: 0.29, x: 2, z: 1.5, action: fight, thought: { en: "A spider! Please, not alone.", es: "¡Una araña! Por favor, no solo." } }
       - { t: 0.43, x: 2, z: 1.5, action: fight }
@@ -157,7 +157,7 @@ tracks:
       - { t: 0.57, x: 0, z: -1, action: walk, thought: { en: "There they hang, all of them.", es: "Ahí cuelgan, todos ellos." } }
       - { t: 0.68, x: -2.5, z: -2, action: hide }
       - { t: 0.71, x: -1, z: -1, action: run }
-      - { t: 0.75, x: 4, z: -3, action: run, thought: { en: "Fat old spiders! Try and catch me!", es: "¡Arañas gordas y viejas! ¡A ver si me atrapan!" } }
+      - { t: 0.75, x: 4, z: -3, action: run, thought: { en: "Over here, you lumbering lumps! Come and find me!", es: "¡Aquí, pelmazos patosos! ¡Venid a buscarme!" } }
       - { t: 0.79, x: 3, z: -2.5, action: walk }
       - { t: 0.84, x: -2.5, z: -2, action: run }
       - { t: 0.86, x: -2.5, z: -2, action: fight, thought: { en: "Quick, cut them free!", es: "¡Rápido, a cortar las ataduras!" } }

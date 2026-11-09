@@ -23,7 +23,7 @@ tracks:
     keyframes:
       - { t: 0, x: -5.5, z: -1, action: walk }
       - { t: 0.2, x: -3.6, z: 0.9, action: idle, thought: { en: "Always the same plea. I have said no before.", es: "Siempre la misma súplica. Ya he dicho que no otras veces." } }
-      - { t: 0.42, x: -3.6, z: 0.9, action: talk, thought: { en: "Let them think it is their idea. I will seek the Ring myself.", es: "Que crean que es idea suya. Yo buscaré el Anillo por mi cuenta." } }
+      - { t: 0.42, x: -3.6, z: 0.9, action: talk, thought: { en: "Better he leaves the river alone. The Ring is mine to find.", es: "Mejor que deje en paz el río. El Anillo lo encontraré yo." } }
       - { t: 0.62, x: 0.6, z: -3, action: walk }
       - { t: 0.82, x: 1.6, z: -3.9, action: idle }
   - characterId: elrond
