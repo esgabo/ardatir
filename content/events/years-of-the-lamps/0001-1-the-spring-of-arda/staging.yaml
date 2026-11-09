@@ -1,0 +1,19 @@
+stage: cosmos
+duration: 96
+narration:
+  shaping: 0
+  lamps: 0.12
+  illuin-ormal: 0.23
+  spring: 0.32
+  almaren: 0.43
+  utumno: 0.555
+  fall: 0.655
+  ruin: 0.725
+  west: 0.855
+beats:
+  lamps: 0.125
+  spring: 0.32
+  almaren: 0.43
+  utumno: 0.555
+  fall: 0.665
+  darkness: 0.88

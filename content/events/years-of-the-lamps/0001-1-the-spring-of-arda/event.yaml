@@ -8,7 +8,7 @@ characters: [ aule, varda, manwe, yavanna, tulkas, melkor ]
 arcs: [ the-shape-of-arda ]
 journeys: []
 tags: [ cosmology, silmarillion ]
-status: scripted
+status: staged
 source: { book: the-silmarillion, chapter: "Of the Beginning of Days" }
 title:
   en: The Spring of Arda

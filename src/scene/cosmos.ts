@@ -1,10 +1,22 @@
 import * as THREE from 'three';
-import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import type { Stage } from './stage';
-import { clamp01, disposeTree, glowTexture, hash, pulse, ramp, smoothNoise } from './util';
+import { clamp01, disposeTree, hash, pulse, ramp, smoothNoise } from './util';
+import { createCosmosWorld, setOpacity, SLAB_RADIUS, type CosmosLabels } from './cosmosWorld';
+
+/**
+ * The cosmos stage for a cosmos-level event: the Ainulindalë here, the others in their
+ * own modules (loaded on demand, so each event's code is its own chunk).
+ */
+export async function createCosmosStage(eventId: string, labels: CosmosLabels): Promise<Stage> {
+  if (eventId === 'the-spring-of-arda') return (await import('./cosmosLamps')).createLampsStage(labels);
+  if (eventId === 'ainulindale') return createAinulindale(labels);
+  // A cosmos event with no animation of its own yet: Arda at rest in its shells.
+  const rest = createAinulindale(labels);
+  return { ...rest, update: (_t, ambient) => rest.update(1, ambient), flash: () => 0 };
+}
 
 // Timeline of the Ainulindalë (normalised event time). Kept in one place so the
-// narration and beats in cosmos.json can be tuned against it.
+// narration and beats in its staging.yaml can be tuned against it.
 const T = {
   musicStart: 0.08,
   discordStart: 0.35,
@@ -16,8 +28,6 @@ const T = {
   ardaSolid: 0.88,
   shellsDone: 0.96,
 } as const;
-
-const SLAB_RADIUS = 4;
 
 /** Ambar: a round, faceted slab of land with an inner sea and a jagged rocky underside. */
 function buildAmbar(seed = 7): { solid: THREE.Group; ghost: THREE.LineSegments } {
@@ -101,63 +111,7 @@ function buildAmbar(seed = 7): { solid: THREE.Group; ghost: THREE.LineSegments }
   return { solid, ghost };
 }
 
-/** Translucent shell with a glowing rim (fresnel), used for the airs and seas around Arda. */
-function shellMaterial(color: string): THREE.ShaderMaterial {
-  return new THREE.ShaderMaterial({
-    uniforms: { uColor: { value: new THREE.Color(color) }, uOpacity: { value: 0 } },
-    vertexShader: /* glsl */ `
-      varying vec3 vN; varying vec3 vV;
-      void main() {
-        vec4 mv = modelViewMatrix * vec4(position, 1.0);
-        vN = normalize(normalMatrix * normal);
-        vV = normalize(-mv.xyz);
-        gl_Position = projectionMatrix * mv;
-      }`,
-    fragmentShader: /* glsl */ `
-      uniform vec3 uColor; uniform float uOpacity;
-      varying vec3 vN; varying vec3 vV;
-      void main() {
-        float rim = pow(1.0 - abs(dot(vN, vV)), 2.5);
-        gl_FragColor = vec4(uColor, uOpacity * (0.15 + 0.85 * rim));
-      }`,
-    transparent: true,
-    depthWrite: false,
-    side: THREE.DoubleSide,
-    blending: THREE.AdditiveBlending,
-  });
-}
-
-interface Shell { mesh: THREE.Mesh; mat: THREE.ShaderMaterial; label: CSS2DObject; appear: number; strength: number }
-
-export function createCosmosStage(labels: Record<string, string>): Stage {
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color('#020308');
-
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
-  camera.position.set(21, 10, 21);
-  const target = new THREE.Vector3(0, 0.3, 0);
-
-  scene.add(new THREE.AmbientLight('#8899bb', 0.0));
-  const hemi = new THREE.HemisphereLight('#fff6e0', '#203040', 0);
-  scene.add(hemi);
-  const sun = new THREE.DirectionalLight('#fff1d6', 0);
-  sun.position.set(6, 10, 4);
-  scene.add(sun);
-
-  // ----- Kúma: faint dust in the void -----
-  const tex = glowTexture();
-  {
-    const n = 800, pos = new Float32Array(n * 3);
-    for (let i = 0; i < n; i++) {
-      const r = 30 + hash(i, 1) * 50, th = hash(i, 2) * Math.PI * 2, ph = Math.acos(2 * hash(i, 3) - 1);
-      pos.set([r * Math.sin(ph) * Math.cos(th), r * Math.cos(ph), r * Math.sin(ph) * Math.sin(th)], i * 3);
-    }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    scene.add(new THREE.Points(g, new THREE.PointsMaterial({ size: 0.25, map: tex, color: '#33384a', transparent: true, depthWrite: false })));
-  }
-
-  // ----- The Music: woven streams of light, plus Melkor's discord -----
+function createAinulindale(labels: CosmosLabels): Stage {
   const STREAMS = 7, PER = 900, DISCORD = 1600;
   const total = STREAMS * PER + DISCORD;
   const mPos = new Float32Array(total * 3);
@@ -165,74 +119,29 @@ export function createCosmosStage(labels: Record<string, string>): Stage {
   const mGeo = new THREE.BufferGeometry();
   mGeo.setAttribute('position', new THREE.BufferAttribute(mPos, 3));
   mGeo.setAttribute('color', new THREE.BufferAttribute(mCol, 3));
-  const music = new THREE.Points(mGeo, new THREE.PointsMaterial({
-    size: 0.16, map: tex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-  }));
-  scene.add(music);
   const streamColors = ['#ffe2a0', '#a8d8ff', '#fff4dc', '#c8b8ff', '#9ff0d8', '#ffd0a8', '#e8f0ff'].map((h) => new THREE.Color(h));
   const discordColor = new THREE.Color('#ff3a1e');
-
-  // A white ring for the single chord that ends the Music.
-  const chordRing = new THREE.Mesh(
-    new THREE.RingGeometry(0.96, 1, 96),
-    new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false }),
-  );
-  scene.add(chordRing);
-
-  // ----- Arda: the slab and its shells (Ambarkanta) -----
   const { solid: ambar, ghost } = buildAmbar();
-  scene.add(ambar, ghost);
+  let music!: THREE.Points;
+  let chordRing!: THREE.Mesh;
 
-  const mkLabel = (text: string, cls = '') => {
-    const el = document.createElement('div');
-    el.className = `cosmos-label ${cls}`;
-    el.textContent = text;
-    el.style.opacity = '0';
-    return new CSS2DObject(el);
-  };
-
-  const shells: Shell[] = [];
-  const addShell = (geo: THREE.BufferGeometry, color: string, label: string, labelPos: THREE.Vector3, appear: number, strength: number) => {
-    const mat = shellMaterial(color);
-    const mesh = new THREE.Mesh(geo, mat);
-    const lbl = mkLabel(label);
-    lbl.position.copy(labelPos);
-    scene.add(mesh, lbl);
-    shells.push({ mesh, mat, label: lbl, appear, strength });
-  };
-  // Vista and Ilmen are domes over the land; Vaiya and the Walls enclose everything.
-  addShell(new THREE.SphereGeometry(4.7, 48, 24, 0, Math.PI * 2, 0, Math.PI / 2), '#8fd0ff', labels.vista, new THREE.Vector3(0, 4.9, 0), 0.88, 0.35);
-  addShell(new THREE.SphereGeometry(5.9, 48, 24, 0, Math.PI * 2, 0, Math.PI / 2), '#4a6fd0', labels.ilmen, new THREE.Vector3(0, 6.1, 0), 0.9, 0.35);
-  addShell(new THREE.SphereGeometry(7.6, 48, 32), '#1f8a8a', labels.vaiya, new THREE.Vector3(0, 7.9, 0), 0.92, 0.5);
-  addShell(new THREE.SphereGeometry(8.1, 48, 32), '#9aa6c8', labels.walls, new THREE.Vector3(0, 8.8, 0), 0.94, 0.25);
-
-  // Stars set in Ilmen.
-  const starGeo = new THREE.BufferGeometry();
-  {
-    const n = 260, pos = new Float32Array(n * 3);
-    for (let i = 0; i < n; i++) {
-      const th = hash(i, 11) * Math.PI * 2, ph = Math.acos(hash(i, 12)) * 0.95; // upper hemisphere
-      const r = 5.8;
-      pos.set([r * Math.sin(ph) * Math.cos(th), r * Math.cos(ph), r * Math.sin(ph) * Math.sin(th)], i * 3);
-    }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  }
-  const starMat = new THREE.PointsMaterial({ size: 0.14, map: tex, color: '#ffffff', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
-  scene.add(new THREE.Points(starGeo, starMat));
-
-  const ambarLabel = mkLabel(labels.ambar, 'big');
-  ambarLabel.position.set(0, -1.6, SLAB_RADIUS + 0.4);
-  const kumaLabel = mkLabel(labels.kuma);
-  kumaLabel.position.set(0, 10.4, 0);
-  scene.add(ambarLabel, kumaLabel);
-  const labelObjs = [...shells.map((s) => s.label), ambarLabel, kumaLabel];
-
-  const setOpacity = (o: THREE.Object3D, v: number) => {
-    o.traverse((x) => {
-      const m = (x as THREE.Mesh).material as THREE.Material | undefined;
-      if (m) { m.opacity = v; m.visible = v > 0.001; }
-    });
-  };
+  const world = createCosmosWorld(labels, (scene, tex) => {
+    // ----- The Music: woven streams of light, plus Melkor's discord -----
+    music = new THREE.Points(mGeo, new THREE.PointsMaterial({
+      size: 0.16, map: tex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    scene.add(music);
+    // A white ring for the single chord that ends the Music.
+    chordRing = new THREE.Mesh(
+      new THREE.RingGeometry(0.96, 1, 96),
+      new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false }),
+    );
+    scene.add(chordRing);
+    // ----- Arda: the slab (its shells come with the world) -----
+    scene.add(ambar, ghost);
+  });
+  const { scene, camera, target, hemi, sun, tex, shells, starMat } = world;
+  const labelObjs = world.labels;
 
   return {
     scene, camera, target,
