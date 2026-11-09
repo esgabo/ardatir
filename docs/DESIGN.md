@@ -263,7 +263,7 @@ Journeys follow who actually travels together: in *The Hobbit*, Bilbo's journey,
 
 ### 4.7 Characters
 
-Name, kind, summary and, for staging, a placeholder colour and relative height (`scale`). `kin` lists family relations (`{ id: turin, as: cousin }`), used to suggest lanes to compare. `home` (a place id) is for characters who never travel, like Tom Bombadil in the Old Forest: when no journey places them, the time cursor shows them at home, but only between the start of their first event and the end of their last (honest ranges), since outside that the sources say nothing of them.
+Name, kind, summary and, for staging, a placeholder colour and relative height (`scale`). `kin` lists family relations (`{ id: turin, as: cousin }`), used to suggest lanes to compare. `home` (a place id) is for characters who never travel, like Tom Bombadil in the Old Forest: when no journey places them, the time cursor shows them at home, but only between the start of their first event and the end of their last (honest ranges), since outside that the sources say nothing of them. A journey that comes to visit them (one of their events is on it) extends that span through its stops at their home: Gandalf's stay with Tom in November 3019 keeps Tom at home after his last event.
 
 ## 5. Narration
 

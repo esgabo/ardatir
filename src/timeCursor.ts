@@ -399,7 +399,7 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
     // Where everyone is, by company; then those who never travel, at home.
     const groups = whereabouts(index.journeys, span, m.precision === 'day' || m.precision === 'month');
     const placed = new Set(groups.flatMap((g) => g.characters));
-    const homes = atHome(index.characters, index.events, span, placed);
+    const homes = atHome(index.characters, index.events, span, placed, index.journeys);
     if (groups.length || homes.length) {
       const box = h('section', { class: 'r-section' }, heading(S('whereTitle')), h('p', { class: 'r-sub-note' }, S('whereNote')));
       const list = h('div', { class: 'tc-where-list' });

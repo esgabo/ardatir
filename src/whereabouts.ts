@@ -111,16 +111,26 @@ export interface HomeGroup {
  * a moment when no journey of theirs says where they are, but only within the span of their
  * events (from the start of the first to the end of the last honest range): outside it the
  * sources say nothing of them. Grouped by place. `placed` are the characters some journey
- * already places at this moment.
+ * already places at this moment. A journey that comes to visit them (one of their events is on
+ * it) extends that span through its stops at their home: Gandalf's stay with Tom in November
+ * 3019 keeps Tom at home after his last event.
  */
 export function atHome(
-  characters: Pick<Character, 'id' | 'home'>[], events: Pick<EventSummary, 'span' | 'characters'>[], m: Span, placed: Set<string>,
+  characters: Pick<Character, 'id' | 'home'>[], events: (Pick<EventSummary, 'span' | 'characters'> & { journeys?: string[] })[], m: Span, placed: Set<string>,
+  journeys: Pick<Journey, 'id' | 'waypoints'>[] = [],
 ): HomeGroup[] {
   const out = new Map<string, HomeGroup>();
   for (const c of characters) {
     if (!c.home || placed.has(c.id)) continue;
     let from = Infinity, to = -Infinity;
-    for (const e of events) if (e.span && e.characters.includes(c.id)) { from = Math.min(from, e.span.from); to = Math.max(to, e.span.to); }
+    const visits = new Set<string>();
+    for (const e of events) if (e.characters.includes(c.id)) {
+      if (e.span) { from = Math.min(from, e.span.from); to = Math.max(to, e.span.to); }
+      for (const j of e.journeys ?? []) visits.add(j);
+    }
+    for (const j of journeys) if (visits.has(j.id)) for (const w of j.waypoints) {
+      if (w.place === c.home && w.span) { from = Math.min(from, w.span.from); to = Math.max(to, w.span.to); }
+    }
     if (!(from < to) || !overlaps({ from, to }, m)) continue;
     const g = out.get(c.home);
     if (g) g.characters.push(c.id); else out.set(c.home, { place: c.home, characters: [c.id] });

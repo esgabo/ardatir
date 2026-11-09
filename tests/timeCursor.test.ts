@@ -266,3 +266,12 @@ describe('where everyone is', () => {
     expect(atHome(chars, events, { from: 15, to: 16 }, new Set(['tom']))).toEqual([]);
   });
 });
+
+describe('atHome: a visiting journey extends the home span', () => {
+  it('keeps Tom at home while Gandalf stays with him (1 Nov 3019)', () => {
+    const m = momentSpan(P('third-age/3019-11-01'), index.ages)!;
+    const ids = (gs: { characters: string[] }[]) => gs.flatMap((g) => g.characters);
+    expect(ids(atHome(index.characters, index.events, m, new Set(), index.journeys))).toContain('tom-bombadil');
+    expect(ids(atHome(index.characters, index.events, m, new Set()))).not.toContain('tom-bombadil');
+  });
+});
