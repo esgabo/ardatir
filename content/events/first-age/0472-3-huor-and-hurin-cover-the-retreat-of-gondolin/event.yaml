@@ -7,7 +7,7 @@ place: sirion-pass
 characters: [ hurin, huor, turgon ]
 arcs: [ the-children-of-hurin, the-fall-of-gondolin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Fifth Battle: Nirnaeth Arnoediad" }
 title: { en: "Húrin and Huor cover Turgon's retreat", es: "Húrin y Huor cubren la retirada de Turgon" }
 summary:
