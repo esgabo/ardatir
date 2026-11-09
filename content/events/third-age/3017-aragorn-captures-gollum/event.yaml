@@ -9,7 +9,7 @@ characters: [ aragorn, gollum ]
 arcs: [  ]
 journeys: [  ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "The Shadow of the Past" }
 title: { en: "Aragorn Takes Gollum", es: "Aragorn captura a Gollum" }
 summary:

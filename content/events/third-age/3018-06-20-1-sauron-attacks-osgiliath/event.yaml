@@ -8,7 +8,7 @@ characters: [ boromir, faramir ]
 arcs: [ the-war-of-the-ring ]
 journeys: [  ]
 tags: [ lord-of-the-rings, battle ]
-status: outline
+status: scripted
 source: { book: the-lord-of-the-rings, chapter: "Appendix B" }
 title: { en: "Sauron Attacks Osgiliath", es: "Sauron ataca Osgiliath" }
 summary:
