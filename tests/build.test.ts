@@ -6,6 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { buildContent, type BuildResult } from '../scripts/content/build.ts';
+import { narrationHash } from '../scripts/narration/text.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
 const FIXTURE = path.join(import.meta.dirname, 'fixtures/valid/content');
@@ -224,6 +225,7 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'timing file without a recording', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\n' }], error: 'timing file without a recording next to it' },
   { name: 'recording without a timing file', changes: [{ file: `${PARTY}/audio/es.mp3`, write: '' }], error: 'recording without es.yaml' },
   { name: 'recording starts out of order', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 10, tea: 4 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: earlier than the passage before it' },
+  { name: 'textHash not a hash', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\ntextHash: 12\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'textHash: expected sha256: and 16 hex digits' },
   { name: 'recording start past its end', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 0, tea: 25 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: needs a second within the recording' },
 ];
 
@@ -248,6 +250,30 @@ describe('broken content', () => {
     ] }, { file: LETTERS, replace: ['year: 2941, day: 1-lithe', 'year: 2941, month: 5, day: 30'] }]);
     expect(r.errors).toEqual([]);
     expect(r.warnings.some((w) => w.includes('is at "rivendell" on journey "the-road" but overlaps none of its waypoints there'))).toBe(true);
+  });
+
+  describe('textHash', () => {
+    // The fixture's English script, as narration.yaml has it.
+    const hash = narrationHash([
+      { id: 'door', text: { en: 'Someone knocks at the green door.' } },
+      { id: 'tea', text: { en: 'Tea is poured for far too many guests.' } },
+    ], 'en');
+    const recording = (h: string): Change[] => [
+      { file: `${PARTY}/audio/en.yaml`, write: `duration: 20\ntextHash: ${h}\n` },
+      { file: `${PARTY}/audio/en.mp3`, write: '' }, // created for the test only; never committed
+    ];
+
+    it('gives no warning when the recording matches the script', () => {
+      const r = buildWith(recording(hash));
+      expect(r.errors).toEqual([]);
+      expect(r.warnings).toEqual([]);
+    });
+
+    it('warns "stale recording" when a recorded passage changes', () => {
+      const r = buildWith([...recording(hash), { file: `${PARTY}/narration.yaml`, replace: ['far too many guests', 'a great many guests'] }]);
+      expect(r.errors).toEqual([]);
+      expect(r.warnings.some((w) => w.includes('en.yaml: stale recording'))).toBe(true);
+    });
   });
 
   it('warns about missing Spanish and unknown fields', () => {
