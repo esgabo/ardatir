@@ -130,6 +130,13 @@ const UI = {
   summer: { en: 'summer', es: 'verano' },
   autumn: { en: 'autumn', es: 'otoño' },
   winter: { en: 'winter', es: 'invierno' },
+  // Days outside the months (Shire Reckoning, Appendix D); keys are `day_<ExtraDay>`
+  'day_2-yule': { en: '2 Yule', es: '2 Yule' },
+  'day_1-lithe': { en: '1 Lithe', es: '1 Lithe' },
+  day_midyear: { en: "Mid-year's Day", es: 'Día de Mitad del Año' },
+  day_overlithe: { en: 'Overlithe', es: 'Sobrelithe' },
+  'day_2-lithe': { en: '2 Lithe', es: '2 Lithe' },
+  'day_1-yule': { en: '1 Yule', es: '1 Yule' },
 } satisfies Record<string, LocalizedText>;
 
 export type UiKey = keyof typeof UI;

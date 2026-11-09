@@ -54,6 +54,7 @@ beats:                    # named turning points; their times go in staging.yaml
 ### Dates, honestly
 
 - Fill only what the sources say. A season goes in `season:` (not a month); a known day needs its month.
+- Days outside the months (Shire Reckoning, *The Return of the King* Appendix D) are named with `day:` and no month: `2-yule` (first day of the year), `1-lithe`, `midyear` (Mid-year's Day), `overlithe` (leap years only: every fourth year, except the last of a century), `2-lithe` (between months 6 and 7), and `1-yule` (last day of the year). Midsummer's Eve is `{ age: third-age, year: 2941, day: 1-lithe }` with `precision: day`. Summer includes the Lithe days; winter includes Yule.
 - `precision` must match: `day` needs a day, `month` a month, `season` a season.
 - Unsure? Claim less (`year`) and leave a `#` comment saying why.
 - Events in a timeless age (before the world) have no `when`.

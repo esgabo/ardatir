@@ -5,9 +5,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
-import { dateSpan, whenSpan } from '../../src/data/calendar.ts';
+import { dateSpan, hasOverlithe, whenSpan } from '../../src/data/calendar.ts';
 import {
-  LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
+  EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
   type EventSummary, type Journey, type Keyframe, type Lang, type LinkType, type LocalizedText,
   type NarrationAudio, type NarrationSegment, type Place, type Precision, type Span, type StageKind,
@@ -132,8 +132,15 @@ export function buildContent(contentDir: string): BuildResult {
     if (!age.axis) { R.error(file, `${what}: age "${age.id}" is timeless and has no dates`); return undefined; }
     if (!Number.isInteger(v.year) || (v.year as number) < 1) { R.error(file, `${what}.year: must be a whole number ≥ 1`); return undefined; }
     if (v.month !== undefined && !(Number.isInteger(v.month) && (v.month as number) >= 1 && (v.month as number) <= 12)) R.error(file, `${what}.month: 1–12`);
-    if (v.day !== undefined && !(Number.isInteger(v.day) && (v.day as number) >= 1 && (v.day as number) <= 30)) R.error(file, `${what}.day: 1–30`);
-    if (v.day !== undefined && v.month === undefined) R.error(file, `${what}: a day needs a month`);
+    if (typeof v.day === 'string') {
+      // A day outside the months (2 Yule, 1 Lithe, Mid-year's Day, Overlithe, 2 Lithe, 1 Yule).
+      if (!(EXTRA_DAYS as readonly string[]).includes(v.day)) R.error(file, `${what}.day: 1–30, or one of ${EXTRA_DAYS.join(', ')}`);
+      else if (v.month !== undefined || v.season !== undefined) R.error(file, `${what}: "${v.day}" is outside the months; remove the month or season`);
+      else if (v.day === 'overlithe' && !hasOverlithe(v.year as number)) R.error(file, `${what}: ${v.year} is not a leap year, so it has no Overlithe`);
+    } else {
+      if (v.day !== undefined && !(Number.isInteger(v.day) && (v.day as number) >= 1 && (v.day as number) <= 30)) R.error(file, `${what}.day: 1–30`);
+      if (v.day !== undefined && v.month === undefined) R.error(file, `${what}: a day needs a month`);
+    }
     if (v.season !== undefined && !(SEASONS as readonly string[]).includes(String(v.season))) R.error(file, `${what}.season: one of ${SEASONS.join(', ')}`);
     if (v.season !== undefined && v.month !== undefined) R.error(file, `${what}: give a month or a season, not both`);
     return v as unknown as StoryDate;

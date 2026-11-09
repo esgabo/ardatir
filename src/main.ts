@@ -165,7 +165,7 @@ function formatDate(e: EventSummary): string {
   const parts: string[] = [];
   if (d.season) { const s = ui(d.season, L); parts.push(s[0].toUpperCase() + s.slice(1)); }
   const month = d.month ? new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'long' }) : '';
-  const day = d.day && d.month ? `${d.day} ${month}` : month;
+  const day = typeof d.day === 'string' ? ui(`day_${d.day}`, L) : d.day && d.month ? `${d.day} ${month}` : month;
   if (day) parts.push(day);
   parts.push(`${tr(dAge?.abbr, L) || tr(dAge?.name, L)} ${d.year}`);
   return parts.join(' · ');

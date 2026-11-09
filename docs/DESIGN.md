@@ -165,7 +165,7 @@ when:
   precision: day          # day | month | season | year | decade | approximate
 ```
 
-- Dates are written as the sources give them: age + year (+ month and day, or a season, when known). Months follow the sources' reckoning, treated as 12 months of 30 days.
+- Dates are written as the sources give them: age + year (+ month and day, or a season, when known). Months follow the sources' reckoning, treated as 12 months of 30 days. The days outside the months in the Shire Reckoning (2 Yule, 1 Lithe, Mid-year's Day, Overlithe, 2 Lithe, 1 Yule; Appendix D) are written `day: 1-lithe` etc. with no month. Every year is laid out as 366 equal day slots: 2 Yule, months 1–6, 1 Lithe, Mid-year's Day, Overlithe (an empty slot in non-leap years, so positions never depend on the leap rule), 2 Lithe, months 7–12, 1 Yule (`src/data/calendar.ts`).
 - The build places every date on **one shared axis** in years of the Sun, using offsets defined in each age's file (First Age year 1 = axis 1; Second Age 1 = 591; Third Age 1 = 4032; Fourth Age 1 = 7053).
 - The Years of the Trees are placed before the First Age with a configurable year length (one Valian Year ≈ 9.582 years of the Sun, one of Tolkien's later figures); dates there are approximate by nature.
 - Ages before time (the Ainulindalë) are **timeless**: their events have no position on the axis and sit before everything else.
@@ -292,6 +292,7 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 | 2026-11-09 | Goal stated: people should be amazed and feel good learning these stories. |
 | 2026-11-09 | Characters are modelled in Blender and exported as glTF; current visuals are placeholders. |
 | 2026-11-09 | Character style: low-poly with enough detail to look good; film-like proportions (no enlarged heads); simplified faces. |
+| 2026-11-09 | The Shire's days outside the months are named with `day:` (`2-yule`, `1-lithe`, `midyear`, `overlithe`, `2-lithe`, `1-yule`); each year is 366 fixed day slots. |
 | 2026-11-09 | Navigation moves from top-right dropdowns to a collapsible left sidebar (icon rail + panel): Ages, Stories, Lives, Books, Places; a light fantasy look (§3.3). |
 
 ## 12. Open questions

@@ -19,12 +19,22 @@ export type Precision = (typeof PRECISIONS)[number];
 export const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
 export type Season = (typeof SEASONS)[number];
 
+/**
+ * The days outside the twelve months in the Shire Reckoning (The Return of the King,
+ * Appendix D), in calendar order: `2-yule` opens the year, `1-lithe`, `midyear` (Mid-year's
+ * Day), `overlithe` (leap years only) and `2-lithe` fall between months 6 and 7, and `1-yule`
+ * closes the year. Written as `day: <name>` with no month; see calendar.ts for their place.
+ */
+export const EXTRA_DAYS = ['2-yule', '1-lithe', 'midyear', 'overlithe', '2-lithe', '1-yule'] as const;
+export type ExtraDay = (typeof EXTRA_DAYS)[number];
+
 /** A date as the sources give it. Only fill what the sources support. */
 export interface StoryDate {
   age: string;
   year: number;
   month?: number;
-  day?: number;
+  /** 1–30 within `month`, or the name of a day outside the months (then no month). */
+  day?: number | ExtraDay;
   season?: Season;
 }
 
