@@ -215,12 +215,20 @@ export function buildContent(contentDir: string): BuildResult {
     (Array.isArray(o.waypoints) ? o.waypoints : []).forEach((w, i) => {
       const what = `waypoints[${i}]`;
       if (!isObj(w)) { R.error(f, `${what}: expected { place, date, precision }`); return; }
-      keys(f, w, ['place', 'date', 'precision'], what);
+      keys(f, w, ['place', 'date', 'end', 'precision'], what);
       if (!placeIds.has(String(w.place))) R.error(f, `${what}.place: unknown place "${w.place}"`);
       const d = date(f, w.date, `${what}.date`);
+      // `end`: a stay known only within bounds ("summer–autumn"), at the same precision as `date`.
+      const e = w.end !== undefined ? date(f, w.end, `${what}.end`) : undefined;
+      if (w.end !== undefined && !e) return;
       const p = precision(f, w.precision, d, what);
-      const span = d && p && dateSpan(d, p, ageMap.get(d.age)!);
-      if (d && p && span) waypoints.push({ place: String(w.place), date: d, precision: p, span, at: (span.from + span.to) / 2 });
+      if (e && p) precision(f, p, e, `${what}.end`);
+      const span = d && p && whenSpan({ start: d, ...e ? { end: e } : {}, precision: p }, ageMap);
+      if (e && d && p && span && dateSpan(e, p, ageMap.get(e.age)!)!.from < dateSpan(d, p, ageMap.get(d.age)!)!.from) {
+        R.error(f, `${what}.end is before its date`);
+        return;
+      }
+      if (d && p && span) waypoints.push({ place: String(w.place), date: d, ...e ? { end: e } : {}, precision: p, span, at: (span.from + span.to) / 2 });
     });
     if (waypoints.length < 2) R.error(f, 'a journey needs at least two waypoints');
     // Coarse dates may overlap their neighbours; only a waypoint that ends before the previous one starts is out of order.
@@ -580,8 +588,10 @@ export function estimatePositions(events: EventSummary[]): void {
 
 /**
  * Best-guess moments for journey waypoints. A waypoint that matches an event on the
- * journey (same place, overlapping dates) takes that event's `at`; exact-dated ones sit
- * at their middle; the rest are spaced between their neighbours, inside their own span.
+ * journey (same place, overlapping dates, and the event's `at` inside the waypoint's range)
+ * takes that event's `at`; exact-dated ones sit at their middle; the rest are spaced between
+ * their neighbours. Every guess stays inside its waypoint's honest range (`date` to `end`)
+ * and never before the waypoint before it, as far as that range allows.
  */
 export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): void {
   for (const j of journeys) {
@@ -592,7 +602,8 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
       if (w.span.to - w.span.from <= ANCHOR_WIDTH) at = (w.span.from + w.span.to) / 2;
       else {
         const e = events.find((x) => x.journeys.includes(j.id) && x.place === w.place && x.span && x.at !== undefined
-          && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last);
+          && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last
+          && x.at >= w.span.from && x.at <= w.span.to);
         at = e?.at;
       }
       known.push(at);
@@ -610,6 +621,11 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
         w.at = Math.min(Math.max(g, w.span.from), w.span.to);
       });
       i = k - 1;
+    }
+    // Forward pass: a guess never falls before the previous waypoint's, unless its own range ends earlier.
+    for (let i = 1; i < j.waypoints.length; i++) {
+      const w = j.waypoints[i], prev = j.waypoints[i - 1].at;
+      if (w.at < prev) w.at = Math.min(prev, w.span.to);
     }
   }
 }

@@ -189,7 +189,7 @@ Typed relations between events, for connections time alone can't show. Written o
 
 ### 4.6 Journeys and whereabouts
 
-A journey is a dated path for one or more characters: `waypoints` of place + date. Between events, it says where a character is, which is what the time cursor needs to show "what everyone is doing". The Quest of Erebor, Tuor's road to Gondolin and the Ring's road to Mordor are journeys.
+A journey is a dated path for one or more characters: `waypoints` of place + date. A stay known only within bounds gets an optional `end`, like an event's `when.end` (Gandalf at Dol Guldur: summer–autumn 2941), so the range is honest without inventing a date. Between events, it says where a character is, which is what the time cursor needs to show "what everyone is doing". The Quest of Erebor, Tuor's road to Gondolin and the Ring's road to Mordor are journeys.
 
 Waypoints get best guesses too: one that matches an event on the journey (same place, overlapping dates) takes that event's moment; the rest are spaced between their neighbours. A character's whereabouts at a moment is the last waypoint reached, on the way to the next. Coarse waypoints may overlap their neighbours; only one that clearly comes before the previous is an error.
 

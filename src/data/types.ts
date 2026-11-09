@@ -102,7 +102,10 @@ export interface Arc {
 export interface Waypoint {
   place: string;
   date: StoryDate;
+  /** For a stay known only within bounds: the latest the sources allow, like an event's `when.end`. */
+  end?: StoryDate;
   precision: Precision;
+  /** Honest range: from the start of `date` to the end of `end` (or of `date`), widened by precision. */
   span: Span;
   /** Best-guess moment inside `span`: the matching event's `at` when there is one. */
   at: number;

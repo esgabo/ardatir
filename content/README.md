@@ -107,6 +107,12 @@ waypoints:                # in order; at least two
   - { place: gondolin, date: { age: first-age, year: 496 }, precision: year }
 ```
 
+A stay known only within bounds takes an optional `end`, like an event's `when.end`, at the same precision: the waypoint covers from the start of `date` to the end of `end`, and its best guess stays inside that range. Use it instead of inventing a date:
+
+```yaml
+  - { place: dol-guldur, date: { age: third-age, year: 2941, season: summer }, end: { age: third-age, year: 2941, season: autumn }, precision: season }
+```
+
 ## Characters
 
 ```yaml
