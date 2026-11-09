@@ -10,8 +10,8 @@ arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
 journeys: [ the-fellowship-of-the-ring ]
 tags: [ lord-of-the-rings ]
 status: scripted
-source: { book: the-fellowship-of-the-ring, chapter: "A Journey in the Dark" }
+source: { book: the-fellowship-of-the-ring, chapter: "The Ring Goes South" }
 title: { en: "The Fellowship in Hollin", es: "La Comunidad en Eregion" }
 summary:
   en: "The nine reach the empty heathland of Hollin. Crows from Dunland wheel overhead, a sign that spies are watching the Company."
-  es: "Los nueve llegan a los páramos vacíos de Eregion. Unos cuervos de Dunland dan vueltas sobre ellos, señal de que hay espías vigilando a la Compañía."
+  es: "Los nueve llegan a los páramos vacíos de Eregion. Unos cuervos de las Tierras Brunas dan vueltas sobre ellos, señal de que hay espías vigilando a la Compañía."

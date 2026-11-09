@@ -12,5 +12,5 @@ status: scripted
 source: { book: the-two-towers, chapter: "The White Rider" }
 title: { en: "Gandalf Returns to Life", es: "Gandalf vuelve a la vida" }
 summary:
-  en: "His body lies on the cold peak until he is sent back to finish his task, in a trance and clad in white."
-  es: "Su cuerpo yace en la cima helada hasta que es enviado de vuelta para cumplir su tarea, en trance y vestido de blanco."
+  en: "His body lies on the cold peak until he is sent back to finish his task. He wakes there alone, half in a trance."
+  es: "Su cuerpo yace en la cima helada hasta que es enviado de vuelta para cumplir su tarea. Despierta allí solo, medio en trance."

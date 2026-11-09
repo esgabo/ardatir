@@ -12,5 +12,5 @@ status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
 title: { en: "Glorfindel Rides from Rivendell", es: "Glorfindel sale de Rivendel" }
 summary:
-  en: "Elrond, hearing of the Riders, sends scouts along the road. Glorfindel rides east to find the Ring-bearer."
-  es: "Elrond, al saber de los Jinetes, envía exploradores por el camino. Glorfindel cabalga al este para encontrar al Portador del Anillo."
+  en: "Elrond, hearing of the Riders, sends scouts along the roads. Glorfindel rides west along the East Road to find the Ring-bearer."
+  es: "Elrond, al saber de los Jinetes, envía exploradores por los caminos. Glorfindel cabalga hacia el oeste por el Camino del Este para encontrar al Portador del Anillo."
