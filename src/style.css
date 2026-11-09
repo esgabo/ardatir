@@ -166,6 +166,7 @@ a.ev:hover, button.ev:hover { background: rgba(255, 255, 255, 0.05); }
   color: var(--gold-soft); white-space: nowrap; text-shadow: none; vertical-align: middle;
 }
 .r-ev .foretold-badge { margin-left: 2px; }
+.r-nav-title .foretold-badge { margin-left: 8px; position: relative; top: -2px; }
 
 /* Story cards */
 .cards { display: flex; flex-direction: column; gap: 8px; }

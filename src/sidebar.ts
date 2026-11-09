@@ -274,15 +274,15 @@ export class Sidebar {
     }
     box.append(card);
     const current = index.events.find((e) => e.id === this.host.currentId());
-    const link = (href: string, name: string, when: string, here = false) => {
+    const link = (href: string, name: string, when: string, here = false, badge: HTMLElement | null = null) => {
       const a = h('a', { class: 'ev', href, 'aria-current': here ? 'page' : undefined },
-        h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, name), h('span', { class: 'ev-when' }, when));
+        h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, name), badge, h('span', { class: 'ev-when' }, when));
       a.addEventListener('click', () => this.setDrawer(false));
       return h('li', {}, a);
     };
     if (current && !open) {
       box.append(h('div', { class: 'sb-section' }, this.L('thisEventsMoment')),
-        h('ul', { class: 'ev-list' }, link(this.host.timeHrefFor(current), tr(current.title, L), momentLabel(momentOfEvent(current, index.ages), L))));
+        h('ul', { class: 'ev-list' }, link(this.host.timeHrefFor(current), tr(current.title, L), momentLabel(momentOfEvent(current, index.ages), L), false, foretoldBadge(current, L))));
     }
     box.append(h('div', { class: 'sb-section' }, this.L('momentsToVisit')));
     const ul = h('ul', { class: 'ev-list' });

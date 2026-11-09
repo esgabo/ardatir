@@ -6,6 +6,7 @@ import { characterMap, eventById, index, loadEvent, loadIndex, playable } from '
 import { LANGS, type EventDetail, type EventSummary, type Lang } from './data/types';
 import { h } from './dom';
 import { honestDate } from './format';
+import { foretoldBadge } from './foretold';
 import { ICONS } from './icons';
 import { initialLang, isLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { renderReader } from './reader';
@@ -623,7 +624,7 @@ function renderMeanwhile(): void {
   // Every event is a link: staged ones open their stage, the others their page.
   const row = (e: EventSummary, note?: string) => h('li', {},
     h('a', { class: e.stage ? 'mw-item' : 'mw-item dim', href: eventHref(e.id, L), title: ui(e.stage ? 'playable' : 'readable', L) },
-      h('span', { class: 'mw-name' }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), tr(e.title, L)),
+      h('span', { class: 'mw-name' }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), tr(e.title, L), foretoldBadge(e, L)),
       h('span', { class: 'mw-note' }, note ?? '')));
   const section = (title: string | HTMLElement, items: HTMLElement[], note?: string) => {
     if (!items.length) return;

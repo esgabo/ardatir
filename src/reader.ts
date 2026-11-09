@@ -200,7 +200,7 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
   const navCard = (e: EventSummary | undefined, label: string, cls: string) => e
     ? h('a', { class: `r-nav-card ${cls}`, href: eventHref(e.id, L) },
       h('span', { class: 'r-label' }, label),
-      h('span', { class: 'r-nav-title' }, tr(e.title, L)),
+      h('span', { class: 'r-nav-title' }, tr(e.title, L), foretoldBadge(e, L)),
       h('span', { class: 'r-when' }, honestDate(e, L)))
     : h('span', { class: `r-nav-card ${cls} empty` });
   nav.append(navCard(prev, `← ${S('before')}`, 'prev'), navCard(next, `${S('after')} →`, 'next'));
