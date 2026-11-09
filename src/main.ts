@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+import { collidingShown, currentBeat, layoutBeatLabels, type BeatLabelLayout } from './beatLabels';
 import { characterMap, eventById, index, loadEvent, loadIndex, playable } from './chronicle';
 import { LANGS, type EventDetail, type EventSummary, type Lang } from './data/types';
 import { h } from './dom';
@@ -455,23 +456,73 @@ function renderStatic(): void {
   $('event-date').textContent = honestDate(state.event, L);
   $('event-summary').textContent = tr(state.event.summary, L);
 
-  const beats = $('beats');
-  beats.innerHTML = '';
-  for (const b of state.event.beats ?? []) {
-    const el = document.createElement('div');
-    el.className = 'beat';
-    el.style.left = `${b.t * 100}%`;
-    el.innerHTML = '<span></span>';
-    el.querySelector('span')!.textContent = tr(b.label, L);
-    beats.append(el);
-  }
+  buildBeats();
 
   muteBtn.hidden = !state.event.audioFiles[L];
   updateDynamic();
 }
 
+const beatsEl = $('beats');
+let beatEls: HTMLButtonElement[] = [];
+let beatCurrent = -2;
+let beatLayout: BeatLabelLayout = { show: [], x: [] };
+let beatWidths: number[] = [];
+
+/** One focusable marker per beat; which labels show is decided by layoutBeats. */
+function buildBeats(): void {
+  const L = state.lang;
+  beatsEl.innerHTML = '';
+  beatEls = (state.event.beats ?? []).map((b, k) => {
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'beat';
+    el.style.left = `${b.t * 100}%`;
+    const label = tr(b.label, L);
+    el.setAttribute('aria-label', label);
+    const span = document.createElement('span');
+    span.textContent = label;
+    span.setAttribute('aria-hidden', 'true');
+    el.append(span);
+    el.addEventListener('click', () => { seekTo(b.t); writeRoute(); });
+    // A revealed hidden label covers its neighbours: fade those out while it shows.
+    const reveal = (on: boolean): void => {
+      for (const j of collidingShown(k, beatLayout, beatWidths, 10)) beatEls[j]?.classList.toggle('yield', on);
+    };
+    el.addEventListener('mouseenter', () => reveal(true));
+    el.addEventListener('mouseleave', () => reveal(false));
+    el.addEventListener('focus', () => reveal(true));
+    el.addEventListener('blur', () => reveal(false));
+    beatsEl.append(el);
+    return el;
+  });
+  beatCurrent = -2;
+  layoutBeats();
+}
+
+/** Recomputed only on resize, language or event change, and when the current beat changes. */
+function layoutBeats(): void {
+  const beats = state.event.beats ?? [];
+  const positions = beats.map((b) => b.t);
+  beatCurrent = currentBeat(positions, state.t);
+  const barWidth = beatsEl.clientWidth;
+  if (!barWidth) return;
+  const widths = beatEls.map((el) => (el.firstElementChild as HTMLElement).offsetWidth);
+  const { show, x } = layoutBeatLabels({ positions, widths, barWidth, gap: 10, current: beatCurrent, focus: state.t });
+  beatLayout = { show, x }; beatWidths = widths;
+  beatEls.forEach((el) => el.classList.remove('yield'));
+  beatEls.forEach((el, k) => {
+    const span = el.firstElementChild as HTMLElement;
+    span.style.left = `calc(50% + ${x[k] - positions[k] * barWidth}px)`;
+    el.classList.toggle('shown', show[k]);
+    el.classList.toggle('current', k === beatCurrent);
+  });
+}
+
+new ResizeObserver(() => layoutBeats()).observe(beatsEl);
+
 function updateDynamic(): void {
   const L = state.lang;
+  if (beatEls.length && currentBeat((state.event.beats ?? []).map((b) => b.t), state.t) !== beatCurrent) layoutBeats();
   scrubber.value = String(Math.round(state.t * 1000));
   playBtn.innerHTML = state.playing ? ICONS.pause : ICONS.play;
   playBtn.setAttribute('aria-label', ui(state.playing ? 'pause' : 'play', L));

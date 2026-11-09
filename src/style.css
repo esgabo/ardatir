@@ -241,9 +241,23 @@ blockquote:empty { display: none; }
 .track { position: relative; flex: 1; min-width: 120px; height: 40px; display: flex; align-items: flex-end; padding-bottom: 6px; margin: 0 8px; }
 #scrubber { width: 100%; accent-color: var(--gold); cursor: pointer; margin: 0; }
 .beats { position: absolute; inset: 0; pointer-events: none; }
-.beat { position: absolute; top: 4px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; }
-.beat::before { content: ''; order: 2; width: 5px; height: 5px; margin-top: 3px; border: 1px solid var(--gold-soft); transform: rotate(45deg); }
-.beat span { white-space: nowrap; font-size: 11px; color: var(--muted); }
+.beat {
+  position: absolute; top: 0; width: 18px; height: 22px; padding: 0; border: 0; background: transparent;
+  transform: translateX(-50%); pointer-events: auto; cursor: pointer; color: var(--muted);
+}
+.beat::before { content: ''; position: absolute; left: 50%; bottom: 3px; width: 5px; height: 5px; margin-left: -3px; border: 1px solid var(--gold-soft); transform: rotate(45deg); }
+.beat span {
+  position: absolute; bottom: 9px; transform: translateX(-50%); white-space: nowrap; font-size: 11px; line-height: 14px;
+  color: var(--muted); visibility: hidden; padding: 0 3px; border-radius: 4px;
+}
+.beat.shown span { visibility: visible; transition: opacity 0.12s; }
+.beat.yield span { opacity: 0; }
+.beat.current span { color: var(--gold); }
+.beat.current::before { background: var(--gold-soft); }
+.beat:hover, .beat:focus-visible { z-index: 2; }
+.beat:hover span, .beat:focus span { visibility: visible; color: var(--ink); background: #0d0f17; box-shadow: 0 0 0 1px var(--line); }
+.beat:focus-visible { outline: none; }
+.beat:focus-visible::before { border-color: var(--gold); background: var(--gold); }
 .time { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; min-width: 76px; text-align: right; }
 
 .meanwhile { right: var(--gap); bottom: 96px; width: 320px; max-height: 50vh; overflow-y: auto; }
@@ -309,7 +323,6 @@ body.sb-open .disclaimer { display: none; }
   #event-panel { top: auto; bottom: 150px; }
   #event-summary { display: none; }
   #selection-panel { top: 70px; left: var(--gap); width: auto; }
-  .beat span { display: none; }
   .caption { font-size: 17px; bottom: 84px; }
   .text-btn span, .time { display: none; }
   .text-btn { padding: 0 10px; }
