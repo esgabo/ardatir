@@ -8,7 +8,7 @@ characters: [ bilbo, bard, thranduil, gandalf ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again ]
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 16 }
 title: { en: A Thief in the Night, es: Un ladrón en la noche }
 summary:

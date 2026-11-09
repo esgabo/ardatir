@@ -8,7 +8,7 @@ characters: [ smaug, bard, the-master ]
 arcs: [ the-quest-of-erebor ]
 journeys: []
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 14 }
 title: { en: Fire and Water, es: Fuego y agua }
 summary:
