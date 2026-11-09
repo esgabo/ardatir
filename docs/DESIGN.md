@@ -115,7 +115,7 @@ Every event in a list is a link. Events that can be watched (staged) are marked 
 - Top left, a **breadcrumb** of where you are (*Third Age › The Quest of Erebor › Roast Mutton*); top right, a **zoom switch**, *Cosmos · World · Event*.
 - The event card sits under the breadcrumb, the selected character's card on the right (§2, Event).
 - The narration caption above the timeline bar.
-- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** and mute. Until the time cursor (§3.1) exists, Meanwhile lists the event's links and the events whose honest range overlaps it, each a link like those in the sidebar. Later, in the cosmos and world levels, the bar spans the ages instead.
+- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** and mute. Until the time cursor (§3.1) exists, Meanwhile lists the event's links and the events whose honest range overlaps it, as *likely* (our best guess, explained) and *possibly* (§4.4.1), each a link like those in the sidebar. Later, in the cosmos and world levels, the bar spans the ages instead.
 
 **Phones.** The rail and panel become one **drawer** opened from a menu button: the views as a tab strip under the search, the language switch in the footer.
 
@@ -132,7 +132,7 @@ Most events will be outlines for a long time, and they are exactly what the cros
 - **Who was there**: the characters as small cards (name, kind, one line); a name opens their life.
 - **Connections**: every link, both directions (the reverses come from the build), with its type (*caused by*, *makes possible*…) and its note.
 - **Part of**: each arc with its summary and the events before and after this one in it; each journey with its places in order, this one lit.
-- **Around the same time**: events whose honest range overlaps this one (as Meanwhile does).
+- **Around the same time**: events whose honest range overlaps this one (as Meanwhile does), split into *likely* (our best guess, each with a short explanation behind an info button) and *possibly* (§4.4.1). Under the honest date at the top, a quiet line says how an event that isn't exactly dated is placed on the timeline (§4.4).
 - **Before / After**: the previous and next event in story order, so the whole chronicle can be read page by page.
 
 The look is the sidebar's: night ground with a faint starfield and a soft gold glow at the top, section rules with a diamond, filled and hollow diamonds on event links. While a page is open the stage under it neither renders nor plays; the breadcrumb and zoom switch stay on top.
@@ -198,7 +198,39 @@ when:
   1. Events dated to within about a month are **anchors**, placed at their middle.
   2. Every other event's window is its range narrowed by the nearest anchors before and after it in its characters' lanes; events sharing a window are spaced evenly across it in story order.
   3. A forward pass makes sure nothing comes before an earlier event in a shared character's lane, or before an event it is `caused-by` / `enabled-by`.
-- The time cursor shows events whose best guess is near the cursor as **likely happening now**, and those whose honest range merely covers it as **possibly now**. The best guess is never shown as a date; it is a placement, and the range is what the site states.
+- **Why each guess landed where it did (`atReason`).** The build records it on every dated event in `index.json`, so the site can explain a guess in words instead of showing it:
+
+  ```json
+  "atReason": { "kind": "after-anchor", "after": "welcome-at-lake-town", "lane": ["bilbo"], "shared": 6, "window": [6972.7281, 6972.9153] }
+  ```
+
+  | `kind` | Meaning | Fields |
+  |---|---|---|
+  | `exact` | an anchor (dated to within about a month), at its middle | — |
+  | `between-anchors` | its range narrowed by an exact-dated event before and one after it in a shared lane | `after`, `before`, `lane` |
+  | `after-anchor` / `before-anchor` | narrowed on one side only; the other side is its own range | `after` or `before`, `lane` |
+  | `range-midpoint` | nothing near it in its lanes is exact, and it shares its range with no one: the middle | — |
+  | `spaced-in-range` | nothing near it is exact; spread evenly with the others sharing that range, in story order | `shared` |
+  | `after-predecessor` | step 3 moved it just after `follows`, the previous event in a shared lane (`via: lane`) or what it is `caused-by` / `enabled-by` | `follows`, `via`, `lane` (for a lane) |
+
+  `lane` names the characters whose lanes gave the anchors (at most two); `shared` is how many events share the window (omitted when one); `window` is the honest span as narrowed by the anchors, the bounds the guess was placed within (axis years, rounded to 4 decimals). Timeless events have neither `at` nor `atReason`.
+- **On the site**, an event page whose date isn't exact says how it is placed, under its honest date, from `atReason` (`src/placement.ts`): *The sources say only autumn, T.A. 2941. We place it after* A Welcome at Lake-town *(22 September, T.A. 2941), because that is the order of Bilbo Baggins's story. It shares that stretch with 5 other events, spaced out in story order.* It describes the placement relative to the anchors; the guess itself is never shown as a date.
+
+#### 4.4.1 "Likely" and "possibly" at the same time
+
+Two events (or a moment and an event) are **possibly** at the same time when their honest ranges overlap. That is a fact the sources allow and stays as it is. **Likely** leans on the best guesses, so it is only said where they mean something (`nearness` / `nearnessAt` in `src/data/calendar.ts`):
+
+1. **Same character, different scene: never "likely"**, unless the two are linked `concurrent` or `crossing`. Story order already says one follows the other; guesses a few days apart would only blur that. (This fixes issue #2: during *A Welcome at Lake-town*, 22 September 2941, *The Secret Door* was "likely" because its guess fell in early October, though Bilbo is in both and the door comes later.)
+2. **Otherwise the window scales with the vaguer of the two precisions**, between best guesses: **day ±3 days** (exact dates still differ by a day or two between sources and reckonings), **month ±15 days** (half a month: a mid-month guess reaches either end of its month, no further), **season ±45 days** (half a season: the same part of the season, not anywhere in it). **Year, decade, approximate** and timeless dates never make "likely", only "possibly": a guess placed somewhere in a year says too little to call two events simultaneous. The numbers are `LIKELY_DAY`, `LIKELY_MONTH`, `LIKELY_SEASON` in `calendar.ts`.
+3. For the **bare time cursor** (a moment, not an event), the window is the event's own precision.
+
+**Why this rule** (decided 2026-11-09), over the options in issue #2:
+
+- *A window from precision alone* still leaves the example wrong: the door and Lake-town are both within a season's window, so it would stay "likely". The lane rule is what tells them apart.
+- *A window from the gap to the neighbouring anchors* follows the data more closely, but is hard to explain to a visitor ("likely, because the anchors around it are 40 days apart") and is still wide when the anchors are far apart.
+- *"Likely" only when both are exact-dated* is honest but makes "likely" almost never appear: most events are dated by season or year.
+
+**On the site**, "likely" is always labelled as our guess and explained: *Likely at the same time — our best guess*, each item with a small info button (a real button, not hover-only) that opens one or two sentences: how close our guesses put the two, then how that event is placed (its honest range and the anchors, from `atReason`). "Possibly" carries one line: *Their honest date ranges overlap.* Both the Meanwhile panel and event pages (*Around the same time*) show the two groups.
 
 ### 4.5 Links
 
@@ -329,6 +361,7 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 | 2026-11-09 | The Shire's days outside the months are named with `day:` (`2-yule`, `1-lithe`, `midyear`, `overlithe`, `2-lithe`, `1-yule`); each year is 366 fixed day slots. |
 | 2026-11-09 | Navigation moves from top-right dropdowns to a collapsible left sidebar (icon rail + panel): Ages, Stories, Lives, Books, Places; a light fantasy look (§3.3). |
 | 2026-11-09 | Every event is reachable: events that can't be watched yet open a text page at the same route, with the narration as text once scripted (§3.4). |
+| 2026-11-09 | "Likely at the same time": never for two scenes sharing a character (unless linked `concurrent`/`crossing`); otherwise best guesses within ±3 days / ±15 days / ±45 days by the vaguer precision (day / month / season), never for a year or vaguer. Every best guess records why it landed there (`atReason`), and the site labels "likely" as our best guess and explains it (§4.4, §4.4.1; #2). |
 | 2026-11-09 | Character lanes: lanes as coloured columns with time running down, one story order, crossings in gold, honest gaps ("at least N years later"), kin suggestions; lanes derived by the build; route `#/lives?with=` (§3.2). |
 
 ## 12. Open questions

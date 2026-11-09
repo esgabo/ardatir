@@ -7,6 +7,7 @@ import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { buildContent, type BuildResult } from '../scripts/content/build.ts';
 import { narrationHash } from '../scripts/narration/text.ts';
+import { nearness } from '../src/data/calendar.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
 const FIXTURE = path.join(import.meta.dirname, 'fixtures/valid/content');
@@ -112,6 +113,34 @@ describe('the real content', () => {
       expect(w.at, id).toBe(letters.at);
     }
   });
+
+  it('explains every dated best guess, and cites only real, earlier or later anchors', () => {
+    const byId = new Map(r.index.events.map((e) => [e.id, e]));
+    const order = new Map(r.index.events.map((e, i) => [e.id, i]));
+    for (const e of r.index.events) {
+      if (!e.span) { expect(e.atReason, e.id).toBeUndefined(); continue; }
+      const why = e.atReason!;
+      expect(why, e.id).toBeDefined();
+      if (why.after) expect(order.get(why.after)!, e.id).toBeLessThan(order.get(e.id)!);
+      if (why.before) expect(order.get(why.before)!, e.id).toBeGreaterThan(order.get(e.id)!);
+      for (const id of [why.after, why.before]) if (id) expect(byId.get(id)?.atReason?.kind, `${e.id} → ${id}`).toBe('exact');
+      if (why.follows) expect(byId.has(why.follows), e.id).toBe(true);
+      if (why.window) expect(why.window[0], e.id).toBeLessThanOrEqual(why.window[1]);
+    }
+  });
+
+  it('no longer calls the secret door "likely" during A Welcome at Lake-town (#2), and says why it is placed after it', () => {
+    const lake = r.index.events.find((e) => e.id === 'welcome-at-lake-town')!;
+    const door = r.index.events.find((e) => e.id === 'the-secret-door')!;
+    expect(lake.when?.precision).toBe('day');
+    expect(door.when?.precision).toBe('season');
+    // Bilbo is in both and the door comes later in his story: only "possibly", never "likely".
+    expect(nearness(lake, door)).toEqual({ kind: 'possibly', why: 'same-character' });
+    // Its best guess cites the anchor it was placed after, in Bilbo's lane, within autumn.
+    expect(door.atReason).toMatchObject({ kind: 'after-anchor', after: 'welcome-at-lake-town', lane: ['bilbo'] });
+    expect(door.atReason!.window![0]).toBeCloseTo(lake.at!, 4);
+    expect(door.atReason!.window![1]).toBeCloseTo(door.span!.to, 4);
+  });
 });
 
 describe('the valid fixture', () => {
@@ -121,6 +150,14 @@ describe('the valid fixture', () => {
   it('builds with no errors or warnings', () => {
     expect(r.errors).toEqual([]);
     expect(r.warnings).toEqual([]);
+  });
+
+  it('records why each best guess landed where it did', () => {
+    expect(ev('the-party').atReason).toEqual({ kind: 'exact' });
+    expect(ev('moon-letters').atReason).toEqual({ kind: 'exact' });
+    expect(ev('leaving').atReason).toMatchObject({ kind: 'after-anchor', after: 'moon-letters', lane: ['bilbo'] });
+    expect(ev('leaving').atReason!.window![0]).toBeCloseTo(ev('moon-letters').at!, 4);
+    expect(ev('the-music').atReason).toBeUndefined();
   });
 
   it('adds reverse links and derived lookups', () => {

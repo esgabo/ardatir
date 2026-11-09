@@ -88,6 +88,72 @@ describe('estimatePositions', () => {
     const t = ev('timeless', undefined, ['iluvatar']);
     estimatePositions([t]);
     expect(t.at).toBeUndefined();
+    expect(t.atReason).toBeUndefined();
+  });
+});
+
+describe('atReason: why each best guess landed where it did', () => {
+  const w = (s: Span) => [Math.round(s.from * 1e4) / 1e4, Math.round(s.to * 1e4) / 1e4];
+  const mid = (s: Span) => (s.from + s.to) / 2;
+
+  it('exact: an anchor', () => {
+    const a = ev('a', day(10), ['bilbo']);
+    estimatePositions([a]);
+    expect(a.atReason).toEqual({ kind: 'exact' });
+  });
+
+  it('between-anchors: cites both anchors, the lane, and the narrowed window', () => {
+    const before = ev('before', day(160), ['bilbo']);
+    const vague = ev('vague', summer, ['bilbo', 'thorin']);
+    const after = ev('after', day(200), ['thorin']);
+    estimatePositions([before, vague, after]);
+    expect(vague.atReason).toEqual({
+      kind: 'between-anchors', after: 'before', before: 'after', lane: ['bilbo', 'thorin'],
+      window: w({ from: mid(before.span!), to: mid(after.span!) }),
+    });
+  });
+
+  it('after-anchor and before-anchor: one bound, the rest of the honest range', () => {
+    const anchor = ev('anchor', day(160), ['bilbo']);
+    const vague = ev('vague', summer, ['bilbo']);
+    estimatePositions([anchor, vague]);
+    expect(vague.atReason).toEqual({ kind: 'after-anchor', after: 'anchor', lane: ['bilbo'], window: w({ from: mid(anchor.span!), to: summer.to }) });
+
+    const v2 = ev('v2', summer, ['bilbo']);
+    const later = ev('later', day(200), ['bilbo']);
+    estimatePositions([v2, later]);
+    expect(v2.atReason).toEqual({ kind: 'before-anchor', before: 'later', lane: ['bilbo'], window: w({ from: summer.from, to: mid(later.span!) }) });
+  });
+
+  it('range-midpoint: alone with no anchor; spaced-in-range: sharing the range, with the count', () => {
+    const alone = ev('alone', summer, ['bilbo']);
+    estimatePositions([alone]);
+    expect(alone.atReason).toEqual({ kind: 'range-midpoint', window: w(summer) });
+
+    const es = [1, 2, 3].map((i) => ev(`s${i}`, summer, ['bilbo']));
+    estimatePositions(es);
+    for (const e of es) expect(e.atReason).toEqual({ kind: 'spaced-in-range', shared: 3, window: w(summer) });
+  });
+
+  it('keeps the count on an anchored window shared by several', () => {
+    const anchor = ev('anchor', day(160), ['bilbo']);
+    const es = [1, 2].map((i) => ev(`s${i}`, summer, ['bilbo']));
+    estimatePositions([anchor, ...es]);
+    for (const e of es) expect(e.atReason).toMatchObject({ kind: 'after-anchor', after: 'anchor', shared: 2 });
+  });
+
+  it('after-predecessor: names the event it follows, through a lane or a link', () => {
+    const early = ev('early', { from: YEAR + 0.5, to: YEAR + 0.67 }, ['bilbo']); // vague too: not an anchor
+    const late = ev('late', wholeYear, ['bilbo']);
+    estimatePositions([early, late]);
+    expect(late.atReason).toEqual({ kind: 'after-predecessor', follows: 'early', via: 'lane', lane: ['bilbo'], window: w(wholeYear) });
+
+    const cause = ev('cause', { from: YEAR + 0.7, to: YEAR + 0.8 }, ['smaug']);
+    const effect = ev('effect', wholeYear, ['bard'], { links: [link('cause', 'caused-by')] });
+    const helped = ev('helped', wholeYear, ['thranduil'], { links: [link('cause', 'enabled-by')] });
+    estimatePositions([cause, effect, helped]);
+    expect(effect.atReason).toMatchObject({ kind: 'after-predecessor', follows: 'cause', via: 'caused-by' });
+    expect(helped.atReason).toMatchObject({ kind: 'after-predecessor', follows: 'cause', via: 'enabled-by' });
   });
 });
 

@@ -137,6 +137,83 @@ export function yearsBetween(a: Span, b: Span, age?: AgeAxis): number {
 /** Does this age count its years in Valian years, not years of the Sun? */
 export const valianYears = (age: AgeAxis): boolean => (age.axis?.yearLength ?? 1) !== 1;
 
+// ---------- "Likely" and "possibly" at the same time (docs/DESIGN.md §4.4) ----------
+//
+// "Possibly" is honest: the two ranges overlap. "Likely" leans on the best guesses (`at`),
+// so it is only said when the guesses mean something at that scale:
+//   1. Two different events sharing a character are never "likely" at once (unless linked
+//      `concurrent` or `crossing`): story order already says one follows the other.
+//   2. Otherwise the guesses must be within a window set by the vaguer of the two precisions.
+//      Year-or-vaguer dates (and timeless ones) never make "likely", only "possibly".
+
+/** Day-dated: guesses within ±3 days. Exact dates still disagree by a day or two between sources and reckonings. */
+export const LIKELY_DAY = 3 * ONE_DAY;
+/** Month-dated: ±15 days, half a month, so a guess at mid-month reaches either end of it and no further. */
+export const LIKELY_MONTH = 15 * ONE_DAY;
+/** Season-dated: ±45 days, half a season: within the same part of that season, not anywhere in it. */
+export const LIKELY_SEASON = 45 * ONE_DAY;
+
+/** Precisions from finest to vaguest. */
+const PRECISION_RANK: Record<Precision, number> = { day: 0, month: 1, season: 2, year: 3, decade: 4, approximate: 5 };
+
+/** The vaguer of some precisions; undefined (timeless) beats all. */
+export function vaguer(...ps: (Precision | undefined)[]): Precision | undefined {
+  let v: Precision | undefined;
+  for (const p of ps) {
+    if (!p) return undefined;
+    if (!v || PRECISION_RANK[p] > PRECISION_RANK[v]) v = p;
+  }
+  return v;
+}
+
+/** How far apart two best guesses may be and still be "likely" at the same time; undefined: never. */
+export function likelyWindow(p: Precision | undefined): number | undefined {
+  return p === 'day' ? LIKELY_DAY : p === 'month' ? LIKELY_MONTH : p === 'season' ? LIKELY_SEASON : undefined;
+}
+
+/** What the "likely" rule needs to know about an event. */
+export interface Timed {
+  id: string;
+  span?: Span;
+  at?: number;
+  when?: { precision: Precision };
+  characters?: string[];
+  links?: { to: string; type: string }[];
+}
+
+export type Nearness = 'likely' | 'possibly';
+
+/** Why a pair is (or isn't) "likely": for tests and explanations. */
+export type NearnessWhy = 'window' | 'same-character' | 'vague' | 'too-far';
+
+/**
+ * Is event `b` likely, possibly, or not at all at the same time as event `a`?
+ * `undefined` when their honest ranges don't overlap (or either is timeless).
+ */
+export function nearness(a: Timed, b: Timed): { kind: Nearness; why: NearnessWhy } | undefined {
+  if (a.id === b.id || !a.span || !b.span || !overlaps(a.span, b.span)) return undefined;
+  const linkedAtOnce = [...(a.links ?? []), ...(b.links ?? [])]
+    .some((l) => (l.to === a.id || l.to === b.id) && (l.type === 'concurrent' || l.type === 'crossing'));
+  if (!linkedAtOnce && a.characters?.some((c) => b.characters?.includes(c))) return { kind: 'possibly', why: 'same-character' };
+  return guessNear(a.at, b.at, vaguer(a.when?.precision, b.when?.precision));
+}
+
+/**
+ * The bare time cursor: is event `b` likely or possibly happening at the moment `x`?
+ * A moment has no precision of its own, so the window is `b`'s alone.
+ */
+export function nearnessAt(x: number, b: Timed): { kind: Nearness; why: NearnessWhy } | undefined {
+  if (!b.span || x < b.span.from || x >= b.span.to) return undefined;
+  return guessNear(x, b.at, b.when?.precision);
+}
+
+function guessNear(x: number | undefined, y: number | undefined, p: Precision | undefined): { kind: Nearness; why: NearnessWhy } {
+  const w = likelyWindow(p);
+  if (w === undefined || x === undefined || y === undefined) return { kind: 'possibly', why: 'vague' };
+  // A hair of tolerance, so "exactly 3 days apart" counts after float rounding.
+  return Math.abs(x - y) <= w + 1e-9 ? { kind: 'likely', why: 'window' } : { kind: 'possibly', why: 'too-far' };
+}
+
 /** The age and date an axis position falls in, for labels. Days outside the months come back by name, with no month. */
 export function axisToDate(x: number, ages: Age[]): { age: Age; year: number; month?: number; day: number | ExtraDay } | undefined {
   const dated = ages.filter((a) => a.axis).sort((a, b) => a.axis!.start - b.axis!.start);

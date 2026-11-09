@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { APPROXIMATE_YEARS, axisToDate, dateSpan, daySlot, hasOverlithe, ONE_DAY, overlaps, whenSpan, yearsBetween } from '../src/data/calendar.ts';
-import { EXTRA_DAYS, type Age, type StoryDate } from '../src/data/types.ts';
+import {
+  APPROXIMATE_YEARS, axisToDate, dateSpan, daySlot, hasOverlithe, LIKELY_DAY, LIKELY_MONTH, LIKELY_SEASON, likelyWindow, nearness, nearnessAt,
+  ONE_DAY, overlaps, vaguer, whenSpan, yearsBetween, type Timed,
+} from '../src/data/calendar.ts';
+import { EXTRA_DAYS, type Age, type Precision, type StoryDate } from '../src/data/types.ts';
 
 const ta: Age = { id: 'third-age', order: 5, name: { en: 'Third Age' }, summary: { en: '' }, axis: { start: 4032, yearLength: 1 } };
 const trees: Age = { id: 'years-of-the-trees', order: 3, name: { en: 'Trees' }, summary: { en: '' }, axis: { start: -100, yearLength: 10 } };
@@ -190,5 +193,84 @@ describe('yearsBetween', () => {
     expect(yearsBetween(yt(1), yt(76), trees)).toBe(74);
     expect(yearsBetween(yt(1), yt(76))).toBe(740);
     expect(yearsBetween(y(2463), y(2770), ta)).toBe(306); // a Sun-year age is unchanged
+  });
+});
+
+describe('likely or possibly at the same time (nearness, docs/DESIGN.md §4.4)', () => {
+  const at = 4032 + 2940 + 0.5;
+  const wide = { from: at - 1, to: at + 1 };
+  /** An event with a wide honest span (so spans always overlap), a guess `offsetDays` from `at`, and a precision. */
+  const e = (id: string, precision: Precision | undefined, offsetDays: number, extra: Partial<Timed> = {}): Timed => ({
+    id, span: wide, at: at + offsetDays * ONE_DAY, ...precision ? { when: { precision } } : {}, characters: [], links: [], ...extra,
+  });
+
+  it('names the windows: ±3 days, ±15 days, ±45 days; none for a year or vaguer', () => {
+    expect(LIKELY_DAY).toBeCloseTo(3 * ONE_DAY, 12);
+    expect(LIKELY_MONTH).toBeCloseTo(15 * ONE_DAY, 12);
+    expect(LIKELY_SEASON).toBeCloseTo(45 * ONE_DAY, 12);
+    expect(likelyWindow('day')).toBe(LIKELY_DAY);
+    expect(likelyWindow('month')).toBe(LIKELY_MONTH);
+    expect(likelyWindow('season')).toBe(LIKELY_SEASON);
+    for (const p of ['year', 'decade', 'approximate', undefined] as const) expect(likelyWindow(p)).toBeUndefined();
+  });
+
+  it('takes the vaguer of two precisions; timeless beats everything', () => {
+    expect(vaguer('day', 'season')).toBe('season');
+    expect(vaguer('month', 'day')).toBe('month');
+    expect(vaguer('year', 'approximate')).toBe('approximate');
+    expect(vaguer('day', undefined)).toBeUndefined();
+  });
+
+  it('day: likely within 3 days, possibly beyond', () => {
+    expect(nearness(e('a', 'day', 0), e('b', 'day', 3))).toEqual({ kind: 'likely', why: 'window' });
+    expect(nearness(e('a', 'day', 0), e('b', 'day', 4))).toEqual({ kind: 'possibly', why: 'too-far' });
+  });
+
+  it('month: the vaguer precision sets the window (15 days)', () => {
+    expect(nearness(e('a', 'day', 0), e('b', 'month', 15))?.kind).toBe('likely');
+    expect(nearness(e('a', 'month', 0), e('b', 'day', 16))?.kind).toBe('possibly');
+  });
+
+  it('season: 45 days', () => {
+    expect(nearness(e('a', 'day', 0), e('b', 'season', 45))?.kind).toBe('likely');
+    expect(nearness(e('a', 'season', 0), e('b', 'season', 46))?.kind).toBe('possibly');
+  });
+
+  it('year, decade, approximate or timeless: never likely, only possibly', () => {
+    for (const p of ['year', 'decade', 'approximate'] as const) expect(nearness(e('a', 'day', 0), e('b', p, 0))).toEqual({ kind: 'possibly', why: 'vague' });
+    expect(nearness(e('a', 'day', 0), e('b', undefined, 0))).toEqual({ kind: 'possibly', why: 'vague' });
+  });
+
+  it('a shared character in another scene is never likely: story order says one follows the other', () => {
+    expect(nearness(e('a', 'day', 0, { characters: ['bilbo'] }), e('b', 'day', 0, { characters: ['bilbo', 'thorin'] })))
+      .toEqual({ kind: 'possibly', why: 'same-character' });
+  });
+
+  it('unless the two are linked concurrent or crossing (either side); the window still applies', () => {
+    for (const type of ['concurrent', 'crossing']) {
+      const a = e('a', 'day', 0, { characters: ['bilbo'], links: [{ to: 'b', type }] });
+      expect(nearness(a, e('b', 'day', 1, { characters: ['bilbo'] }))?.kind).toBe('likely');
+      expect(nearness(e('b', 'day', 1, { characters: ['bilbo'] }), a)?.kind).toBe('likely');
+      expect(nearness(a, e('b', 'day', 9, { characters: ['bilbo'] }))?.kind).toBe('possibly');
+    }
+    // Other links don't lift the rule.
+    const caused = e('a', 'day', 0, { characters: ['bilbo'], links: [{ to: 'b', type: 'causes' }] });
+    expect(nearness(caused, e('b', 'day', 1, { characters: ['bilbo'] }))?.why).toBe('same-character');
+  });
+
+  it('nothing at all when the honest ranges miss each other, for the same event, or for a timeless one', () => {
+    const early = { ...e('a', 'day', 0), span: { from: at - 1, to: at } };
+    const late = { ...e('b', 'day', 0), span: { from: at, to: at + 1 } };
+    expect(nearness(early, late)).toBeUndefined();
+    expect(nearness(e('a', 'day', 0), e('a', 'day', 0))).toBeUndefined();
+    expect(nearness(e('a', 'day', 0), { id: 'music' })).toBeUndefined();
+  });
+
+  it('the bare time cursor uses the event\'s own precision', () => {
+    expect(nearnessAt(at, e('b', 'day', 2))?.kind).toBe('likely');
+    expect(nearnessAt(at, e('b', 'day', 5))?.kind).toBe('possibly');
+    expect(nearnessAt(at, e('b', 'season', 40))?.kind).toBe('likely');
+    expect(nearnessAt(at, e('b', 'year', 0))).toEqual({ kind: 'possibly', why: 'vague' });
+    expect(nearnessAt(at + 2, e('b', 'day', 0))).toBeUndefined(); // outside its honest range
   });
 });

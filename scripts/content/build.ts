@@ -8,7 +8,7 @@ import YAML from 'yaml';
 import { dateSpan, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
   EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
-  type Age, type Arc, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
+  type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
   type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LinkType, type LocalizedText,
   type NarrationAudio, type NarrationSegment, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
@@ -563,6 +563,8 @@ const ANCHOR_WIDTH = 0.1;
  * span, narrowed by the nearest anchors before and after it in its characters'
  * lanes. Events sharing the same window are spaced evenly across it in story order,
  * so six "summer 2941" events become a sequence through that summer, not a pile-up.
+ * Each event also gets `atReason`: which of these steps placed it, and the anchors (or the
+ * event it must follow) that did, so the site can explain the guess in words.
  */
 export function estimatePositions(events: EventSummary[]): void {
   const mid = (s: Span) => (s.from + s.to) / 2;
@@ -574,39 +576,66 @@ export function estimatePositions(events: EventSummary[]): void {
     lanes.get(c)!.push(e);
   }
   const groups = new Map<string, { from: number; to: number; members: EventSummary[] }>();
+  const round = (x: number) => Math.round(x * 1e4) / 1e4;
   for (const e of events) {
+    delete e.atReason;
     if (!e.span) continue;
-    if (isAnchor(e)) { e.at = mid(e.span); continue; }
+    if (isAnchor(e)) { e.at = mid(e.span); e.atReason = { kind: 'exact' }; continue; }
     let from = e.span.from, to = e.span.to;
+    // The anchors that set each bound, and the lane (character) each was found in.
+    let after: { id: string; lane: string } | undefined, before: { id: string; lane: string } | undefined;
     const me = order.get(e.id)!;
     for (const c of e.characters) for (const o of lanes.get(c)!) {
       if (!isAnchor(o)) continue;
       const m = mid(o.span!);
-      if (order.get(o.id)! < me && m < to) from = Math.max(from, m);
-      if (order.get(o.id)! > me && m > from) to = Math.min(to, m);
+      if (order.get(o.id)! < me && m < to && m > from) { from = m; after = { id: o.id, lane: c }; }
+      if (order.get(o.id)! > me && m > from && m < to) { to = m; before = { id: o.id, lane: c }; }
     }
+    const lane = [...new Set([after?.lane, before?.lane].filter((x): x is string => !!x))];
+    e.atReason = {
+      kind: after && before ? 'between-anchors' : after ? 'after-anchor' : before ? 'before-anchor' : 'range-midpoint',
+      ...after ? { after: after.id } : {}, ...before ? { before: before.id } : {}, ...lane.length ? { lane } : {},
+      window: [round(from), round(to)],
+    };
     const key = `${from.toFixed(4)}|${to.toFixed(4)}`;
     if (!groups.has(key)) groups.set(key, { from, to, members: [] });
     groups.get(key)!.members.push(e);
   }
   for (const g of groups.values()) {
-    g.members.forEach((e, k) => { e.at = g.from + ((g.to - g.from) * (k + 1)) / (g.members.length + 1); });
+    g.members.forEach((e, k) => {
+      e.at = g.from + ((g.to - g.from) * (k + 1)) / (g.members.length + 1);
+      if (g.members.length > 1) {
+        e.atReason!.shared = g.members.length;
+        if (e.atReason!.kind === 'range-midpoint') e.atReason!.kind = 'spaced-in-range';
+      }
+    });
   }
 
   // Forward pass in story order: nothing happens before what it follows, whether that's the
   // previous event in a shared character's lane or an event it is caused-by / enabled-by.
   const byId = new Map(events.map((e) => [e.id, e]));
-  const lastInLane = new Map<string, number>();
+  const lastInLane = new Map<string, { id: string; at: number }>();
   for (const e of events) {
     if (e.at === undefined || !e.span) continue;
     let floor = -Infinity;
-    for (const c of e.characters) floor = Math.max(floor, lastInLane.get(c) ?? -Infinity);
+    let follows: { id: string; via: NonNullable<AtReason['via']>; lane?: string } | undefined;
+    for (const c of e.characters) {
+      const last = lastInLane.get(c);
+      if (last && last.at > floor) { floor = last.at; follows = { id: last.id, via: 'lane', lane: c }; }
+    }
     for (const l of e.links) if (l.type === 'caused-by' || l.type === 'enabled-by') {
       const x = byId.get(l.to)?.at;
-      if (x !== undefined && order.get(l.to)! < order.get(e.id)!) floor = Math.max(floor, x);
+      if (x !== undefined && order.get(l.to)! < order.get(e.id)! && x > floor) { floor = x; follows = { id: l.to, via: l.type }; }
     }
-    if (!isAnchor(e) && e.at <= floor) e.at = Math.min(floor + ONE_DAY, e.span.to);
-    for (const c of e.characters) lastInLane.set(c, e.at);
+    if (!isAnchor(e) && e.at <= floor && follows) {
+      e.at = Math.min(floor + ONE_DAY, e.span.to);
+      const r = e.atReason!;
+      e.atReason = {
+        kind: 'after-predecessor', follows: follows.id, via: follows.via,
+        ...follows.lane ? { lane: [follows.lane] } : {}, ...r.window ? { window: r.window } : {},
+      };
+    }
+    for (const c of e.characters) lastInLane.set(c, { id: e.id, at: e.at });
   }
 }
 

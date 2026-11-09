@@ -45,6 +45,7 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **One shared time axis** with date precision; typed links; journeys for whereabouts | Powers the time cursor ("what's happening now") and character lanes ("where their lives cross"). |
 | **Time cursor is the first platform feature**, then character lanes | Decided 2026-11-08. |
 | **Navigation is a collapsible left sidebar** (icon rail + panel: Ages, Stories, Lives, Books, Places), not dropdowns | Keeps the 3D stage clear while making every way in visible. Fantasy look kept light: a few small ornaments, no textures. See `docs/DESIGN.md` §3.3. Decided 2026-11-09. |
+| **"Likely at the same time" is a labelled, explained guess**: never for two scenes sharing a character (unless linked `concurrent`/`crossing`); otherwise best guesses within ±3 / ±15 / ±45 days for day / month / season (the vaguer of the two); never for a year or vaguer | Story order already says which of a character's scenes comes first; a fixed window was too loose for vague dates (the secret door "during" Lake-town, #2). Gap-to-anchors was hard to explain, exact-only made "likely" vanish. Every guess records why it landed there (`atReason`) and the site says so in words. See `docs/DESIGN.md` §4.4.1. Decided 2026-11-09. |
 
 ## Architecture
 
@@ -78,7 +79,8 @@ src/
   laneRows.ts        the lanes as rows (story order, legs, gaps), search ranking, initials: pure, tested
   routes.ts          parse the URL, build every in-site href
   format.ts          honest dates in words (labels only; the math is in calendar.ts)
-  related.ts         an event's links and what overlaps it (Meanwhile, event pages)
+  related.ts         an event's links and what overlaps it, likely vs possibly (Meanwhile, event pages)
+  placement.ts       a best guess in words: how an event is placed (from atReason), why another is "likely"
   dom.ts, icons.ts   a tiny element builder; inline stroke SVG icons
   main.ts            app shell: routing, pages vs stage, playback loop, panels, breadcrumb, zoom switch, Meanwhile
 ```
@@ -95,7 +97,7 @@ src/
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.
 - **Date math lives in `src/data/calendar.ts` only.** Spans are widened by precision (a `year` date covers the whole year): that's the honest range.
 - **Story order is the folder sort key** (age, then key), never the dates. Keys are numeric `YYYY-MM-DD-n`, seasons written as a month (summer `07`, autumn `09`).
-- **`at` is a best guess, not a date.** The build places vague events between exact-dated anchors in their characters' lanes, in story order, never before what they follow or are caused by (`estimatePositions`, `estimateWaypoints` in `scripts/content/build.ts`). The site may use it to place and to say "likely now", but states only the honest range.
+- **`at` is a best guess, not a date.** The build places vague events between exact-dated anchors in their characters' lanes, in story order, never before what they follow or are caused by (`estimatePositions`, `estimateWaypoints` in `scripts/content/build.ts`). Each guess records why it landed there (`atReason`: kind, anchors, lane, window). The site may use it to place and to say "likely", but states only the honest range and explains the placement in words (`src/placement.ts`). "Likely" vs "possibly" is decided only by `nearness` / `nearnessAt` in `calendar.ts` (DESIGN §4.4.1).
 - **Links are written once.** The build adds the reverse (`enabled-by` ↔ `enables`, `caused-by` ↔ `causes`; `concurrent` and `crossing` are symmetric) and marks it `reverse: true`.
 
 ## Writing content

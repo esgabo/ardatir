@@ -143,6 +143,36 @@ export type Status = (typeof STATUSES)[number];
 
 export type StageKind = 'cosmos' | 'world' | 'diorama';
 
+/**
+ * How a best guess was placed (`estimatePositions` in scripts/content/build.ts):
+ * - `exact`: dated to within about a month (an anchor), placed at its middle.
+ * - `between-anchors`, `after-anchor`, `before-anchor`: its honest range narrowed by the nearest
+ *   exact-dated events before (`after`) and after (`before`) it in a shared character's lane.
+ * - `range-midpoint`: no anchor narrows it and nothing shares its stretch: the middle of its range.
+ * - `spaced-in-range`: no anchor narrows it; spread evenly with the others sharing that range, in story order.
+ * - `after-predecessor`: the window put it too early, so it is moved just after `follows`, an
+ *   earlier event in a shared lane (`via: 'lane'`) or one it is caused or enabled by.
+ */
+export const AT_REASON_KINDS = ['exact', 'between-anchors', 'after-anchor', 'before-anchor', 'range-midpoint', 'spaced-in-range', 'after-predecessor'] as const;
+export type AtReasonKind = (typeof AT_REASON_KINDS)[number];
+
+export interface AtReason {
+  kind: AtReasonKind;
+  /** The exact-dated event just before it in a shared lane, which the guess comes after. */
+  after?: string;
+  /** The exact-dated event just after it in a shared lane, which the guess comes before. */
+  before?: string;
+  /** Characters whose lanes gave those anchors (or the predecessor), at most two. */
+  lane?: string[];
+  /** For `after-predecessor`: the event it is placed just after, and why it must follow it. */
+  follows?: string;
+  via?: 'lane' | 'caused-by' | 'enabled-by';
+  /** How many events share the window (the guess is spaced among them in story order); omitted when alone. */
+  shared?: number;
+  /** The window the guess was placed in: the honest span, narrowed by the anchors (axis years, rounded). */
+  window?: [number, number];
+}
+
 /** What the index knows about every event: enough for the timeline, time cursor and lanes. */
 export interface EventSummary {
   id: string;
@@ -156,6 +186,8 @@ export interface EventSummary {
    * cursor uses it for "likely happening now", and `span` for "possibly now".
    */
   at?: number;
+  /** Why `at` landed where it did (docs/DESIGN.md §4.4), so the site can explain the guess. */
+  atReason?: AtReason;
   place?: string;
   characters: string[];
   arcs: string[];
