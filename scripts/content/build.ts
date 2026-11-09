@@ -731,15 +731,16 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
  */
 export function characterLanes(characterIds: string[], events: EventSummary[], journeys: Journey[], foretoldAges = new Set<string>()): Record<string, LaneEntry[]> {
   const chars = new Map(events.map((e) => [e.id, e.characters]));
+  const story = new Map(events.map((e, i) => [e.id, i]));
   const lanes: Record<string, LaneEntry[]> = {};
   for (const c of characterIds) {
     const mine = events.filter((e) => e.characters.includes(c));
-    const legs: { at: number; entry: LaneEntry }[] = [];
+    const legs: { at: number; entry: LaneEntry; after?: number }[] = [];
     for (const j of journeys) {
       if (!j.characters.includes(c)) continue;
       j.waypoints.forEach((w, i) => {
         if (w.event && chars.get(w.event)?.includes(c)) return; // that event is in the lane already
-        legs.push({ at: w.at, entry: { journey: j.id, waypoint: i } });
+        legs.push({ at: w.at, entry: { journey: j.id, waypoint: i }, after: w.event ? story.get(w.event) : undefined });
       });
     }
     legs.sort((a, b) => a.at - b.at); // stable: a journey's own order breaks ties
@@ -748,7 +749,10 @@ export function characterLanes(characterIds: string[], events: EventSummary[], j
     for (const e of mine) {
       // What is foretold comes after every journey: the lane's history ends before its prophecy.
       if (foretoldAges.has(e.age)) while (k < legs.length) lane.push(legs[k++].entry);
-      while (k < legs.length && e.at !== undefined && legs[k].at < e.at) lane.push(legs[k++].entry);
+      // A leg guessed at the same moment as the event comes first when the event it is tied to
+      // (the waypoint's `event`, one this character is not in) comes earlier in story order.
+      const si = story.get(e.id)!;
+      while (k < legs.length && e.at !== undefined && (legs[k].at < e.at || (legs[k].at === e.at && (legs[k].after ?? Infinity) < si))) lane.push(legs[k++].entry);
       lane.push({ event: e.id });
     }
     while (k < legs.length) lane.push(legs[k++].entry);
