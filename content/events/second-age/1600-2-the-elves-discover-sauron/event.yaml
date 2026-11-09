@@ -4,7 +4,7 @@ when:
   start: { age: second-age, year: 1600 }   # App. B: c. 1600
   precision: approximate
 place: ost-in-edhil
-characters: [ sauron, celebrimbor, galadriel ]
+characters: [ celebrimbor ]
 arcs: [ the-forging-of-the-rings ]
 tags: [ silmarillion ]
 status: scripted

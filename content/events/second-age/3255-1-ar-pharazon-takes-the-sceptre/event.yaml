@@ -11,8 +11,8 @@ status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "Ar-Pharazôn takes the sceptre", es: "Ar-Pharazôn toma el cetro" }
 summary:
-  en: "Pharazôn seizes the sceptre at Tar-Palantir's death, forces his cousin Míriel to be his queen, and rules as Ar-Pharazôn, a king as greedy for glory as any before him."
-  es: "Pharazôn se apodera del cetro a la muerte de Tar-Palantir, obliga a su prima Míriel a ser su reina y gobierna como Ar-Pharazôn, un rey tan ávido de gloria como cualquier otro antes que él."
+  en: "Pharazôn seizes the sceptre at Tar-Palantír's death, forces his cousin Míriel to be his queen, and rules as Ar-Pharazôn, a king as greedy for glory as any before him."
+  es: "Pharazôn se apodera del cetro a la muerte de Tar-Palantír, obliga a su prima Míriel a ser su reina y gobierna como Ar-Pharazôn, un rey tan ávido de gloria como cualquier otro antes que él."
 links:
   - to: tar-palantir-seeks-to-mend-the-rift
     type: caused-by
