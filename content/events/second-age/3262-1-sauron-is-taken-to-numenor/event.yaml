@@ -1,0 +1,21 @@
+id: sauron-is-taken-to-numenor
+age: second-age
+when:
+  start: { age: second-age, year: 3262 }
+  precision: year
+place: armenelos
+characters: [ sauron, ar-pharazon ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Sauron is taken to Númenor", es: "Sauron es llevado a Númenor" }
+summary:
+  en: "Brought as a hostage to the island, Sauron wins the King's ear with flattery and secret lore. Soon he is the first among Ar-Pharazôn's counsellors."
+  es: "Llevado como rehén a la isla, Sauron se gana el oído del Rey con halagos y saber secreto. Pronto es el primero entre los consejeros de Ar-Pharazôn."
+links:
+  - to: ar-pharazon-lands-at-umbar
+    type: caused-by
+    note:
+      en: "The surrender brings him there."
+      es: "La rendición lo lleva allí."

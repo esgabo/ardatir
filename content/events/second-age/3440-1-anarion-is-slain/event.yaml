@@ -1,0 +1,21 @@
+id: anarion-is-slain
+age: second-age
+when:
+  start: { age: second-age, year: 3440 }   # during the siege; the exact year is not given
+  precision: approximate
+place: barad-dur
+characters: [ anarion, isildur, elendil ]
+arcs: [ the-war-of-the-last-alliance ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
+title: { en: "Anárion is slain", es: "Muere Anárion" }
+summary:
+  en: "Anárion, younger son of Elendil, dies in the siege. Isildur must carry on alone with his father."
+  es: "Anárion, hijo menor de Elendil, muere durante el sitio. Isildur debe seguir adelante con su padre."
+links:
+  - to: siege-of-barad-dur
+    type: caused-by
+    note:
+      en: "A casualty of the siege."
+      es: "Una baja del sitio."

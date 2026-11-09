@@ -1,0 +1,15 @@
+id: numenoreans-return-to-middle-earth
+age: second-age
+when:
+  start: { age: second-age, year: 600 }   # Appendix B has the Sea-kings' first ships around SA 600
+  precision: approximate
+place: grey-havens
+characters: [ gil-galad, cirdan ]
+arcs: [  ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The Númenóreans return to Middle-earth", es: "Los númenóreanos regresan a la Tierra Media" }
+summary:
+  en: "After centuries of peace, Númenor's great ships begin to visit the shores of Middle-earth, where they meet the Elves of Lindon and learn what the war has left behind."
+  es: "Tras siglos de paz, las grandes naves de Númenor empiezan a visitar las costas de la Tierra Media, donde se encuentran con los Elfos de Lindon y conocen lo que dejó la guerra."

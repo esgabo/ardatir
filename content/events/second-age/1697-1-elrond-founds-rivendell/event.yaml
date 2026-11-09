@@ -1,0 +1,21 @@
+id: elrond-founds-rivendell
+age: second-age
+when:
+  start: { age: second-age, year: 1697 }
+  precision: year
+place: rivendell
+characters: [ elrond, gil-galad ]
+arcs: [ the-forging-of-the-rings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
+title: { en: "Elrond founds Rivendell", es: "Elrond funda Rivendel" }
+summary:
+  en: "Elrond leads the survivors of Eregion north and finds a hidden valley in the mountains. There he builds Imladris, a refuge that will outlast Sauron."
+  es: "Elrond guía a los supervivientes de Eregion hacia el norte y halla un valle oculto en las montañas. Allí construye Imladris, un refugio que sobrevivirá a Sauron."
+links:
+  - to: fall-of-eregion
+    type: caused-by
+    note:
+      en: "The refuge is founded in the destruction."
+      es: "El refugio nace de la destrucción."

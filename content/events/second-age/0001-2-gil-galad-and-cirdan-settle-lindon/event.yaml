@@ -1,0 +1,21 @@
+id: gil-galad-and-cirdan-settle-lindon
+age: second-age
+when:
+  start: { age: second-age, year: 1 }   # immediately after the War; year is by definition near the start of the age
+  precision: approximate
+place: lindon
+characters: [ gil-galad, cirdan ]
+arcs: [  ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
+title: { en: "Gil-galad and Círdan settle in Lindon", es: "Gil-galad y Círdan se establecen en Lindon" }
+summary:
+  en: "The Elves who remain in Middle-earth gather in the lands west of the Blue Mountains. Círdan builds the Grey Havens, and Gil-galad rules as High King."
+  es: "Los Elfos que permanecen en la Tierra Media se reúnen en las tierras al oeste de las Montañas Azules. Círdan construye los Puertos Grises y Gil-galad gobierna como rey supremo."
+links:
+  - to: the-choice-of-elrond-and-elros
+    type: concurrent
+    note:
+      en: "Both belong to the first years of the new age."
+      es: "Ambos pertenecen a los primeros años de la nueva edad."

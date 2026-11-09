@@ -1,0 +1,21 @@
+id: the-edain-come-to-numenor
+age: second-age
+when:
+  start: { age: second-age, year: 32 }
+  precision: year
+place: numenor
+characters: [ elros ]
+arcs: [  ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The Edain come to Númenor", es: "Los Edain llegan a Númenor" }
+summary:
+  en: "Guided by the star of Eärendil, the ships of the Edain cross the sea to the island the Valar raised for them. Elros becomes the first King, Tar-Minyatur."
+  es: "Guiados por la estrella de Eärendil, las naves de los Edain cruzan el mar hasta la isla que los Valar alzaron para ellos. Elros se convierte en el primer Rey, Tar-Minyatur."
+links:
+  - to: the-choice-of-elrond-and-elros
+    type: caused-by
+    note:
+      en: "Elros's choice leads to his kingship."
+      es: "La elección de Elros lleva a su reinado."
