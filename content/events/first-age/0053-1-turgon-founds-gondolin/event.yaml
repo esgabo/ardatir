@@ -8,7 +8,7 @@ place: gondolin
 characters: [ turgon, ulmo ]
 arcs: [ the-fall-of-gondolin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
 title: { en: "Turgon founds Gondolin", es: "Turgon funda Gondolin" }
 summary:
