@@ -9,7 +9,7 @@ characters: [ bilbo, gandalf, beorn ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 18 }
 title: { en: Yule at Beorn's, es: Yule en casa de Beorn }
 summary:
