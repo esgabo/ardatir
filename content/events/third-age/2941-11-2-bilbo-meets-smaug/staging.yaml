@@ -1,0 +1,39 @@
+stage: diorama
+duration: 34
+narration:
+  tunnel: 0
+  courage: 0.13
+  hoard: 0.28
+  rage: 0.46
+  talk: 0.62
+  patch: 0.8
+  thrush: 0.92
+beats:
+  tunnel: 0
+  hoard: 0.28
+  rage: 0.46
+  talk: 0.62
+  patch: 0.8
+tracks:
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 5.8, z: -5.8, action: walk, thought: { en: "Time to earn my keep as a burglar.", es: "Hora de ganarme el puesto de saqueador." } }
+      - { t: 0.13, x: 3.6, z: -3.6, action: idle, thought: { en: "My knees are knocking. Keep walking.", es: "Me tiemblan las rodillas. Sigue andando." } }
+      - { t: 0.28, x: 0.3, z: 0.4, action: hide, thought: { en: "All that gold! Just one cup, and quietly.", es: "¡Cuánto oro! Solo una copa, y sin hacer ruido." } }
+      - { t: 0.38, x: 4, z: -4, action: run }
+      - { t: 0.46, x: 4.2, z: -4.2, action: hide, thought: { en: "Stay down. Let the dragon storm about.", es: "Agáchate. Deja que el dragón se desahogue." } }
+      - { t: 0.55, x: 4.2, z: -4.2, action: hide }
+      - { t: 0.62, x: 0.9, z: 1.4, action: talk, thought: { en: "Bilbo Baggins? No. Let us say a friend of luck and barrels.", es: "¿Bilbo Bolsón? No. Digamos que un amigo de la suerte y los barriles." } }
+      - { t: 0.8, x: 0.8, z: 1.5, action: idle, thought: { en: "There. A gap in his armour, on the left side.", es: "Ahí. Un hueco en su coraza, en el lado izquierdo." } }
+      - { t: 0.88, x: 5.7, z: -5.7, action: run }
+      - { t: 0.92, x: 5.7, z: -5.7, action: talk, thought: { en: "I saw it, I tell you. Where the dragon is bare.", es: "Lo vi, os lo digo. Donde el dragón no tiene coraza." } }
+  - characterId: smaug
+    keyframes:
+      - { t: 0, x: -2.6, z: -0.4, action: hide, thought: { en: "Gold under me, gold around me. I know every piece.", es: "Oro debajo, oro alrededor. Conozco cada pieza." } }
+      - { t: 0.38, x: -2.6, z: -0.4, action: hide }
+      - { t: 0.4, x: -2.6, z: -0.4, action: idle, thought: { en: "My cup is gone. A thief has been here!", es: "¡Mi copa ha desaparecido! ¡Ha estado aquí un ladrón!" } }
+      - { t: 0.48, x: 1.2, z: -2.8, action: run }
+      - { t: 0.56, x: 2.4, z: -3.8, action: run, thought: { en: "I will burn the whole mountainside to find him.", es: "Quemaré toda la ladera hasta encontrarlo." } }
+      - { t: 0.62, x: -2.6, z: -0.4, action: talk, thought: { en: "Come closer, thief. Let me smell you.", es: "Acércate, ladrón. Déjame olerte." } }
+      - { t: 0.8, x: -2.2, z: 0.2, action: talk, thought: { en: "Look at my jewelled belly. Who has armour like this?", es: "Mira mi vientre de joyas. ¿Quién tiene una coraza así?" } }
+      - { t: 0.92, x: -2.6, z: -0.4, action: idle, thought: { en: "The lake-men will pay for this, sooner or later.", es: "La gente del lago pagará por esto, tarde o temprano." } }

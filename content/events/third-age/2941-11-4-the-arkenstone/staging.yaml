@@ -1,0 +1,45 @@
+stage: diorama
+duration: 32
+narration:
+  siege: 0
+  stone: 0.16
+  night: 0.34
+  gift: 0.52
+  gandalf: 0.7
+  back: 0.86
+beats:
+  siege: 0
+  night: 0.34
+  gift: 0.52
+  gandalf: 0.7
+  back: 0.86
+tracks:
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 3.8, z: -5.6, action: idle, thought: { en: "Thorin will give them nothing. And I have a secret in my pocket.", es: "Thorin no les dará nada. Y yo llevo un secreto en el bolsillo." } }
+      - { t: 0.16, x: 3.8, z: -5.6, action: idle, thought: { en: "The Heart of the Mountain. It could stop a war.", es: "El Corazón de la Montaña. Podría evitar una guerra." } }
+      - { t: 0.3, x: 3.8, z: -5.6, action: hide }
+      - { t: 0.34, x: 3.8, z: -5.2, action: hide, thought: { en: "Ring on, rope down, and not a sound.", es: "Anillo puesto, cuerda abajo, y ni un ruido." } }
+      - { t: 0.45, x: 0.8, z: -2.5, action: hide }
+      - { t: 0.52, x: -1.6, z: 1.8, action: talk, thought: { en: "Take it. Perhaps with this there will be no battle.", es: "Tomadla. Quizá con esto no haya batalla." } }
+      - { t: 0.7, x: -1.6, z: 1.8, action: idle, thought: { en: "Gandalf! It is him!", es: "¡Gandalf! ¡Es él!" } }
+      - { t: 0.86, x: -1.6, z: 1.8, action: talk, thought: { en: "I gave my word. I have to go back.", es: "Di mi palabra. Tengo que volver." } }
+      - { t: 1, x: 3.8, z: -5.6, action: run }
+  - characterId: bard
+    keyframes:
+      - { t: 0, x: -0.5, z: -1.6, action: talk, thought: { en: "We ask only a fair share to rebuild our homes.", es: "Solo pedimos una parte justa para reconstruir nuestros hogares." } }
+      - { t: 0.16, x: -0.5, z: -1.6, action: idle }
+      - { t: 0.34, x: -3.2, z: 0.8, action: walk }
+      - { t: 0.52, x: -3.2, z: 0.8, action: talk, thought: { en: "The Arkenstone itself. Thorin will have to listen now.", es: "La Piedra del Arca misma. Ahora Thorin tendrá que escuchar." } }
+      - { t: 0.7, x: -3.2, z: 0.8, action: idle }
+  - characterId: thranduil
+    keyframes:
+      - { t: 0, x: -1.8, z: -0.5, action: idle, thought: { en: "If the dwarf will not bargain, we wait.", es: "Si el enano no quiere negociar, esperaremos." } }
+      - { t: 0.34, x: -3.2, z: 2.8, action: walk }
+      - { t: 0.52, x: -3.2, z: 2.8, action: talk, thought: { en: "A brave hobbit, to bring us such a thing.", es: "Qué valiente, este hobbit, para traernos algo así." } }
+      - { t: 0.7, x: -3.2, z: 2.8, action: idle }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: -5.5, z: 3.9, action: hide, thought: { en: "Quiet, in the shadow of the camp. Let the hobbit act first.", es: "En silencio, a la sombra del campamento. Que el hobbit actúe primero." } }
+      - { t: 0.66, x: -5.5, z: 3.9, action: hide }
+      - { t: 0.72, x: -4.3, z: 3.9, action: talk, thought: { en: "Well done, Bilbo. I knew there was more to you.", es: "Bien hecho, Bilbo. Sabía que había más en ti." } }

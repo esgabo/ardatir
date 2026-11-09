@@ -8,9 +8,15 @@ characters: [ bilbo, smaug ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 12 }
 title: { en: Inside Information, es: Información confidencial }
 summary:
   en: "Bilbo goes down the tunnel alone, steals a cup from the sleeping dragon, and later trades riddling flattery with Smaug, spotting a bare patch in the dragon's jewelled armour."
   es: "Bilbo baja solo por el túnel, roba una copa al dragón dormido y más tarde intercambia halagos y acertijos con Smaug, descubriendo un hueco desnudo en su coraza de gemas."
+beats:
+  - { id: tunnel, label: { en: "Down the tunnel", es: "Por el túnel" } }
+  - { id: hoard, label: { en: "The hoard", es: "El tesoro" } }
+  - { id: rage, label: { en: "Smaug wakes", es: "Smaug despierta" } }
+  - { id: talk, label: { en: "Riddles and flattery", es: "Acertijos y halagos" } }
+  - { id: patch, label: { en: "The bare patch", es: "El hueco desnudo" } }

@@ -1,0 +1,40 @@
+stage: diorama
+duration: 32
+narration:
+  flight: 0
+  warning: 0.16
+  fire: 0.34
+  bard: 0.52
+  arrow: 0.68
+  fall: 0.84
+beats:
+  warning: 0.16
+  fire: 0.34
+  arrow: 0.68
+  fall: 0.84
+tracks:
+  - characterId: smaug
+    keyframes:
+      - { t: 0, x: -4.5, z: -5, action: idle, thought: { en: "The lake-men helped the thief. They will burn for it.", es: "La gente del lago ayudó al ladrón. Arderán por ello." } }
+      - { t: 0.16, x: -2, z: -3.2, action: walk }
+      - { t: 0.3, x: 0.5, z: -1, action: run }
+      - { t: 0.42, x: -1.8, z: 0.5, action: run, thought: { en: "Burn, burn! Let the whole lake cook.", es: "¡Arded, arded! Que se cueza el lago entero." } }
+      - { t: 0.52, x: -1.5, z: -1.2, action: run }
+      - { t: 0.6, x: 1.2, z: -0.6, action: run }
+      - { t: 0.68, x: 2.2, z: 0.2, action: run, thought: { en: "No arrow can touch me.", es: "Ninguna flecha puede tocarme." } }
+      - { t: 0.8, x: 2, z: 0.6, action: idle }
+      - { t: 0.84, x: 1.6, z: 0.8, action: hide }
+  - characterId: bard
+    keyframes:
+      - { t: 0, x: 4.6, z: 3.4, action: idle, thought: { en: "A golden glow in the north. I do not like it.", es: "Un resplandor dorado en el norte. No me gusta." } }
+      - { t: 0.16, x: 4.6, z: 3.4, action: talk, thought: { en: "That is no song come true. It is a dragon. Cut the bridge!", es: "Eso no es una canción hecha realidad. Es un dragón. ¡Cortad el puente!" } }
+      - { t: 0.34, x: 4.6, z: 3.4, action: fight, thought: { en: "Keep shooting! Every arrow counts.", es: "¡Seguid disparando! Cada flecha cuenta." } }
+      - { t: 0.52, x: 4.6, z: 3.4, action: idle, thought: { en: "One arrow left, and a thrush speaking in my ear.", es: "Una sola flecha, y un zorzal hablándome al oído." } }
+      - { t: 0.68, x: 4.6, z: 3.4, action: fight, thought: { en: "Left side of the chest, where the scales are gone.", es: "El lado izquierdo del pecho, donde faltan las escamas." } }
+      - { t: 0.84, x: 4.6, z: 3.4, action: idle, thought: { en: "It is done. The dragon is dead.", es: "Está hecho. El dragón ha muerto." } }
+  - characterId: the-master
+    keyframes:
+      - { t: 0, x: 0.5, z: 2.5, action: idle, thought: { en: "A glow in the north. The old songs coming true?", es: "Un resplandor en el norte. ¿Se cumplen las viejas canciones?" } }
+      - { t: 0.16, x: 0.5, z: 2.5, action: idle }
+      - { t: 0.34, x: -3.2, z: 4.2, action: run }
+      - { t: 0.45, x: -5.4, z: 5.6, action: hide, thought: { en: "Every man for himself. The boat is mine.", es: "Sálvese quien pueda. La barca es mía." } }

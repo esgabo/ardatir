@@ -11,7 +11,7 @@ characters: [ bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gl
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 11 }
 title: { en: The Secret Door on Durin's Day, es: La puerta secreta en el Día de Durin }
 summary:
@@ -28,3 +28,8 @@ links:
     note:
       en: The key Thráin entrusted to Gandalf.
       es: La llave que Thráin confió a Gandalf.
+beats:
+  - { id: bay, label: { en: "The hidden hollow", es: "La hondonada oculta" } }
+  - { id: waiting, label: { en: "The rock will not open", es: "La roca no se abre" } }
+  - { id: keyhole, label: { en: "The setting sun", es: "El sol poniente" } }
+  - { id: door, label: { en: "The door swings open", es: "La puerta se abre" } }
