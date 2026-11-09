@@ -8,7 +8,7 @@ characters: [ smaug, thror, thrain, thorin ]
 arcs: [ durins-folk-in-exile ]
 journeys: []
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 1 }   # year from LOTR Appendix A
 title: { en: Smaug Comes to Erebor, es: Smaug llega a Erebor }
 summary:

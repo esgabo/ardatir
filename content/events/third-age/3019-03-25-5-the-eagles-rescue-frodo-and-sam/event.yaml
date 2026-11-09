@@ -1,0 +1,17 @@
+id: the-eagles-rescue-frodo-and-sam
+age: third-age
+when:
+  # Appendix B only dates the Ring's end; the rescue follows on the same day in the book's telling.
+  start: { age: third-age, year: 3019, month: 3, day: 25 }
+  precision: day
+place: mount-doom
+characters: [ frodo, sam, gandalf, gwaihir ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ frodo-and-sam-across-mordor, gandalf-the-whites-road ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Field of Cormallen" }
+title: { en: "The Eagles Rescue Frodo and Sam", es: "Las águilas rescatan a Frodo y a Sam" }
+summary:
+  en: "With the mountain breaking apart around them, Frodo and Sam are stranded on a hill of ash. Gwaihir and his brothers carry them out of the fire, with Gandalf among them."
+  es: "Con la montaña quebrándose a su alrededor, Frodo y Sam quedan aislados en una colina de ceniza. Gwaihir y sus hermanos los sacan del fuego, con Gandalf entre ellos."

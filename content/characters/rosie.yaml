@@ -1,0 +1,8 @@
+id: rosie
+name: { en: "Rosie Cotton", es: "Rosita Coto" }
+kind: hobbit
+summary:
+  en: "A hobbit lass of Bywater whom Sam marries."
+  es: "Una joven hobbit de Delagua con quien se casa Sam."
+color: "#c08a7a"
+scale: 1

@@ -1,0 +1,21 @@
+id: the-elves-reach-valinor
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1133 }   # arrival of the Vanyar and Noldor; year is a guess
+  precision: approximate
+place: valinor
+characters: [ finwe ]
+arcs: [ the-great-journey ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Eldamar and the Princes of the Eldalië" }
+title: { en: "The Vanyar and Noldor reach Valinor", es: "Los Vanyar y los Noldor llegan a Valinor" }
+summary:
+  en: "The Vanyar and Noldor cross the sea on the island Tol Eressëa and settle in the light of the Two Trees, the Noldor in Tirion with Finwë as their king."
+  es: "Los Vanyar y los Noldor cruzan el mar sobre la isla de Tol Eressëa y se establecen bajo la luz de los Dos Árboles, los Noldor en Tirion con Finwë por rey."
+links:
+  - to: the-great-journey-begins
+    type: caused-by
+    note:
+      en: "The end of the road that began at Cuiviénen."
+      es: "El final del camino que empezó en Cuiviénen."

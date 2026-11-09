@@ -1,0 +1,22 @@
+id: death-of-boromir
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 26 }
+  precision: day
+place: parth-galen
+characters: [ boromir, aragorn, merry, pippin, ugluk ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-after-moria, boromirs-road, merry-and-pippins-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The Departure of Boromir" }
+title: { en: "The Death of Boromir", es: "La muerte de Boromir" }
+summary:
+  en: "Uruk-hai fall on the scattered Company. Boromir defends Merry and Pippin until he is struck by many arrows, and he dies repentant in Aragorn's arms."
+  es: "Los Uruk-hai caen sobre la Compañía dispersa. Boromir defiende a Merry y a Pippin hasta que lo alcanzan muchas flechas, y muere arrepentido en brazos de Aragorn."
+links:
+  - to: boromir-tries-to-take-the-ring
+    type: caused-by
+    note:
+      en: "His shame at what he tried to do drives him to give his life for the hobbits."
+      es: "La vergüenza por lo que intentó le lleva a dar la vida por los hobbits."

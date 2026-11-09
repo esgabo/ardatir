@@ -5,6 +5,10 @@ import { index } from './chronicle';
 import type { Character, EventSummary, Lang } from './data/types';
 import { ICONS, type IconName } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
+import { fold, h } from './dom';
+import { shortDate } from './format';
+import { hasLane, laneColor, MAX_LANES } from './lanes';
+import { eventHref, livesHref } from './routes';
 
 export const VIEWS = ['ages', 'stories', 'lives', 'books', 'places'] as const;
 export type View = (typeof VIEWS)[number];
@@ -21,22 +25,11 @@ export interface SidebarHost {
   toggleLang(): void;
   /** Called whenever the sidebar's width changes. */
   layoutChanged(): void;
+  /** The lives shown side by side (character lanes), and whether that page is open. */
+  lanes(): string[];
+  lanesOpen(): boolean;
+  setLanes(ids: string[]): void;
 }
-
-type Child = Node | string | null | undefined | false;
-
-function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string | boolean | undefined> = {}, ...children: Child[]): HTMLElementTagNameMap[K] {
-  const el = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (v === undefined || v === false) continue;
-    if (k === 'html') el.innerHTML = String(v);
-    else el.setAttribute(k, v === true ? '' : v);
-  }
-  for (const c of children) if (c) el.append(c);
-  return el;
-}
-
-const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
 export class Sidebar {
   view: View = 'ages';
@@ -95,20 +88,38 @@ export class Sidebar {
     if (e.source) { this.expanded.add(`book:${e.source.book}`); this.expanded.add(`book:${e.source.book}/ch:${e.source.chapter ?? ''}`); }
   }
 
+  /**
+   * Make this the view shown in the rail and panel, without opening the panel or the phone
+   * drawer (the page on screen belongs to it). Takes effect on the next render().
+   */
+  setView(view: View): void {
+    if (this.view === view) return;
+    this.view = view;
+    this.query = '';
+  }
+
   render(): void {
     const L = this.host.lang();
     this.revealCurrent();
+    // Redrawing replaces every control: keep focus on the one that had it (marked data-fk).
+    const had = document.activeElement instanceof HTMLElement && this.root.contains(document.activeElement)
+      ? document.activeElement.dataset.fk : undefined;
+    this.build(L);
+    if (had) this.root.querySelector<HTMLElement>(`[data-fk="${CSS.escape(had)}"]`)?.focus({ preventScroll: true });
+  }
+
+  private build(L: Lang): void {
     this.root.innerHTML = '';
     this.root.setAttribute('aria-label', this.L('navigation'));
 
     // ---- Rail ----
     const rail = h('nav', { class: 'rail', 'aria-label': this.L('navigation') });
-    const home = h('button', { type: 'button', class: 'rail-home', 'aria-label': this.L('home'), title: this.L('home'), html: ICONS.star });
+    const home = h('button', { type: 'button', class: 'rail-home', 'data-fk': 'home', 'aria-label': this.L('home'), title: this.L('home'), html: ICONS.star });
     home.addEventListener('click', () => { this.host.openHome(); this.setDrawer(false); });
     rail.append(home);
     for (const v of VIEWS) {
       const on = v === this.view && (this.open || this.drawer);
-      const b = h('button', { type: 'button', class: 'rail-item', 'aria-pressed': on ? 'true' : 'false', 'data-hint': this.L(`hint_${v}` as UiKey) },
+      const b = h('button', { type: 'button', class: 'rail-item', 'data-fk': `rail:${v}`, 'aria-pressed': on ? 'true' : 'false', 'data-hint': this.L(`hint_${v}` as UiKey) },
         h('span', { html: ICONS[VIEW_ICON[v]] }), h('span', { class: 'rail-label' }, this.L(`view_${v}` as UiKey)));
       b.addEventListener('click', () => {
         if (v === this.view && this.open && !this.drawer) { this.toggle(); return; }
@@ -117,17 +128,17 @@ export class Sidebar {
       rail.append(b);
     }
     rail.append(h('span', { class: 'rail-spacer' }));
-    const lang = h('button', { type: 'button', class: 'rail-lang', 'aria-label': this.L('language'), title: this.L('language') }, L.toUpperCase());
+    const lang = h('button', { type: 'button', class: 'rail-lang', 'data-fk': 'lang', 'aria-label': this.L('language'), title: this.L('language') }, L.toUpperCase());
     lang.addEventListener('click', () => this.host.toggleLang());
-    const tog = h('button', { type: 'button', class: 'rail-toggle', 'aria-expanded': this.open ? 'true' : 'false', 'aria-label': this.L(this.open ? 'collapse' : 'expand'), title: this.L(this.open ? 'collapse' : 'expand'), html: ICONS.sidebar });
+    const tog = h('button', { type: 'button', class: 'rail-toggle', 'data-fk': 'toggle', 'aria-expanded': this.open ? 'true' : 'false', 'aria-label': this.L(this.open ? 'collapse' : 'expand'), title: this.L(this.open ? 'collapse' : 'expand'), html: ICONS.sidebar });
     tog.addEventListener('click', () => this.toggle());
     rail.append(lang, tog);
 
     // ---- Panel ----
     const panel = h('div', { class: 'sb-panel' });
-    const close = h('button', { type: 'button', class: 'sb-close', 'aria-label': this.L('closeMenu'), html: ICONS.close });
+    const close = h('button', { type: 'button', class: 'sb-close', 'data-fk': 'close', 'aria-label': this.L('closeMenu'), html: ICONS.close });
     close.addEventListener('click', () => this.setDrawer(false));
-    const input = h('input', { type: 'search', placeholder: this.L('search'), 'aria-label': this.L('search'), value: this.query }) as HTMLInputElement;
+    const input = h('input', { type: 'search', 'data-fk': 'search', placeholder: this.L('search'), 'aria-label': this.L('search'), value: this.query }) as HTMLInputElement;
     input.value = this.query;
     input.addEventListener('input', () => { this.query = input.value; this.renderBody(); });
     panel.append(
@@ -141,7 +152,7 @@ export class Sidebar {
     // Language switch for the phone drawer (the rail's EN/ES button covers larger screens).
     const langs = h('div', { class: 'foot-lang', role: 'group', 'aria-label': this.L('language') });
     for (const code of ['en', 'es'] as const) {
-      const b = h('button', { type: 'button', 'aria-pressed': code === L ? 'true' : 'false' }, code === 'en' ? 'English' : 'Español');
+      const b = h('button', { type: 'button', 'data-fk': `lang:${code}`, 'aria-pressed': code === L ? 'true' : 'false' }, code === 'en' ? 'English' : 'Español');
       b.addEventListener('click', () => { if (code !== this.host.lang()) this.host.toggleLang(); });
       langs.append(b);
     }
@@ -165,16 +176,18 @@ export class Sidebar {
 
   // ---------- Building blocks ----------
 
+  /**
+   * Every event is a link: staged ones open their stage (filled diamond), the others their
+   * page (hollow diamond, a little dimmer), so the whole story can be followed.
+   */
   private eventRow(e: EventSummary): HTMLElement {
     const L = this.host.lang();
-    const label = [h('span', { class: 'ev-name' }, tr(e.title, L)), h('span', { class: 'ev-when' }, this.shortDate(e))];
     const current = e.id === this.host.currentId();
-    if (!e.stage) {
-      return h('li', {}, h('span', { class: 'ev dim', title: this.L('notStaged') }, ...label));
-    }
-    const a = h('a', { class: 'ev', href: `#/event/${e.id}`, 'aria-current': current ? 'page' : undefined, title: this.L('playable') },
-      h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), ...label);
-    a.addEventListener('click', (ev) => { ev.preventDefault(); this.host.openEvent(e.id); this.drawer = false; this.render(); });
+    const a = h('a', {
+      class: e.stage ? 'ev' : 'ev dim', href: eventHref(e.id, L), 'data-fk': `ev:${e.id}`, 'aria-current': current ? 'page' : undefined,
+      title: this.L(e.stage ? 'playable' : 'readable'),
+    }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, tr(e.title, L)), h('span', { class: 'ev-when' }, shortDate(e, L)));
+    a.addEventListener('click', (ev) => { ev.preventDefault(); this.drawer = false; this.host.openEvent(e.id); });
     return h('li', {}, a);
   }
 
@@ -187,27 +200,21 @@ export class Sidebar {
   }
 
   /** An expandable group: a header button and children built only when open. */
-  private group(key: string, head: Node[], children: () => Node, cls = 'grp'): HTMLElement {
+  private group(key: string, head: Node[], children: () => Node, cls = 'grp', extra?: () => Node | null): HTMLElement {
     const open = this.expanded.has(key);
     const li = h('li', { class: `${cls}${open ? ' open' : ''}` });
-    const btn = h('button', { type: 'button', class: `${cls}-head`, 'aria-expanded': open ? 'true' : 'false' }, h('span', { class: 'chev', html: ICONS.chevron }), ...head);
+    const btn = h('button', { type: 'button', class: `${cls}-head`, 'data-fk': `grp:${key}`, 'aria-expanded': open ? 'true' : 'false' }, h('span', { class: 'chev', html: ICONS.chevron }), ...head);
     btn.addEventListener('click', () => {
       if (this.expanded.has(key)) this.expanded.delete(key); else this.expanded.add(key);
-      const fresh = this.group(key, head, children, cls);
+      const fresh = this.group(key, head, children, cls, extra);
+      if (li.dataset.key) fresh.dataset.key = li.dataset.key;
       li.replaceWith(fresh);
+      fresh.querySelector<HTMLElement>(`[data-fk="${CSS.escape(`grp:${key}`)}"]`)?.focus({ preventScroll: true });
     });
-    li.append(btn);
+    const side = extra?.();
+    li.append(side ? h('div', { class: 'grp-row' }, btn, side) : btn);
     if (open) li.append(children());
     return li;
-  }
-
-  private shortDate(e: EventSummary): string {
-    const d = e.when?.start;
-    if (!d) return '';
-    const L = this.host.lang();
-    const age = index.ages.find((a) => a.id === d.age);
-    const month = typeof d.day === 'string' ? ui(`day_${d.day}`, L) : d.month ? new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'short' }).replace('.', '') : d.season ? ui(d.season, L) : '';
-    return [month, `${d.year}`].filter(Boolean).join(' ') || tr(age?.abbr, L);
   }
 
   // ---------- Views ----------
@@ -285,7 +292,43 @@ export class Sidebar {
       }
       box.append(this.eventList(index.byCharacter[c.id] ?? []));
       return box;
-    }, 'grp');
+    }, 'grp', () => this.laneToggle(c));
+  }
+
+  /** Add a character to the lives shown side by side, or take them out. */
+  private laneToggle(c: Character): Node | null {
+    if (!hasLane(c.id)) return null;
+    const lanes = this.host.lanes();
+    const i = lanes.indexOf(c.id);
+    const on = i >= 0;
+    const full = !on && lanes.length >= MAX_LANES;
+    const b = h('button', {
+      type: 'button', class: 'lane-toggle', 'data-fk': `lane:${c.id}`, 'aria-pressed': on ? 'true' : 'false', disabled: full,
+      'aria-label': `${this.L(on ? 'laneRemove' : 'laneAdd')}: ${tr(c.name, this.host.lang())}`, title: this.L(full ? 'lanesMax' : on ? 'laneRemove' : 'laneAdd'),
+      style: on ? `--c: ${laneColor(i)}` : undefined, html: on ? ICONS.check : ICONS.plus,
+    });
+    b.addEventListener('click', () => { this.drawer = false; this.host.setLanes(on ? lanes.filter((x) => x !== c.id) : [...lanes, c.id]); });
+    return b;
+  }
+
+  /** The top of the Lives view: the lives side by side, as chips, and the way to their lanes. */
+  private lanesCard(): HTMLElement {
+    const L = this.host.lang();
+    const lanes = this.host.lanes();
+    const box = h('div', { class: 'sb-lanes' });
+    const chips = h('ul', { class: 'sb-chips' });
+    lanes.forEach((id, i) => {
+      const c = index.characters.find((x) => x.id === id);
+      if (c) chips.append(h('li', { style: `--c: ${laneColor(i)}` }, h('span', { class: 'lp-dot', 'aria-hidden': 'true' }), tr(c.name, L)));
+    });
+    if (lanes.length) box.append(chips);
+    else box.append(h('p', {}, this.L('livesIntro')));
+    if (!this.host.lanesOpen()) {
+      const go = h('a', { class: 'sb-lanes-go', href: livesHref(lanes, L) }, `${this.L('sideBySide')} →`);
+      go.addEventListener('click', (e) => { e.preventDefault(); this.drawer = false; this.host.setLanes(lanes); });
+      box.append(go);
+    }
+    return box;
   }
 
   private livesView(): HTMLElement {
@@ -293,8 +336,8 @@ export class Sidebar {
     const current = index.events.find((e) => e.id === this.host.currentId());
     const byName = (a: Character, b: Character) => tr(a.name, L).localeCompare(tr(b.name, L), L);
     const here = index.characters.filter((c) => current?.characters.includes(c.id)).sort(byName);
-    const rest = index.characters.filter((c) => !here.includes(c) && (index.byCharacter[c.id]?.length ?? 0) > 0).sort(byName);
-    const box = h('div', {});
+    const rest = index.characters.filter((c) => !here.includes(c) && hasLane(c.id)).sort(byName);
+    const box = h('div', {}, this.lanesCard());
     const section = (title: string, list: Character[]) => {
       if (!list.length) return;
       box.append(h('div', { class: 'sb-section' }, title));

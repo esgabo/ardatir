@@ -1,0 +1,16 @@
+id: old-man-willow
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 9, day: 26 }
+  precision: day
+place: old-forest
+characters: [ frodo, sam, merry, pippin, tom-bombadil ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-bree ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Old Forest" }
+title: { en: "Old Man Willow", es: "El Viejo Hombre Sauce" }
+summary:
+  en: "In the Old Forest a great willow lulls Merry and Pippin to sleep and swallows them in its trunk, until Tom Bombadil's song makes it let go."
+  es: "En el Bosque Viejo un gran sauce adormece a Merry y a Pippin y se los traga en su tronco, hasta que la canción de Tom Bombadil le hace soltarlos."

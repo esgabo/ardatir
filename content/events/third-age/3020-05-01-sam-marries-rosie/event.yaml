@@ -1,0 +1,16 @@
+id: sam-marries-rosie
+age: third-age
+when:
+  start: { age: third-age, year: 3020, month: 5, day: 1 }
+  precision: day
+place: the-shire
+characters: [ sam, rosie, frodo ]
+arcs: [ the-war-of-the-ring, after-the-war ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Grey Havens" }
+title: { en: "Sam Marries Rosie", es: "Sam se casa con Rosita" }
+summary:
+  en: "Sam marries Rosie Cotton and they make their home at Bag End, in a year when the Shire, sown with the Lady's gift, blossoms as never before."
+  es: "Sam se casa con Rosita Coto y hacen su hogar en Bolsón Cerrado, en un año en que la Comarca, sembrada con el regalo de la Dama, florece como nunca."

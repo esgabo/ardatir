@@ -79,6 +79,16 @@ From inside an event the same list shows what is happening elsewhere at that mom
 
 A character's life as a lane of events and journey legs. Add more characters and their lanes run side by side; where they share an event the lanes **cross**. Tuor's lane meets Túrin's at the pools of Ivrin, where the cousins pass without knowing each other, a few years before Túrin's end. Kin relations (`kin`) suggest which lanes to add.
 
+**Route:** `#/lives?with=tuor,turin` (the order of the lanes; up to eight). It opens as a page in place of the stage, like an event page (§3.4).
+
+- **Lanes are columns, time runs down the page.** Each chosen character is a thin vertical thread in their own colour (a light palette that reads on the night ground; gold stays the accent), with their initial at the top of the column, sticky while scrolling (two letters when lanes would share one: Gollum *Go*, Gimli *Gi*). On a phone at most four lanes are drawn, the first four chosen, and the page says so (*Showing 4 of 8 lives*); the chips still list all. Beside the threads, one row per step, in **one story order** for all lanes (the index order: age, then sort key).
+- **What a lane holds** comes from the build (`index.lanes`): the character's events in story order, and between them the **journey legs** no event of theirs covers, a waypoint whose matched event they are not in, or one with no event at all (Frodo's road through Cirith Ungol before his events exist). Legs are placed by best guess: between their own lane's events before and after them, and there after every event of any chosen lane guessed no later than the leg (so a leg never shows before another lane's earlier event); they are drawn as small hollow nodes with the place in italics, the journey and the waypoint's honest range beneath (*Jun – 1 Lithe 2941*). Legs shared by several lanes (same place and range) are one row.
+- **Crossings:** a row where two or more lanes share an event gets filled nodes ringed in gold, joined by a gold bar across the lanes, and a soft gold band behind the title with *Paths cross · Tuor, Túrin*, each full name in its lane's colour. A row with one lane has a plain node in that lane's colour.
+- **Time between rows** is said honestly: an age heading when the age changes, and *at least N years later* (dotted threads) when the honest ranges are a year or more apart (`yearsBetween` in `calendar.ts`), counted in the age's own years: in the Years of the Trees, *at least 75 Valian years later*. Each row states only its honest date; the best guess is never shown.
+- **Clicking an event opens it**: its stage if staged, else its page; Back returns to the lanes.
+- **Choosing lanes:** chips at the top (each with its colour and a remove button), a search box to add a life (a combobox: whole-name, then name-start, then word-start matches first; arrow keys, Enter, Escape), and **kin suggestions** from `kin`, written from the chosen character's side (*Túrin Turambar, cousin of Tuor*; *Thráin, father of Thorin Oakenshield*). Characters have no gender field, so Spanish takes the gender from the relation word (*Nienor, hermana de Túrin*) and says gender-neutral ones without guessing (*Túrin y Tuor, primos*; *Aragorn y Arwen, prometidos*). With no lanes chosen, the page offers a few **lives that cross**: for each age, the pair sharing the most events. Kin suggestions and pairs are links to the lanes with them added, so they can be opened or shared and Back undoes them; the add box and the remove buttons change the lanes in place and keep focus in the add box.
+- **Ways in:** the sidebar's **Lives** view shows the chosen lives as chips with *Side by side →*, and every character row has a **+ / ✓ toggle** that adds or removes their lane; a character's name on an event page opens their lane, and *See their lives side by side* opens everyone in the event; the selected character's card on a stage has *Follow their life →*.
+
 ### 3.3 The interface: a collapsible sidebar
 
 The ways in live in a **sidebar on the left**, not in dropdowns. The 3D stage fills the rest of the screen, and every other control floats over it. Mockups: the *Ardatir UI* design canvas (event view with the sidebar open, cosmos with it collapsed, phone drawer).
@@ -94,24 +104,38 @@ The ways in live in a **sidebar on the left**, not in dropdowns. The 3D stage fi
 |---|---|
 | **Ages** | The ages as a vertical thread of nodes. The current age is lit and opens into its arcs, then their events, with the event on screen highlighted. |
 | **Stories** | The arcs as cards: age, name, one line of summary. |
-| **Lives** | Characters in the current event first, then everyone; each opens into summary, kin and their events in order. Picking several as chips to show their lanes side by side comes with character lanes (§3.2). |
+| **Lives** | The lives chosen for lanes as chips, with *Side by side →* (§3.2); then characters in the current event first, then everyone; each opens into summary, kin and their events in order, and has a + / ✓ toggle that adds or removes their lane. |
 | **Books** | Each book opens into chapters (from events' `source`), linking to the events they cover. |
 | **Places** | Places with their events, alphabetical for now; grouped by region, with a way into the world map, once the world map exists. |
 
-Events that can be watched (staged) are links marked with a filled diamond; outlines are listed dimmed so the whole story is visible. Search matches event, character and place names in the current language, ignoring accents.
+Every event in a list is a link. Events that can be watched (staged) are marked with a filled diamond and open their stage; the others (outline, scripted) have a hollow diamond, are listed a little dimmer, and open their page (§3.4), so the whole story can be followed. Search matches event, character and place names in the current language, ignoring accents.
 
 **Over the stage:**
 
 - Top left, a **breadcrumb** of where you are (*Third Age › The Quest of Erebor › Roast Mutton*); top right, a **zoom switch**, *Cosmos · World · Event*.
 - The event card sits under the breadcrumb, the selected character's card on the right (§2, Event).
 - The narration caption above the timeline bar.
-- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** and mute. Until the time cursor (§3.1) exists, Meanwhile lists the event's links and the events whose honest range overlaps it. Later, in the cosmos and world levels, the bar spans the ages instead.
+- The **timeline bar**: previous / play / next event, the scrubber with beat markers, time, **Meanwhile…** and mute. Until the time cursor (§3.1) exists, Meanwhile lists the event's links and the events whose honest range overlaps it, each a link like those in the sidebar. Later, in the cosmos and world levels, the bar spans the ages instead.
 
 **Phones.** The rail and panel become one **drawer** opened from a menu button: the views as a tab strip under the search, the language switch in the footer.
 
 **Look: fantasy, kept light.** Night-blue ground, parchment ink, one gold accent; Cormorant Garamond for names and titles, Inter for everything else. The fantasy comes from a few small touches only: the four-point star, diamond markers on section rules and beats, the glowing node on the ages thread, a faint starfield. No parchment textures, ornate frames or decorative fonts in body text: the dioramas are the show.
 
 **The URL still holds the state** (§7); which view is open and whether the panel is collapsed are remembered per visitor, not put in the route.
+
+### 3.4 Event pages: events that can't be watched yet
+
+Most events will be outlines for a long time, and they are exactly what the cross-views are made of. So every event has a way in: a staged event opens its stage, and **any other event opens its page**, a calm text view in place of the stage, at the same route (`#/event/<id>`). It is what most visitors will see for a long time, so it is treated as a finished thing, not a placeholder.
+
+- **One centred column**, set like a page of a book: the age and stories as a small overline, the title large in the serif, then the **honest date** (start and end at their precision, e.g. *Winter, F.A. 495*; never the best guess), the place and the source (book and chapter, cited, not quoted). A quiet note says it isn't staged yet.
+- The **summary** in the serif, larger than body text. When the event is `scripted`, **the telling**: its narration passages read as plain text, in order, without animation (`data/scripts/<id>.json`, loaded with the page).
+- **Who was there**: the characters as small cards (name, kind, one line); a name opens their life.
+- **Connections**: every link, both directions (the reverses come from the build), with its type (*caused by*, *makes possible*…) and its note.
+- **Part of**: each arc with its summary and the events before and after this one in it; each journey with its places in order, this one lit.
+- **Around the same time**: events whose honest range overlaps this one (as Meanwhile does).
+- **Before / After**: the previous and next event in story order, so the whole chronicle can be read page by page.
+
+The look is the sidebar's: night ground with a faint starfield and a soft gold glow at the top, section rules with a diamond, filled and hollow diamonds on event links. While a page is open the stage under it neither renders nor plays; the breadcrumb and zoom switch stay on top.
 
 ## 4. Content model
 
@@ -229,7 +253,7 @@ starts: { fire: 0.4, trolls: 7.2, caught: 13.9 }
 - Every content text is `{ en, es }`. English is required; missing languages fall back to English, and the build reports what's missing.
 - Names follow the published translations (Bilbo Bolsón, Bolsón Cerrado, Thorin Escudo de Roble).
 - Interface strings live in `src/i18n.ts`.
-- The language comes from `?lang=` in the URL, then the visitor's last choice, then English.
+- The language comes from `?lang=` in the URL, then the visitor's last choice, then English. Following a link with `?lang=` switches the open tab to that language; a link without one keeps the current language.
 
 ## 7. Shareable moments
 
@@ -238,15 +262,22 @@ The URL always reflects where you are:
 ```
 /#/event/ainulindale?t=0.42
 /#/event/roast-mutton?t=0.45&follow=bilbo&lang=es
+/#/event/tuor-sees-turin-at-ivrin?lang=es          an event that isn't staged: its page (§3.4)
+/#/lives?with=tuor,turin                            character lanes, in this order (§3.2)
 ```
+
+Moving to another event or view adds a history entry, so the back button returns; scrubbing and selecting only update the current one. A link to the event already on screen seeks to its `t` and follows its `follow`, when it gives them. Links inside the site are plain `href`s built in `src/routes.ts`.
+
+After every navigation, focus moves to the new view's heading (its `h1`), so keyboard and screen-reader users start at the top of what they opened; redrawing the sidebar keeps focus on the control that had it.
 
 ## 8. Technical shape
 
 - **Static site**: Vite + TypeScript + three.js, no framework. Output is a plain `dist/` folder (GitHub Pages).
 - **Code is split by zoom level**: each stage (`scene/cosmos.ts`, `scene/dioramaStage.ts`) is loaded with a dynamic `import()` the first time it is needed, so the front page never downloads diorama code. three.js core gets its own chunk (`manualChunks` in `vite.config.ts`), cached across deploys; keep every chunk under Vite's 500 kB warning.
 - **Content build** (`scripts/content/`): reads `content/`, validates it, and writes `public/data/` (generated, not committed):
-  - `index.json`: ages, characters, places, arcs, journeys, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc and journey. Small enough to load up front; the time cursor and lanes run on it.
+  - `index.json`: ages, characters, places, arcs, journeys, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc and journey, and each character's lane (events and uncovered journey legs, in story order; each waypoint also names the event it matched). Small enough to load up front; the time cursor and lanes run on it.
   - `events/<id>.json`: one per staged event, with narration, staging and audio timing, loaded when the event opens.
+  - `scripts/<id>.json`: the narration passages of every event that has a `narration.yaml`, so a scripted event's page can show them as text.
   - `audio/<id>/<lang>.mp3`: recordings copied from the event folders.
 - **Validation fails the build**: unknown ids, missing English, a status without its files, narration or beat ids that don't match their staging or audio timing, impossible dates. Missing Spanish is a warning.
 - Runs automatically with `npm run dev` (rebuilds on change) and `npm run build`; `npm run content` checks content on its own.
@@ -297,6 +328,8 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 | 2026-11-09 | Character style: low-poly with enough detail to look good; film-like proportions (no enlarged heads); simplified faces. |
 | 2026-11-09 | The Shire's days outside the months are named with `day:` (`2-yule`, `1-lithe`, `midyear`, `overlithe`, `2-lithe`, `1-yule`); each year is 366 fixed day slots. |
 | 2026-11-09 | Navigation moves from top-right dropdowns to a collapsible left sidebar (icon rail + panel): Ages, Stories, Lives, Books, Places; a light fantasy look (§3.3). |
+| 2026-11-09 | Every event is reachable: events that can't be watched yet open a text page at the same route, with the narration as text once scripted (§3.4). |
+| 2026-11-09 | Character lanes: lanes as coloured columns with time running down, one story order, crossings in gold, honest gaps ("at least N years later"), kin suggestions; lanes derived by the build; route `#/lives?with=` (§3.2). |
 
 ## 12. Open questions
 

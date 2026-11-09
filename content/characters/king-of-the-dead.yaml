@@ -1,0 +1,8 @@
+id: king-of-the-dead
+name: { en: "The King of the Dead", es: "El Rey de los Muertos" }
+kind: wraith
+summary:
+  en: "Lord of the oathbreakers of the White Mountains, bound until his promise is kept."
+  es: "Señor de los traidores de las Montañas Blancas, atado hasta que cumpla su promesa."
+color: "#8a9a90"
+scale: 1.8

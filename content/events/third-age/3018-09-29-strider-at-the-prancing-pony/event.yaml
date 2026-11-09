@@ -1,0 +1,17 @@
+id: strider-at-the-prancing-pony
+age: third-age
+when:
+  # They reach Bree on the night of the 29th (Appendix B) and meet Strider the same evening.
+  start: { age: third-age, year: 3018, month: 9, day: 29 }
+  precision: day
+place: prancing-pony
+characters: [ frodo, sam, merry, pippin, butterbur, aragorn ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-bree, with-strider-to-rivendell ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "At the Sign of the Prancing Pony" }
+title: { en: "Strider at the Prancing Pony", es: "Trancos en el Poney Pisador" }
+summary:
+  en: "At the inn in Bree Frodo slips on the Ring in front of everyone. A weather-beaten Ranger called Strider offers to guide the hobbits, and Butterbur hands over a letter from Gandalf he forgot to send."
+  es: "En la posada de Bree, Frodo se pone el Anillo sin querer ante todos. Un curtido Montaraz llamado Trancos se ofrece a guiar a los hobbits, y Cebadilla entrega una carta de Gandalf que había olvidado enviar."

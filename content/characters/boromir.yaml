@@ -1,0 +1,11 @@
+id: boromir
+name: { en: "Boromir", es: "Boromir" }
+kind: man
+summary:
+  en: "Captain of Gondor and son of its Steward, who comes north to Rivendell and joins the Fellowship."
+  es: "Capitán de Gondor e hijo de su Senescal, que viaja al norte hasta Rivendel y se une a la Compañía."
+color: "#8a4a3a"
+scale: 1.85
+kin:
+  - { id: denethor, as: father }
+  - { id: faramir, as: brother }

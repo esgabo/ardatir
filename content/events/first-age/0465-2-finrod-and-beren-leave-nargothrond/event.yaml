@@ -1,0 +1,22 @@
+id: finrod-and-beren-leave-nargothrond
+age: first-age
+when:
+  start: { age: first-age, year: 465, season: autumn }   # Grey Annals: Beren comes to Nargothrond in the autumn of 465
+  precision: season
+place: nargothrond
+characters: [ finrod, beren, celegorm, curufin, orodreth ]
+arcs: [ beren-and-luthien ]
+journeys: [ berens-quest ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+title: { en: "Finrod leaves Nargothrond with Beren", es: "Finrod parte de Nargothrond con Beren" }
+summary:
+  en: "Honouring his old oath to Barahir, Finrod gives his crown to Orodreth and sets out with Beren and ten companions. Celegorm and Curufin, hearing the word Silmaril, grow darker in their pride."
+  es: "Fiel a su viejo juramento con Barahir, Finrod entrega su corona a Orodreth y parte con Beren y diez compañeros. Celegorm y Curufin, al oír la palabra Silmaril, se hunden más en su orgullo."
+links:
+  - to: thingols-bargain
+    type: caused-by
+    note:
+      en: "Finrod helps to meet the bargain."
+      es: "Finrod ayuda a cumplir la condición."

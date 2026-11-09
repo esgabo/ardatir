@@ -1,0 +1,22 @@
+id: the-fall-of-barad-dur
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 25 }
+  precision: day
+place: barad-dur
+characters: [ sauron, nazgul ]
+arcs: [ the-war-of-the-ring ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "Mount Doom" }
+title: { en: "The Fall of Barad-dûr", es: "La caída de Barad-dûr" }
+summary:
+  en: "With the Ring gone, the Dark Tower crumbles into dust. Sauron's shadow rises, trembles, and is blown away on the wind."
+  es: "Con el Anillo destruido, la Torre Oscura se deshace en polvo. La sombra de Sauron se alza, tiembla y se disipa con el viento."
+links:
+  - to: the-ring-is-destroyed
+    type: caused-by
+    note:
+      en: "Sauron's power rested in the Ring; with it gone, he and his tower fall."
+      es: "El poder de Sauron residía en el Anillo; destruido éste, caen él y su torre."

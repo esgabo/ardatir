@@ -1,0 +1,16 @@
+id: the-flood-at-the-ford
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 10, day: 20 }
+  precision: day
+place: ford-of-bruinen
+characters: [ frodo, glorfindel, aragorn, sam, merry, pippin, nazgul ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ with-strider-to-rivendell ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
+title: { en: "The Flood at the Ford of Bruinen", es: "La crecida en el Vado del Bruinen" }
+summary:
+  en: "Frodo reaches the Ford just ahead of the Nazgûl and, half-fainting, defies them. A wall of water rises behind him and sweeps the Riders away."
+  es: "Frodo llega al Vado justo antes de los Nazgûl y, medio desmayado, los desafía. Una pared de agua se alza a su espalda y arrastra a los Jinetes."

@@ -1,0 +1,16 @@
+id: boromir-tries-to-take-the-ring
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 26 }
+  precision: day
+place: parth-galen
+characters: [ boromir, frodo ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-after-moria, boromirs-road ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Breaking of the Fellowship" }
+title: { en: "Boromir Tries to Take the Ring", es: "Boromir intenta quitarle el Anillo" }
+summary:
+  en: "Alone with Frodo in the woods above the lawn, Boromir pleads for the Ring and then lunges for it. Frodo escapes by putting it on."
+  es: "A solas con Frodo en el bosque sobre el prado, Boromir ruega por el Anillo y luego se abalanza sobre él. Frodo escapa poniéndoselo."

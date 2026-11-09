@@ -1,0 +1,16 @@
+id: frodo-and-sam-meet-gollum
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 29 }
+  precision: day
+place: emyn-muil
+characters: [ frodo, sam, gollum ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ through-the-emyn-muil, the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-two-towers, chapter: "The Taming of Sméagol" }
+title: { en: "Frodo and Sam Meet Gollum", es: "Frodo y Sam encuentran a Gollum" }
+summary:
+  en: "Gollum, who has followed them for days, is caught in the night. Frodo takes pity on him, and the creature swears on the Ring to guide them to Mordor."
+  es: "Gollum, que los seguía desde hacía días, es atrapado de noche. Frodo se apiada de él, y la criatura jura sobre el Anillo guiarlos hasta Mordor."

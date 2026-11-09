@@ -9,7 +9,7 @@ characters: [ deagol, gollum ]
 arcs: []
 journeys: []
 tags: [ hobbit, lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: The Shadow of the Past }   # date from Appendix B
 title: { en: Sméagol Takes the Ring, es: Sméagol se apodera del Anillo }
 summary:

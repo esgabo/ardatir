@@ -1,0 +1,16 @@
+id: arrested-at-frogmorton
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 11, day: 1 }
+  precision: day
+place: the-shire
+characters: [ frodo, sam, merry, pippin ]
+arcs: [ the-war-of-the-ring, after-the-war, the-scouring-of-the-shire ]
+journeys: [ the-scouring-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Scouring of the Shire" }
+title: { en: "Arrested at Frogmorton", es: "Detenidos en Rancho del Sapo" }
+summary:
+  en: "At Frogmorton the hobbits are arrested by the Shire's own Shirriffs, under a list of new rules, and spend the night in the lock-house, more amused than afraid."
+  es: "En Rancho del Sapo, los propios oficiales de la Comarca detienen a los hobbits según una lista de nuevas normas, y pasan la noche en el calabozo, más divertidos que asustados."

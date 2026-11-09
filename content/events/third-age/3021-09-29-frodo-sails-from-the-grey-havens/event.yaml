@@ -1,0 +1,16 @@
+id: frodo-sails-from-the-grey-havens
+age: third-age
+when:
+  start: { age: third-age, year: 3021, month: 9, day: 29 }
+  precision: day
+place: grey-havens
+characters: [ frodo, bilbo, gandalf, elrond, galadriel, sam, merry, pippin ]
+arcs: [ the-war-of-the-ring, after-the-war ]
+journeys: [ to-the-grey-havens ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Grey Havens" }
+title: { en: "The Grey Havens", es: "Los Puertos Grises" }
+summary:
+  en: "Frodo, Bilbo, Gandalf, Elrond and Galadriel board the grey ship of Círdan. Sam, Merry and Pippin watch them go, and Sam turns home to Rosie."
+  es: "Frodo, Bilbo, Gandalf, Elrond y Galadriel suben a la nave gris de Círdan. Sam, Merry y Pippin los ven partir, y Sam vuelve a casa junto a Rosita."

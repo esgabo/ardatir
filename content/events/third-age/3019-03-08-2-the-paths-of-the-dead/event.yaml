@@ -1,0 +1,17 @@
+id: the-paths-of-the-dead
+age: third-age
+when:
+  # He takes the Paths at daybreak and comes out at Erech near midnight (Appendix B).
+  start: { age: third-age, year: 3019, month: 3, day: 8 }
+  precision: day
+place: paths-of-the-dead
+characters: [ aragorn, legolas, gimli, halbarad, king-of-the-dead ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Passing of the Grey Company" }
+title: { en: "The Paths of the Dead", es: "Las Sendas de los Muertos" }
+summary:
+  en: "Aragorn leads his friends into the mountain, where the ghosts of the oathbreakers whisper behind them. He calls their king to keep the oath he broke long ago."
+  es: "Aragorn guía a sus amigos al interior de la montaña, donde los fantasmas de los traidores susurran a su espalda. Llama a su rey para que cumpla el juramento que rompió hace mucho."

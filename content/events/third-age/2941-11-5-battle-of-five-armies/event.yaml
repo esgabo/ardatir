@@ -9,7 +9,7 @@ characters: [ thorin, dain, bard, thranduil, gandalf, bilbo, bolg, beorn, lord-o
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, gandalfs-road-2941 ]
 tags: [ hobbit, battle ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 17 }
 title: { en: The Battle of Five Armies, es: La Batalla de los Cinco Ejércitos }
 summary:

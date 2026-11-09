@@ -1,0 +1,24 @@
+id: gandalf-and-the-balrog-on-zirakzigil
+age: third-age
+when:
+  # Appendix B: the pursuit reaches the peak on the 23rd; the Balrog falls and Gandalf dies on the 25th.
+  start: { age: third-age, year: 3019, month: 1, day: 23 }
+  end: { age: third-age, year: 3019, month: 1, day: 25 }
+  precision: day
+place: zirakzigil
+characters: [ gandalf, balrog ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ gandalf-the-whites-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The White Rider" }
+title: { en: "Gandalf and the Balrog on the Mountain", es: "Gandalf y el Balrog en la montaña" }
+summary:
+  en: "After a fight through the deep places of the earth and up the endless stair, Gandalf throws down the Balrog on the peak of Zirakzigil. The storm breaks and he dies."
+  es: "Tras un combate por las profundidades de la tierra y la escalera sin fin, Gandalf derriba al Balrog en la cumbre del Zirakzigil. Estalla la tormenta y muere."
+links:
+  - to: gandalf-and-the-balrog-at-khazad-dum
+    type: caused-by
+    note:
+      en: "The Balrog pulls Gandalf into the abyss on the bridge; the fight goes on below."
+      es: "El Balrog arrastra a Gandalf al abismo en el puente; el combate continúa abajo."

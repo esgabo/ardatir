@@ -1,0 +1,18 @@
+id: gandalf-tells-frodo-about-the-ring
+age: third-age
+when:
+  # Appendix B: Gandalf reaches Hobbiton on 12 April; the long talk by the fire runs into the 13th.
+  start: { age: third-age, year: 3018, month: 4, day: 12 }
+  end: { age: third-age, year: 3018, month: 4, day: 13 }
+  precision: day
+place: bag-end
+characters: [ gandalf, frodo, sam ]
+arcs: [  ]
+journeys: [  ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Shadow of the Past" }
+title: { en: "Gandalf Tells Frodo About the Ring", es: "Gandalf habla a Frodo del Anillo" }
+summary:
+  en: "After nine years away, Gandalf returns. By the fire at Bag End he tests the Ring and tells Frodo what it is, and that the Enemy is searching for it."
+  es: "Tras nueve años de ausencia, Gandalf regresa. Junto al fuego de Bolsón Cerrado pone a prueba el Anillo y explica a Frodo qué es, y que el Enemigo lo está buscando."

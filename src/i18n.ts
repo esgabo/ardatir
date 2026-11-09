@@ -43,7 +43,6 @@ const UI = {
     en: 'This scene could not be loaded. Check your connection and reload the page.',
     es: 'No se pudo cargar esta escena. Revisa tu conexión y recarga la página.',
   },
-  notStaged: { en: 'not yet staged', es: 'aún sin escenificar' },
   disclaimer: {
     en: 'A non-commercial fan project. Not affiliated with the Tolkien Estate or Middle-earth Enterprises.',
     es: 'Un proyecto de fans sin fines comerciales. Sin relación con el Tolkien Estate ni con Middle-earth Enterprises.',
@@ -63,6 +62,16 @@ const UI = {
   kind_eagle: { en: 'Eagle', es: 'Águila' },
   'kind_skin-changer': { en: 'Skin-changer', es: 'Cambiapieles' },
   'kind_the-one': { en: 'The One', es: 'El Único' },
+  kind_maia: { en: 'Maia', es: 'Maia' },
+  kind_balrog: { en: 'Balrog', es: 'Balrog' },
+  kind_ent: { en: 'Ent', es: 'Ent' },
+  kind_huorn: { en: 'Huorn', es: 'Ucorno' },
+  kind_spider: { en: 'Spider', es: 'Araña' },
+  kind_beast: { en: 'Beast', es: 'Bestia' },
+  kind_wolf: { en: 'Wolf', es: 'Lobo' },
+  kind_warg: { en: 'Warg', es: 'Huargo' },
+  kind_horse: { en: 'Horse', es: 'Caballo' },
+  kind_other: { en: 'Other being', es: 'Otro ser' },
   // Cosmos labels (Ambarkanta): the Quenya names stay, the gloss is translated.
   ambar: { en: 'Ambar · the Earth', es: 'Ambar · la Tierra' },
   vista: { en: 'Vista · the inner air', es: 'Vista · el aire interior' },
@@ -122,6 +131,80 @@ const UI = {
   'link_enabled-by': { en: 'made possible by', es: 'posible gracias a' },
   link_concurrent: { en: 'at the same time', es: 'al mismo tiempo' },
   link_crossing: { en: 'paths cross', es: 'caminos que se cruzan' },
+  // Event pages: events that can't be watched yet, read as text (#4)
+  readable: { en: 'Read its story', es: 'Lee su historia' },
+  status_outline: { en: 'Not staged yet: for now, its story is told here in words.', es: 'Aún sin escenificar: por ahora, su historia se cuenta aquí con palabras.' },
+  status_scripted: { en: 'Written, not yet staged: below is the narration the animation will tell.', es: 'Escrita, aún sin escenificar: abajo está la narración que contará la animación.' },
+  telling: { en: 'The telling', es: 'El relato' },
+  tellingLoading: { en: 'Fetching the telling…', es: 'Cargando el relato…' },
+  tellingFailed: { en: 'The telling could not be loaded. Check your connection and reload the page.', es: 'No se pudo cargar el relato. Revisa tu conexión y recarga la página.' },
+  whoWasThere: { en: 'Who was there', es: 'Quiénes estaban' },
+  connections: { en: 'Connections', es: 'Conexiones' },
+  partOf: { en: 'Part of', es: 'Forma parte de' },
+  onTheRoad: { en: 'On the road', es: 'En camino' },
+  toldIn: { en: 'Told in', es: 'Se cuenta en' },
+  before: { en: 'Before', es: 'Antes' },
+  after: { en: 'After', es: 'Después' },
+  beforeInStory: { en: 'Before, in this story', es: 'Antes, en esta historia' },
+  afterInStory: { en: 'After, in this story', es: 'Después, en esta historia' },
+  watch: { en: 'Watch', es: 'Ver' },
+  around: { en: 'around', es: 'hacia' },
+  circa: { en: 'c.', es: 'h.' },
+  // Character lanes (#3, docs/DESIGN.md §3.2)
+  livesTitle: { en: 'Lives side by side', es: 'Vidas en paralelo' },
+  livesIntro: {
+    en: 'Choose characters to follow their lives in story order. Where they share an event, their paths cross.',
+    es: 'Elige personajes para seguir sus vidas en el orden de la historia. Donde comparten un evento, sus caminos se cruzan.',
+  },
+  addLife: { en: 'Add a life…', es: 'Añade una vida…' },
+  removeLife: { en: 'Remove', es: 'Quitar' },
+  lanesMax: { en: 'Up to eight lives at once.', es: 'Hasta ocho vidas a la vez.' },
+  livesThatCross: { en: 'Lives that cross', es: 'Vidas que se cruzan' },
+  sharedEvent: { en: 'one shared event', es: 'un evento en común' },
+  sharedEvents: { en: 'shared events', es: 'eventos en común' },
+  pathsCross: { en: 'Paths cross', es: 'Sus caminos se cruzan' },
+  yearLater: { en: 'at least a year later', es: 'al menos un año después' },
+  yearsLater: { en: 'at least {n} years later', es: 'al menos {n} años después' },
+  // In the Years of the Trees the years are Valian years (each about ten of the Sun)
+  valianYearLater: { en: 'at least a Valian year later', es: 'al menos un año valiano después' },
+  valianYearsLater: { en: 'at least {n} Valian years later', es: 'al menos {n} años valianos después' },
+  lanesShowing: { en: 'Showing {n} of {m} lives: a wider screen shows them all.', es: 'Se muestran {n} de {m} vidas: en una pantalla más ancha se ven todas.' },
+  suggestions: { en: 'Characters', es: 'Personajes' },
+  storyOrder: { en: 'In story order', es: 'En el orden de la historia' },
+  sideBySide: { en: 'Side by side', es: 'En paralelo' },
+  seeSideBySide: { en: 'See their lives side by side', es: 'Ver sus vidas en paralelo' },
+  followLife: { en: 'Follow their life', es: 'Sigue su vida' },
+  laneAdd: { en: 'Show beside the others', es: 'Mostrar junto a los demás' },
+  laneRemove: { en: 'Take out of the lanes', es: 'Quitar de la vista en paralelo' },
+  // Kin relations (`kin[].as` in characters/), as phrases: {a} is the relative, {b} the one
+  // whose kin they are ("Túrin, cousin of Tuor"). Characters have no gender field, so Spanish
+  // takes the gender from the English word (sister → hermana); for words with none (cousin,
+  // sibling, betrothed, kin) it says it without guessing: "Túrin y Tuor, primos".
+  kin_brother: { en: '{a}, brother of {b}', es: '{a}, hermano de {b}' },
+  kin_sister: { en: '{a}, sister of {b}', es: '{a}, hermana de {b}' },
+  kin_sibling: { en: '{a}, sibling of {b}', es: '{a} y {b}, hermanos' },
+  kin_cousin: { en: '{a}, cousin of {b}', es: '{a} y {b}, primos' },
+  kin_father: { en: '{a}, father of {b}', es: '{a}, padre de {b}' },
+  kin_mother: { en: '{a}, mother of {b}', es: '{a}, madre de {b}' },
+  kin_parent: { en: '{a}, parent of {b}', es: '{a}, de los padres de {b}' },
+  kin_son: { en: '{a}, son of {b}', es: '{a}, hijo de {b}' },
+  kin_daughter: { en: '{a}, daughter of {b}', es: '{a}, hija de {b}' },
+  kin_child: { en: '{a}, child of {b}', es: '{a}, descendiente de {b}' },
+  kin_grandfather: { en: '{a}, grandfather of {b}', es: '{a}, abuelo de {b}' },
+  kin_grandmother: { en: '{a}, grandmother of {b}', es: '{a}, abuela de {b}' },
+  kin_grandson: { en: '{a}, grandson of {b}', es: '{a}, nieto de {b}' },
+  kin_granddaughter: { en: '{a}, granddaughter of {b}', es: '{a}, nieta de {b}' },
+  kin_uncle: { en: '{a}, uncle of {b}', es: '{a}, tío de {b}' },
+  kin_aunt: { en: '{a}, aunt of {b}', es: '{a}, tía de {b}' },
+  kin_nephew: { en: '{a}, nephew of {b}', es: '{a}, sobrino de {b}' },
+  kin_niece: { en: '{a}, niece of {b}', es: '{a}, sobrina de {b}' },
+  kin_wife: { en: '{a}, wife of {b}', es: '{a}, esposa de {b}' },
+  kin_husband: { en: '{a}, husband of {b}', es: '{a}, esposo de {b}' },
+  kin_spouse: { en: '{a}, spouse of {b}', es: '{a} y {b}, casados' },
+  kin_betrothed: { en: '{a}, betrothed of {b}', es: '{a} y {b}, prometidos' },
+  kin_ancestor: { en: '{a}, ancestor of {b}', es: '{a}, de los antepasados de {b}' },
+  kin_descendant: { en: '{a}, descendant of {b}', es: '{a}, descendiente de {b}' },
+  kin_kin: { en: '{a}, kin of {b}', es: '{a}, pariente de {b}' },
   // Books (published Spanish titles)
   'book_the-hobbit': { en: 'The Hobbit', es: 'El Hobbit' },
   'book_the-fellowship-of-the-ring': { en: 'The Fellowship of the Ring', es: 'La Comunidad del Anillo' },
@@ -147,4 +230,20 @@ export type UiKey = keyof typeof UI;
 
 export function t(key: UiKey, lang: Lang): string {
   return tr(UI[key], lang);
+}
+
+/** Is there an interface string for this key? (For keys built from content ids: `kind_<kind>`, `kin_<as>`.) */
+export const hasKey = (key: string): key is UiKey => Object.hasOwn(UI, key);
+
+/** Is this key written in this language (not just falling back to English)? */
+export const hasText = (key: string, lang: Lang): boolean => hasKey(key) && !!(UI[key] as LocalizedText)[lang];
+
+/**
+ * "Arwen, betrothed of Aragorn" / "Arwen y Aragorn, prometidos": `a` is `as` of `b`. A relation
+ * with no phrase yet says only that they are kin, never shows the raw id in Spanish.
+ */
+export function kinPhrase(as: string, a: string, b: string, lang: Lang): string {
+  const key = `kin_${as}`;
+  const tpl = hasKey(key) ? t(key, lang) : lang === 'en' ? `{a}, ${as.replace(/-/g, ' ')} of {b}` : t('kin_kin', lang);
+  return tpl.replace('{a}', a).replace('{b}', b);
 }

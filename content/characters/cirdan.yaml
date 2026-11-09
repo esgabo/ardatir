@@ -1,0 +1,8 @@
+id: cirdan
+name: { en: "Círdan", es: "Círdan" }
+kind: elf
+summary:
+  en: "The Shipwright, lord of the Havens, who watched the world through all its ages."
+  es: "El Carpintero de Barcos, señor de los Puertos, que contempló el mundo a lo largo de todas sus edades."
+color: "#5a7a9a"
+scale: 1.85

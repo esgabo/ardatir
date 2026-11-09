@@ -1,0 +1,16 @@
+id: frodo-and-sam-turn-south
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 22 }
+  precision: day
+place: mordor
+characters: [ frodo, sam ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ frodo-and-sam-across-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "Mount Doom" }
+title: { en: "The Hobbits Turn Toward the Mountain", es: "Los hobbits se vuelven hacia la montaña" }
+summary:
+  en: "Leaving the road to Barad-dûr, the hobbits turn south over the dark plain toward the mountain, with little water and less hope."
+  es: "Dejando el camino de Barad-dûr, los hobbits tuercen hacia el sur por la llanura oscura rumbo a la montaña, con poca agua y menos esperanza."

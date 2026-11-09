@@ -1,0 +1,22 @@
+id: death-of-beren-and-huan
+age: first-age
+when:
+  start: { age: first-age, year: 466 }   # Grey Annals: the hunting of the wolf, the same year as the theft
+  precision: year
+place: doriath
+characters: [ beren, huan, carcharoth, thingol, luthien ]
+arcs: [ beren-and-luthien ]
+journeys: [ berens-quest ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+title: { en: "The hunt of Carcharoth", es: "La caza de Carcharoth" }
+summary:
+  en: "Maddened by the Silmaril, Carcharoth ravages Doriath. Beren and Huan hunt him: Huan kills the wolf but is slain, and Beren is mortally wounded. The Silmaril is cut from the wolf's belly, and Beren dies in Lúthien's arms."
+  es: "Enloquecido por el Silmaril, Carcharoth asuela Doriath. Beren y Huan le dan caza: Huan mata al lobo pero muere a su vez, y Beren queda herido de muerte. El Silmaril es extraído del vientre del lobo, y Beren muere en brazos de Lúthien."
+links:
+  - to: carcharoth-bites-berens-hand
+    type: caused-by
+    note:
+      en: "The wolf carries the jewel home."
+      es: "El lobo lleva la joya hasta Doriath."

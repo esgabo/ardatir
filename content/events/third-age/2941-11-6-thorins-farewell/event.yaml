@@ -8,7 +8,7 @@ characters: [ thorin, bilbo, gandalf ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again ]
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 18 }
 title: { en: Thorin's Farewell, es: La despedida de Thorin }
 summary:

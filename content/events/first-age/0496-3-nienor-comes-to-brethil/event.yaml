@@ -1,0 +1,15 @@
+id: nienor-comes-to-brethil
+age: first-age
+when:
+  start: { age: first-age, year: 496 }   # Grey Annals: 496, soon after Glaurung's spell takes her memory at Amon Ethir; kept approximate because Túrin's own coming to Brethil earlier that year has no exact date
+  precision: approximate
+place: brethil
+characters: [ nienor, turin ]
+arcs: [ the-children-of-hurin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Nienor comes to Brethil", es: "Nienor llega a Brethil" }
+summary:
+  en: "Nienor, her memory taken by Glaurung's spell, is found by Túrin and the woodmen on Finduilas' mound. He names her Níniel, and soon loves her."
+  es: "Nienor, que ha perdido la memoria por el hechizo de Glaurung, es hallada por Túrin y los leñadores sobre el túmulo de Finduilas. Él la llama Níniel y pronto la ama."

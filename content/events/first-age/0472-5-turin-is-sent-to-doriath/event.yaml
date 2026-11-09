@@ -1,0 +1,22 @@
+id: turin-is-sent-to-doriath
+age: first-age
+when:
+  start: { age: first-age, year: 472, season: autumn }   # Grey Annals: autumn after the Nirnaeth, when Túrin is eight
+  precision: season
+place: doriath
+characters: [ turin, morwen, thingol, melian ]
+arcs: [ the-children-of-hurin ]
+journeys: [ turins-wanderings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Túrin is sent to Doriath", es: "Túrin es enviado a Doriath" }
+summary:
+  en: "Morwen sends her young son away with two old servants, hoping that King Thingol will foster him. They reach Menegroth, and Thingol takes him as a foster-son."
+  es: "Morwen envía a su hijo pequeño con dos ancianos criados, con la esperanza de que el rey Thingol lo acoja. Llegan a Menegroth y Thingol lo acoge como hijo adoptivo."
+links:
+  - to: morgoth-curses-hurin-and-his-kin
+    type: caused-by
+    note:
+      en: "The curse begins to take effect."
+      es: "La maldición empieza a cumplirse."

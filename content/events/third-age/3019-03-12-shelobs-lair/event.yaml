@@ -1,0 +1,18 @@
+id: shelobs-lair
+age: third-age
+when:
+  # Appendix B: Gollum leads Frodo into the lair on the 12th; the Orcs take Frodo on the 13th.
+  start: { age: third-age, year: 3019, month: 3, day: 12 }
+  end: { age: third-age, year: 3019, month: 3, day: 13 }
+  precision: day
+place: shelobs-lair
+characters: [ frodo, sam, gollum, shelob ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ the-ring-to-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-two-towers, chapter: "Shelob's Lair" }
+title: { en: "Shelob's Lair", es: "La guarida de Ella-Laraña" }
+summary:
+  en: "In the dark tunnel above Cirith Ungol, Gollum slips away and leaves the hobbits to the great spider. Shelob stings Frodo, and Sam, wielding the Phial and Sting, drives her off."
+  es: "En el oscuro túnel sobre Cirith Ungol, Gollum se escabulle y deja a los hobbits en manos de la gran araña. Ella-Laraña pica a Frodo, y Sam, con el Frasco y Dardo, la ahuyenta."

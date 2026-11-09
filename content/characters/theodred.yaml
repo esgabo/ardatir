@@ -1,0 +1,10 @@
+id: theodred
+name: { en: "Théodred", es: "Théodred" }
+kind: man
+summary:
+  en: "Théoden's only son, who falls defending the Fords of Isen."
+  es: "El único hijo de Théoden, que cae defendiendo los Vados del Isen."
+color: "#8a7a4a"
+scale: 1.8
+kin:
+  - { id: theoden, as: father }

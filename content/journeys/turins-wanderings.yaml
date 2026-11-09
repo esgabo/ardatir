@@ -1,0 +1,11 @@
+id: turins-wanderings
+title: { en: "Túrin's Wanderings", es: "Las andanzas de Túrin" }
+characters: [ turin ]
+waypoints:
+  - { place: dor-lomin, date: { age: first-age, year: 464 }, end: { age: first-age, year: 472 }, precision: year }
+  - { place: doriath, date: { age: first-age, year: 472 }, end: { age: first-age, year: 484 }, precision: year }
+  - { place: amon-rudh, date: { age: first-age, year: 487 }, end: { age: first-age, year: 489 }, precision: year }
+  - { place: nargothrond, date: { age: first-age, year: 490 }, end: { age: first-age, year: 495 }, precision: year }
+  - { place: dor-lomin, date: { age: first-age, year: 496 }, precision: year }
+  - { place: brethil, date: { age: first-age, year: 496 }, end: { age: first-age, year: 499 }, precision: year }
+  - { place: cabed-en-aras, date: { age: first-age, year: 499 }, precision: year }

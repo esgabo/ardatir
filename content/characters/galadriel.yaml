@@ -1,0 +1,10 @@
+id: galadriel
+name: { en: "Galadriel", es: "Galadriel" }
+kind: elf
+summary:
+  en: "Daughter of Finarfin, proud and wise, who left Valinor for Middle-earth and lived through three ages; later Lady of Lothlórien, bearer of one of the Three Rings, who counsels the Fellowship."
+  es: "Hija de Finarfin, orgullosa y sabia, que dejó Valinor por la Tierra Media y vivió tres edades; después Señora de Lothlórien, portadora de uno de los Tres Anillos, que aconseja a la Compañía."
+color: "#e0d9a8"
+scale: 1.9
+kin:
+  - { id: celeborn, as: husband }

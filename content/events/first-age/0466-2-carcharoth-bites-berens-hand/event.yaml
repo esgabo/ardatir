@@ -1,0 +1,21 @@
+id: carcharoth-bites-berens-hand
+age: first-age
+when:
+  start: { age: first-age, year: 466 }   # Grey Annals; at the gates as they flee
+  precision: year
+place: angband
+characters: [ beren, luthien, carcharoth ]
+arcs: [ beren-and-luthien ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+title: { en: "Carcharoth bites off Beren's hand", es: "Carcharoth arranca la mano de Beren" }
+summary:
+  en: "At the gate, the great wolf springs at Beren. He holds the Silmaril out, and the wolf bites off the hand that holds it, swallowing the jewel and burning with its holy light."
+  es: "En la puerta, el gran lobo salta sobre Beren. Este tiende el Silmaril, y el lobo le arranca la mano que lo sostiene, tragándose la joya y ardiendo con su luz sagrada."
+links:
+  - to: beren-and-luthien-in-angband
+    type: caused-by
+    note:
+      en: "They are fleeing the hall."
+      es: "Huyen del salón."

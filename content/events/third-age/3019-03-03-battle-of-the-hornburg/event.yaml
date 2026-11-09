@@ -1,0 +1,24 @@
+id: battle-of-the-hornburg
+age: third-age
+when:
+  # Begins on the 3rd; Gandalf and Erkenbrand break the siege at dawn on the 4th.
+  start: { age: third-age, year: 3019, month: 3, day: 3 }
+  end: { age: third-age, year: 3019, month: 3, day: 4 }
+  precision: day
+place: helms-deep
+characters: [ theoden, eomer, aragorn, legolas, gimli, erkenbrand, gandalf ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ aragorn-legolas-and-gimlis-road, gandalf-the-whites-road ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-two-towers, chapter: "Helm's Deep" }
+title: { en: "The Battle of the Hornburg", es: "La batalla del Cuernavilla" }
+summary:
+  en: "Saruman's host storms Helm's Deep through the night. The Deeping Wall is blown up, and at dawn Théoden rides out as Gandalf arrives with Erkenbrand and a wood walks down the hill."
+  es: "La hueste de Saruman asalta el Abismo de Helm durante la noche. El Muro del Abismo es volado, y al alba Théoden sale a cabalgar cuando llega Gandalf con Erkenbrand y un bosque baja por la ladera."
+links:
+  - to: the-ents-march-on-isengard
+    type: concurrent
+    note:
+      en: "While the Hornburg holds, the Ents are tearing down Isengard."
+      es: "Mientras el Cuernavilla resiste, los Ents derriban Isengard."

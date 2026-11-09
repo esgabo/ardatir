@@ -1,0 +1,21 @@
+id: dagor-nuin-giliath
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1497 }   # fought by starlight, soon after the landing. Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
+place: mithrim
+characters: [ feanor, maedhros, gothmog, melkor ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Return of the Noldor" }
+title: { en: "The Battle under Stars", es: "La Batalla bajo las Estrellas" }
+summary:
+  en: "Morgoth's orcs fall on the Noldor camp in Mithrim and are beaten back. Fëanor pursues them too far and is mortally wounded by Gothmog."
+  es: "Los orcos de Morgoth caen sobre el campamento noldor en Mithrim y son rechazados. Fëanor los persigue demasiado lejos y es herido de muerte por Gothmog."
+links:
+  - to: burning-of-the-ships-at-losgar
+    type: caused-by
+    note:
+      en: "The burned ships left Fëanor's host alone against Angband."
+      es: "Las naves quemadas dejaron a la hueste de Fëanor sola frente a Angband."

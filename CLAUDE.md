@@ -53,14 +53,14 @@ content/             THE SOURCE OF TRUTH (YAML); see content/README.md
   ages/ characters/ places/ arcs/ journeys/ factions/
   events/<age>/<sort-key>-<id>/  event.yaml, narration.yaml, staging.yaml, audio/<lang>.{mp3,yaml}
 scripts/content/
-  build.ts           load + validate content/, place on the time axis, reverse links, lookups
+  build.ts           load + validate content/, place on the time axis, reverse links, lookups, character lanes
   cli.ts             `npm run content`
 tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
 scripts/narration/
   export.ts          `npm run narration:export`: scripts per event and language for the Voice Studio
   text.ts            a passage's text per language and the `textHash` that marks a recording stale
 vite.config.ts       runs the content build on start (fails `npm run build` on errors) and on change in dev
-public/data/         GENERATED (gitignored): index.json, events/<id>.json, audio/<id>/<lang>.mp3
+public/data/         GENERATED (gitignored): index.json, events/<id>.json, scripts/<id>.json, audio/<id>/<lang>.mp3
 src/
   data/types.ts      the compiled data model the site loads (EventSummary, EventDetail, ContentIndex)
   data/calendar.ts   the shared time axis: dates → spans, precision, overlaps (used by build and site)
@@ -73,8 +73,14 @@ src/
   scene/cosmos.ts    the Ainulindalë and Arda with its shells
   scene/dioramaStage.ts, diorama.ts, figure.ts   event dioramas
   sidebar.ts         the collapsible sidebar: rail + panel views built from the index
-  icons.ts           inline stroke SVG icons
-  main.ts            app shell: routing, playback loop, panels, breadcrumb, zoom switch, Meanwhile
+  reader.ts          an event's page, for events that can't be watched yet (DESIGN §3.4)
+  lanes.ts           character lanes: lives side by side, crossings, kin suggestions (DESIGN §3.2)
+  laneRows.ts        the lanes as rows (story order, legs, gaps), search ranking, initials: pure, tested
+  routes.ts          parse the URL, build every in-site href
+  format.ts          honest dates in words (labels only; the math is in calendar.ts)
+  related.ts         an event's links and what overlaps it (Meanwhile, event pages)
+  dom.ts, icons.ts   a tiny element builder; inline stroke SVG icons
+  main.ts            app shell: routing, pages vs stage, playback loop, panels, breadcrumb, zoom switch, Meanwhile
 ```
 
 ### Rules the code depends on
@@ -83,7 +89,7 @@ src/
 - **The playhead runs in seconds of narration; `t` is derived** via `EventClock.tAt`. Seeking converts back with `secondsAt`. Never advance `t` directly.
 - **Narration timing:** `staging.yaml` gives each passage's `t` (where it belongs in the animation); `audio/<lang>.yaml` gives the second it starts in that recording, keyed by passage id. The build turns both into ordered arrays, and the clock stretches the animation between those points.
 - **Recordings carry a `textHash`** of the words they read (`audio/<lang>.yaml`); the build warns when `narration.yaml` no longer matches. Editing a recorded passage means re-recording it.
-- **The URL is the state**: `#/event/<id>?t=&follow=&lang=`. New view state that matters should be added to the route.
+- **The URL is the state**: `#/event/<id>?t=&follow=&lang=` (a staged event's stage, any other event's page), `#/lives?with=a,b` (character lanes). New view state that matters should be added to the route (`src/routes.ts`); in-site links are plain hrefs from there.
 - **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.

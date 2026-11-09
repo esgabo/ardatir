@@ -1,0 +1,8 @@
+id: curufin
+name: { en: "Curufin", es: "Curufin" }
+kind: elf
+summary:
+  en: "Son of Fëanor, a skilled smith and Celegorm's partner in treachery."
+  es: "Hijo de Fëanor, hábil herrero y compañero de Celegorm en la traición."
+color: "#5a7a9a"
+scale: 1.85

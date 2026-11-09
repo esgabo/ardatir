@@ -1,0 +1,18 @@
+id: the-entmoot-begins
+age: third-age
+when:
+  # Appendix B: the Entmoot begins on 30 February and ends on the afternoon of 2 March.
+  start: { age: third-age, year: 3019, month: 2, day: 30 }
+  end: { age: third-age, year: 3019, month: 3, day: 2 }
+  precision: day
+place: fangorn
+characters: [ treebeard, merry, pippin ]
+arcs: [ the-war-of-the-ring, the-war-in-rohan ]
+journeys: [ merry-and-pippins-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "Treebeard" }
+title: { en: "The Entmoot", es: "La Asamblea de los Ents" }
+summary:
+  en: "The Ents gather in the dell of Derndingle to deliberate. It takes them three days of slow speech to decide that they cannot stay out of the war."
+  es: "Los Ents se reúnen en el hoyo de Derndingle para deliberar. Les lleva tres días de lento hablar decidir que no pueden quedar al margen de la guerra."

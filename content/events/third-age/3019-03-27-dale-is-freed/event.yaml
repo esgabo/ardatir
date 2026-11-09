@@ -1,0 +1,22 @@
+id: dale-is-freed
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 27 }
+  precision: day
+place: dale
+characters: [ bard-ii, thorin-stonehelm ]
+arcs: [ the-war-of-the-ring ]
+journeys: [  ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-lord-of-the-rings, chapter: "Appendix B" }
+title: { en: "Dale Is Freed", es: "Valle es liberado" }
+summary:
+  en: "With Sauron fallen, Bard II and Thorin Stonehelm sally out from the Mountain and drive the broken Easterlings from Dale."
+  es: "Con Sauron caído, Bardo II y Thorin Yelmo de Piedra salen de la Montaña y expulsan de Valle a los Orientales quebrantados."
+links:
+  - to: battle-of-dale
+    type: caused-by
+    note:
+      en: "The siege of Erebor ends ten days after Brand and Dáin fell at its gate."
+      es: "El asedio de Erebor termina diez días después de que Brand y Dáin cayeran ante su puerta."

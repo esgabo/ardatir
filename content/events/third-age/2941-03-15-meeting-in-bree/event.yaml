@@ -8,7 +8,7 @@ characters: [ gandalf, thorin ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ gandalfs-road-2941 ]
 tags: [ hobbit, unfinished-tales ]
-status: outline
+status: scripted
 source: { book: unfinished-tales, chapter: The Quest of Erebor }
 title: { en: A Chance Meeting in Bree, es: Un encuentro casual en Bree }
 summary:

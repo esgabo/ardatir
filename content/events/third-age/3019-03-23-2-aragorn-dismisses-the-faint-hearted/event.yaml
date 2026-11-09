@@ -1,0 +1,16 @@
+id: aragorn-dismisses-the-faint-hearted
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 23 }
+  precision: day
+place: ithilien
+characters: [ aragorn, gandalf, imrahil, eomer, pippin ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ gandalf-the-whites-road, pippins-road-to-gondor, aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Black Gate Opens" }
+title: { en: "Aragorn Dismisses the Faint-hearted", es: "Aragorn despide a los de poco ánimo" }
+summary:
+  en: "Before the last stretch to the Morannon, Aragorn lets those who are too afraid turn back. The rest march on."
+  es: "Antes del último trecho hasta el Morannon, Aragorn deja volver a quienes tienen demasiado miedo. El resto sigue adelante."

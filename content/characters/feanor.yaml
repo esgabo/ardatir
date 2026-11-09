@@ -1,0 +1,8 @@
+id: feanor
+name: { en: "Fëanor", es: "Fëanor" }
+kind: elf
+summary:
+  en: "The greatest craftsman of the Noldor, maker of the Silmarils, who led his people out of Valinor in fire and oath."
+  es: "El mayor artífice de los Noldor, hacedor de los Silmarils, que sacó a su pueblo de Valinor entre fuego y juramento."
+color: "#5a7a9a"
+scale: 1.85

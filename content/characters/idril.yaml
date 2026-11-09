@@ -1,0 +1,8 @@
+id: idril
+name: { en: "Idril", es: "Idril" }
+kind: elf
+summary:
+  en: "Daughter of Turgon, wise and far-sighted, wife of Tuor and mother of Eärendil."
+  es: "Hija de Turgon, sabia y previsora, esposa de Tuor y madre de Eärendil."
+color: "#5a7a9a"
+scale: 1.8

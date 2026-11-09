@@ -1,0 +1,16 @@
+id: the-mirror-of-galadriel
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 2, day: 14 }
+  precision: day
+place: lothlorien
+characters: [ frodo, sam, galadriel ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-after-moria ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Mirror of Galadriel" }
+title: { en: "The Mirror of Galadriel", es: "El Espejo de Galadriel" }
+summary:
+  en: "Galadriel shows Sam and Frodo visions in a basin of water. Frodo, shaken, offers her the Ring, and she passes the test of refusing it."
+  es: "Galadriel muestra a Sam y a Frodo visiones en una pila de agua. Frodo, conmovido, le ofrece el Anillo, y ella supera la prueba de rechazarlo."

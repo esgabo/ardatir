@@ -1,0 +1,8 @@
+id: melian
+name: { en: "Melian", es: "Melian" }
+kind: ainu
+summary:
+  en: "A Maia of Valinor who wed Thingol and wove the Girdle that guards Doriath."
+  es: "Una maia de Valinor que se casó con Thingol y tejió la Cintura que protege Doriath."
+color: "#c8c0a8"
+scale: 2

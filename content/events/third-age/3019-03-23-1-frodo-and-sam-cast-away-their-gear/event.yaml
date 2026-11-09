@@ -1,0 +1,16 @@
+id: frodo-and-sam-cast-away-their-gear
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 23 }
+  precision: day
+place: mordor
+characters: [ frodo, sam ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ frodo-and-sam-across-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "Mount Doom" }
+title: { en: "The Hobbits Cast Away Their Burdens", es: "Los hobbits arrojan sus cargas" }
+summary:
+  en: "With the mountain still far off, they throw away everything they can spare. Sam keeps the rope and the Elven cloak."
+  es: "Con la montaña aún lejos, arrojan todo lo que pueden. Sam se queda con la cuerda y la capa élfica."

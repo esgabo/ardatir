@@ -1,0 +1,8 @@
+id: the-march-of-the-last-alliance
+title: { en: "The March of the Last Alliance", es: "La marcha de la Última Alianza" }
+characters: [ gil-galad, elrond ]
+waypoints:
+  - { place: lindon, date: { age: second-age, year: 3430 }, precision: year }
+  - { place: rivendell, date: { age: second-age, year: 3430 }, end: { age: second-age, year: 3431 }, precision: year }
+  - { place: dagorlad, date: { age: second-age, year: 3434 }, precision: year }
+  - { place: barad-dur, date: { age: second-age, year: 3434 }, end: { age: second-age, year: 3441 }, precision: year }

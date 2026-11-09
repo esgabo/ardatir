@@ -1,0 +1,17 @@
+id: the-barrow-wight
+age: third-age
+when:
+  # Appendix B gives the 28th for the capture; Tom's rescue follows at once.
+  start: { age: third-age, year: 3018, month: 9, day: 28 }
+  precision: day
+place: barrow-downs
+characters: [ frodo, sam, merry, pippin, tom-bombadil ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-bree ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Fog on the Barrow-downs" }
+title: { en: "The Barrow-wight", es: "El tumulario" }
+summary:
+  en: "Lost in fog on the Barrow-downs, the hobbits are caught by a wight in a barrow. Frodo wakes in time to call for Tom, who drives the creature away and gives them ancient blades."
+  es: "Perdidos en la niebla entre los túmulos, los hobbits son atrapados por un tumulario. Frodo despierta a tiempo para llamar a Tom, que ahuyenta a la criatura y les da antiguas hojas."

@@ -1,0 +1,8 @@
+id: finarfin
+name: { en: "Finarfin", es: "Finarfin" }
+kind: elf
+summary:
+  en: "Gentle youngest son of Finwë, who turned back at the Doom of Mandos and ruled the Noldor who stayed."
+  es: "El apacible hijo menor de Finwë, que volvió atrás tras la Sentencia de Mandos y gobernó a los Noldor que se quedaron."
+color: "#5a7a9a"
+scale: 1.85

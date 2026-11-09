@@ -1,0 +1,8 @@
+id: balrog
+name: { en: "The Balrog of Moria", es: "El Balrog de Moria" }
+kind: maia
+summary:
+  en: "An ancient demon of fire, awakened in the deeps of Khazad-dûm."
+  es: "Un antiguo demonio de fuego, despertado en las profundidades de Khazad-dûm."
+color: "#8a2a10"
+scale: 3

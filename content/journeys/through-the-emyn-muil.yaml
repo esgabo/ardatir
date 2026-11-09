@@ -1,0 +1,7 @@
+id: through-the-emyn-muil
+title: { en: "Through the Emyn Muil", es: "A través de las Emyn Muil" }
+characters: [ frodo, sam ]
+# Frodo and Sam alone, from Parth Galen across the river and into the hills of the Emyn Muil, until they catch Gollum on 29 February.
+waypoints:
+  - { place: parth-galen, date: { age: third-age, year: 3019, month: 2, day: 26 }, precision: day }
+  - { place: emyn-muil, date: { age: third-age, year: 3019, month: 2, day: 26 }, end: { age: third-age, year: 3019, month: 2, day: 29 }, precision: day }

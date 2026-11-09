@@ -1,0 +1,14 @@
+id: gandalf-the-whites-road
+title: { en: "Gandalf the White's Road", es: "El camino de Gandalf el Blanco" }
+characters: [ gandalf ]
+# After Moria: the fight on Zirakzigil, Lothlórien, Fangorn, Rohan, Isengard, Minas Tirith and the Morannon. Pippin rides with him from Isengard to Minas Tirith (his own road is pippins-road-to-gondor).
+waypoints:
+  - { place: zirakzigil, date: { age: third-age, year: 3019, month: 1, day: 23 }, end: { age: third-age, year: 3019, month: 2, day: 14 }, precision: day }
+  - { place: lothlorien, date: { age: third-age, year: 3019, month: 2, day: 17 }, precision: day }
+  - { place: fangorn, date: { age: third-age, year: 3019, month: 3, day: 1 }, precision: day }
+  - { place: edoras, date: { age: third-age, year: 3019, month: 3, day: 2 }, precision: day }
+  - { place: helms-deep, date: { age: third-age, year: 3019, month: 3, day: 3 }, end: { age: third-age, year: 3019, month: 3, day: 4 }, precision: day }
+  - { place: isengard, date: { age: third-age, year: 3019, month: 3, day: 5 }, precision: day }
+  - { place: minas-tirith, date: { age: third-age, year: 3019, month: 3, day: 9 }, end: { age: third-age, year: 3019, month: 3, day: 18 }, precision: day }
+  - { place: morannon, date: { age: third-age, year: 3019, month: 3, day: 25 }, precision: day }
+  - { place: mount-doom, date: { age: third-age, year: 3019, month: 3, day: 25 }, precision: day }

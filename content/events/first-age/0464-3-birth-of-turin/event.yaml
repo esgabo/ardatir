@@ -1,0 +1,15 @@
+id: birth-of-turin
+age: first-age
+when:
+  start: { age: first-age, year: 464 }
+  precision: year
+place: dor-lomin
+characters: [ hurin, morwen, turin ]
+arcs: [ the-children-of-hurin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "The birth of Túrin", es: "El nacimiento de Túrin" }
+summary:
+  en: "Morwen bears a son to Húrin in Dor-lómin, in the shadow of the war the Elves are losing. Her husband names him Túrin."
+  es: "Morwen da a luz en Dor-lómin un hijo de Húrin, a la sombra de la guerra que los Elfos están perdiendo. Su esposo lo llama Túrin."

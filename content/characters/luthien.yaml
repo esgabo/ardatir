@@ -1,0 +1,8 @@
+id: luthien
+name: { en: "Lúthien", es: "Lúthien" }
+kind: elf
+summary:
+  en: "Daughter of Thingol and Melian, the fairest of all the Children of Ilúvatar, who loved the mortal Beren."
+  es: "Hija de Thingol y Melian, la más hermosa de los Hijos de Ilúvatar, que amó al mortal Beren."
+color: "#5a7a9a"
+scale: 1.75

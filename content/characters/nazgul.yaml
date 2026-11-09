@@ -1,0 +1,8 @@
+id: nazgul
+name: { en: "The Nazgûl", es: "Los Nazgûl" }
+kind: wraith
+summary:
+  en: "The nine Ringwraiths, Sauron's deadliest servants, hunting for the Ring."
+  es: "Los nueve espectros del Anillo, los más temibles servidores de Sauron, a la caza del Anillo."
+color: "#202028"
+scale: 1.9

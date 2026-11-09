@@ -1,0 +1,21 @@
+id: nienor-is-born
+age: first-age
+when:
+  start: { age: first-age, year: 473 }   # born shortly after the Nirnaeth, while Morwen is alone
+  precision: approximate
+place: dor-lomin
+characters: [ morwen, nienor ]
+arcs: [ the-children-of-hurin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Nienor is born", es: "Nace Nienor" }
+summary:
+  en: "After the great battle, Morwen gives birth to her daughter in a Dor-lómin ruled by Easterlings, with her husband lost to her."
+  es: "Tras la gran batalla, Morwen da a luz a su hija en un Dor-lómin gobernado por Orientales, sin saber qué ha sido de su esposo."
+links:
+  - to: nirnaeth-arnoediad
+    type: caused-by
+    note:
+      en: "Dor-lómin falls after the battle."
+      es: "Dor-lómin cae tras la batalla."

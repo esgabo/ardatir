@@ -1,0 +1,16 @@
+id: glorfindel-sets-out
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 10, day: 9 }
+  precision: day
+place: rivendell
+characters: [ glorfindel, elrond ]
+arcs: [ the-war-of-the-ring ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
+title: { en: "Glorfindel Rides from Rivendell", es: "Glorfindel sale de Rivendel" }
+summary:
+  en: "Elrond, hearing of the Riders, sends scouts along the road. Glorfindel rides east to find the Ring-bearer."
+  es: "Elrond, al saber de los Jinetes, envía exploradores por el camino. Glorfindel cabalga al este para encontrar al Portador del Anillo."

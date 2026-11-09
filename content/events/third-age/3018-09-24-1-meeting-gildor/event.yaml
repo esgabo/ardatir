@@ -1,0 +1,17 @@
+id: meeting-gildor
+age: third-age
+when:
+  # Second night out (night of the 24th); not in App. B.
+  start: { age: third-age, year: 3018, month: 9, day: 24 }
+  precision: day
+place: woody-end
+characters: [ frodo, sam, pippin, gildor ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-crickhollow ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Three is Company" }
+title: { en: "Gildor and the Elves in the Woody End", es: "Gildor y los Elfos en el Bosque Cerrado" }
+summary:
+  en: "Chased by a black shape, the hobbits are saved by a passing company of Elves, who feed them and give a warning: leave the Shire and trust Gandalf."
+  es: "Perseguidos por una sombra negra, los hobbits son salvados por una compañía de Elfos que pasa por allí, quienes los alimentan y los previenen: dejad la Comarca y confiad en Gandalf."

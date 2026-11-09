@@ -1,0 +1,21 @@
+id: mereth-aderthad
+age: first-age
+when:
+  start: { age: first-age, year: 20 }   # the great Feast of Reunion; the year is only approximate
+  precision: approximate
+place: ivrin
+characters: [ fingolfin, maedhros, finrod ]   # Thingol sent Mablung and Daeron in his place
+arcs: [ the-siege-of-angband ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
+title: { en: "Mereth Aderthad, the Feast of Reunion", es: "Mereth Aderthad, la Fiesta de la Reunión" }
+summary:
+  en: "Elves of many kindreds gather at the pools of Ivrin to feast and mend old quarrels, and Thingol sends envoys in his place."
+  es: "Elfos de muchos linajes se reúnen en los lagos de Ivrin para festejar y zanjar viejas disputas, y Thingol envía emisarios en su lugar."
+links:
+  - to: fingon-rescues-maedhros
+    type: caused-by
+    note:
+      en: "Maedhros' release makes reconciliation possible."
+      es: "La liberación de Maedhros hace posible la reconciliación."

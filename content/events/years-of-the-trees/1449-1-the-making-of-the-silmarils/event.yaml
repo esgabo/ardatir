@@ -1,0 +1,16 @@
+id: the-making-of-the-silmarils
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1449 }   # begun 1449, finished 1450. Annals of Aman; the conversion to Sun-years is the axis's concern
+  end: { age: years-of-the-trees, year: 1450 }
+  precision: year
+place: tirion
+characters: [ feanor ]
+arcs: [  ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Silmarils and the Unrest of the Noldor" }
+title: { en: "The making of the Silmarils", es: "La hechura de los Silmarils" }
+summary:
+  en: "Fëanor captures the light of the Two Trees in three jewels that shine with their own fire. The Valar bless them, and Fëanor's love for them grows into a hunger."
+  es: "Fëanor atrapa la luz de los Dos Árboles en tres joyas que brillan con fuego propio. Los Valar las bendicen, y el amor de Fëanor por ellas se convierte en codicia."

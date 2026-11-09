@@ -1,0 +1,8 @@
+id: celegorm
+name: { en: "Celegorm", es: "Celegorm" }
+kind: elf
+summary:
+  en: "Son of Fëanor, hunter and lord of Nargothrond in all but name, who wanted Lúthien for himself."
+  es: "Hijo de Fëanor, cazador y señor de hecho en Nargothrond, que quiso a Lúthien para sí."
+color: "#5a7a9a"
+scale: 1.85

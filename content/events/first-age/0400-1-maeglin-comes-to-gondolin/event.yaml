@@ -1,0 +1,21 @@
+id: maeglin-comes-to-gondolin
+age: first-age
+when:
+  start: { age: first-age, year: 400 }   # Maeglin's youth and Eöl's death; year is approximate
+  precision: approximate
+place: gondolin
+characters: [ maeglin, aredhel, eol, turgon ]
+arcs: [ the-fall-of-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Maeglin" }
+title: { en: "Maeglin comes to Gondolin", es: "Maeglin llega a Gondolin" }
+summary:
+  en: "Maeglin follows his mother back to Gondolin. Eöl pursues them and dies at Turgon's judgement, cursing his son as he falls."
+  es: "Maeglin acompaña a su madre de vuelta a Gondolin. Eöl los persigue y muere por sentencia de Turgon, maldiciendo a su hijo al caer."
+links:
+  - to: aredhel-is-snared-by-eol
+    type: caused-by
+    note:
+      en: "Maeglin is the son of that union."
+      es: "Maeglin es el hijo de aquella unión."

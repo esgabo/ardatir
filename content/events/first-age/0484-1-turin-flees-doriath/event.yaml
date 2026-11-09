@@ -1,0 +1,22 @@
+id: turin-flees-doriath
+age: first-age
+when:
+  start: { age: first-age, year: 484 }   # when Túrin is twenty
+  precision: year
+place: doriath
+characters: [ turin, beleg, thingol ]
+arcs: [ the-children-of-hurin ]
+journeys: [ turins-wanderings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Túrin kills Saeros and flees Doriath", es: "Túrin mata a Saeros y huye de Doriath" }
+summary:
+  en: "Mocked by the Elf Saeros, Túrin chases him through the forest. Saeros falls to his death, and Túrin, though pardoned by the King, will not return."
+  es: "Escarnecido por el Elfo Saeros, Túrin lo persigue por el bosque. Saeros muere al caer, y Túrin, aunque perdonado por el Rey, no quiere volver."
+links:
+  - to: turin-is-sent-to-doriath
+    type: caused-by
+    note:
+      en: "The years of fosterage end badly."
+      es: "Los años de crianza acaban mal."

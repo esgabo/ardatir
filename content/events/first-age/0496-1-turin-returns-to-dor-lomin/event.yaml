@@ -1,0 +1,22 @@
+id: turin-returns-to-dor-lomin
+age: first-age
+when:
+  start: { age: first-age, year: 496 }   # after the fall of Nargothrond; could still be late 495
+  precision: approximate
+place: dor-lomin
+characters: [ turin, morwen ]
+arcs: [ the-children-of-hurin ]
+journeys: [ turins-wanderings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Túrin returns to Dor-lómin", es: "Túrin regresa a Dor-lómin" }
+summary:
+  en: "Túrin finds his mother's house empty. Morwen and Nienor have gone to Doriath, and he learns that he was too late once again."
+  es: "Túrin halla vacía la casa de su madre. Morwen y Nienor han ido a Doriath, y descubre que, otra vez, llegó tarde."
+links:
+  - to: fall-of-nargothrond
+    type: caused-by
+    note:
+      en: "He went north after the dragon's lie."
+      es: "Fue al norte tras la mentira del dragón."

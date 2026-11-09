@@ -1,0 +1,8 @@
+id: imrahil
+name: { en: "Prince Imrahil", es: "El príncipe Imrahil" }
+kind: man
+summary:
+  en: "Lord of Dol Amroth, who commands the defence of Minas Tirith."
+  es: "Señor de Dol Amroth, que dirige la defensa de Minas Tirith."
+color: "#4a6a9a"
+scale: 1.85

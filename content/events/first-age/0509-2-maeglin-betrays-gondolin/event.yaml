@@ -1,0 +1,15 @@
+id: maeglin-betrays-gondolin
+age: first-age
+when:
+  start: { age: first-age, year: 509 }   # captured when out of the city, shortly before the attack; claimed only as the year before
+  precision: year
+place: angband
+characters: [ maeglin, melkor ]
+arcs: [ the-fall-of-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Tuor and the Fall of Gondolin" }
+title: { en: "Maeglin betrays Gondolin", es: "Maeglin traiciona a Gondolin" }
+summary:
+  en: "Taken by orcs outside the hills, Maeglin is brought before Morgoth. In return for Idril and the lordship of Gondolin, he reveals the way to the hidden city."
+  es: "Capturado por orcos fuera de las colinas, Maeglin comparece ante Morgoth. A cambio de Idril y del señorío de Gondolin, revela el camino a la ciudad oculta."

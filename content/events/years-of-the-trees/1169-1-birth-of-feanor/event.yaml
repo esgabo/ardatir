@@ -1,0 +1,15 @@
+id: birth-of-feanor
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1169 }   # Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
+place: tirion
+characters: [ finwe, feanor ]
+arcs: [  ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Fëanor and the Unchaining of Melkor" }
+title: { en: "The birth of Fëanor", es: "El nacimiento de Fëanor" }
+summary:
+  en: "Finwë's first son is born in Tirion. His mother Míriel spends her strength on him and fades into Lórien, and he grows up with a burning spirit."
+  es: "Nace en Tirion el primer hijo de Finwë. Su madre Míriel gasta en él sus fuerzas y se retira a Lórien, y el niño crece con un espíritu ardiente."

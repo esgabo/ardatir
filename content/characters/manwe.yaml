@@ -1,0 +1,8 @@
+id: manwe
+name: { en: "Manwë", es: "Manwë" }
+kind: ainu
+summary:
+  en: "King of the Valar and lord of the air, most beloved of Ilúvatar."
+  es: "Rey de los Valar y señor del aire, el más querido de Ilúvatar."
+color: "#c8c0a8"
+scale: 2.4

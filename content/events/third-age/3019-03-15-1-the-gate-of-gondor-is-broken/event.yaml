@@ -1,0 +1,17 @@
+id: the-gate-of-gondor-is-broken
+age: third-age
+when:
+  # The early hours of the 15th, per Appendix B, before the Rohirrim arrive.
+  start: { age: third-age, year: 3019, month: 3, day: 15 }
+  precision: day
+place: minas-tirith
+characters: [ witch-king, gandalf, pippin ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ gandalf-the-whites-road, pippins-road-to-gondor ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Siege of Gondor" }
+title: { en: "The Witch-king Breaks the Gate", es: "El Rey Brujo rompe la Puerta" }
+summary:
+  en: "Grond, the great ram, batters down the gate of Minas Tirith. The Witch-king rides in, and only Gandalf stands in his way as a cock crows and horns sound far away."
+  es: "Grond, el gran ariete, derriba la puerta de Minas Tirith. El Rey Brujo entra a caballo, y sólo Gandalf se interpone mientras canta un gallo y suenan cuernos a lo lejos."

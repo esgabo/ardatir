@@ -1,0 +1,22 @@
+id: beren-and-luthien-in-angband
+age: first-age
+when:
+  start: { age: first-age, year: 466 }   # Grey Annals
+  precision: year
+place: angband
+characters: [ beren, luthien, melkor, carcharoth ]
+arcs: [ beren-and-luthien ]
+journeys: [ berens-quest ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+title: { en: "Beren and Lúthien in Angband", es: "Beren y Lúthien en Angband" }
+summary:
+  en: "Disguised, the two creep into Morgoth's hall. Lúthien sings his court to sleep and Beren cuts a Silmaril from the iron crown, but the blade snaps when he tries for a second."
+  es: "Disfrazados, los dos se cuelan en el salón de Morgoth. Lúthien duerme a su corte con su canto y Beren arranca un Silmaril de la corona de hierro, pero la hoja se quiebra cuando intenta arrancar un segundo."
+links:
+  - to: luthien-and-huan-overthrow-sauron
+    type: caused-by
+    note:
+      en: "With Sauron gone, the road north is open."
+      es: "Con Sauron vencido, el camino al norte queda abierto."

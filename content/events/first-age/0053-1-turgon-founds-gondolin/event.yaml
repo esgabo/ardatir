@@ -1,0 +1,16 @@
+id: turgon-founds-gondolin
+age: first-age
+when:
+  start: { age: first-age, year: 53 }   # found 53, building begun 64, finished 116
+  end: { age: first-age, year: 116 }
+  precision: year
+place: gondolin
+characters: [ turgon, ulmo ]
+arcs: [ the-fall-of-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
+title: { en: "Turgon founds Gondolin", es: "Turgon funda Gondolin" }
+summary:
+  en: "Guided by Ulmo, Turgon finds the hidden vale of Tumladen. Over many years he builds a city in its centre and finally leads his people there, sealing it from the world."
+  es: "Guiado por Ulmo, Turgon descubre el valle oculto de Tumladen. Durante muchos años construye una ciudad en su centro y al fin lleva allí a su pueblo, sellándola al mundo."

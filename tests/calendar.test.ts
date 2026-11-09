@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { APPROXIMATE_YEARS, axisToDate, dateSpan, daySlot, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../src/data/calendar.ts';
+import { APPROXIMATE_YEARS, axisToDate, dateSpan, daySlot, hasOverlithe, ONE_DAY, overlaps, whenSpan, yearsBetween } from '../src/data/calendar.ts';
 import { EXTRA_DAYS, type Age, type StoryDate } from '../src/data/types.ts';
 
 const ta: Age = { id: 'third-age', order: 5, name: { en: 'Third Age' }, summary: { en: '' }, axis: { start: 4032, yearLength: 1 } };
@@ -170,5 +170,25 @@ describe('whenSpan and overlaps', () => {
   it('touching spans do not overlap', () => {
     expect(overlaps({ from: 0, to: 1 }, { from: 1, to: 2 })).toBe(false);
     expect(overlaps({ from: 0, to: 1.01 }, { from: 1, to: 2 })).toBe(true);
+  });
+});
+
+describe('yearsBetween', () => {
+  const y = (year: number, p: 'year' | 'season' | 'approximate' = 'year', x: Partial<StoryDate> = {}) => dateSpan(d({ year, ...x }), p, ta)!;
+  it('counts the whole years that certainly passed between two honest ranges', () => {
+    expect(yearsBetween(y(2463), y(2770))).toBe(306);          // end of 2463 to the start of 2770
+    expect(yearsBetween(y(2941), y(2942))).toBe(0);            // back to back
+    expect(yearsBetween(y(2941, 'season', { season: 'spring' }), y(2942, 'season', { season: 'autumn' }))).toBe(1);
+  });
+  it('is 0 when the ranges overlap, and widens with imprecision', () => {
+    expect(yearsBetween(y(2941), y(2941, 'season', { season: 'summer' }))).toBe(0);
+    expect(yearsBetween(y(2460, 'approximate'), y(2470))).toBe(4); // c. 2460 may run to the end of 2465: 2466–2469
+  });
+  it("counts in the age's own years when given the age: Valian years in the Years of the Trees", () => {
+    const yt = (year: number) => dateSpan({ age: trees.id, year }, 'year', trees)!;
+    // Years 1 and 76: 74 whole Valian years between them (2–75), which are 740 years of the Sun.
+    expect(yearsBetween(yt(1), yt(76), trees)).toBe(74);
+    expect(yearsBetween(yt(1), yt(76))).toBe(740);
+    expect(yearsBetween(y(2463), y(2770), ta)).toBe(306); // a Sun-year age is unchanged
   });
 });

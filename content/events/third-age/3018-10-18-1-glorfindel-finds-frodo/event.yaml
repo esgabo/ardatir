@@ -1,0 +1,17 @@
+id: glorfindel-finds-frodo
+age: third-age
+when:
+  # Appendix B, dusk of the 18th.
+  start: { age: third-age, year: 3018, month: 10, day: 18 }
+  precision: day
+place: trollshaws
+characters: [ glorfindel, frodo, sam, merry, pippin, aragorn ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ with-strider-to-rivendell ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
+title: { en: "Glorfindel Finds the Hobbits", es: "Glorfindel encuentra a los hobbits" }
+summary:
+  en: "Frodo, ill and fading, is hoisted onto Glorfindel's white horse. He is told to ride for the Ford and not to stop for anything."
+  es: "Frodo, enfermo y debilitado, es subido al caballo blanco de Glorfindel. Le dicen que galope hacia el Vado y que no se detenga por nada."

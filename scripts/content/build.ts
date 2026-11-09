@@ -9,7 +9,7 @@ import { dateSpan, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/d
 import {
   EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
-  type EventSummary, type Journey, type Keyframe, type Lang, type LinkType, type LocalizedText,
+  type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LinkType, type LocalizedText,
   type NarrationAudio, type NarrationSegment, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
@@ -18,6 +18,8 @@ import { narrationHash, TEXT_HASH } from '../narration/text.ts';
 export interface BuildResult {
   index: ContentIndex;
   details: EventDetail[];
+  /** The narration of every event that has one, for reading as text while it isn't staged. */
+  scripts: EventScript[];
   errors: string[];
   warnings: string[];
   /** Missing translations, counted per language. */
@@ -501,6 +503,10 @@ export function buildContent(contentDir: string): BuildResult {
     details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, audioFiles });
   }
 
+  // Scripts: every narration as text, so a scripted event can be read before it is staged.
+  const scripts: EventScript[] = raws.filter((r) => r.narration?.length)
+    .map((r) => ({ id: r.summary.id, passages: r.narration!.map((p) => ({ id: p.id, text: p.text })) }));
+
   // ---------- derived lookups ----------
   const events = raws.map((r) => r.summary);
   const byCharacter: Record<string, string[]> = Object.fromEntries(characters.map((c) => [c.id, []]));
@@ -538,9 +544,11 @@ export function buildContent(contentDir: string): BuildResult {
     R.warnings.push(`${file}: ${n} text${n > 1 ? 's' : ''} missing "${lang}"`);
   }
 
+  const lanes = characterLanes(characters.map((c) => c.id), events, journeys);
+
   return {
-    index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace },
-    details, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
+    index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes },
+    details, scripts, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
   };
 }
 
@@ -614,12 +622,14 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
     const known: (number | undefined)[] = [];
     let last = -Infinity;
     for (const w of j.waypoints) {
+      delete w.event;
       // A matching event says more than the middle of a short range (a month-long stay in
       // Rivendell takes the moon-letters' 1 Lithe, not mid-June), so it comes first.
       const e = events.find((x) => x.journeys.includes(j.id) && x.place === w.place && x.span && x.at !== undefined
         && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last
         && x.at >= w.span.from && x.at <= w.span.to);
       let at = e?.at;
+      if (e) w.event = e.id;
       if (at === undefined && w.span.to - w.span.from <= ANCHOR_WIDTH) at = (w.span.from + w.span.to) / 2;
       known.push(at);
       if (at !== undefined) last = at;
@@ -645,13 +655,48 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
   }
 }
 
+/**
+ * Each character's lane (docs/DESIGN.md §3.2): their events in story order, and between them
+ * the waypoints of their journeys that none of their events covers (a waypoint matched to an
+ * event they are in is that event). Waypoints are placed by best guess: before the first of
+ * the character's events whose guess comes later, so the lane keeps story order. `events`
+ * arrive in story order, with `at` and the waypoints' `at` and `event` already estimated.
+ */
+export function characterLanes(characterIds: string[], events: EventSummary[], journeys: Journey[]): Record<string, LaneEntry[]> {
+  const chars = new Map(events.map((e) => [e.id, e.characters]));
+  const lanes: Record<string, LaneEntry[]> = {};
+  for (const c of characterIds) {
+    const mine = events.filter((e) => e.characters.includes(c));
+    const legs: { at: number; entry: LaneEntry }[] = [];
+    for (const j of journeys) {
+      if (!j.characters.includes(c)) continue;
+      j.waypoints.forEach((w, i) => {
+        if (w.event && chars.get(w.event)?.includes(c)) return; // that event is in the lane already
+        legs.push({ at: w.at, entry: { journey: j.id, waypoint: i } });
+      });
+    }
+    legs.sort((a, b) => a.at - b.at); // stable: a journey's own order breaks ties
+    const lane: LaneEntry[] = [];
+    let k = 0;
+    for (const e of mine) {
+      while (k < legs.length && e.at !== undefined && legs[k].at < e.at) lane.push(legs[k++].entry);
+      lane.push({ event: e.id });
+    }
+    while (k < legs.length) lane.push(legs[k++].entry);
+    lanes[c] = lane;
+  }
+  return lanes;
+}
+
 /** Write the build result into `<publicDir>/data/`, replacing what was there. */
 export function writeContent(result: BuildResult, publicDir: string): void {
   const out = path.join(publicDir, 'data');
   fs.rmSync(out, { recursive: true, force: true });
   fs.mkdirSync(path.join(out, 'events'), { recursive: true });
+  fs.mkdirSync(path.join(out, 'scripts'), { recursive: true });
   fs.writeFileSync(path.join(out, 'index.json'), JSON.stringify(result.index));
   for (const d of result.details) fs.writeFileSync(path.join(out, 'events', `${d.id}.json`), JSON.stringify(d));
+  for (const s of result.scripts) fs.writeFileSync(path.join(out, 'scripts', `${s.id}.json`), JSON.stringify(s));
   for (const c of result.copies) {
     const to = path.join(publicDir, c.to);
     fs.mkdirSync(path.dirname(to), { recursive: true });

@@ -1,0 +1,21 @@
+id: thingol-is-slain-by-dwarves
+age: first-age
+when:
+  start: { age: first-age, year: 503 }   # the Annals place Thingol's death in the years right after Húrin's visit; approximate
+  precision: approximate
+place: menegroth
+characters: [ thingol, melian ]
+arcs: [ the-fall-of-doriath ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Ruin of Doriath" }
+title: { en: "Thingol is slain by Dwarves", es: "Los Enanos matan a Thingol" }
+summary:
+  en: "Thingol has the Silmaril set in the Nauglamír. The Dwarves who do the work covet it. They kill the King and flee with the jewel, and Melian leaves the world."
+  es: "Thingol manda engastar el Silmaril en el Nauglamír. Los Enanos que hacen el trabajo lo codician. Matan al Rey y huyen con la joya, y Melian abandona el mundo."
+links:
+  - to: hurin-brings-the-hoard-to-menegroth
+    type: caused-by
+    note:
+      en: "The hoard brings the Nauglamír into play."
+      es: "El tesoro pone en juego al Nauglamír."

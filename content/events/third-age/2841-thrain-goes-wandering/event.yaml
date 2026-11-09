@@ -1,0 +1,23 @@
+id: thrain-goes-wandering
+age: third-age
+when:
+  # App. B: 2841 he sets out for Erebor, pursued; 2845 imprisoned in Dol Guldur.
+  start: { age: third-age, year: 2841 }
+  precision: year
+place: ered-luin
+characters: [ thrain, balin, dwalin ]
+arcs: [ durins-folk-in-exile ]
+journeys: [  ]
+tags: [ lord-of-the-rings, hobbit ]
+status: outline
+source: { book: the-lord-of-the-rings, chapter: "Appendix A (Durin's Folk)" }
+title: { en: "Thráin Sets Out Again", es: "Thráin parte de nuevo" }
+summary:
+  en: "Worn down by exile, Thráin leaves Thorin in the Blue Mountains and goes east with a few companions, hoping to see the Lonely Mountain once more."
+  es: "Agotado por el exilio, Thráin deja a Thorin en las Montañas Azules y marcha al este con unos pocos compañeros, esperando ver otra vez la Montaña Solitaria."
+links:
+  - to: gandalf-finds-thrain
+    type: causes
+    note:
+      en: "His road ends in the dungeons of Dol Guldur, where Gandalf finds him."
+      es: "Su camino acaba en las mazmorras de Dol Guldur, donde Gandalf lo encuentra."

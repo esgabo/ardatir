@@ -1,0 +1,21 @@
+id: birth-of-earendil
+age: first-age
+when:
+  start: { age: first-age, year: 503 }   # dated in the Annals; kept approximate here
+  precision: approximate
+place: gondolin
+characters: [ tuor, idril, earendil ]
+arcs: [ the-fall-of-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Tuor and the Fall of Gondolin" }
+title: { en: "The birth of Eärendil", es: "El nacimiento de Eärendil" }
+summary:
+  en: "Tuor and Idril's son is born in Gondolin, half-elven, with a destiny beyond the hidden city."
+  es: "El hijo de Tuor e Idril nace en Gondolin, medio elfo, con un destino que va más allá de la ciudad oculta."
+links:
+  - to: tuor-weds-idril
+    type: caused-by
+    note:
+      en: "The child of their marriage."
+      es: "El hijo de su matrimonio."

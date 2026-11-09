@@ -1,0 +1,8 @@
+id: isildur
+name: { en: "Isildur", es: "Isildur" }
+kind: man
+summary:
+  en: "Elder son of Elendil, who cut the Ring from Sauron's hand and did not destroy it."
+  es: "Hijo mayor de Elendil, que cortó el Anillo de la mano de Sauron y no lo destruyó."
+color: "#7a6a4a"
+scale: 1.9

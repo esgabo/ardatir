@@ -1,0 +1,16 @@
+id: battle-of-bywater
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 11, day: 3 }
+  precision: day
+place: bywater
+characters: [ frodo, sam, merry, pippin ]
+arcs: [ the-war-of-the-ring, after-the-war, the-scouring-of-the-shire ]
+journeys: [ the-scouring-road ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Scouring of the Shire" }
+title: { en: "The Battle of Bywater", es: "La batalla de Delagua" }
+summary:
+  en: "The hobbits ambush the ruffians in the village and beat them in a short, hard fight. Frodo is there but will not kill any hobbit, and the last battle of the War of the Ring is won."
+  es: "Los hobbits tienden una emboscada a los rufianes en la aldea y los vencen en un combate breve y duro. Frodo está presente, pero no quiere matar a ningún hobbit, y la última batalla de la Guerra del Anillo es ganada."

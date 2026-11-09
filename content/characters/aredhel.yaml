@@ -1,0 +1,8 @@
+id: aredhel
+name: { en: "Aredhel", es: "Aredhel" }
+kind: elf
+summary:
+  en: "Sister of Turgon, who left Gondolin and was snared by Eöl."
+  es: "Hermana de Turgon, que abandonó Gondolin y fue atrapada por Eöl."
+color: "#5a7a9a"
+scale: 1.8

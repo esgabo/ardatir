@@ -1,0 +1,16 @@
+id: gandalf-imprisoned-in-orthanc
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 7, day: 10 }
+  precision: day
+place: orthanc
+characters: [ gandalf, saruman ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ gandalfs-road-3018 ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
+title: { en: "Gandalf Imprisoned in Orthanc", es: "Gandalf prisionero en Orthanc" }
+summary:
+  en: "Saruman reveals his treachery. Gandalf refuses to join him or to give up the Ring's secret, and is shut atop Orthanc."
+  es: "Saruman revela su traición. Gandalf se niega a unirse a él y a entregar el secreto del Anillo, y queda encerrado en lo alto de Orthanc."

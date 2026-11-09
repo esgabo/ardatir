@@ -1,0 +1,8 @@
+id: ar-pharazon
+name: { en: "Ar-Pharazôn", es: "Ar-Pharazôn" }
+kind: man
+summary:
+  en: "Last King of Númenor, who bent the knee to Sauron and sailed against the Valar."
+  es: "Último rey de Númenor, que se rindió ante Sauron y navegó contra los Valar."
+color: "#7a6a4a"
+scale: 2

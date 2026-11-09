@@ -1,0 +1,8 @@
+id: finwe
+name: { en: "Finwë", es: "Finwë" }
+kind: elf
+summary:
+  en: "High King of the Noldor in Valinor, father of Fëanor, Fingolfin and Finarfin."
+  es: "Rey supremo de los Noldor en Valinor, padre de Fëanor, Fingolfin y Finarfin."
+color: "#5a7a9a"
+scale: 1.85

@@ -1,0 +1,15 @@
+id: death-of-elros
+age: second-age
+when:
+  start: { age: second-age, year: 442 }
+  precision: year
+place: numenor
+characters: [ elros ]
+arcs: [  ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The death of Elros", es: "La muerte de Elros" }
+summary:
+  en: "After 410 years as King, Elros dies at 500, the first of the long-lived kings of Númenor. His brother Elrond remains among the Elves."
+  es: "Tras 410 años como Rey, Elros muere a los quinientos años, el primero de los longevos reyes de Númenor. Su hermano Elrond permanece entre los Elfos."

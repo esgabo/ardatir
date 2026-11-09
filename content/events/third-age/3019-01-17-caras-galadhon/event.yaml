@@ -1,0 +1,17 @@
+id: caras-galadhon
+age: third-age
+when:
+  # They reach Caras Galadhon in the evening of the 17th, per Appendix B; the meeting with Galadriel follows.
+  start: { age: third-age, year: 3019, month: 1, day: 17 }
+  precision: day
+place: lothlorien
+characters: [ frodo, sam, merry, pippin, aragorn, legolas, gimli, boromir, galadriel, celeborn ]
+arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
+journeys: [ the-fellowship-after-moria ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Lothlórien" }
+title: { en: "Galadriel and Celeborn", es: "Galadriel y Celeborn" }
+summary:
+  en: "The Lord and Lady of the Galadhrim receive the Company, and Galadriel looks into each heart in turn. Boromir finds it a trial; Frodo finds a friend."
+  es: "El Señor y la Señora de los Galadhrim reciben a la Compañía, y Galadriel mira en cada corazón. Para Boromir es una prueba; para Frodo, una amiga."

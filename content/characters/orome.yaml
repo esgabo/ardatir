@@ -1,0 +1,8 @@
+id: orome
+name: { en: "Oromë", es: "Oromë" }
+kind: ainu
+summary:
+  en: "The Vala huntsman who first found the Elves at Cuiviénen."
+  es: "El Vala cazador que halló por primera vez a los Elfos en Cuiviénen."
+color: "#c8c0a8"
+scale: 2.4

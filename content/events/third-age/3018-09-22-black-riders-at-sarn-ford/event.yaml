@@ -1,0 +1,17 @@
+id: black-riders-at-sarn-ford
+age: third-age
+when:
+  # Evening of the 22nd, per Appendix B.
+  start: { age: third-age, year: 3018, month: 9, day: 22 }
+  precision: day
+place: sarn-ford
+characters: [ nazgul ]
+arcs: [ the-war-of-the-ring ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Three is Company" }
+title: { en: "The Black Riders Cross Sarn Ford", es: "Los Jinetes Negros cruzan el Vado de Sarn" }
+summary:
+  en: "The Nazgûl drive off the Rangers guarding the southern ford and ride into the Shire, in search of \"Baggins\"."
+  es: "Los Nazgûl ahuyentan a los Montaraces que guardan el vado del sur y entran en la Comarca en busca de «Bolsón»."

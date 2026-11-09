@@ -1,0 +1,16 @@
+id: orcs-take-frodo
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 13 }
+  precision: day
+place: cirith-ungol
+characters: [ frodo, shagrat, gorbag, shelob ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ frodo-and-sam-across-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-two-towers, chapter: "Shelob's Lair" }
+title: { en: "Orcs Take Frodo Prisoner", es: "Los orcos capturan a Frodo" }
+summary:
+  en: "Sam, thinking Frodo dead, takes the Ring and leaves him. Orcs of the tower find the body, realise he lives, and carry him off to the Tower of Cirith Ungol."
+  es: "Sam, creyendo muerto a Frodo, toma el Anillo y lo deja. Los orcos de la torre hallan el cuerpo, descubren que vive y se lo llevan a la Torre de Cirith Ungol."

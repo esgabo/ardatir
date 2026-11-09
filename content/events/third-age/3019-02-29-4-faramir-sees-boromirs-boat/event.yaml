@@ -1,0 +1,23 @@
+id: faramir-sees-boromirs-boat
+age: third-age
+when:
+  # Appendix B places this on the 29th.
+  start: { age: third-age, year: 3019, month: 2, day: 29 }
+  precision: day
+place: ithilien
+characters: [ faramir ]
+arcs: [ the-war-of-the-ring ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-two-towers, chapter: "The Window on the West" }
+title: { en: "Faramir Sees Boromir's Boat", es: "Faramir ve la barca de Boromir" }
+summary:
+  en: "Faramir sees, in a vision on the river, a boat bearing his dead brother, with the broken horn at his side."
+  es: "Faramir ve, en una visión sobre el río, una barca que lleva a su hermano muerto, con el cuerno roto a su lado."
+links:
+  - to: boromirs-funeral-boat
+    type: caused-by
+    note:
+      en: "The boat sent over Rauros is the one Faramir sees drift past."
+      es: "La barca lanzada por Rauros es la que Faramir ve pasar a la deriva."

@@ -1,0 +1,23 @@
+id: turin-and-the-outlaws-of-amon-rudh
+age: first-age
+when:
+  start: { age: first-age, year: 487 }   # the stay at Amon Rûdh lasts a few years after Beleg finds Túrin
+  end: { age: first-age, year: 489 }
+  precision: year
+place: amon-rudh
+characters: [ turin, beleg, mim ]
+arcs: [ the-children-of-hurin ]
+journeys: [ turins-wanderings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Túrin and the outlaws at Amon Rûdh", es: "Túrin y los proscritos en Amon Rûdh" }
+summary:
+  en: "Beleg finds Túrin leading a band of outlaws. They take the hill of Amon Rûdh as a hold, where the Dwarf Mîm hides his family. Mîm's grudge against them is the seed of betrayal."
+  es: "Beleg encuentra a Túrin al frente de una banda de proscritos. Se hacen fuertes en la colina de Amon Rûdh, donde el Enano Mîm esconde a su familia. El rencor de Mîm es la semilla de la traición."
+links:
+  - to: turin-flees-doriath
+    type: caused-by
+    note:
+      en: "Outlawry follows the flight from Doriath."
+      es: "La vida de proscrito sigue a la huida de Doriath."

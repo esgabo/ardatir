@@ -1,0 +1,21 @@
+id: the-trees-are-darkened
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1495 }   # Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
+place: valinor
+characters: [ melkor, ungoliant, finwe, feanor ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Darkening of Valinor" }
+title: { en: "The Trees are darkened and Finwë is slain", es: "Los Árboles se oscurecen y muere Finwë" }
+summary:
+  en: "With Ungoliant's help Melkor poisons the Two Trees and slays Finwë at Formenos. He steals the Silmarils and flees north, leaving Valinor in darkness."
+  es: "Con ayuda de Ungoliant, Melkor envenena los Dos Árboles y mata a Finwë en Formenos. Roba los Silmarils y huye al norte, dejando Valinor en tinieblas."
+links:
+  - to: feanor-draws-his-sword-on-fingolfin
+    type: caused-by
+    note:
+      en: "Fëanor's exile to Formenos leaves Finwë exposed."
+      es: "El destierro de Fëanor a Formenos deja a Finwë desprotegido."

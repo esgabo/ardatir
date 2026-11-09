@@ -1,0 +1,8 @@
+id: ulmo
+name: { en: "Ulmo", es: "Ulmo" }
+kind: ainu
+summary:
+  en: "Lord of Waters among the Valar, the one who never abandoned the Elves and Men of Middle-earth."
+  es: "Señor de las Aguas entre los Valar, el que nunca abandonó a Elfos y Hombres de la Tierra Media."
+color: "#c8c0a8"
+scale: 2.4

@@ -1,0 +1,21 @@
+id: the-shadow-falls-on-numenor
+age: second-age
+when:
+  start: { age: second-age, year: 2251 }   # App. B 2251; UT gives Tar-Atanamir's reign as 2029–2221
+  precision: approximate
+place: numenor
+characters: [  ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "The shadow falls on Númenor", es: "La sombra cae sobre Númenor" }
+summary:
+  en: "The kings grow proud, long-lived and greedy for more life. Tar-Atanamir openly begrudges the Valar's gift, and fear of death starts to poison the island."
+  es: "Los reyes se vuelven orgullosos, longevos y ávidos de más vida. Tar-Atanamir envidia abiertamente el don de los Valar, y el miedo a la muerte empieza a envenenar la isla."
+links:
+  - to: numenoreans-return-to-middle-earth
+    type: caused-by
+    note:
+      en: "Seafaring wealth feeds Númenor's pride."
+      es: "La riqueza marinera alimenta el orgullo de Númenor."

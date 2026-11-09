@@ -1,0 +1,22 @@
+id: tuor-leads-the-survivors-from-gondolin
+age: first-age
+when:
+  start: { age: first-age, year: 510, season: summer }   # immediately after the fall
+  precision: season
+place: gondolin
+characters: [ tuor, idril, earendil, glorfindel ]   # Gothmog died in the city, slain by Ecthelion
+arcs: [ the-fall-of-gondolin ]
+journeys: [ the-flight-from-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Tuor and the Fall of Gondolin" }
+title: { en: "Tuor leads the survivors out", es: "Tuor guía a los supervivientes" }
+summary:
+  en: "Along the secret passage Idril prepared, Tuor leads the refugees out of the burning city and over the high pass, where they hold off pursuit with a heavy price."
+  es: "Por el pasadizo secreto que Idril preparó, Tuor saca a los refugiados de la ciudad en llamas y por el alto paso, donde frenan la persecución a un alto precio."
+links:
+  - to: fall-of-gondolin
+    type: caused-by
+    note:
+      en: "The escape from the same night."
+      es: "La huida de la misma noche."

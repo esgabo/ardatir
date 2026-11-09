@@ -1,0 +1,15 @@
+id: barahirs-band-is-betrayed
+age: first-age
+when:
+  start: { age: first-age, year: 460 }   # in the years after the Bragollach
+  precision: approximate
+place: dorthonion
+characters: [ barahir, beren ]
+arcs: [ beren-and-luthien ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+title: { en: "Barahir's band is betrayed", es: "Traicionan a la banda de Barahir" }
+summary:
+  en: "Hunted in the highlands, Barahir and his twelve outlaws are betrayed to Morgoth and killed. Only Beren, away on a scouting mission, survives, and takes his father's ring."
+  es: "Acosados en las tierras altas, Barahir y sus doce proscritos son traicionados ante Morgoth y muertos. Solo Beren, ausente en una exploración, sobrevive y se queda con el anillo de su padre."

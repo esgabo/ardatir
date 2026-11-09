@@ -1,0 +1,6 @@
+id: isildurs-flight-from-numenor
+title: { en: "Isildur's Flight from Númenor", es: "La huida de Isildur de Númenor" }
+characters: [ isildur, anarion ]
+waypoints:
+  - { place: romenna, date: { age: second-age, year: 3319 }, precision: year }
+  - { place: pelargir, date: { age: second-age, year: 3319 }, end: { age: second-age, year: 3320 }, precision: year }

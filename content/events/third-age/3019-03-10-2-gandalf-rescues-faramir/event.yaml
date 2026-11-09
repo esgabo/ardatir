@@ -1,0 +1,16 @@
+id: gandalf-rescues-faramir
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 10 }
+  precision: day
+place: minas-tirith
+characters: [ gandalf, faramir, denethor, pippin, beregond ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ gandalf-the-whites-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Siege of Gondor" }
+title: { en: "Gandalf Rescues Faramir", es: "Gandalf rescata a Faramir" }
+summary:
+  en: "Faramir, riding back to the city with the last of his men, is hunted by the Nazgûl across the Pelennor until Gandalf's light drives them off. Denethor greets him coldly, grieving for Boromir."
+  es: "Faramir, que regresa a la ciudad con los últimos de sus hombres, es acosado por los Nazgûl en el Pelennor hasta que la luz de Gandalf los ahuyenta. Denethor lo recibe con frialdad, llorando a Boromir."

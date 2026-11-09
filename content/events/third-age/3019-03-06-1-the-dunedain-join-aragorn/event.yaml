@@ -1,0 +1,17 @@
+id: the-dunedain-join-aragorn
+age: third-age
+when:
+  # Early hours of the 6th, per Appendix B. Théoden rides for Harrowdale the same day.
+  start: { age: third-age, year: 3019, month: 3, day: 6 }
+  precision: day
+place: helms-deep
+characters: [ aragorn, halbarad, legolas, gimli ]
+arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
+journeys: [ aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Passing of the Grey Company" }
+title: { en: "The Grey Company Comes to Aragorn", es: "La Compañía Gris llega junto a Aragorn" }
+summary:
+  en: "Thirty Rangers of the North under Halbarad, with Elrond's sons, overtake Aragorn by night, bringing word from Elrond: if he is in haste, let him remember the Paths of the Dead."
+  es: "Treinta Montaraces del Norte al mando de Halbarad, con los hijos de Elrond, alcanzan a Aragorn de noche y le traen palabras de Elrond: si tiene prisa, que recuerde las Sendas de los Muertos."

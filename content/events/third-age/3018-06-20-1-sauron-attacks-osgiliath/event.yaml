@@ -1,0 +1,22 @@
+id: sauron-attacks-osgiliath
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 6, day: 20 }
+  precision: day
+place: osgiliath
+characters: [ boromir, faramir ]
+arcs: [ the-war-of-the-ring ]
+journeys: [  ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-lord-of-the-rings, chapter: "Appendix B" }
+title: { en: "Sauron Attacks Osgiliath", es: "Sauron ataca Osgiliath" }
+summary:
+  en: "Sauron's first open stroke: a host crosses the river and takes Osgiliath. Boromir and Faramir fight on, until the bridge is broken and the city lost."
+  es: "El primer golpe abierto de Sauron: una hueste cruza el río y toma Osgiliath. Boromir y Faramir resisten hasta que se rompe el puente y se pierde la ciudad."
+links:
+  - to: boromir-sets-out
+    type: enables
+    note:
+      en: "The pressure on Gondor, and a dream, send Boromir north."
+      es: "La presión sobre Gondor, y un sueño, mandan a Boromir hacia el norte."

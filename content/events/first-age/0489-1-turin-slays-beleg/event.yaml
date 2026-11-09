@@ -1,0 +1,22 @@
+id: turin-slays-beleg
+age: first-age
+when:
+  start: { age: first-age, year: 489 }   # after Mîm betrays the outlaws to the orcs; year approximate
+  precision: approximate
+place: taur-nu-fuin
+characters: [ turin, beleg, gwindor ]
+arcs: [ the-children-of-hurin ]
+journeys: [ turins-wanderings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
+title: { en: "Túrin slays Beleg", es: "Túrin mata a Beleg" }
+summary:
+  en: "Beleg rescues Túrin from his orc captors, and in the dark Túrin mistakes him for a foe and kills him with his own sword. Gwindor leads the stunned Túrin out of the Forest under Night."
+  es: "Beleg rescata a Túrin de los orcos que lo llevan cautivo, y en la oscuridad Túrin lo confunde con un enemigo y lo mata con su propia espada. Gwindor saca al aturdido Túrin del Bosque bajo la Noche."
+links:
+  - to: turin-and-the-outlaws-of-amon-rudh
+    type: caused-by
+    note:
+      en: "Mîm's betrayal brings the orcs."
+      es: "La traición de Mîm trae a los orcos."

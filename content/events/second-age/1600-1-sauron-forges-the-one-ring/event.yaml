@@ -1,0 +1,21 @@
+id: sauron-forges-the-one-ring
+age: second-age
+when:
+  start: { age: second-age, year: 1600 }   # App. B: c. 1600
+  precision: approximate
+place: orodruin
+characters: [ sauron ]
+arcs: [ the-forging-of-the-rings ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
+title: { en: "Sauron forges the One Ring", es: "Sauron forja el Anillo Único" }
+summary:
+  en: "In the fires of Orodruin, Sauron makes the master Ring, placing much of his strength and will in it to rule all the others."
+  es: "En los fuegos de Orodruin, Sauron forja el anillo maestro, depositando en él gran parte de su poder y su voluntad para dominar a todos los demás."
+links:
+  - to: celebrimbor-forges-the-three
+    type: concurrent
+    note:
+      en: "Made in secret at the same time."
+      es: "Hecho en secreto al mismo tiempo."

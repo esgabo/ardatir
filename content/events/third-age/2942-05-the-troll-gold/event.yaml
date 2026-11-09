@@ -8,7 +8,7 @@ characters: [ bilbo, gandalf ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 19 }
 title: { en: The Troll Gold, es: El oro de los trolls }
 summary:

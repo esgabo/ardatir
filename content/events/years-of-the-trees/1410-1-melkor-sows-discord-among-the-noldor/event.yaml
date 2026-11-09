@@ -1,0 +1,22 @@
+id: melkor-sows-discord-among-the-noldor
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1410 }   # soon after his release, until the quarrel of 1490. Annals of Aman; the conversion to Sun-years is the axis's concern
+  end: { age: years-of-the-trees, year: 1490 }
+  precision: year
+place: tirion
+characters: [ melkor, feanor, fingolfin ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Silmarils and the Unrest of the Noldor" }
+title: { en: "Melkor sows discord among the Noldor", es: "Melkor siembra la discordia entre los Noldor" }
+summary:
+  en: "Melkor whispers lies of Valar who hold the Elves captive and fear Men's coming. Fëanor and his half-brother Fingolfin grow bitter toward each other."
+  es: "Melkor susurra mentiras: los Valar tendrían cautivos a los Elfos y temerían la llegada de los Hombres. Fëanor y su hermanastro Fingolfin se enemistan."
+links:
+  - to: melkor-feigns-repentance
+    type: caused-by
+    note:
+      en: "The pretended penitent uses his freedom to spread lies."
+      es: "El falso penitente usa su libertad para esparcir mentiras."

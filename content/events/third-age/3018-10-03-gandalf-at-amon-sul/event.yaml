@@ -1,0 +1,16 @@
+id: gandalf-at-amon-sul
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 10, day: 3 }
+  precision: day
+place: weathertop
+characters: [ gandalf, nazgul ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ gandalfs-road-3018 ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
+title: { en: "Gandalf Besieged on Weathertop", es: "Gandalf asediado en la Cima de los Vientos" }
+summary:
+  en: "Gandalf, searching for the hobbits, is surrounded on Weathertop by the Nazgûl. He holds them off through the night with fire, then escapes north."
+  es: "Gandalf, que busca a los hobbits, es rodeado por los Nazgûl en la Cima de los Vientos. Los contiene toda la noche con fuego y luego escapa hacia el norte."

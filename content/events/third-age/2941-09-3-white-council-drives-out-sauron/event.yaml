@@ -9,7 +9,7 @@ characters: [ gandalf, saruman ]
 arcs: []
 journeys: [ gandalfs-road-2941 ]
 tags: [ hobbit, lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-lord-of-the-rings, chapter: Appendix B }
 title:
   en: The White Council Drives Out Sauron

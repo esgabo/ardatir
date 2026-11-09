@@ -1,0 +1,16 @@
+id: boromir-sets-out
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 7, day: 4 }
+  precision: day
+place: minas-tirith
+characters: [ boromir, denethor, faramir ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ boromirs-road ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
+title: { en: "Boromir Sets Out for Rivendell", es: "Boromir parte hacia Rivendel" }
+summary:
+  en: "Troubled by a dream of a broken sword and a Halfling, Boromir rides out alone from Minas Tirith to seek Elrond's counsel."
+  es: "Inquieto por un sueño de una espada rota y un mediano, Boromir cabalga solo desde Minas Tirith en busca del consejo de Elrond."

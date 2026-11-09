@@ -1,0 +1,16 @@
+id: frodo-and-sam-in-the-morgai
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 16 }
+  precision: day
+place: mordor
+characters: [ frodo, sam ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ frodo-and-sam-across-mordor ]
+tags: [ lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Land of Shadow" }
+title: { en: "Mount Doom from the Morgai", es: "El Monte del Destino desde el Morgai" }
+summary:
+  en: "From a ridge in the Morgai, Frodo and Sam see their goal at last: Mount Doom, far across the plain of Gorgoroth, and the long way left."
+  es: "Desde una cresta del Morgai, Frodo y Sam ven por fin su meta: el Monte del Destino, lejos, al otro lado de la llanura de Gorgoroth, y el largo camino que queda."

@@ -1,0 +1,8 @@
+id: eol
+name: { en: "Eöl", es: "Eöl" }
+kind: elf
+summary:
+  en: "The Dark Elf of Nan Elmoth, a smith who took Aredhel as his wife and was father to Maeglin."
+  es: "El Elfo Oscuro de Nan Elmoth, herrero que tomó por esposa a Aredhel y fue padre de Maeglin."
+color: "#5a7a9a"
+scale: 1.85

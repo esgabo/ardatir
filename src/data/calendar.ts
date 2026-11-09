@@ -120,6 +120,23 @@ export function overlaps(a: Span, b: Span): boolean {
   return a.from < b.to && b.from < a.to;
 }
 
+/**
+ * Whole years that certainly passed between two honest ranges: from the latest the first can
+ * end to the earliest the second can begin. 0 when they overlap, touch, or are less than a
+ * year apart. It is what the lanes can honestly say: "at least N years later".
+ *
+ * Counted in years of the Sun, or, given the age both ranges fall in, in that age's own
+ * years: in the Years of the Trees a year is a Valian year (`axis.yearLength` years of the
+ * Sun), so 718 years of the Sun there are only 74 Valian years.
+ */
+export function yearsBetween(a: Span, b: Span, age?: AgeAxis): number {
+  const L = age?.axis?.yearLength ?? 1;
+  return Math.max(0, Math.floor((b.from - a.to) / L + 1e-9));
+}
+
+/** Does this age count its years in Valian years, not years of the Sun? */
+export const valianYears = (age: AgeAxis): boolean => (age.axis?.yearLength ?? 1) !== 1;
+
 /** The age and date an axis position falls in, for labels. Days outside the months come back by name, with no month. */
 export function axisToDate(x: number, ages: Age[]): { age: Age; year: number; month?: number; day: number | ExtraDay } | undefined {
   const dated = ages.filter((a) => a.axis).sort((a, b) => a.axis!.start - b.axis!.start);

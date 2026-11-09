@@ -1,0 +1,17 @@
+id: in-tom-bombadils-house
+age: third-age
+when:
+  start: { age: third-age, year: 3018, month: 9, day: 26 }
+  end: { age: third-age, year: 3018, month: 9, day: 27 }
+  precision: day
+place: old-forest
+characters: [ frodo, sam, merry, pippin, tom-bombadil, goldberry ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-bree ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: "In the House of Tom Bombadil" }
+title: { en: "Two Nights with Tom Bombadil", es: "Dos noches con Tom Bombadil" }
+summary:
+  en: "Tom and Goldberry take the hobbits in, feed them, tell old tales, and Tom puts the Ring on without turning invisible, to Frodo's astonishment."
+  es: "Tom y Baya de Oro acogen a los hobbits, los alimentan y cuentan viejos cuentos, y Tom se pone el Anillo sin desaparecer, para asombro de Frodo."

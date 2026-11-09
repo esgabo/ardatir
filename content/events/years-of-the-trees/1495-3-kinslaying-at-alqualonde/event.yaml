@@ -1,0 +1,21 @@
+id: kinslaying-at-alqualonde
+age: years-of-the-trees
+when:
+  start: { age: years-of-the-trees, year: 1495 }   # during the Flight, before the ships burn. Annals of Aman; the conversion to Sun-years is the axis's concern
+  precision: year
+place: alqualonde
+characters: [ feanor, fingolfin, finarfin ]
+arcs: [ the-flight-of-the-noldor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Flight of the Noldor" }
+title: { en: "The Kinslaying at Alqualondë", es: "La Matanza de Parientes en Alqualondë" }
+summary:
+  en: "The Teleri refuse to lend their ships. Fëanor's host seizes the swan-ships by force, and Elves slay Elves for the first time."
+  es: "Los Teleri se niegan a prestar sus naves. La hueste de Fëanor se apodera de ellas por la fuerza, y por primera vez unos Elfos matan a otros."
+links:
+  - to: feanors-oath
+    type: caused-by
+    note:
+      en: "The oath cannot be kept without ships."
+      es: "El juramento no puede cumplirse sin naves."

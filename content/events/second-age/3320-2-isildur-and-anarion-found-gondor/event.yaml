@@ -1,0 +1,21 @@
+id: isildur-and-anarion-found-gondor
+age: second-age
+when:
+  start: { age: second-age, year: 3320 }   # App. B: 3320, with Arnor
+  precision: year
+place: osgiliath
+characters: [ isildur, anarion ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
+title: { en: "Isildur and Anárion found Gondor", es: "Isildur y Anárion fundan Gondor" }
+summary:
+  en: "In the south the brothers build Osgiliath, Minas Ithil and Minas Anor. Isildur plants the fruit of Nimloth before his house in Minas Ithil."
+  es: "En el sur los hermanos levantan Osgiliath, Minas Ithil y Minas Anor. Isildur planta el fruto de Nimloth ante su casa en Minas Ithil."
+links:
+  - to: elendil-founds-arnor
+    type: concurrent
+    note:
+      en: "The two realms are founded together."
+      es: "Los dos reinos se fundan a la vez."

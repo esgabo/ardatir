@@ -1,0 +1,7 @@
+id: to-the-grey-havens
+title: { en: "To the Grey Havens", es: "Hacia los Puertos Grises" }
+characters: [ frodo, sam ]
+# Frodo's last journey, with Sam to see him off. The day they leave Bag End is not checked against App. B, so only the month is claimed.
+waypoints:
+  - { place: bag-end, date: { age: third-age, year: 3021, month: 9 }, precision: month }
+  - { place: grey-havens, date: { age: third-age, year: 3021, month: 9, day: 29 }, precision: day }

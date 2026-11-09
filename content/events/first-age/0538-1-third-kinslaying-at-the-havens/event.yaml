@@ -1,0 +1,22 @@
+id: third-kinslaying-at-the-havens
+age: first-age
+when:
+  start: { age: first-age, year: 538 }   # after many years of peace at the Havens
+  precision: approximate
+place: havens-of-sirion
+characters: [ elwing, maedhros, maglor, elrond, elros ]   # Eärendil is away at sea
+arcs: [ the-fall-of-doriath, the-flight-of-the-noldor ]
+journeys: [ earendils-voyage ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
+title: { en: "The third Kinslaying at the Havens", es: "La tercera Matanza de Parientes en los Puertos" }
+summary:
+  en: "The last sons of Fëanor attack the Havens for the Silmaril. Elwing, with it, throws herself into the sea and is saved by Ulmo. Her twin sons Elrond and Elros are taken, and later fostered by Maglor."
+  es: "Los últimos hijos de Fëanor atacan los Puertos en busca del Silmaril. Elwing se arroja al mar con él y Ulmo la salva. Sus hijos gemelos, Elrond y Elros, son capturados y más tarde criados por Maglor."
+links:
+  - to: sack-of-doriath
+    type: caused-by
+    note:
+      en: "The oath is still unfulfilled."
+      es: "El juramento sigue sin cumplirse."
