@@ -9,7 +9,7 @@ characters: [ glorfindel, frodo, sam, merry, pippin, aragorn ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ with-strider-to-rivendell ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
 title: { en: "Glorfindel Finds the Hobbits", es: "Glorfindel encuentra a los hobbits" }
 summary:

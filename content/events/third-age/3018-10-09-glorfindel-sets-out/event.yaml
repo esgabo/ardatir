@@ -8,7 +8,7 @@ characters: [ glorfindel, elrond ]
 arcs: [ the-war-of-the-ring ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
 title: { en: "Glorfindel Rides from Rivendell", es: "Glorfindel sale de Rivendel" }
 summary:
