@@ -8,7 +8,7 @@ characters: [ frodo, sam, pippin, merry, fatty-bolger ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ the-road-to-crickhollow, the-road-to-bree ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "A Conspiracy Unmasked" }
 title: { en: "The Conspiracy Unmasked at Crickhollow", es: "La conspiración desvelada en Cricava" }
 summary:

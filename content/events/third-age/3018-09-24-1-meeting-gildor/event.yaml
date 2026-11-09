@@ -9,7 +9,7 @@ characters: [ frodo, sam, pippin, gildor ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ the-road-to-crickhollow ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "Three is Company" }
 title: { en: "Gildor and the Elves in the Woody End", es: "Gildor y los Elfos en el Bosque Cerrado" }
 summary:

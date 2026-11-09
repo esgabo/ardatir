@@ -8,7 +8,7 @@ characters: [ gandalf, nazgul ]
 arcs: [ the-war-of-the-ring ]
 journeys: [ gandalfs-road-3018 ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
 title: { en: "Gandalf Besieged on Weathertop", es: "Gandalf asediado en la Cima de los Vientos" }
 summary:
