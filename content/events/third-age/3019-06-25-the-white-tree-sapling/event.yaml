@@ -1,0 +1,16 @@
+id: the-white-tree-sapling
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 6, day: 25 }
+  precision: day
+place: mindolluin
+characters: [ aragorn, gandalf ]
+arcs: [ the-war-of-the-ring, after-the-war ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-return-of-the-king, chapter: "The Steward and the King" }
+title: { en: "A Sapling of the White Tree", es: "Un retoño del Árbol Blanco" }
+summary:
+  en: "On the high snows of Mindolluin, Aragorn finds a young sapling of the line of the White Tree. It is carried down and planted where the dead tree stood."
+  es: "En las altas nieves del Mindolluin, Aragorn halla un joven retoño de la estirpe del Árbol Blanco. Lo bajan y lo plantan donde estaba el árbol muerto."

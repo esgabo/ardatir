@@ -1,0 +1,22 @@
+id: wedding-of-aragorn-and-arwen
+age: third-age
+when:
+  start: { age: third-age, year: 3019, day: midyear }
+  precision: day
+place: minas-tirith
+characters: [ aragorn, arwen, elrond, gandalf ]
+arcs: [ the-war-of-the-ring, after-the-war ]
+journeys: [  ]
+tags: [ lord-of-the-rings ]
+status: outline
+source: { book: the-lord-of-the-rings, chapter: "Appendix A (Aragorn and Arwen)" }
+title: { en: "The Wedding of Aragorn and Arwen", es: "La boda de Aragorn y Arwen" }
+summary:
+  en: "On Mid-year's Day, in the City, Aragorn weds Arwen at last, and the long tale of Beren and Lúthien's line finds its happy ending."
+  es: "En el Día de la Mitad del Año, en la Ciudad, Aragorn se casa por fin con Arwen, y la larga historia del linaje de Beren y Lúthien alcanza su feliz desenlace."
+links:
+  - to: arwen-comes-to-minas-tirith
+    type: caused-by
+    note:
+      en: "She arrives the day before."
+      es: "Ella llega el día anterior."

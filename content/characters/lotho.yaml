@@ -1,8 +1,0 @@
-id: lotho
-name: { en: "Lotho Sackville-Baggins", es: "Lotho Sacovilla-Bolsón" }
-kind: hobbit
-summary:
-  en: "A greedy hobbit who buys up the Shire and falls under Saruman's thumb."
-  es: "Un hobbit codicioso que acapara la Comarca y cae bajo la mano de Saruman."
-color: "#7a5a4a"
-scale: 1
