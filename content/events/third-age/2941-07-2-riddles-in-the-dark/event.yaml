@@ -8,7 +8,7 @@ characters: [ bilbo, gollum ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again ]
 tags: [ hobbit, the-ring ]
-status: outline
+status: scripted
 source: { book: the-hobbit, chapter: 5 }
 title: { en: Riddles in the Dark, es: Acertijos en las tinieblas }
 summary:
