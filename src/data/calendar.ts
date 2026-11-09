@@ -96,15 +96,19 @@ export function dateSpan(date: StoryDate, precision: Precision, age: AgeAxis): S
   }
 }
 
-/** Axis span of an event's `when`, from the start of its start date to the end of its end date. */
-export function whenSpan(when: When, ages: Map<string, AgeAxis>): Span | undefined {
+/**
+ * Axis span of an event's `when` (or a waypoint's range), from the start of its start date to
+ * the end of its end date. `endPrecision` lets the end be known more (or less) precisely than
+ * the start ("some time in June, until 1 Lithe"); it defaults to `precision`.
+ */
+export function whenSpan(when: When & { endPrecision?: Precision }, ages: Map<string, AgeAxis>): Span | undefined {
   const startAge = ages.get(when.start.age);
   if (!startAge) return undefined;
   const a = dateSpan(when.start, when.precision, startAge);
   if (!a) return undefined;
   if (!when.end) return a;
   const endAge = ages.get(when.end.age);
-  const b = endAge && dateSpan(when.end, when.precision, endAge);
+  const b = endAge && dateSpan(when.end, when.endPrecision ?? when.precision, endAge);
   return b ? { from: a.from, to: Math.max(a.to, b.to) } : a;
 }
 

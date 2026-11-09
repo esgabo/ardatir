@@ -2,16 +2,17 @@ id: there-and-back-again
 title: { en: There and Back Again, es: Historia de una ida y una vuelta }
 characters: [ bilbo ]
 waypoints:
+  - { place: bag-end, date: { age: third-age, year: 2941, month: 4, day: 26 }, precision: day }   # the Unexpected Party
   - { place: green-dragon, date: { age: third-age, year: 2941, month: 4, day: 27 }, precision: day }   # runs from Bag End to Bywater
   - { place: trollshaws, date: { age: third-age, year: 2941, month: 5 }, precision: month }
-  - { place: rivendell, date: { age: third-age, year: 2941, month: 6 }, precision: month }   # midsummer
+  - { place: rivendell, date: { age: third-age, year: 2941, month: 6 }, end: { age: third-age, year: 2941, day: 1-lithe }, precision: month, endPrecision: day }   # The Hobbit, ch. 3: arrived some time in June, still there on Midsummer's Eve (1 Lithe), left next morning
   - { place: goblin-town, date: { age: third-age, year: 2941, season: summer }, precision: season }
   - { place: gollums-lake, date: { age: third-age, year: 2941, season: summer }, precision: season }
   - { place: eagles-eyrie, date: { age: third-age, year: 2941, season: summer }, precision: season }
   - { place: beorns-house, date: { age: third-age, year: 2941, season: summer }, precision: season }
   - { place: forest-gate, date: { age: third-age, year: 2941, season: summer }, precision: season }
   - { place: mirkwood, date: { age: third-age, year: 2941, season: summer }, precision: season }
-  - { place: elvenking-halls, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: elvenking-halls, date: { age: third-age, year: 2941, season: summer }, end: { age: third-age, year: 2941, month: 9 }, precision: season, endPrecision: month }   # taken in summer (ch. 8); out in the barrels in September, the night before Lake-town (ch. 9)
   - { place: lake-town, date: { age: third-age, year: 2941, month: 9, day: 22 }, precision: day }
   - { place: erebor, date: { age: third-age, year: 2941, season: autumn }, precision: season }
   - { place: dale, date: { age: third-age, year: 2941, season: autumn }, precision: season }   # the Arkenstone, the battle, Thorin's farewell

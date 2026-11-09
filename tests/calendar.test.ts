@@ -147,6 +147,13 @@ describe('whenSpan and overlaps', () => {
     expect(s.to).toBeCloseTo(dateSpan(d({ season: 'autumn' }), 'season', ta)!.to);
   });
 
+  it('gives the end its own precision when asked: June until 1 Lithe', () => {
+    const s = whenSpan({ start: d({ month: 6 }), end: d({ day: '1-lithe' }), precision: 'month', endPrecision: 'day' }, ages)!;
+    expect(s.from).toBeCloseTo(dateSpan(d({ month: 6 }), 'month', ta)!.from);
+    expect(s.to).toBeCloseTo(dateSpan(d({ day: '1-lithe' }), 'day', ta)!.to);
+    expect(s.to - s.from).toBeCloseTo(31 / 366); // 30 days of June and Midsummer's Eve
+  });
+
   it('is the start span without an end, undefined for unknown or timeless ages', () => {
     expect(whenSpan({ start: d({}), precision: 'year' }, ages)).toEqual({ from: yearStart, to: yearStart + 1 });
     expect(whenSpan({ start: { age: 'nowhere', year: 1 }, precision: 'year' }, ages)).toBeUndefined();

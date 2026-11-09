@@ -89,6 +89,15 @@ describe('the real content', () => {
     expect(dg.span.from).toBeGreaterThan(year + 0.4); // not the whole year: from summer
     expect(dg.span.to).toBeLessThan(year + 1);        // to the end of autumn
   });
+
+  it('matches the Rivendell waypoints (June until 1 Lithe) to the moon-letters', () => {
+    const letters = r.index.events.find((e) => e.id === 'elrond-reads-the-moon-letters')!;
+    for (const id of ['there-and-back-again', 'the-road-to-erebor', 'gandalfs-road-2941']) {
+      const w = r.index.journeys.find((j) => j.id === id)!.waypoints.find((x) => x.place === 'rivendell')!;
+      expect(w.endPrecision, id).toBe('day');
+      expect(w.at, id).toBe(letters.at);
+    }
+  });
 });
 
 describe('the valid fixture', () => {
@@ -117,6 +126,21 @@ describe('the valid fixture', () => {
   it('matches a ranged waypoint to the event inside its range', () => {
     const w = r.index.journeys[0].waypoints[1];
     expect(w.end).toEqual({ age: 'third-age', year: 2941, season: 'autumn' });
+    expect(w.at).toBe(ev('moon-letters').at);
+  });
+
+  it('lets a waypoint end at its own precision', () => {
+    const ok = buildWith([{ file: ROAD, replace: [
+      'date: { age: third-age, year: 2941, season: summer }, end: { age: third-age, year: 2941, season: autumn }, precision: season',
+      'date: { age: third-age, year: 2941, month: 6 }, end: { age: third-age, year: 2941, day: 1-lithe }, precision: month, endPrecision: day',
+    ] }, { file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['season: summer }\n  precision: season', 'day: 1-lithe }\n  precision: day'] }]);
+    expect(ok.errors).toEqual([]);
+    expect(ok.warnings).toEqual([]);
+    const w = ok.index.journeys[0].waypoints[1];
+    expect(w.endPrecision).toBe('day');
+    const year = 2940; // the fixture's Third Age starts at 0
+    expect(w.span.from).toBeCloseTo(ok.index.ages.find((a) => a.id === 'third-age')!.axis!.start + year + 151 / 366, 6);
+    expect(w.span.to).toBeCloseTo(ok.index.ages.find((a) => a.id === 'third-age')!.axis!.start + year + 182 / 366, 6);
     expect(w.at).toBe(ev('moon-letters').at);
   });
 
@@ -184,6 +208,9 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'waypoint earlier than the one before', changes: [{ file: ROAD, replace: ['year: 2941, month: 4, day: 26', 'year: 2942, month: 4, day: 26'] }], error: 'waypoints[1]: earlier than the waypoint before it' },
   { name: 'waypoint end before its date', changes: [{ file: ROAD, replace: ['end: { age: third-age, year: 2941, season: autumn }', 'end: { age: third-age, year: 2941, season: spring }'] }], error: 'waypoints[1].end is before its date' },
   { name: 'waypoint end at the wrong precision', changes: [{ file: ROAD, replace: ['end: { age: third-age, year: 2941, season: autumn }', 'end: { age: third-age, year: 2941, month: 10 }'] }], error: 'waypoints[1].end: precision "season" needs a season' },
+  { name: 'waypoint endPrecision without an end', changes: [{ file: ROAD, replace: ['day: 26 }, precision: day }', 'day: 26 }, precision: day, endPrecision: month }'] }], error: 'waypoints[0].endPrecision: only with an end' },
+  { name: 'waypoint end at the wrong endPrecision', changes: [{ file: ROAD, replace: ['season: autumn }, precision: season', 'season: autumn }, precision: season, endPrecision: day'] }], error: 'waypoints[1].end: precision "day" needs a day' },
+  { name: 'waypoint end inside its coarser date', changes: [{ file: ROAD, replace: ['end: { age: third-age, year: 2941, season: autumn }, precision: season', 'end: { age: third-age, year: 2941, month: 7, day: 3 }, precision: season, endPrecision: day'] }], error: 'waypoints[1].end ends before its date does' },
   { name: 'waypoint end in an unknown age', changes: [{ file: ROAD, replace: ['end: { age: third-age,', 'end: { age: fifth-age,'] }], error: 'waypoints[1].end.age: unknown age "fifth-age"' },
 
   // Staging and recordings
@@ -212,6 +239,15 @@ describe('broken content', () => {
     const r = buildWith([{ file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['year: 2941, season: summer', 'year: 2940, season: summer'] }]);
     expect(r.errors).toEqual([]);
     expect(r.warnings.some((w) => w.includes('sorts after "moon-letters" but its dates are earlier'))).toBe(true);
+  });
+
+  it('warns when a journey event at a waypoint\'s place overlaps none of its waypoints there', () => {
+    const r = buildWith([{ file: ROAD, replace: [
+      'date: { age: third-age, year: 2941, season: summer }, end: { age: third-age, year: 2941, season: autumn }, precision: season',
+      'date: { age: third-age, year: 2941, month: 6 }, end: { age: third-age, year: 2941, season: autumn }, precision: month, endPrecision: season',
+    ] }, { file: LETTERS, replace: ['year: 2941, day: 1-lithe', 'year: 2941, month: 5, day: 30'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('is at "rivendell" on journey "the-road" but overlaps none of its waypoints there'))).toBe(true);
   });
 
   it('warns about missing Spanish and unknown fields', () => {

@@ -105,6 +105,8 @@ export interface Waypoint {
   /** For a stay known only within bounds: the latest the sources allow, like an event's `when.end`. */
   end?: StoryDate;
   precision: Precision;
+  /** Precision of `end` when it differs from `precision` (a stay from "June" until "1 Lithe"). Only with `end`. */
+  endPrecision?: Precision;
   /** Honest range: from the start of `date` to the end of `end` (or of `date`), widened by precision. */
   span: Span;
   /** Best-guess moment inside `span`: the matching event's `at` when there is one. */

@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
-import { dateSpan, hasOverlithe, whenSpan } from '../../src/data/calendar.ts';
+import { dateSpan, hasOverlithe, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
   EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
@@ -216,20 +216,26 @@ export function buildContent(contentDir: string): BuildResult {
     (Array.isArray(o.waypoints) ? o.waypoints : []).forEach((w, i) => {
       const what = `waypoints[${i}]`;
       if (!isObj(w)) { R.error(f, `${what}: expected { place, date, precision }`); return; }
-      keys(f, w, ['place', 'date', 'end', 'precision'], what);
+      keys(f, w, ['place', 'date', 'end', 'endPrecision', 'precision'], what);
       if (!placeIds.has(String(w.place))) R.error(f, `${what}.place: unknown place "${w.place}"`);
       const d = date(f, w.date, `${what}.date`);
-      // `end`: a stay known only within bounds ("summer–autumn"), at the same precision as `date`.
+      // `end`: a stay known only within bounds ("summer–autumn"). It has the precision of `date`
+      // unless `endPrecision` says otherwise ("June, until 1 Lithe").
       const e = w.end !== undefined ? date(f, w.end, `${what}.end`) : undefined;
       if (w.end !== undefined && !e) return;
+      if (w.endPrecision !== undefined && w.end === undefined) { R.error(f, `${what}.endPrecision: only with an end`); return; }
       const p = precision(f, w.precision, d, what);
-      if (e && p) precision(f, p, e, `${what}.end`);
-      const span = d && p && whenSpan({ start: d, ...e ? { end: e } : {}, precision: p }, ageMap);
-      if (e && d && p && span && dateSpan(e, p, ageMap.get(e.age)!)!.from < dateSpan(d, p, ageMap.get(d.age)!)!.from) {
-        R.error(f, `${what}.end is before its date`);
-        return;
+      const ep = e && p ? precision(f, w.endPrecision ?? p, e, `${what}.end`) : undefined;
+      if (e && !ep) return;
+      const ownEp = ep && ep !== p ? { endPrecision: ep } : {};
+      const span = d && p && whenSpan({ start: d, ...e ? { end: e } : {}, precision: p, ...ownEp }, ageMap);
+      if (e && ep && d && p && span) {
+        const s0 = dateSpan(d, p, ageMap.get(d.age)!)!, s1 = dateSpan(e, ep, ageMap.get(e.age)!)!;
+        if (s1.from < s0.from) { R.error(f, `${what}.end is before its date`); return; }
+        // A finer end inside a coarser date would claim nothing: the range would still be the whole date.
+        if (s1.to < s0.to) { R.error(f, `${what}.end ends before its date does; narrow the date instead`); return; }
       }
-      if (d && p && span) waypoints.push({ place: String(w.place), date: d, ...e ? { end: e } : {}, precision: p, span, at: (span.from + span.to) / 2 });
+      if (d && p && span) waypoints.push({ place: String(w.place), date: d, ...e ? { end: e } : {}, precision: p, ...ownEp, span, at: (span.from + span.to) / 2 });
     });
     if (waypoints.length < 2) R.error(f, 'a journey needs at least two waypoints');
     // Coarse dates may overlap their neighbours; only a waypoint that ends before the previous one starts is out of order.
@@ -513,6 +519,11 @@ export function buildContent(contentDir: string): BuildResult {
         R.warn(byId.get(e.id)!.file, `is part of journey "${j}" but falls outside its dates`);
         break;
       }
+      // A stop on the journey whose dates miss every waypoint at its place: the waypoint can't take its moment.
+      const here = jr.waypoints.filter((w) => w.place === e.place);
+      if (e.span && here.length && !here.some((w) => overlaps(w.span, e.span!))) {
+        R.warn(byId.get(e.id)!.file, `is at "${e.place}" on journey "${j}" but overlaps none of its waypoints there; widen the waypoint (an end?) or check the dates`);
+      }
     }
   }
   for (const a of arcs) {
@@ -595,7 +606,7 @@ export function estimatePositions(events: EventSummary[]): void {
 /**
  * Best-guess moments for journey waypoints. A waypoint that matches an event on the
  * journey (same place, overlapping dates, and the event's `at` inside the waypoint's range)
- * takes that event's `at`; exact-dated ones sit at their middle; the rest are spaced between
+ * takes that event's `at`; other exact-dated ones sit at their middle; the rest are spaced between
  * their neighbours. Every guess stays inside its waypoint's honest range (`date` to `end`)
  * and never before the waypoint before it, as far as that range allows.
  */
@@ -604,14 +615,13 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
     const known: (number | undefined)[] = [];
     let last = -Infinity;
     for (const w of j.waypoints) {
-      let at: number | undefined;
-      if (w.span.to - w.span.from <= ANCHOR_WIDTH) at = (w.span.from + w.span.to) / 2;
-      else {
-        const e = events.find((x) => x.journeys.includes(j.id) && x.place === w.place && x.span && x.at !== undefined
-          && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last
-          && x.at >= w.span.from && x.at <= w.span.to);
-        at = e?.at;
-      }
+      // A matching event says more than the middle of a short range (a month-long stay in
+      // Rivendell takes the moon-letters' 1 Lithe, not mid-June), so it comes first.
+      const e = events.find((x) => x.journeys.includes(j.id) && x.place === w.place && x.span && x.at !== undefined
+        && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last
+        && x.at >= w.span.from && x.at <= w.span.to);
+      let at = e?.at;
+      if (at === undefined && w.span.to - w.span.from <= ANCHOR_WIDTH) at = (w.span.from + w.span.to) / 2;
       known.push(at);
       if (at !== undefined) last = at;
     }

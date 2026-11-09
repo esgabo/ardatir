@@ -117,11 +117,21 @@ waypoints:                # in order; at least two
   - { place: gondolin, date: { age: first-age, year: 496 }, precision: year }
 ```
 
-A stay known only within bounds takes an optional `end`, like an event's `when.end`, at the same precision: the waypoint covers from the start of `date` to the end of `end`, and its best guess stays inside that range. Use it instead of inventing a date:
+A stay known only within bounds takes an optional `end`, like an event's `when.end`: the waypoint covers from the start of `date` to the end of `end`, and its best guess stays inside that range. Use it instead of inventing a date:
 
 ```yaml
   - { place: dol-guldur, date: { age: third-age, year: 2941, season: summer }, end: { age: third-age, year: 2941, season: autumn }, precision: season }
 ```
+
+`end` has the same precision as `date` unless `endPrecision` gives its own, for a stay whose end is known better (or worse) than its start. The company reaches Rivendell some time in June and is still there on Midsummer's Eve:
+
+```yaml
+  - { place: rivendell, date: { age: third-age, year: 2941, month: 6 }, end: { age: third-age, year: 2941, day: 1-lithe }, precision: month, endPrecision: day }
+```
+
+`endPrecision` must match `end` the way `precision` matches `date`, and `end` must not finish before `date` does (narrow the date instead).
+
+An event on a journey is matched to the waypoint at its place whose range it overlaps, and that waypoint takes the event's best guess. The build warns when an event at one of the journey's places overlaps none of the waypoints there: widen the waypoint (often with an `end`) or check the dates.
 
 ## Characters
 

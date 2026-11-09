@@ -7,7 +7,7 @@ waypoints:
   - { place: prancing-pony, date: { age: third-age, year: 2941, month: 3, day: 15 }, precision: day }
   - { place: bag-end, date: { age: third-age, year: 2941, month: 4, day: 26 }, precision: day }
   - { place: trollshaws, date: { age: third-age, year: 2941, month: 5 }, precision: month }
-  - { place: rivendell, date: { age: third-age, year: 2941, month: 6 }, precision: month }
+  - { place: rivendell, date: { age: third-age, year: 2941, month: 6 }, end: { age: third-age, year: 2941, day: 1-lithe }, precision: month, endPrecision: day }   # The Hobbit, ch. 3: arrived some time in June, still there on Midsummer's Eve (1 Lithe), left next morning
   - { place: goblin-town, date: { age: third-age, year: 2941, season: summer }, precision: season }
   - { place: eagles-eyrie, date: { age: third-age, year: 2941, season: summer }, precision: season }
   - { place: beorns-house, date: { age: third-age, year: 2941, season: summer }, precision: season }
