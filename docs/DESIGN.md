@@ -60,7 +60,7 @@ Past the end of history the cosmos has one more story, **what is foretold** (§4
 - Play/pause, a draggable scrubber with **beat markers** (e.g. "Bilbo caught", "dawn").
 - Click a character → highlight ring + side panel: name, description, and their **current thought**, which changes as the scene plays. "Follow" keeps the camera on them.
 - Event summary panel; prev/next (chronological, or along the followed character's lane).
-- Battles use the same view on larger dioramas, factions colour-coded, beats marking the turning points.
+- **Battles** use the same view, factions colour-coded, beats marking the turning points. Each side is a **faction** (§4.9) with a banner colour; the event lists its sides, and staging places each faction's **army** as a block of small figures in that colour, with a banner at its front (`src/scene/armies.ts`). The named characters keep their own tracks and lead them, standing a head taller than the ranks, so the story stays readable in the crowd. Armies are drawn with instancing (two or three draw calls each, at most 240 figures in a battle) so a phone keeps up; where every figure stands is a pure function of `t` (a formation's jitter is seeded by the army), and `ambient` only adds the bob of marching, the jostle of a fight and the beat of wings. Off the tile is offstage, as for figures: a host marches on and off. Wolves run in loose packs and eagles wheel over the field, by the faction's `kind`. The event card names the sides as a key: *Thorin's Company, Dwarves of the Iron Hills, Elves of Mirkwood, Men of Lake-town and Eagles of the Misty Mountains against Goblins of the Misty Mountains and the Wargs*, each with its colour (hidden on phones, where the card is small).
 
 ## 3. Ways in, and the cross-views
 
@@ -165,9 +165,9 @@ content/
   places/       bag-end.yaml, ivrin.yaml, ...
   arcs/         the-war-of-the-ring.yaml, ...      named periods that group events
   journeys/     the-ring-to-mordor.yaml, ...        dated paths connecting events
-  factions/     (later) sides in battles
+  factions/     elves-of-mirkwood.yaml, ...         sides in battles (§4.9)
   events/<age>/<sort-key>-<id>/
-    event.yaml        facts: when, where, who, links, beats
+    event.yaml        facts: when, where, who, links, beats (and a battle's sides)
     narration.yaml    the script, passage by passage (status: scripted)
     staging.yaml      animation: stage, timings, character tracks (status: staged)
     audio/<lang>.mp3  narration recording (optional)
@@ -181,7 +181,7 @@ content/
 
 ### 4.2 Separation of content and staging
 
-`event.yaml` and `narration.yaml` say **what happened**; they hold no animation timings. `staging.yaml` says **how it is shown**: which stage, how long, where each narration passage and beat falls in the animation (`t`, 0 → 1), and the character tracks. Writing and animating are separate jobs, matching the phases.
+`event.yaml` and `narration.yaml` say **what happened**; they hold no animation timings. `staging.yaml` says **how it is shown**: which stage, how long, where each narration passage and beat falls in the animation (`t`, 0 → 1), the character tracks, and a battle's armies. Writing and animating are separate jobs, matching the phases.
 
 ### 4.3 Status pipeline
 
@@ -280,6 +280,15 @@ Some of the story has not happened: the **Dagor Dagorath** (the Last Battle) and
 - **Which version we tell, and why.** The published *Silmarillion* only hints at the end: Morgoth thrust through the Door of Night with a guard on the Walls of the World, the Second Music, Men joining in it. The fuller prophecy (Morgoth's return, the Sun and Moon destroyed, Túrin's black sword, the Silmarils recovered, the Trees rekindled, the Pelóri levelled) is the **Second Prophecy of Mandos** that ends Tolkien's drafts: the *Sketch of the Mythology* and the *Quenta* (*The Shaping of Middle-earth*), then the 1937 *Quenta Silmarillion* (*The Lost Road*). We follow the 1937 text, the latest full telling, and say so on every page; the later *Valaquenta* (*Morgoth's Ring*) says the healing of the Marring was not revealed, and Christopher Tolkien left the prophecy out of the published book. The Second Music is told from the published *Silmarillion* (*Ainulindalë*, *Of the Beginning of Days*). Each event's YAML notes where the versions differ (Fionwë in the drafts is our Eönwë).
 - **One scene per event**, so the strongest moments can each be animated: Morgoth returns through the Door of Night; the Sun and the Moon are destroyed; the Last Battle is gathered; Túrin slays Morgoth; the Silmarils are recovered; the Two Trees are rekindled; the Mountains of Valinor are levelled; the Second Music of the Ainur (arc *The End of Days*).
 
+### 4.9 Factions: sides in battles
+
+A **faction** is a host that fights as one body under its own banner: `content/factions/<id>.yaml` with a name (plural, as a host is named: *Elves of Mirkwood*), a banner `color`, a `kind` (a character kind: elf, man, dwarf, goblin, orc, wolf, eagle…, which also shapes its army's figures), a short summary and its `leaders` (character ids). Factions are reused across battles: the Dwarves of the Iron Hills fight at Azanulbizar under Náin and at the Five Armies under Dáin.
+
+- **A battle lists its sides** in `event.yaml`: `sides`, a list of at least two groups of allied faction ids, each against the others. It says who fought together in the end (at the Five Armies, the dwarves who nearly fought the elves and men are on their side). The build validates the ids (each faction on one side only), and derives `index.byFaction`, each faction's battles in story order.
+- **Who is a faction, who a character:** one being who comes alone is a character with his own track (Beorn at the Five Armies). A host is a faction even with a named leader (the Eagles of the Misty Mountains, led by their Lord). A small band whose members all have tracks may still be a faction, so the sides are said in full (Thorin's Company), but needs no army.
+- **Armies** (`armies` in `staging.yaml`): `{ faction, size: small | medium | large, keyframes: [{ t, x, z, action? }] }`, the faction on one of the event's sides. Keyframes place the army's centre; unlike a character's, an army keyframe's `action` says what it does **on the way to** that keyframe (walk or run there; idle or fight where it stands). It faces the way it last marched, wheeling round when it turns (§2, battles).
+- **On the site:** event pages give the sides in the meta lines (*Men of Dale and Dwarves of Erebor against Easterlings*) and a **The sides** section with each faction's summary and leaders (names open their lives); the time cursor's event rows add the sides line; the sidebar's search lists matching factions with their battles (`src/sides.ts`). No new rail item: factions are a way into battles, not a view of their own.
+
 ## 5. Narration
 
 Every event is told by a **narration script**: passages written in our own words (no reading of Tolkien's text aloud). The same script is what the audio reads, and it is shown on screen in step with the voice and the animation.
@@ -334,7 +343,7 @@ After every navigation, focus moves to the new view's heading (its `h1`), so key
 - **Static site**: Vite + TypeScript + three.js, no framework. Output is a plain `dist/` folder (GitHub Pages).
 - **Code is split by zoom level**: each stage (`scene/cosmos.ts`, `scene/dioramaStage.ts`) is loaded with a dynamic `import()` the first time it is needed, so the front page never downloads diorama code. Within the cosmos, each event's animation after the Ainulindalë is its own module (`scene/cosmosLamps.ts`), picked by event id in `scene/cosmos.ts` and loaded the same way; all of them share the Void, the shells and the camera (`scene/cosmosWorld.ts`). three.js core gets its own chunk (`manualChunks` in `vite.config.ts`), cached across deploys; keep every chunk under Vite's 500 kB warning.
 - **Content build** (`scripts/content/`): reads `content/`, validates it, and writes `public/data/` (generated, not committed):
-  - `index.json`: ages, characters, places, arcs, journeys, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc and journey, and each character's lane (events and uncovered journey legs, in story order; each waypoint also names the event it matched). Small enough to load up front; the time cursor and lanes run on it.
+  - `index.json`: ages, characters, places, arcs, journeys, factions, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc, journey and faction (`byFaction`), and each character's lane (events and uncovered journey legs, in story order; each waypoint also names the event it matched). Small enough to load up front; the time cursor and lanes run on it.
   - `events/<id>.json`: one per staged event, with narration, staging and audio timing, loaded when the event opens.
   - `scripts/<id>.json`: the narration passages of every event that has a `narration.yaml`, so a scripted event's page can show them as text.
   - `audio/<id>/<lang>.mp3`: recordings copied from the event folders.
@@ -392,9 +401,9 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 | 2026-11-09 | Character lanes: lanes as coloured columns with time running down, one story order, crossings in gold, honest gaps ("at least N years later"), kin suggestions; lanes derived by the build; route `#/lives?with=` (§3.2). |
 | 2026-11-09 | The time cursor (#1): a page at `#/time/<age>/<date>` (readable, at the precision picked: year, month, day, days outside the months; also an axis position); the ages as log-width segments with the timeless ones apart before the axis, and a finer scale (age, century, year, month) down to a single day, keyboard and touch operable; likely / possibly by `nearnessDuring` (the moment is its span); whereabouts from journeys by company, honest ("somewhere between"), with a labelled best guess for a day or month; characters who never travel shown at `home` within their events' span; moments to visit; a **Time** rail item; ways to and from events (§3.1). |
 | 2026-11-09 | **What is foretold** (#57): the Dagor Dagorath and the Second Music in a timeless age flagged `foretold`, after the Fourth Age and never on the axis; every event cites its source and may name who foretold it (`foretoldBy`); marked as prophecy everywhere (badge, page line, dashed segment after the axis, lanes); the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*), split into one scene per event (§4.8). |
+| 2026-11-09 | Factions (#18): one file per side in `content/factions/` (name, banner colour, kind, summary, leaders), reused across battles; battles list `sides` as groups of allied factions; staging places `armies` (faction, size, keyframes) as instanced blocks of small figures in the faction's colour, named characters keeping their own tracks; one being who comes alone (Beorn) is a character, a host (the Eagles) a faction. First example: the Battle of Five Armies (§2, §4.9). |
 
 ## 12. Open questions
 
 - **Journeys**: do long travels (Frodo's road to Mordor) play only on the world map as a moving path, or do some legs (Moria, the Dead Marshes) get their own dioramas?
-- **Factions** for battles: format to be defined when the first battle is staged.
 - **World view**: the original world map per age is not built yet; places have no map coordinates until it is.

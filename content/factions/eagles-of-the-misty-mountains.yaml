@@ -1,0 +1,9 @@
+id: eagles-of-the-misty-mountains
+name: { en: Eagles of the Misty Mountains, es: Águilas de las Montañas Nubladas }
+color: "#9a6a34"
+kind: eagle
+# A host that fights as one, so a faction; Beorn, who comes alone, is a character (Hobbit ch. 17).
+summary:
+  en: "The great eagles of the northern Misty Mountains, old enemies of the goblins, who saw them gather and flew to the Mountain."
+  es: "Las grandes águilas del norte de las Montañas Nubladas, viejas enemigas de los trasgos, que los vieron reunirse y volaron hacia la Montaña."
+leaders: [ lord-of-the-eagles ]

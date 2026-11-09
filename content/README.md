@@ -8,7 +8,7 @@ characters/    one file per character
 places/        one file per place
 arcs/          named periods that group events (The War of the Ring)
 journeys/      dated paths of characters between places
-factions/      (later) sides in battles
+factions/      one file per side in battles (the Elves of Mirkwood)
 events/<age>/<sort-key>-<id>/
   event.yaml       facts (every event)
   narration.yaml   the script (from status: scripted)
@@ -34,6 +34,9 @@ place: pelennor-fields
 characters: [ theoden, eowyn, merry, witch-king ]
 arcs: [ the-war-of-the-ring ]
 journeys: []              # journeys this event is a stop on
+sides:                    # battles only: groups of allied factions, each against the others
+  - [ riders-of-rohan, men-of-gondor ]
+  - [ host-of-mordor, haradrim ]
 tags: [ lord-of-the-rings, battle ]
 status: outline           # outline | scripted | staged | animated
 source: { book: the-return-of-the-king, chapter: The Battle of the Pelennor Fields }
@@ -162,3 +165,42 @@ home: old-forest                     # optional: a place they stay in (see below
 ```
 
 `home` is for characters who don't travel: Tom Bombadil stays in his own country (save his trip to Maggot's in a hobbit rhyme). Between their first and last events (honest ranges), when no journey of theirs covers the moment, the time cursor shows them *in their own country* at that place, in a quiet "At home" group. It must be a known place id. Travellers don't need it: their journeys say where they are.
+
+## Factions: sides in battles
+
+One file per side, `factions/<id>.yaml`, reused across battles (the Dwarves of the Iron Hills fight at Azanulbizar and at the Five Armies):
+
+```yaml
+id: elves-of-mirkwood
+name: { en: Elves of Mirkwood, es: Elfos del Bosque Negro }   # plural, as a host is named
+color: "#2f7a5c"           # banner colour: chips on pages, the army and its banner on a diorama
+kind: elf                  # a character kind (elf, man, dwarf, goblin, orc, wolf, eagle...): shapes the army's figures
+summary: { en: ..., es: ... }
+leaders: [ thranduil ]     # optional, character ids, in any battle
+```
+
+**What is a faction?** A host that fights as one body under its own banner. One being who comes alone, like Beorn at the Five Armies, is a character with his own track, not a faction. A small named band whose members all have tracks (Thorin's company) can still be a faction, so the sides are said in full, but needs no army in staging.
+
+**A battle lists its sides** in `event.yaml`: a list of at least two groups of allied faction ids, each group against the others. List who fought together in the end: at the Five Armies, dwarves, elves and men are on one side, though they nearly fought each other first.
+
+```yaml
+sides:
+  - [ thorins-company, dwarves-of-the-iron-hills, elves-of-mirkwood, men-of-lake-town, eagles-of-the-misty-mountains ]
+  - [ goblins-of-the-misty-mountains, wargs ]
+```
+
+The build checks every id, that no faction is on two sides, and that leaders are known characters; it warns about a faction in no battle. Pages and the time cursor say the sides in words (*Men of Dale and Dwarves of Erebor against Easterlings*), and the sidebar's search finds a faction's battles (`index.byFaction`).
+
+**Armies** in `staging.yaml` place each faction's host on the diorama as a block of small figures in its colour, with a banner; named characters keep their own tracks and lead them:
+
+```yaml
+armies:
+  - faction: goblins-of-the-misty-mountains   # must be on one of the event's sides
+    size: large                               # small | medium | large: how many figures
+    keyframes:
+      - { t: 0, x: -13, z: -13 }              # off the tile = offstage
+      - { t: 0.2, x: -5.4, z: -5.6, action: run }
+      - { t: 0.62, x: -2.9, z: -3.6, action: fight }
+```
+
+An army's keyframes give its centre. **Its `action` says what it does on the way to that keyframe**: `walk` or `run` there, or wait (`idle`, the default) or `fight` where it stands, so `{ t: 0.62, action: fight }` after an arrival means it fights from the moment it arrives. The block faces the way it last marched (before it first moves, the way it will), and wheels round when it turns. Figures past the tile's edge are not drawn, so a host marches on and off. Wolves run in packs and eagles fly over the field, by `kind`.

@@ -189,3 +189,83 @@ tracks:
       - { t: 0.5, x: 4.3, z: -3.25, action: fight }
       - { t: 0.75, x: 4.3, z: -3.25, action: fight }
       - { t: 0.88, x: 3.81, z: -4.9, action: idle }
+# The armies (Hobbit ch. 17), drawn as blocks of small figures in their banner colours; the named
+# characters above lead them on their own tracks. Seen from the camera, the Front Gate is on the
+# right, the goblins come down the valley from the far corner, and the allies form below the line
+# where the named characters fight. Off the tile = offstage.
+armies:
+  # The Elvenking's host and the men of the lake begin before the Mountain, facing the gate.
+  - faction: elves-of-mirkwood
+    size: medium
+    keyframes:
+      - { t: 0, x: 0.3, z: 3.4, action: idle }
+      - { t: 0.04, x: 0.8, z: 3, action: walk }
+      - { t: 0.27, x: 0.8, z: 3, action: idle }
+      - { t: 0.36, x: -0.1, z: 2, action: walk }
+      - { t: 0.44, x: -0.1, z: 2, action: fight }
+      - { t: 0.82, x: -0.1, z: 2, action: fight }
+      - { t: 0.9, x: -0.4, z: 1.5, action: walk }
+      - { t: 1, x: -0.4, z: 1.5, action: idle }
+  - faction: men-of-lake-town
+    size: medium
+    keyframes:
+      - { t: 0, x: 2.2, z: 1.5, action: idle }
+      - { t: 0.04, x: 2.7, z: 1.1, action: walk }
+      - { t: 0.27, x: 2.7, z: 1.1, action: idle }
+      - { t: 0.36, x: 1, z: 0.1, action: walk }
+      - { t: 0.44, x: 1, z: 0.1, action: fight }
+      - { t: 0.82, x: 1, z: 0.1, action: fight }
+      - { t: 0.9, x: 0.8, z: -0.4, action: walk }
+      - { t: 1, x: 0.8, z: -0.4, action: idle }
+  # Dáin's dwarves come from the east, march on the elves and men, then turn with them on the goblins
+  # and press up to Thorin when he charges.
+  - faction: dwarves-of-the-iron-hills
+    size: medium
+    keyframes:
+      - { t: 0, x: 12, z: 7, action: idle }
+      - { t: 0.02, x: 12, z: 7, action: idle }
+      - { t: 0.11, x: 6.4, z: 4, action: walk }
+      - { t: 0.13, x: 6.4, z: 4, action: idle }
+      - { t: 0.2, x: 4.6, z: 2.7, action: run }
+      - { t: 0.27, x: 4.6, z: 2.7, action: idle }
+      - { t: 0.36, x: 3.4, z: -0.5, action: walk }
+      - { t: 0.42, x: 3.4, z: -0.5, action: idle }
+      - { t: 0.5, x: 2.6, z: -2, action: run }
+      - { t: 0.82, x: 2.6, z: -2, action: fight }
+      - { t: 0.9, x: 3, z: -1.4, action: walk }
+      - { t: 1, x: 3, z: -1.4, action: idle }
+  # Out of the north, the goblins under Bolg, and the wolves running on their flank.
+  - faction: goblins-of-the-misty-mountains
+    size: large
+    keyframes:
+      - { t: 0, x: -13, z: -13, action: idle }
+      - { t: 0.1, x: -13, z: -13, action: idle }
+      - { t: 0.2, x: -5.4, z: -5.6, action: run }
+      - { t: 0.42, x: -5.4, z: -5.6, action: idle }
+      - { t: 0.5, x: -2.9, z: -3.6, action: run }
+      - { t: 0.62, x: -2.9, z: -3.6, action: fight }
+      - { t: 0.68, x: -3.9, z: -4.6, action: walk }
+      - { t: 0.78, x: -3.9, z: -4.6, action: fight }
+      - { t: 0.88, x: -13, z: -13, action: run }
+      - { t: 1, x: -13, z: -13, action: idle }
+  - faction: wargs
+    size: medium
+    keyframes:
+      - { t: 0, x: -4, z: -13, action: idle }
+      - { t: 0.1, x: -4, z: -13, action: idle }
+      - { t: 0.19, x: -2.4, z: -6.2, action: run }
+      - { t: 0.42, x: -2.4, z: -6.2, action: idle }
+      - { t: 0.5, x: -0.2, z: -5.4, action: run }
+      - { t: 0.78, x: -0.2, z: -5.4, action: fight }
+      - { t: 0.87, x: -4, z: -13, action: run }
+      - { t: 1, x: -4, z: -13, action: idle }
+  # The eagles come out of the west and fall on the goblins on the slopes, then follow them as they flee.
+  - faction: eagles-of-the-misty-mountains
+    size: medium
+    keyframes:
+      - { t: 0, x: -13, z: -6, action: idle }
+      - { t: 0.53, x: -13, z: -6, action: idle }
+      - { t: 0.63, x: -3.6, z: -4.4, action: walk }
+      - { t: 0.8, x: -3.6, z: -4.4, action: fight }
+      - { t: 0.92, x: -13, z: -12, action: walk }
+      - { t: 1, x: -13, z: -12, action: idle }

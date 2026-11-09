@@ -6,6 +6,9 @@ when:
 place: dale
 characters: [ brand, dain ]
 tags: [ lord-of-the-rings, battle ]
+sides:
+  - [ men-of-dale, dwarves-of-erebor ]
+  - [ easterlings ]
 arcs: [ the-war-of-the-ring ]
 status: outline
 source: { book: the-return-of-the-king, chapter: Appendix B }

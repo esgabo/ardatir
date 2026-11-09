@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import type { Character, EventDetail, Lang } from '../data/types';
+import type { Character, EventDetail, Faction, Lang } from '../data/types';
+import { createArmies } from './armies';
 import { t as ui, tr, type UiKey } from '../i18n';
 import { onTile, samplePose } from '../timeline';
 import { createDiorama, groundHeight } from './diorama';
@@ -8,7 +9,7 @@ import type { Stage } from './stage';
 import { disposeTree } from './util';
 
 /** An event staged on an isometric low-poly diorama tile with animated characters. */
-export function createDioramaStage(event: EventDetail, characters: Map<string, Character>, lang: Lang): Stage {
+export function createDioramaStage(event: EventDetail, characters: Map<string, Character>, lang: Lang, factions = new Map<string, Faction>()): Stage {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#1b1e26');
 
@@ -30,6 +31,10 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
   const diorama = createDiorama({ seed });
   scene.add(diorama);
 
+  // A battle's armies: blocks of small figures in their factions' colours (named characters keep their tracks).
+  const armies = event.armies?.length ? createArmies(event.armies, factions, diorama, seed) : undefined;
+  if (armies) scene.add(armies.group);
+
   const figures = new Map<string, THREE.Group>();
   for (const track of event.tracks) {
     const ch = characters.get(track.characterId);
@@ -43,6 +48,7 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
     scene, camera, target,
 
     update(t, ambient) {
+      armies?.update(t, ambient);
       for (const track of event.tracks) {
         const fig = figures.get(track.characterId);
         if (!fig) continue;

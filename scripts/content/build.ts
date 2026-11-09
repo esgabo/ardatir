@@ -14,6 +14,7 @@ import {
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
 import { narrationHash, TEXT_HASH } from '../narration/text.ts';
+import { battlesByFaction, readArmies, readFactions, readSides } from './factions.ts';
 
 export interface BuildResult {
   index: ContentIndex;
@@ -209,6 +210,11 @@ export function buildContent(contentDir: string): BuildResult {
   // A character who stays in one place (Tom Bombadil): the time cursor shows them there between their events.
   for (const c of characters) if (c.home && !placeIds.has(c.home)) R.error(charFile.get(c.id)!, `home: unknown place "${c.home}"`);
 
+  // Sides in battles (scripts/content/factions.ts).
+  const FC = { error: R.error.bind(R), warn: R.warn.bind(R), readYaml, yamlFiles, keys, text, id };
+  const factions = readFactions(FC, contentDir, charIds);
+  const factionIds = new Set(factions.map((x) => x.id));
+
   const arcs: Arc[] = [];
   const arcIds = new Set<string>();
   for (const f of yamlFiles(path.join(contentDir, 'arcs'))) {
@@ -279,7 +285,7 @@ export function buildContent(contentDir: string): BuildResult {
     const f = path.join(dir, 'event.yaml');
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'summary', 'links', 'beats'], 'event');
+    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'summary', 'links', 'beats', 'sides'], 'event');
     const eid = id(f, o.id, eventIds, 'event');
     if (!eid) continue;
     const folder = path.basename(dir);
@@ -341,6 +347,7 @@ export function buildContent(contentDir: string): BuildResult {
       beatsRaw.push({ id: b.id, label: text(f, b.label, `beats[${i}].label`)! });
     });
 
+    const sides = readSides(FC, f, o.sides, factionIds);
     const source = isObj(o.source) ? { book: String(o.source.book), ...o.source.chapter !== undefined ? { chapter: o.source.chapter as string | number } : {} } : undefined;
 
     // Prophecy: the page must say where it comes from, and may say who foretells it.
@@ -387,7 +394,7 @@ export function buildContent(contentDir: string): BuildResult {
         id: eid, age: String(o.age), ...when ? { when } : {}, ...span ? { span } : {}, ...place ? { place } : {},
         characters: chars, arcs: evArcs, journeys: evJourneys, tags: strList(f, o.tags, 'tags'), status,
         ...source ? { source } : {}, ...foretoldBy ? { foretoldBy } : {}, title: text(f, o.title, 'title')!, summary: text(f, o.summary, 'summary')!,
-        links, audio: [],
+        links, ...sides ? { sides } : {}, audio: [],
       },
     });
   }
@@ -437,7 +444,7 @@ export function buildContent(contentDir: string): BuildResult {
     const s = r.staging;
     if (!s) continue;
     const sf = path.join(r.dir, 'staging.yaml');
-    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks'], 'staging');
+    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies'], 'staging');
     const stage = String(s.stage) as StageKind;
     if (!STAGES.includes(stage)) R.error(sf, `stage: one of ${STAGES.join(', ')}`);
     if (!(typeof s.duration === 'number' && s.duration > 0)) R.error(sf, 'duration: seconds, a positive number');
@@ -480,6 +487,8 @@ export function buildContent(contentDir: string): BuildResult {
       });
       tracks.push({ characterId: tr.characterId, keyframes: kfs });
     });
+
+    const armies = readArmies(FC, sf, s.armies, r.summary);
 
     // Recordings: audio/<lang>.yaml + audio/<lang>.<ext>
     const audioFiles: EventDetail['audioFiles'] = {};
@@ -525,7 +534,7 @@ export function buildContent(contentDir: string): BuildResult {
     }
 
     r.summary.stage = stage;
-    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, audioFiles });
+    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, audioFiles });
   }
 
   // Scripts: every narration as text, so a scripted event can be read before it is staged.
@@ -564,6 +573,9 @@ export function buildContent(contentDir: string): BuildResult {
   }
   for (const c of characters) if (!byCharacter[c.id].length && !journeys.some((j) => j.characters.includes(c.id))) R.warn(charFile.get(c.id)!, 'appears in no event or journey');
 
+  const byFaction = battlesByFaction(factions, events);
+  for (const x of factions) if (!byFaction[x.id].length) R.warn(path.join(contentDir, 'factions', `${x.id}.yaml`), 'fights in no battle yet (no event lists it in `sides`)');
+
   for (const [k, n] of R.missingByFile) {
     const [file, lang] = k.split('|');
     R.warnings.push(`${file}: ${n} text${n > 1 ? 's' : ''} missing "${lang}"`);
@@ -572,7 +584,7 @@ export function buildContent(contentDir: string): BuildResult {
   const lanes = characterLanes(characters.map((c) => c.id), events, journeys, new Set(ages.filter((a) => a.foretold).map((a) => a.id)));
 
   return {
-    index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes },
+    index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes, factions, byFaction },
     details, scripts, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
   };
 }
@@ -767,7 +779,7 @@ export function describe(result: BuildResult): string {
   const by = (s: Status) => ev.filter((e) => e.status === s).length;
   const lines = [
     `content: ${ev.length} events (${by('outline')} outline, ${by('scripted')} scripted, ${by('staged')} staged, ${by('animated')} animated), ` +
-    `${result.index.characters.length} characters, ${result.index.places.length} places, ${result.index.arcs.length} arcs, ${result.index.journeys.length} journeys`,
+    `${result.index.characters.length} characters, ${result.index.places.length} places, ${result.index.arcs.length} arcs, ${result.index.journeys.length} journeys, ${result.index.factions.length} factions`,
   ];
   for (const [l, n] of Object.entries(result.missing)) lines.push(`translations: ${n} texts missing "${l}"`);
   for (const w of result.warnings) lines.push(`  warning  ${w}`);

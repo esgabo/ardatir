@@ -8,6 +8,9 @@ characters: [ thrain, thorin, frerin, nain, dain, azog ]
 arcs: [ durins-folk-in-exile ]
 journeys: []
 tags: [ hobbit ]
+sides:
+  - [ durins-folk, dwarves-of-the-iron-hills ]
+  - [ orcs-of-moria ]
 status: staged
 source: { book: the-lord-of-the-rings, chapter: Appendix A }
 title: { en: The Battle of Azanulbizar, es: La batalla de Azanulbizar }

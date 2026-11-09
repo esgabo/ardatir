@@ -1,0 +1,8 @@
+id: orcs-of-moria
+name: { en: Orcs of Moria, es: Orcos de Moria }
+color: "#5a3e3a"
+kind: orc
+summary:
+  en: The orcs who held Moria under Azog, gathered in the Dimrill Dale to meet the dwarves' vengeance.
+  es: Los orcos que ocupaban Moria bajo Azog, reunidos en el Valle del Arroyo Sombrío para hacer frente a la venganza de los enanos.
+leaders: [ azog ]

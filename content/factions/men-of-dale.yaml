@@ -1,0 +1,8 @@
+id: men-of-dale
+name: { en: Men of Dale, es: Hombres de Valle }
+color: "#5a7fb8"
+kind: man
+summary:
+  en: The people of the rebuilt kingdom of Dale, ruled by Bard's line.
+  es: La gente del reino reconstruido de Valle, gobernado por el linaje de Bardo.
+leaders: [ brand ]

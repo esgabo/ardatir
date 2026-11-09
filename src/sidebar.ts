@@ -13,6 +13,7 @@ import { eventHref, livesHref, timeHref } from './routes';
 import { momentLabel } from './format';
 import { momentOfEvent, parseMoment } from './moment';
 import { MOMENTS } from './moments';
+import { factionChip } from './sides';
 import { shortcutLabel, type TimeState } from './timeCursor';
 
 export const VIEWS = ['ages', 'time', 'stories', 'lives', 'books', 'places'] as const;
@@ -439,8 +440,9 @@ export class Sidebar {
     const events = index.events.filter((e) => hit(tr(e.title, L))).slice(0, 20);
     const chars = index.characters.filter((c) => hit(tr(c.name, L))).slice(0, 12);
     const places = index.places.filter((p) => hit(tr(p.name, L))).slice(0, 12);
+    const factions = (index.factions ?? []).filter((x) => hit(tr(x.name, L))).slice(0, 8);
     const box = h('div', { class: 'results' });
-    if (!events.length && !chars.length && !places.length) { box.append(h('p', { class: 'sb-empty' }, this.L('noResults'))); return box; }
+    if (!events.length && !chars.length && !places.length && !factions.length) { box.append(h('p', { class: 'sb-empty' }, this.L('noResults'))); return box; }
     if (events.length) box.append(h('div', { class: 'sb-section' }, this.L('resultsEvents')), this.eventList(events));
     const jump = (title: string, items: { id: string; name: string }[], view: View, prefix: string) => {
       if (!items.length) return;
@@ -455,6 +457,9 @@ export class Sidebar {
     };
     jump(this.L('resultsLives'), chars.map((c) => ({ id: c.id, name: tr(c.name, L) })), 'lives', 'char');
     jump(this.L('resultsPlaces'), places.map((p) => ({ id: p.id, name: tr(p.name, L) })), 'places', 'place');
+    // Sides in battles: each faction with the battles it fought in.
+    if (factions.length) box.append(h('div', { class: 'sb-section' }, this.L('resultsFactions')));
+    for (const x of factions) box.append(h('div', { class: 'sb-faction' }, factionChip(x, L)), this.eventList(index.byFaction?.[x.id] ?? []));
     return box;
   }
 }

@@ -19,6 +19,7 @@ import { MOMENTS, momentKey } from './moments';
 import { likelyAtParts, whyToggle } from './placement';
 import { foretoldBadge } from './foretold';
 import { atMoment } from './related';
+import { sidesLine } from './sides';
 import { eventHref, livesHref, timeHref } from './routes';
 import {
   axisExtent, buildSegments, defaultZoom, fitZoom, fractionIn, overviewPosition, pickAt, scaleWindow, STEP_KEYS, stepMoment, stepOutside, ZOOMS, zoomsFor,
@@ -382,7 +383,8 @@ export function renderTime(root: HTMLElement, st: TimeState, host: TimeHost): vo
     }
     const label = momentLabel(m, L);
     // Full honest dates: on the time cursor a day is what tells events apart.
-    const when = (e: EventSummary) => h('span', { class: 'r-when' }, [honestDate(e, L), placeName(e.place, L)].filter(Boolean).join('  ·  '));
+    const when = (e: EventSummary) => h('span', { class: 'r-when' }, [honestDate(e, L), placeName(e.place, L)].filter(Boolean).join('  ·  '),
+      e.sides && h('span', { class: 'r-when-sides' }, sidesLine(e, L)));
     const am = atMoment(span);
     if (am.likely.length) {
       const ul = h('ul', { class: 'r-same' });
