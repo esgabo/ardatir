@@ -1,0 +1,32 @@
+stage: diorama
+duration: 26
+narration:
+  hill: 0
+  auction: 0.2
+  buy: 0.42
+  cousins: 0.62
+  reputation: 0.78
+  content: 0.9
+beats:
+  hill: 0
+  auction: 0.2
+  buy: 0.42
+  content: 0.9
+tracks:
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 6, z: 5, action: walk, thought: { en: "My own Hill. I never thought I would see it again.", es: "Mi propia Colina. Nunca creí que volvería a verla." } }
+      - { t: 0.2, x: 2.4, z: 0.8, action: idle, thought: { en: "A crowd and a notice on my gate? What has happened?", es: "¿Una multitud y un cartel en mi verja? ¿Qué ha pasado?" } }
+      - { t: 0.42, x: 0.6, z: -1.2, action: talk, thought: { en: "Those are my own chairs! I will have to buy them back.", es: "¡Esas son mis sillas! Tendré que recomprarlas." } }
+      - { t: 0.62, x: -0.8, z: -1.6, action: idle, thought: { en: "The Sacovilla-Bolsón, measuring my rooms. How sorry they look.", es: "Los Sacovilla-Bolsón, midiendo mis habitaciones. Qué cara de pena ponen." } }
+      - { t: 0.78, x: 0.8, z: -0.6, action: idle, thought: { en: "Odd, they call me now. Let them.", es: "Ahora me llaman raro. Que lo hagan." } }
+      - { t: 0.9, x: 0.4, z: -2.4, action: idle, thought: { en: "My sword over the fireplace, and friends to tea. I am content.", es: "Mi espada sobre la chimenea y amigos a tomar el té. Estoy contento." } }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: 6.4, z: 4.2, action: walk }
+      - { t: 0.1, x: 3.8, z: 2.2, action: idle, thought: { en: "He has changed a great deal. For the better.", es: "Ha cambiado mucho. Para bien." } }
+      - { t: 0.2, x: 3.6, z: 1.6, action: talk }
+      - { t: 0.42, x: 2, z: 0.4, action: idle }
+      - { t: 0.62, x: 2.2, z: 0.2, action: talk }
+      - { t: 0.78, x: 2.4, z: -0.2, action: idle }
+      - { t: 0.9, x: 2, z: -1.6, action: idle, thought: { en: "He will do well among his own things.", es: "Le irá bien entre sus propias cosas." } }
