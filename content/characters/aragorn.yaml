@@ -1,0 +1,8 @@
+id: aragorn
+name: { en: Aragorn, es: Aragorn }
+kind: man
+summary:
+  en: Heir of Isildur, a Ranger of the North who comes south to claim the crown of Gondor.
+  es: Heredero de Isildur, un Montaraz del Norte que viaja al sur para reclamar la corona de Gondor.
+color: "#4a5a3c"
+scale: 1.85

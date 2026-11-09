@@ -1,0 +1,11 @@
+id: kili
+name: { en: Kíli, es: Kíli }
+kind: dwarf
+summary:
+  en: "Thorin's nephew, Fíli's younger brother."
+  es: "Sobrino de Thorin, hermano menor de Fíli."
+color: "#4a6aa0"
+scale: 1.25
+kin:
+  - { id: fili, as: brother }
+  - { id: thorin, as: uncle }

@@ -1,0 +1,8 @@
+id: deagol
+name: { en: Déagol, es: Déagol }
+kind: hobbit
+summary:
+  en: "A river-hobbit of the Gladden Fields, Sméagol's friend."
+  es: "Un hobbit del río en los Campos Gladios, amigo de Sméagol."
+color: "#7a8a6a"
+scale: 1

@@ -1,0 +1,8 @@
+id: thranduil
+name: { en: The Elvenking, es: El Rey Elfo }
+kind: elf
+summary:
+  en: King of the Wood-elves of northern Mirkwood.
+  es: Rey de los Elfos del Bosque del norte del Bosque Negro.
+color: "#8a7a3a"
+scale: 1.9

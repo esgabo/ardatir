@@ -1,0 +1,6 @@
+id: tuors-road-to-gondolin
+title: { en: Tuor's Road to Gondolin, es: El camino de Tuor a Gondolin }
+characters: [ tuor, voronwe ]
+waypoints:
+  - { place: ivrin,    date: { age: first-age, year: 495, season: winter }, precision: season }
+  - { place: gondolin, date: { age: first-age, year: 496 }, precision: year }

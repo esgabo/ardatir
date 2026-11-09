@@ -1,0 +1,26 @@
+stage: diorama
+duration: 20
+narration:
+  morning: 0
+  mark: 0.3
+  dwarves: 0.55
+  quest: 0.8
+tracks:
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: -1, z: 0, action: idle, thought: { en: A fine morning for a pipe on the doorstep., es: Una buena mañana para fumar en pipa en la puerta. } }
+      - { t: 0.3, x: -1, z: 0.5, action: talk, thought: { en: "An adventure? Not for a Baggins, thank you.", es: "¿Una aventura? No para un Bolsón, gracias." } }
+      - { t: 0.6, x: -2.5, z: 0.5, action: walk, thought: { en: "Who are all these dwarves, and why are they eating my cakes?", es: ¿Quiénes son todos estos enanos y por qué se comen mis pasteles? } }
+      - { t: 1, x: -2, z: -0.5, action: idle, thought: { en: Perhaps... perhaps I could go after all., es: "Quizás... quizás sí podría ir, después de todo." } }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: 4, z: 2, action: walk, thought: { en: This one has more in him than he knows., es: Este tiene más dentro de lo que él mismo sabe. } }
+      - { t: 0.3, x: 0.2, z: 0.8, action: talk, thought: { en: A little mark on the door should settle it., es: Una pequeña marca en la puerta lo resolverá. } }
+      - { t: 0.65, x: 2.5, z: 2.5, action: walk }
+      - { t: 1, x: -0.5, z: -1.2, action: idle, thought: { en: The burglar has been found., es: Ya tenemos saqueador. } }
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 6, z: 4, action: idle }
+      - { t: 0.55, x: 6, z: 4, action: walk, thought: { en: "Late, but I will not apologise to a hobbit.", es: "Llego tarde, pero no pienso disculparme ante un hobbit." } }
+      - { t: 0.8, x: 0.5, z: 0, action: walk }
+      - { t: 1, x: -1, z: -1.5, action: talk, thought: { en: This is the burglar Gandalf promised us?, es: ¿Este es el saqueador que nos prometió Gandalf? } }

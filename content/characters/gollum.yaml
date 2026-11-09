@@ -1,0 +1,8 @@
+id: gollum
+name: { en: Gollum, es: Gollum }
+kind: creature
+summary:
+  en: Once a hobbit-like river-folk named Sméagol, consumed by his long possession of the Ring.
+  es: Antes uno de los Fuertes, de la familia de los hobbits, llamado Sméagol, consumido por su larga posesión del Anillo.
+color: "#9a9a7a"
+scale: 0.95

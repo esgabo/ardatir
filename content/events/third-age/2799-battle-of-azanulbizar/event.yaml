@@ -1,0 +1,16 @@
+id: battle-of-azanulbizar
+age: third-age
+when:
+  start: { age: third-age, year: 2799 }
+  precision: year
+place: azanulbizar
+characters: [ thrain, thorin, frerin, nain, dain, azog ]
+arcs: [ durins-folk-in-exile ]
+journeys: []
+tags: [ hobbit ]
+status: outline
+source: { book: the-lord-of-the-rings, chapter: Appendix A }
+title: { en: The Battle of Azanulbizar, es: La batalla de Azanulbizar }
+summary:
+  en: "The dwarves avenge Thrór before the gates of Moria. Thorin fights with an oak branch for a shield and earns his name; Dáin slays Azog, but knowing what still waits in Moria, he will not let them enter."
+  es: "Los enanos vengan a Thrór ante las puertas de Moria. Thorin lucha con una rama de roble como escudo y gana su nombre; Dáin mata a Azog, pero sabiendo lo que aún aguarda en Moria, no permite que entren."

@@ -1,0 +1,19 @@
+stage: cosmos
+duration: 60
+narration:
+  void: 0
+  theme: 0.09
+  harmony: 0.22
+  discord: 0.36
+  struggle: 0.46
+  silence: 0.56
+  vision: 0.63
+  ea: 0.84
+  arda: 0.91
+beats:
+  music: 0.08
+  discord: 0.35
+  silence: 0.55
+  vision: 0.62
+  ea: 0.84
+  arda: 0.9

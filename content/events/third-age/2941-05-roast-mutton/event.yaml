@@ -1,0 +1,19 @@
+id: roast-mutton
+age: third-age
+when:
+  # The chapter has it "just before June": late May
+  start: { age: third-age, year: 2941, month: 5 }
+  precision: month
+place: trollshaws
+characters: [ bilbo, gandalf, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur, william, bert, tom ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: staged
+source: { book: the-hobbit, chapter: 2 }
+title:
+  en: Roast Mutton
+  es: Carnero asado
+summary:
+  en: Sent to scout a campfire, Bilbo is caught by three trolls; Gandalf keeps them arguing until dawn turns them to stone.
+  es: Enviado a explorar una fogata, Bilbo es atrapado por tres trolls; Gandalf los mantiene discutiendo hasta que el amanecer los convierte en piedra.

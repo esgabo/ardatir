@@ -1,0 +1,8 @@
+id: bard
+name: { en: Bard the Bowman, es: Bardo el Arquero }
+kind: man
+summary:
+  en: "A grim archer of Lake-town, of the old line of the lords of Dale."
+  es: "Un adusto arquero de la Ciudad del Lago, del antiguo linaje de los señores de Valle."
+color: "#3a4a5a"
+scale: 1.85

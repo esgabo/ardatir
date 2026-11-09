@@ -1,0 +1,11 @@
+id: turin
+name: { en: Túrin Turambar, es: Túrin Turambar }
+kind: man
+summary:
+  en: Son of Húrin, a great warrior whose life is shadowed by Morgoth's curse on his family.
+  es: Hijo de Húrin, un gran guerrero cuya vida está ensombrecida por la maldición de Morgoth sobre su familia.
+color: "#3a3a4a"
+scale: 1.85
+kin:
+  - { id: tuor, as: cousin }
+  - { id: nienor, as: sister }

@@ -1,0 +1,17 @@
+id: prisoners-of-the-elvenking
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: summer }
+  end: { age: third-age, year: 2941, season: autumn }
+  precision: season
+place: elvenking-halls
+characters: [ thranduil, thorin, bilbo, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 8 }
+title: { en: Prisoners of the Elvenking, es: Prisioneros del Rey Elfo }
+summary:
+  en: "Thorin, then the rest, are taken by the Wood-elves and locked in the Elvenking's halls. Only Bilbo, invisible, goes free, and for weeks he wanders the palace looking for a way out."
+  es: "Thorin y luego los demás son apresados por los Elfos del Bosque y encerrados en las estancias del Rey Elfo. Solo Bilbo, invisible, queda libre, y durante semanas recorre el palacio buscando una salida."

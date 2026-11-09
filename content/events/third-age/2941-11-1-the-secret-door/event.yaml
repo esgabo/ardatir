@@ -1,0 +1,30 @@
+id: the-secret-door
+age: third-age
+when:
+  # Durin's Day is disputed: Tolkien's own 1960 timeline gives 19 October (The History of
+  # The Hobbit), while Thorin's "tomorrow begins the last week of autumn" (ch. 11) points later.
+  # Only the season is claimed.
+  start: { age: third-age, year: 2941, season: autumn }
+  precision: season
+place: erebor
+characters: [ bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 11 }
+title: { en: The Secret Door on Durin's Day, es: La puerta secreta en el Día de Durin }
+summary:
+  en: "On the mountain's western side the company waits, hopeless, until at sunset a thrush knocks on a stone and the last light shows a keyhole. Thorin's key fits, and the door opens."
+  es: "En la ladera occidental de la montaña la compañía espera sin esperanza, hasta que al atardecer un zorzal golpea una piedra y la última luz revela una cerradura. La llave de Thorin encaja, y la puerta se abre."
+links:
+  - to: elrond-reads-the-moon-letters
+    type: enabled-by
+    note:
+      en: The moon-letters told them when and where to look.
+      es: Las letras lunares les dijeron cuándo y dónde buscar.
+  - to: gandalf-finds-thrain
+    type: enabled-by
+    note:
+      en: The key Thráin entrusted to Gandalf.
+      es: La llave que Thráin confió a Gandalf.

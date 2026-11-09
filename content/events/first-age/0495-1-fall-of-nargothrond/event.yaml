@@ -1,0 +1,15 @@
+id: fall-of-nargothrond
+age: first-age
+when:
+  start: { age: first-age, year: 495, season: autumn }
+  precision: season
+place: nargothrond
+characters: [ turin, finduilas, glaurung ]
+arcs: [ the-children-of-hurin ]
+tags: [ silmarillion, dragon ]
+status: outline
+source: { book: the-silmarillion, chapter: Of Túrin Turambar }
+title: { en: The Fall of Nargothrond, es: La caída de Nargothrond }
+summary:
+  en: An army of Morgoth led by the dragon Glaurung sacks the hidden city. Túrin, held by the dragon's spell, cannot save Finduilas, and is sent north on a false errand.
+  es: Un ejército de Morgoth guiado por el dragón Glaurung saquea la ciudad oculta. Túrin, preso del hechizo del dragón, no puede salvar a Finduilas, y es enviado al norte con un engaño.

@@ -1,0 +1,8 @@
+id: the-master
+name: { en: The Master of Lake-town, es: El Gobernador de la Ciudad del Lago }
+kind: man
+summary:
+  en: "The elected ruler of Esgaroth, fond of gold and of speeches."
+  es: "El gobernante elegido de Esgaroth, aficionado al oro y a los discursos."
+color: "#7a6a5a"
+scale: 1.75

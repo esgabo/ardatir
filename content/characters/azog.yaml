@@ -1,0 +1,10 @@
+id: azog
+name: { en: Azog, es: Azog }
+kind: orc
+summary:
+  en: "The orc-lord of Moria, slayer of Thrór."
+  es: "El señor orco de Moria, asesino de Thrór."
+color: "#5a5a4a"
+scale: 2.0
+kin:
+  - { id: bolg, as: son }

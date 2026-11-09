@@ -1,0 +1,7 @@
+id: years-of-the-lamps
+order: 1
+name: { en: Years of the Lamps, es: Años de las Lámparas }
+summary:
+  en: The Valar shape the young world, lit by two great Lamps, until Melkor casts them down.
+  es: Los Valar dan forma al joven mundo, iluminado por dos grandes Lámparas, hasta que Melkor las derriba.
+timeless: true   # no reliable year count survives for this age

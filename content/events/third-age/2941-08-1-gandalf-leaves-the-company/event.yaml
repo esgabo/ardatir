@@ -1,0 +1,24 @@
+id: gandalf-leaves-the-company
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: summer }
+  precision: season
+place: forest-gate
+characters: [ gandalf, bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 7 }
+title:
+  en: Gandalf Leaves at the Forest Gate
+  es: Gandalf se despide en la Puerta del Bosque
+summary:
+  en: "At the edge of Mirkwood, Gandalf leaves them for urgent matters in the south, warning them never to stray from the path."
+  es: "En el linde del Bosque Negro, Gandalf los deja por un asunto urgente en el sur y les advierte que nunca se aparten del sendero."
+links:
+  - to: white-council-drives-out-sauron
+    type: concurrent
+    note:
+      en: "Gandalf's business in the south: the White Council's move against Dol Guldur."
+      es: "El asunto de Gandalf en el sur: la acción del Concilio Blanco contra Dol Guldur."

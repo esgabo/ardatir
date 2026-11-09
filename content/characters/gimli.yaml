@@ -1,0 +1,8 @@
+id: gimli
+name: { en: Gimli, es: Gimli }
+kind: dwarf
+summary:
+  en: A Dwarf of the Lonely Mountain, one of the Fellowship of the Ring.
+  es: Un Enano de la Montaña Solitaria, miembro de la Compañía del Anillo.
+color: "#7a4a2e"
+scale: 1.3

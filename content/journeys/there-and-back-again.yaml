@@ -1,0 +1,21 @@
+id: there-and-back-again
+title: { en: There and Back Again, es: Historia de una ida y una vuelta }
+characters: [ bilbo ]
+waypoints:
+  - { place: green-dragon, date: { age: third-age, year: 2941, month: 4, day: 27 }, precision: day }   # runs from Bag End to Bywater
+  - { place: trollshaws, date: { age: third-age, year: 2941, month: 5 }, precision: month }
+  - { place: rivendell, date: { age: third-age, year: 2941, month: 6 }, precision: month }   # midsummer
+  - { place: goblin-town, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: gollums-lake, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: eagles-eyrie, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: beorns-house, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: forest-gate, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: mirkwood, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: elvenking-halls, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: lake-town, date: { age: third-age, year: 2941, month: 9, day: 22 }, precision: day }
+  - { place: erebor, date: { age: third-age, year: 2941, season: autumn }, precision: season }
+  - { place: dale, date: { age: third-age, year: 2941, season: autumn }, precision: season }   # the Arkenstone, the battle, Thorin's farewell
+  - { place: beorns-house, date: { age: third-age, year: 2941, season: winter }, precision: season }   # Yule
+  - { place: rivendell, date: { age: third-age, year: 2942, month: 5, day: 1 }, precision: day }
+  - { place: trollshaws, date: { age: third-age, year: 2942, month: 5 }, precision: month }   # the troll gold
+  - { place: bag-end, date: { age: third-age, year: 2942, month: 6, day: 22 }, precision: day }   # home, to an auction

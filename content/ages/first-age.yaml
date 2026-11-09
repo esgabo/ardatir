@@ -1,0 +1,8 @@
+id: first-age
+order: 3
+name: { en: First Age, es: Primera Edad }
+abbr: { en: F.A., es: P.E. }
+summary:
+  en: From the first rising of the Sun to the overthrow of Morgoth. The wars of the Elves and Men of Beleriand.
+  es: Desde la primera salida del Sol hasta la derrota de Morgoth. Las guerras de Elfos y Hombres en Beleriand.
+axis: { start: 1 }      # axis position of this age's year 1, in years of the Sun

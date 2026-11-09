@@ -1,0 +1,8 @@
+id: second-age
+order: 4
+name: { en: Second Age, es: Segunda Edad }
+abbr: { en: S.A., es: S.E. }
+summary:
+  en: The rise and fall of Númenor, the forging of the Rings, and the Last Alliance against Sauron.
+  es: El auge y la caída de Númenor, la forja de los Anillos y la Última Alianza contra Sauron.
+axis: { start: 591 }    # after the 590 years of the First Age

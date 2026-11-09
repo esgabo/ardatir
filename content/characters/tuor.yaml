@@ -1,0 +1,10 @@
+id: tuor
+name: { en: Tuor, es: Tuor }
+kind: man
+summary:
+  en: Son of Huor, sent by Ulmo to the hidden city of Gondolin.
+  es: Hijo de Huor, enviado por Ulmo a la ciudad oculta de Gondolin.
+color: "#3a6a8a"
+scale: 1.85
+kin:
+  - { id: turin, as: cousin }

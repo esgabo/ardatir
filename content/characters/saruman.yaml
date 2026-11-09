@@ -1,0 +1,8 @@
+id: saruman
+name: { en: Saruman, es: Saruman }
+kind: wizard
+summary:
+  en: "Head of the White Council and chief of the wizards."
+  es: "Jefe del Concilio Blanco y cabeza de los magos."
+color: "#e0e0e0"
+scale: 1.8

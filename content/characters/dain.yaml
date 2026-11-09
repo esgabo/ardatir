@@ -1,0 +1,11 @@
+id: dain
+name: { en: Dáin Ironfoot, es: Dáin Pie de Hierro }
+kind: dwarf
+summary:
+  en: Thorin's cousin, lord of the Iron Hills, who becomes King under the Mountain after him and dies defending Erebor's gate in the War of the Ring.
+  es: Primo de Thorin, señor de las Colinas de Hierro, que se convierte en Rey bajo la Montaña tras él y muere defendiendo la puerta de Erebor en la Guerra del Anillo.
+kin:
+  - { id: nain, as: father }
+  - { id: thorin, as: cousin }
+color: "#8a5a2a"
+scale: 1.3

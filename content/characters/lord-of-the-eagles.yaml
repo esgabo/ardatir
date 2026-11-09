@@ -1,0 +1,8 @@
+id: lord-of-the-eagles
+name: { en: The Lord of the Eagles, es: El Señor de las Águilas }
+kind: eagle
+summary:
+  en: Lord of the great eagles of the Misty Mountains.
+  es: Señor de las grandes águilas de las Montañas Nubladas.
+color: "#7a5a3a"
+scale: 2.4

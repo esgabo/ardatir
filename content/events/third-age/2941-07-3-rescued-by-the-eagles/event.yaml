@@ -1,0 +1,16 @@
+id: rescued-by-the-eagles
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: summer }
+  precision: season
+place: eagles-eyrie
+characters: [ bilbo, gandalf, lord-of-the-eagles, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 6 }
+title: { en: Rescued by the Eagles, es: Rescatados por las Águilas }
+summary:
+  en: "Out of the mountains, the company is treed by wargs while goblins set the forest on fire. The great eagles sweep down, carry them to their eyrie, and bear them on to the Carrock."
+  es: "Fuera de las montañas, la compañía queda atrapada en los árboles por los wargos mientras los trasgos incendian el bosque. Las grandes águilas descienden, los llevan a su nido y luego hasta la Carroca."

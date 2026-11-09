@@ -1,0 +1,8 @@
+id: beorn
+name: { en: Beorn, es: Beorn }
+kind: skin-changer
+summary:
+  en: A huge skin-changer who is sometimes a man and sometimes a great black bear.
+  es: Un enorme cambiapieles que a veces es hombre y a veces un gran oso negro.
+color: "#3a2a1a"
+scale: 2.2

@@ -1,0 +1,10 @@
+id: nienor
+name: { en: Nienor, es: Nienor }
+kind: man
+summary:
+  en: Daughter of Húrin, Túrin's sister, who never knew him until it was too late.
+  es: Hija de Húrin, hermana de Túrin, que no lo conoció hasta que fue demasiado tarde.
+color: "#b8b0c8"
+scale: 1.72
+kin:
+  - { id: turin, as: brother }

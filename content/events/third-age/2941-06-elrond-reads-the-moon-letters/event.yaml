@@ -1,0 +1,23 @@
+id: elrond-reads-the-moon-letters
+age: third-age
+when:
+  # Midsummer's Eve, a single day; kept to the month because our calendar has no convention for the Lithe days yet
+  start: { age: third-age, year: 2941, month: 6 }
+  precision: month
+place: rivendell
+characters: [ elrond, thorin, bilbo, gandalf ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 3 }
+title: { en: Elrond Reads the Moon-letters, es: Elrond lee las letras lunares }
+summary:
+  en: "In Rivendell, by the light of a crescent moon like the one under which they were written, Elrond finds hidden runes on Thrór's map: a clue to the secret door of the Mountain."
+  es: "En Rivendel, a la luz de una luna creciente como aquella bajo la que fueron escritas, Elrond descubre runas ocultas en el mapa de Thrór: una pista sobre la puerta secreta de la Montaña."
+links:
+  - to: gandalf-finds-thrain
+    type: enabled-by
+    note:
+      en: The map Elrond reads is the one Thráin gave Gandalf in Dol Guldur.
+      es: El mapa que lee Elrond es el que Thráin entregó a Gandalf en Dol Guldur.

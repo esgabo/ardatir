@@ -1,0 +1,16 @@
+id: guests-of-beorn
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: summer }
+  precision: season
+place: beorns-house
+characters: [ beorn, gandalf, bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 7 }
+title: { en: Guests of Beorn, es: Huéspedes de Beorn }
+summary:
+  en: "Gandalf wins them shelter with Beorn by telling their tale while the dwarves turn up two at a time. The skin-changer feeds them, checks their story by night as a bear, and sends them on with ponies and food."
+  es: "Gandalf les consigue refugio en casa de Beorn contando la historia de sus aventuras mientras los presenta de pocos en pocos. El cambiapieles los alimenta, comprueba su relato de noche convertido en oso y los despide con ponis y comida."

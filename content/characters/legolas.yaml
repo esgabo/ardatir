@@ -1,0 +1,8 @@
+id: legolas
+name: { en: Legolas, es: Legolas }
+kind: elf
+summary:
+  en: An Elf of the Woodland Realm, one of the Fellowship of the Ring.
+  es: Un Elfo del Reino del Bosque, miembro de la Compañía del Anillo.
+color: "#6f8a4a"
+scale: 1.85

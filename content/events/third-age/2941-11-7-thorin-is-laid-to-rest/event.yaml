@@ -1,0 +1,20 @@
+id: thorin-is-laid-to-rest
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: autumn }
+  precision: season
+place: erebor
+characters: [ bard, thranduil, dain ]
+arcs: [ the-quest-of-erebor ]
+journeys: []
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 18 }
+title: { en: Thorin Is Laid to Rest, es: Thorin recibe sepultura }
+summary:
+  en: Thorin is buried deep under the Mountain. Bard lays the Arkenstone on his breast, the Elvenking sets Orcrist upon the tomb, and Dáin becomes King under the Mountain.
+  es: Thorin es sepultado en lo profundo de la Montaña. Bardo coloca la Piedra del Arca sobre su pecho, el Rey Elfo deja a Orcrist sobre la tumba, y Dáin se convierte en Rey bajo la Montaña.
+links:
+  - to: thorins-farewell
+    type: caused-by
+    note: { en: Thorin's death after the battle., es: La muerte de Thorin tras la batalla. }

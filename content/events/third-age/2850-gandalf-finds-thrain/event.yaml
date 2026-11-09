@@ -1,0 +1,18 @@
+id: gandalf-finds-thrain
+age: third-age
+when:
+  start: { age: third-age, year: 2850 }
+  precision: year
+place: dol-guldur
+characters: [ gandalf, thrain ]
+arcs: [ durins-folk-in-exile ]
+journeys: []
+tags: [ hobbit ]
+status: outline
+source: { book: the-lord-of-the-rings, chapter: Appendix B }
+title:
+  en: Gandalf Finds Thráin in Dol Guldur
+  es: Gandalf encuentra a Thráin en Dol Guldur
+summary:
+  en: "Entering Dol Guldur in secret, Gandalf learns that its master is Sauron himself. In the dungeons he finds a dying dwarf, Thráin, who gives him a map and a key for his son."
+  es: "Entrando en secreto en Dol Guldur, Gandalf descubre que su señor es el mismo Sauron. En las mazmorras encuentra a un enano moribundo, Thráin, que le entrega un mapa y una llave para su hijo."

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ardatir</title>
+    <meta name="description" content="A watch over Arda: an isometric, animated journey through the events of Tolkien's world. A non-commercial fan project." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="viewport"></div>
+    <div id="flash"></div>
+
+    <header class="top">
+      <div class="brand">
+        <h1>Ardatir</h1>
+        <p id="tagline"></p>
+      </div>
+      <div class="controls">
+        <select id="event-select"></select>
+        <select id="lang-select"></select>
+      </div>
+    </header>
+
+    <aside id="event-panel" class="panel">
+      <h2 id="event-title"></h2>
+      <p id="event-date" class="muted"></p>
+      <p id="event-summary"></p>
+    </aside>
+
+    <aside id="selection-panel" class="panel" hidden>
+      <h3 id="sel-title"></h3>
+      <p id="sel-subtitle" class="muted"></p>
+      <p id="sel-body"></p>
+      <blockquote id="sel-thought"></blockquote>
+    </aside>
+
+    <div id="caption" class="caption"></div>
+
+    <footer class="timeline">
+      <button id="play" type="button">▶</button>
+      <div class="track">
+        <input id="scrubber" type="range" min="0" max="1000" value="0" step="1" />
+        <div id="beats" class="beats"></div>
+      </div>
+      <span id="time-label" class="time"></span>
+      <button id="mute" type="button" hidden>🔊</button>
+    </footer>
+
+    <p id="disclaimer" class="disclaimer"></p>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

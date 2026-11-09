@@ -1,0 +1,16 @@
+id: meeting-in-bree
+age: third-age
+when:
+  start: { age: third-age, year: 2941, month: 3, day: 15 }
+  precision: day
+place: prancing-pony
+characters: [ gandalf, thorin ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ gandalfs-road-2941 ]
+tags: [ hobbit, unfinished-tales ]
+status: outline
+source: { book: unfinished-tales, chapter: The Quest of Erebor }
+title: { en: A Chance Meeting in Bree, es: Un encuentro casual en Bree }
+summary:
+  en: "Gandalf, worried that Sauron could use the dragon in the North, meets Thorin at the Prancing Pony. Together they begin to plan the return to Erebor, and Gandalf already has a burglar in mind."
+  es: "Gandalf, preocupado porque Sauron pudiera servirse del dragón del Norte, se encuentra con Thorin en el Poney Pisador. Juntos empiezan a planear el regreso a Erebor, y Gandalf ya tiene en mente a un saqueador."

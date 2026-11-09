@@ -1,0 +1,19 @@
+id: white-council-drives-out-sauron
+age: third-age
+when:
+  # Appendix B dates it only to the year
+  start: { age: third-age, year: 2941 }
+  precision: year
+place: dol-guldur
+characters: [ gandalf, saruman ]
+arcs: []
+journeys: [ gandalfs-road-2941 ]
+tags: [ hobbit, lord-of-the-rings ]
+status: outline
+source: { book: the-lord-of-the-rings, chapter: Appendix B }
+title:
+  en: The White Council Drives Out Sauron
+  es: El Concilio Blanco expulsa a Sauron
+summary:
+  en: "While the dwarves journey east, the White Council at last moves against Dol Guldur. Sauron, having prepared, abandons it and flees, to rise again in Mordor."
+  es: "Mientras los enanos viajan hacia el este, el Concilio Blanco actúa por fin contra Dol Guldur. Sauron, que ya lo tenía previsto, la abandona y huye, para resurgir en Mordor."

@@ -1,0 +1,10 @@
+id: bolg
+name: { en: Bolg, es: Bolg }
+kind: orc
+summary:
+  en: "Son of Azog, leader of the goblin army at the Battle of Five Armies."
+  es: "Hijo de Azog, jefe del ejército de trasgos en la Batalla de los Cinco Ejércitos."
+color: "#4a4a3a"
+scale: 1.9
+kin:
+  - { id: azog, as: father }

@@ -1,0 +1,12 @@
+id: years-of-the-trees
+order: 2
+name: { en: Years of the Trees, es: Años de los Árboles }
+abbr: { en: Y.T., es: A.Á. }
+summary:
+  en: Valinor glows in the light of the Two Trees. The Elves awaken in Middle-earth, and many are summoned west.
+  es: Valinor brilla con la luz de los Dos Árboles. Los Elfos despiertan en la Tierra Media, y muchos son llamados al oeste.
+axis:
+  # Valian Years, each about 9.582 years of the Sun (one of Tolkien's later figures).
+  # Y.T. 1501 lands on First Age year 1, so: 1 - 1500 × 9.582 = -14372.
+  start: -14372
+  yearLength: 9.582

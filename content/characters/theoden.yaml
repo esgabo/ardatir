@@ -1,0 +1,8 @@
+id: theoden
+name: { en: Théoden, es: Théoden }
+kind: man
+summary:
+  en: King of Rohan, who leads the Rohirrim to the relief of Minas Tirith.
+  es: Rey de Rohan, que conduce a los Rohirrim en auxilio de Minas Tirith.
+color: "#7a6a3a"
+scale: 1.8

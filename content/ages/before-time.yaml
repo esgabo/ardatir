@@ -1,0 +1,7 @@
+id: before-time
+order: 0
+name: { en: Before Time, es: Antes del Tiempo }
+summary:
+  en: Before the world existed. Ilúvatar, the Ainur, and the Great Music.
+  es: Antes de que existiera el mundo. Ilúvatar, los Ainur y la Gran Música.
+timeless: true   # events here have no position on the shared time axis

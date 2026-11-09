@@ -1,0 +1,11 @@
+id: bombur
+name: { en: Bombur, es: Bombur }
+kind: dwarf
+summary:
+  en: "The stoutest of the company, always the last and the sleepiest."
+  es: "El más corpulento de la compañía, siempre el último y el más dormilón."
+color: "#c08a5a"
+scale: 1.24
+kin:
+  - { id: bofur, as: brother }
+  - { id: bifur, as: cousin }

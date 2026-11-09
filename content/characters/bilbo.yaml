@@ -1,0 +1,10 @@
+id: bilbo
+name:
+  en: Bilbo Baggins
+  es: Bilbo Bolsón
+kind: hobbit
+summary:
+  en: A respectable, comfort-loving hobbit with a hidden streak of adventure.
+  es: Un hobbit respetable y amante de la comodidad, con una vena aventurera escondida.
+color: "#c9a46a"
+scale: 1

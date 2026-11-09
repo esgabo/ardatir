@@ -1,0 +1,8 @@
+id: great-goblin
+name: { en: The Great Goblin, es: El Gran Trasgo }
+kind: goblin
+summary:
+  en: Lord of the goblins under the Misty Mountains.
+  es: Señor de los trasgos bajo las Montañas Nubladas.
+color: "#6a6a4a"
+scale: 1.6

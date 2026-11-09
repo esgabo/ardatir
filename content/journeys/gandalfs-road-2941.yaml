@@ -1,0 +1,20 @@
+id: gandalfs-road-2941
+title: { en: "Gandalf's Year of the Quest", es: El año de Gandalf en la Búsqueda }
+characters: [ gandalf ]
+# Gandalf travels with the company as far as Mirkwood, leaves for the White Council's
+# business in the south, and rejoins them at the Mountain for the battle.
+waypoints:
+  - { place: prancing-pony, date: { age: third-age, year: 2941, month: 3, day: 15 }, precision: day }
+  - { place: bag-end, date: { age: third-age, year: 2941, month: 4, day: 26 }, precision: day }
+  - { place: trollshaws, date: { age: third-age, year: 2941, month: 5 }, precision: month }
+  - { place: rivendell, date: { age: third-age, year: 2941, month: 6 }, precision: month }
+  - { place: goblin-town, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: eagles-eyrie, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: beorns-house, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: forest-gate, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: dol-guldur, date: { age: third-age, year: 2941 }, precision: year }   # with the White Council; Appendix B gives only the year
+  - { place: dale, date: { age: third-age, year: 2941, season: autumn }, precision: season }   # back for the Arkenstone and the battle
+  - { place: beorns-house, date: { age: third-age, year: 2941, season: winter }, precision: season }
+  - { place: rivendell, date: { age: third-age, year: 2942, month: 5, day: 1 }, precision: day }
+  - { place: trollshaws, date: { age: third-age, year: 2942, month: 5 }, precision: month }   # the troll gold
+  - { place: bag-end, date: { age: third-age, year: 2942, month: 6, day: 22 }, precision: day }

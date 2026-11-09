@@ -1,0 +1,10 @@
+id: oin
+name: { en: Óin, es: Óin }
+kind: dwarf
+summary:
+  en: "Glóin's brother, who tends the company's fires."
+  es: "Hermano de Glóin, que se ocupa de las hogueras de la compañía."
+color: "#6a5a4a"
+scale: 1.28
+kin:
+  - { id: gloin, as: brother }

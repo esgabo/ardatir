@@ -1,0 +1,16 @@
+id: tuor-reaches-gondolin
+age: first-age
+when:
+  start: { age: first-age, year: 496 }
+  precision: year
+place: gondolin
+characters: [ tuor, voronwe ]
+arcs: [ the-fall-of-gondolin ]
+journeys: [ tuors-road-to-gondolin ]
+tags: [ silmarillion ]
+status: outline
+source: { book: the-silmarillion, chapter: Of Tuor and the Fall of Gondolin }
+title: { en: Tuor reaches Gondolin, es: Tuor llega a Gondolin }
+summary:
+  en: Guided by Voronwë through the secret ways, Tuor passes the seven gates and brings Ulmo's warning to King Turgon.
+  es: Guiado por Voronwë por los caminos secretos, Tuor atraviesa las siete puertas y lleva la advertencia de Ulmo al rey Turgon.

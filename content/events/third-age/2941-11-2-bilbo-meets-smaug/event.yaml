@@ -1,0 +1,16 @@
+id: bilbo-meets-smaug
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: autumn }
+  precision: season
+place: erebor
+characters: [ bilbo, smaug ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 12 }
+title: { en: Inside Information, es: Información confidencial }
+summary:
+  en: "Bilbo goes down the tunnel alone, steals a cup from the sleeping dragon, and later trades riddling flattery with Smaug, spotting a bare patch in the dragon's jewelled armour."
+  es: "Bilbo baja solo por el túnel, roba una copa al dragón dormido y más tarde intercambia halagos y acertijos con Smaug, descubriendo un hueco desnudo en su coraza de gemas."

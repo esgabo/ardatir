@@ -1,0 +1,22 @@
+id: tuor-sees-turin-at-ivrin
+age: first-age
+when:
+  start: { age: first-age, year: 495, season: winter }   # the Fell Winter after the fall of Nargothrond
+  precision: season
+place: ivrin
+characters: [ tuor, voronwe, turin ]
+arcs: [ the-fall-of-gondolin, the-children-of-hurin ]
+journeys: [ tuors-road-to-gondolin ]
+tags: [ silmarillion, crossing ]
+status: outline
+source: { book: unfinished-tales, chapter: Of Tuor and his Coming to Gondolin }
+title: { en: Tuor sees Túrin at Ivrin, es: Tuor ve a Túrin en Ivrin }
+summary:
+  en: On the road to Gondolin, Tuor and Voronwë find the pools of Ivrin defiled. A tall man in black hurries past them northward. It is Túrin, Tuor's cousin, and neither knows the other.
+  es: En el camino a Gondolin, Tuor y Voronwë encuentran profanados los lagos de Ivrin. Un hombre alto vestido de negro pasa a toda prisa hacia el norte. Es Túrin, primo de Tuor, y ninguno reconoce al otro.
+links:
+  - to: fall-of-nargothrond
+    type: caused-by
+    note:
+      en: Glaurung fouled Ivrin on his way to Nargothrond, and Túrin is hurrying north after its fall.
+      es: Glaurung profanó Ivrin camino de Nargothrond, y Túrin corre hacia el norte tras su caída.

@@ -1,0 +1,22 @@
+id: the-troll-gold
+age: third-age
+when:
+  start: { age: third-age, year: 2942, month: 5 }
+  precision: month
+place: trollshaws
+characters: [ bilbo, gandalf ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 19 }
+title: { en: The Troll Gold, es: El oro de los trolls }
+summary:
+  en: "Passing the place where the trolls were turned to stone, Bilbo and Gandalf dig up the gold the company buried there on the way out."
+  es: "Al pasar por el lugar donde los trolls se convirtieron en piedra, Bilbo y Gandalf desentierran el oro que la compañía enterró allí a la ida."
+links:
+  - to: roast-mutton
+    type: enabled-by
+    note:
+      en: "The trolls' hoard, buried after they were turned to stone."
+      es: "El tesoro de los trolls, enterrado después de que se convirtieran en piedra."

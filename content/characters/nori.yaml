@@ -1,0 +1,9 @@
+id: nori
+name: { en: Nori, es: Nori }
+kind: dwarf
+summary: { en: "One of the company, kin of Dori and Ori.", es: "Uno de la compañía, pariente de Dori y Ori." }
+color: "#7a6a9a"
+scale: 1.28
+kin:
+  - { id: dori, as: kin }
+  - { id: ori, as: kin }

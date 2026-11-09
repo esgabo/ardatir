@@ -1,0 +1,10 @@
+id: nain
+name: { en: Náin, es: Náin }
+kind: dwarf
+summary:
+  en: "Dáin's father, lord of the Iron Hills, slain by Azog at Azanulbizar."
+  es: "Padre de Dáin, señor de las Colinas de Hierro, muerto por Azog en Azanulbizar."
+color: "#6a5a3a"
+scale: 1.3
+kin:
+  - { id: dain, as: son }

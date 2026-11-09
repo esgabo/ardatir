@@ -1,0 +1,17 @@
+id: thorin
+name:
+  en: Thorin Oakenshield
+  es: Thorin Escudo de Roble
+kind: dwarf
+summary:
+  en: Heir of the dwarf-kings under the Lonely Mountain, set on reclaiming it from the dragon.
+  es: Heredero de los reyes enanos bajo la Montaña Solitaria, decidido a recuperarla del dragón.
+color: "#3f5f8a"
+scale: 1.3
+kin:
+  - { id: thrain, as: father }
+  - { id: thror, as: grandfather }
+  - { id: fili, as: nephew }
+  - { id: kili, as: nephew }
+  - { id: frerin, as: brother }
+  - { id: dain, as: cousin }

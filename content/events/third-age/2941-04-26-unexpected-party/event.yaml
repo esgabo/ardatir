@@ -1,0 +1,26 @@
+id: unexpected-party
+age: third-age
+when:
+  # Gandalf calls on the 25th and the party is on the 26th, per Tolkien in Unfinished Tales (The Quest of Erebor).
+  # The Hobbit's own clues point to the 27th (Anderson, The Annotated Hobbit); we follow Tolkien's later dating.
+  start: { age: third-age, year: 2941, month: 4, day: 26 }
+  precision: day
+place: bag-end
+characters: [ bilbo, gandalf, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: staged
+source: { book: the-hobbit, chapter: 1 }
+title:
+  en: An Unexpected Party
+  es: Una tertulia inesperada
+summary:
+  en: Gandalf marks Bilbo's door, and thirteen dwarves arrive for tea, then ask him to join their quest to the Lonely Mountain.
+  es: Gandalf marca la puerta de Bilbo, trece enanos llegan a tomar el té y luego le piden que se una a su búsqueda hacia la Montaña Solitaria.
+links:
+  - to: meeting-in-bree
+    type: caused-by
+    note:
+      en: The plan Gandalf and Thorin made at Bree.
+      es: El plan que Gandalf y Thorin trazaron en Bree.

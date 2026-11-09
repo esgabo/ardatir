@@ -1,0 +1,120 @@
+# Content
+
+Everything Ardatir shows comes from here: one YAML file per thing, linked by id. Run `npm run content` to validate it; `npm run dev` revalidates on every save. The design behind it is in [`docs/DESIGN.md`](../docs/DESIGN.md) §4.
+
+```
+ages/          the ages and their place on the shared time axis
+characters/    one file per character
+places/        one file per place
+arcs/          named periods that group events (The War of the Ring)
+journeys/      dated paths of characters between places
+factions/      (later) sides in battles
+events/<age>/<sort-key>-<id>/
+  event.yaml       facts (every event)
+  narration.yaml   the script (from status: scripted)
+  staging.yaml     the animation (from status: staged)
+  audio/<lang>.mp3 + audio/<lang>.yaml   a narration recording and its timing (optional)
+```
+
+Ids are kebab-case (`battle-of-the-pelennor-fields`) and match the file name. Every text is `{ en, es }`; English is required.
+
+## Writing a new event
+
+1. Make a folder under `events/<age>/`, named `<sort-key>-<id>`. **The sort key is the story order**: events are ordered by it, not by their dates. Use `YYYY-MM-DD-n`, as precise as you like, with a season written as a month (spring `03`, summer `07`, autumn `09`, winter `12`) and `-1`, `-2`… for events in the same stretch: `2941-07-1-captured-in-goblin-town`, `2941-07-2-riddles-in-the-dark`. First Age years get four digits: `0495-…`.
+2. Add `event.yaml` with `status: outline`. Start from this:
+
+```yaml
+id: battle-of-the-pelennor-fields
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 15 }
+  # end: { ... }          # for events that last
+  precision: day          # day | month | season | year | decade | approximate
+place: pelennor-fields
+characters: [ theoden, eowyn, merry, witch-king ]
+arcs: [ the-war-of-the-ring ]
+journeys: []              # journeys this event is a stop on
+tags: [ lord-of-the-rings, battle ]
+status: outline           # outline | scripted | staged | animated
+source: { book: the-return-of-the-king, chapter: The Battle of the Pelennor Fields }
+title: { en: The Battle of the Pelennor Fields, es: La batalla de los Campos del Pelennor }
+summary:
+  en: In our own words, two or three sentences.
+  es: En nuestras palabras, dos o tres frases.
+links:                    # only what time alone can't show; the build adds the reverse
+  - to: battle-of-pelargir
+    type: enabled-by      # caused-by | enabled-by | concurrent | crossing (+ causes, enables)
+    note: { en: Why they connect., es: Por qué se conectan. }
+beats:                    # named turning points; their times go in staging.yaml
+  - { id: dawn, label: { en: Dawn, es: Amanecer } }
+```
+
+3. Any new character, place, arc or journey it mentions gets its own file. The build tells you which ids it doesn't know.
+
+### Dates, honestly
+
+- Fill only what the sources say. A season goes in `season:` (not a month); a known day needs its month.
+- `precision` must match: `day` needs a day, `month` a month, `season` a season.
+- Unsure? Claim less (`year`) and leave a `#` comment saying why.
+- Events in a timeless age (before the world) have no `when`.
+
+## Writing the script: `narration.yaml`
+
+Passages in order, one to three sentences each, in our own words. Set `status: scripted`.
+
+```yaml
+- id: fire
+  en: Cold, wet and lost in the hills, the company spotted a light among the trees.
+  es: Con frío, empapados y perdidos entre las colinas, vieron una luz entre los árboles.
+- id: trolls
+  en: ...
+  es: ...
+```
+
+## Staging: `staging.yaml`
+
+Where everything falls in the animation (`t` from 0 to 1), and the character tracks. Set `status: staged`.
+
+```yaml
+stage: diorama            # cosmos | diorama
+duration: 24              # seconds, when there is no recording
+narration: { fire: 0, trolls: 0.25 }       # every passage id, rising
+beats: { dawn: 0.9 }                       # every beat id from event.yaml
+tracks:
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: -4, z: 3, action: walk, thought: { en: ..., es: ... } }
+```
+
+## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`
+
+Produced outside this project. The words must match `narration.yaml` exactly. The timing file says how long the recording is and the second each passage starts; the animation stretches to match.
+
+```yaml
+duration: 31.5
+starts: { fire: 0.4, trolls: 7.2 }
+```
+
+## Journeys
+
+```yaml
+id: tuors-road-to-gondolin
+title: { en: Tuor's Road to Gondolin, es: El camino de Tuor a Gondolin }
+characters: [ tuor, voronwe ]
+waypoints:                # in order; at least two
+  - { place: ivrin,    date: { age: first-age, year: 495, season: winter }, precision: season }
+  - { place: gondolin, date: { age: first-age, year: 496 }, precision: year }
+```
+
+## Characters
+
+```yaml
+id: tuor
+name: { en: Tuor, es: Tuor }        # use published translations
+kind: man                            # hobbit, elf, man, dwarf, wizard, ...
+summary: { en: ..., es: ... }
+color: "#3a6a8a"                     # placeholder for staging
+scale: 1.85                          # height relative to a hobbit
+kin:
+  - { id: turin, as: cousin }
+```

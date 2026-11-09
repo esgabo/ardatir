@@ -1,0 +1,16 @@
+id: captured-in-goblin-town
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: summer }
+  precision: season
+place: goblin-town
+characters: [ bilbo, gandalf, great-goblin, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 4 }
+title: { en: Captured in Goblin-town, es: Capturados en la Ciudad de los Trasgos }
+summary:
+  en: "Sheltering from a storm in a cave of the High Pass, the company is seized by goblins and dragged before the Great Goblin. Gandalf slays him and leads them fleeing through the dark, and Bilbo is lost."
+  es: "Refugiados de una tormenta en una cueva del Paso Alto, los de la compañía son capturados por trasgos y llevados ante el Gran Trasgo. Gandalf lo mata y los guía en la huida por la oscuridad, y Bilbo se pierde."

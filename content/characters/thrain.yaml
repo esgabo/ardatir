@@ -1,0 +1,12 @@
+id: thrain
+name: { en: Thráin, es: Thráin }
+kind: dwarf
+summary:
+  en: "Son of Thrór and father of Thorin, lost in Dol Guldur."
+  es: "Hijo de Thrór y padre de Thorin, perdido en Dol Guldur."
+color: "#8a6a3a"
+scale: 1.3
+kin:
+  - { id: thror, as: father }
+  - { id: thorin, as: son }
+  - { id: frerin, as: son }

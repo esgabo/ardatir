@@ -1,0 +1,16 @@
+id: return-to-rivendell
+age: third-age
+when:
+  start: { age: third-age, year: 2942, month: 5, day: 1 }
+  precision: day
+place: rivendell
+characters: [ bilbo, gandalf, elrond ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 19 }
+title: { en: Back in Rivendell, es: De vuelta en Rivendel }
+summary:
+  en: "On the first of May the two travellers come back to Rivendell. Half-listening to Gandalf and Elrond talking, Bilbo learns that the Necromancer has been driven out of Mirkwood."
+  es: "El primero de mayo los dos viajeros regresan a Rivendel. Escuchando a medias la conversación de Gandalf y Elrond, Bilbo se entera de que el Nigromante ha sido expulsado del Bosque Negro."

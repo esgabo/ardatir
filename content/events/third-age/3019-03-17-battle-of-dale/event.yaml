@@ -1,0 +1,15 @@
+id: battle-of-dale
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 17 }
+  precision: day
+place: dale
+characters: [ brand, dain ]
+tags: [ lord-of-the-rings, battle ]
+arcs: [ the-war-of-the-ring ]
+status: outline
+source: { book: the-return-of-the-king, chapter: Appendix B }
+title: { en: The Battle of Dale, es: La batalla de Valle }
+summary:
+  en: Sauron's Easterlings assail Dale and the Lonely Mountain. King Brand and King Dáin fall before the gate of Erebor, and the survivors hold out under siege.
+  es: Los Orientales de Sauron atacan Valle y la Montaña Solitaria. El rey Brand y el rey Dáin caen ante la puerta de Erebor, y los supervivientes resisten sitiados.

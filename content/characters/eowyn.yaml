@@ -1,0 +1,8 @@
+id: eowyn
+name: { en: Éowyn, es: Éowyn }
+kind: man
+summary:
+  en: Shieldmaiden of Rohan, Théoden's niece, who rides to war in disguise.
+  es: Doncella guerrera de Rohan, sobrina de Théoden, que cabalga a la guerra disfrazada.
+color: "#c9c2a8"
+scale: 1.72

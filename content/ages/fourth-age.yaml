@@ -1,0 +1,8 @@
+id: fourth-age
+order: 6
+name: { en: Fourth Age, es: Cuarta Edad }
+abbr: { en: Fo.A., es: C.E. }
+summary:
+  en: The Age of Men, after the passing of the Ring.
+  es: La Edad de los Hombres, tras la desaparición del Anillo.
+axis: { start: 7053 }   # 4032 + 3021 years of the Third Age

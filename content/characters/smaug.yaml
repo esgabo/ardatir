@@ -1,0 +1,8 @@
+id: smaug
+name: { en: Smaug, es: Smaug }
+kind: dragon
+summary:
+  en: The great fire-drake who took the Lonely Mountain and lies upon its treasure.
+  es: El gran dragón de fuego que tomó la Montaña Solitaria y yace sobre su tesoro.
+color: "#9a2a1a"
+scale: 8

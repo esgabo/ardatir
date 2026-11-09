@@ -1,0 +1,16 @@
+id: the-road-to-erebor
+title: { en: The Road to Erebor, es: El camino a Erebor }
+characters: [ thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+waypoints:
+  - { place: bag-end, date: { age: third-age, year: 2941, month: 4, day: 26 }, precision: day }   # the Unexpected Party
+  - { place: green-dragon, date: { age: third-age, year: 2941, month: 4, day: 27 }, precision: day }
+  - { place: trollshaws, date: { age: third-age, year: 2941, month: 5 }, precision: month }
+  - { place: rivendell, date: { age: third-age, year: 2941, month: 6 }, precision: month }
+  - { place: goblin-town, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: eagles-eyrie, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: beorns-house, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: forest-gate, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: mirkwood, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: elvenking-halls, date: { age: third-age, year: 2941, season: summer }, precision: season }
+  - { place: lake-town, date: { age: third-age, year: 2941, month: 9, day: 22 }, precision: day }
+  - { place: erebor, date: { age: third-age, year: 2941, season: autumn }, precision: season }

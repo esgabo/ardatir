@@ -1,0 +1,8 @@
+id: merry
+name: { en: Merry Brandybuck, es: Merry Brandigamo }
+kind: hobbit
+summary:
+  en: A hobbit of the Fellowship, sworn to the service of King Théoden.
+  es: Un hobbit de la Compañía, que ha jurado servir al rey Théoden.
+color: "#5f7a8a"
+scale: 1

@@ -1,0 +1,15 @@
+id: battle-of-pelargir
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 13 }
+  precision: day
+place: pelargir
+characters: [ aragorn, legolas, gimli ]
+arcs: [ the-war-of-the-ring ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-return-of-the-king, chapter: The Last Debate }
+title: { en: The Capture of the Ships at Pelargir, es: La captura de las naves en Pelargir }
+summary:
+  en: With the Dead of Dunharrow behind him, Aragorn falls upon the Corsairs of Umbar at Pelargir, routs them, and takes their fleet.
+  es: Con los Muertos del Sagrario tras él, Aragorn cae sobre los Corsarios de Umbar en Pelargir, los pone en fuga y se apodera de su flota.

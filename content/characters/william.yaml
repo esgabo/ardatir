@@ -1,0 +1,10 @@
+id: william
+name:
+  en: William
+  es: Guillermo
+kind: troll
+summary:
+  en: One of three quarrelsome stone-trolls camped in the Trollshaws.
+  es: Uno de los tres pendencieros trolls de piedra acampados en el Bosque de los Trolls.
+color: "#6d7a5a"
+scale: 2.8

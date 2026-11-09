@@ -1,0 +1,10 @@
+id: gandalf
+name:
+  en: Gandalf
+  es: Gandalf
+kind: wizard
+summary:
+  en: A wandering wizard who picks Bilbo as the company's burglar.
+  es: Un mago errante que elige a Bilbo como saqueador de la compañía.
+color: "#8d8f94"
+scale: 1.7

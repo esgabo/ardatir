@@ -1,0 +1,20 @@
+id: thorins-farewell
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: autumn }
+  precision: season
+place: dale
+characters: [ thorin, bilbo, gandalf ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 18 }
+title: { en: Thorin's Farewell, es: La despedida de Thorin }
+summary:
+  en: "Dying in the camp after the battle, Thorin asks for Bilbo and takes back his angry words, and they part as friends."
+  es: "Moribundo en el campamento tras la batalla, Thorin pide ver a Bilbo y retira sus palabras de ira, y se despiden como amigos."
+links:
+  - to: battle-of-five-armies
+    type: caused-by
+    note: { en: Thorin's wounds from the battle., es: Las heridas de Thorin en la batalla. }

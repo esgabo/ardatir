@@ -1,0 +1,8 @@
+id: sam
+name: { en: Samwise Gamgee, es: Samsagaz Gamyi }
+kind: hobbit
+summary:
+  en: Frodo's gardener and loyal companion all the way to Mount Doom.
+  es: Jardinero de Frodo y su leal compañero hasta el Monte del Destino.
+color: "#8a7a4a"
+scale: 1

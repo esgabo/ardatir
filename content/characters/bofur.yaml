@@ -1,0 +1,11 @@
+id: bofur
+name: { en: Bofur, es: Bofur }
+kind: dwarf
+summary:
+  en: "Bombur's brother, cousin of Bifur."
+  es: "Hermano de Bombur, primo de Bifur."
+color: "#8a6a2a"
+scale: 1.28
+kin:
+  - { id: bombur, as: brother }
+  - { id: bifur, as: cousin }

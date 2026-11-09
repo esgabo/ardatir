@@ -1,0 +1,26 @@
+id: battle-of-the-pelennor-fields
+age: third-age
+when:
+  start: { age: third-age, year: 3019, month: 3, day: 15 }
+  precision: day
+place: pelennor-fields
+characters: [ theoden, eowyn, merry, witch-king, aragorn, legolas, gimli, gandalf ]
+arcs: [ the-war-of-the-ring ]
+tags: [ lord-of-the-rings, battle ]
+status: outline
+source: { book: the-return-of-the-king, chapter: The Battle of the Pelennor Fields }
+title: { en: The Battle of the Pelennor Fields, es: La batalla de los Campos del Pelennor }
+summary:
+  en: The Rohirrim arrive at dawn to break the siege of Minas Tirith. Théoden falls, Éowyn and Merry destroy the Witch-king, and the black ships on the river bring not enemies but Aragorn.
+  es: Los Rohirrim llegan al alba para romper el asedio de Minas Tirith. Théoden cae, Éowyn y Merry destruyen al Rey Brujo, y las naves negras del río no traen enemigos, sino a Aragorn.
+links:
+  - to: battle-of-pelargir
+    type: enabled-by
+    note:
+      en: The ships taken at Pelargir carry Aragorn and the men of southern Gondor up the river to the battle.
+      es: Las naves capturadas en Pelargir llevan a Aragorn y a los hombres del sur de Gondor río arriba hasta la batalla.
+  - to: battle-of-dale
+    type: concurrent
+    note:
+      en: In the same days, the war reaches the North.
+      es: En esos mismos días, la guerra llega al Norte.

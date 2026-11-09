@@ -1,0 +1,11 @@
+id: bifur
+name: { en: Bifur, es: Bifur }
+kind: dwarf
+summary:
+  en: "A dwarf of Moria descent, cousin of Bofur and Bombur."
+  es: "Un enano de linaje de Moria, primo de Bofur y Bombur."
+color: "#6a7a6a"
+scale: 1.28
+kin:
+  - { id: bofur, as: cousin }
+  - { id: bombur, as: cousin }

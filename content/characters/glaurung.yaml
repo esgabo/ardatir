@@ -1,0 +1,8 @@
+id: glaurung
+name: { en: Glaurung, es: Glaurung }
+kind: dragon
+summary:
+  en: The first of the dragons of Morgoth, as cunning in speech as he is terrible in fire.
+  es: El primero de los dragones de Morgoth, tan astuto con las palabras como terrible con el fuego.
+color: "#6a8a3a"
+scale: 6

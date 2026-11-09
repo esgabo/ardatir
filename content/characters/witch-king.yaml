@@ -1,0 +1,8 @@
+id: witch-king
+name: { en: The Witch-king of Angmar, es: El Rey Brujo de Angmar }
+kind: wraith
+summary:
+  en: Lord of the Nazgûl and captain of Sauron's host before Minas Tirith.
+  es: Señor de los Nazgûl y capitán de la hueste de Sauron ante Minas Tirith.
+color: "#1e1e22"
+scale: 1.9

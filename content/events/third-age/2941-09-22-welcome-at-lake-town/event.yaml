@@ -1,0 +1,18 @@
+id: welcome-at-lake-town
+age: third-age
+when:
+  # Bilbo's farewell speech keeps 22 September as the anniversary of his arrival
+  # by barrel at Esgaroth (The Fellowship of the Ring, I.1)
+  start: { age: third-age, year: 2941, month: 9, day: 22 }
+  precision: day
+place: lake-town
+characters: [ thorin, bilbo, the-master, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 10 }
+title: { en: A Welcome at Lake-town, es: La bienvenida en la Ciudad del Lago }
+summary:
+  en: "Thorin announces himself as King under the Mountain returned. The people of Esgaroth, remembering the old songs, feast the dwarves, while the Master hopes they will soon move on."
+  es: "Thorin se presenta como el Rey bajo la Montaña que regresa. El pueblo de Esgaroth, recordando las viejas canciones, agasaja a los enanos, mientras el Gobernador espera que pronto sigan su camino."

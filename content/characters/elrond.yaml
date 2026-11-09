@@ -1,0 +1,8 @@
+id: elrond
+name: { en: Elrond, es: Elrond }
+kind: elf
+summary:
+  en: "Master of Rivendell, wise in lore and in old letters."
+  es: "Señor de Rivendel, sabio en tradiciones y en antiguas escrituras."
+color: "#5a5a8a"
+scale: 1.9

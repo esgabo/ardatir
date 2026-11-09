@@ -1,0 +1,11 @@
+id: fili
+name: { en: Fíli, es: Fíli }
+kind: dwarf
+summary:
+  en: "Thorin's nephew, young, keen-eyed and quick."
+  es: "Sobrino de Thorin, joven, de vista aguda y rápido."
+color: "#c9a040"
+scale: 1.25
+kin:
+  - { id: kili, as: brother }
+  - { id: thorin, as: uncle }

@@ -1,0 +1,17 @@
+id: barrels-out-of-bond
+age: third-age
+when:
+  # the night before the arrival at Lake-town on 22 September
+  start: { age: third-age, year: 2941, month: 9 }
+  precision: month
+place: elvenking-halls
+characters: [ bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 9 }
+title: { en: Barrels Out of Bond, es: Barriles en libertad }
+summary:
+  en: "While the guards sleep off the king's wine, Bilbo packs the dwarves into empty barrels and sends them down the river through the water-gate, clinging to the last one himself."
+  es: "Mientras los guardias duermen el vino del rey, Bilbo mete a los enanos en barriles vacíos y los echa río abajo por la puerta del agua, agarrado él mismo al último."

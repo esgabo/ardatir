@@ -1,0 +1,103 @@
+:root {
+  --ink: #ece6d8;
+  --muted: #a49c8c;
+  --gold: #e8c77a;
+  --panel: rgba(12, 14, 20, 0.72);
+  --line: rgba(232, 199, 122, 0.25);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #020308;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+}
+
+#viewport, #viewport canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+#viewport { cursor: grab; }
+
+#flash { position: fixed; inset: 0; background: #fffaf0; opacity: 0; pointer-events: none; }
+
+.top {
+  position: fixed; top: 0; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+  padding: 16px 20px; pointer-events: none;
+}
+.top > * { pointer-events: auto; }
+.brand h1 { font-family: var(--serif); font-weight: 600; font-size: 30px; letter-spacing: 0.06em; margin: 0; color: var(--gold); }
+.brand p { margin: 0; font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--muted); }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+#event-select { max-width: min(320px, 60vw); }
+
+select, button {
+  font: inherit; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px;
+  backdrop-filter: blur(6px); cursor: pointer;
+}
+button:hover, select:hover { border-color: var(--gold); }
+
+.panel {
+  position: fixed; left: 20px; width: min(320px, calc(100vw - 40px));
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 14px 16px; backdrop-filter: blur(6px);
+}
+.panel h2, .panel h3 { font-family: var(--serif); font-weight: 600; margin: 0 0 4px; color: var(--gold); }
+.panel h2 { font-size: 22px; }
+.panel h3 { font-size: 19px; }
+.panel p { margin: 6px 0; line-height: 1.45; }
+#event-panel { top: 92px; }
+#selection-panel { top: 92px; left: auto; right: 20px; }
+.muted { color: var(--muted); font-size: 12px; }
+blockquote { margin: 10px 0 0; padding-left: 10px; border-left: 2px solid var(--gold); font-family: var(--serif); font-style: italic; font-size: 16px; }
+blockquote:empty { display: none; }
+
+.caption {
+  position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%);
+  width: min(760px, calc(100vw - 40px)); text-align: center;
+  font-family: var(--serif); font-size: 21px; line-height: 1.4;
+  text-shadow: 0 1px 8px #000, 0 0 2px #000; pointer-events: none;
+}
+.caption .unspoken { opacity: 0.32; transition: opacity 0.2s; }
+
+.timeline {
+  position: fixed; left: 20px; right: 20px; bottom: 34px;
+  display: flex; align-items: center; gap: 12px;
+}
+.track { position: relative; flex: 1; height: 28px; display: flex; align-items: center; }
+#scrubber { width: 100%; accent-color: var(--gold); cursor: pointer; margin: 0; }
+.beats { position: absolute; inset: 0; pointer-events: none; }
+.beat {
+  position: absolute; top: -2px; width: 2px; height: 8px; background: var(--gold); opacity: 0.8;
+  transform: translateX(-1px);
+}
+.beat span {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  white-space: nowrap; font-size: 11px; color: var(--muted);
+}
+.time { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 84px; text-align: right; }
+
+.disclaimer {
+  position: fixed; bottom: 6px; left: 0; right: 0; margin: 0; text-align: center;
+  font-size: 11px; color: #6c6658; pointer-events: none;
+}
+
+.cosmos-label {
+  font-family: var(--serif); font-size: 15px; color: #cfe3ff; letter-spacing: 0.04em;
+  text-shadow: 0 0 6px #000; white-space: nowrap; pointer-events: none;
+}
+.cosmos-label.big { font-size: 20px; color: var(--gold); }
+
+@media (max-width: 700px) {
+  #event-panel { top: auto; bottom: 150px; }
+  #event-panel p#event-summary { display: none; }
+  #selection-panel { top: 92px; right: 20px; left: 20px; width: auto; }
+  .beat span { display: none; }
+  .caption { font-size: 17px; bottom: 80px; }
+}

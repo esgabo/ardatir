@@ -1,0 +1,16 @@
+id: the-auction-at-bag-end
+age: third-age
+when:
+  start: { age: third-age, year: 2942, month: 6, day: 22 }
+  precision: day
+place: bag-end
+characters: [ bilbo, gandalf ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 19 }
+title: { en: Home to an Auction, es: Regreso en plena subasta }
+summary:
+  en: "Bilbo comes home to find himself presumed dead and his belongings being sold at auction. He has to pay for his own chairs and tables, and the Shire never again thinks him entirely proper."
+  es: "Bilbo vuelve a casa y descubre que lo dan por muerto y que sus pertenencias se están subastando. Tiene que pagar por sus propias sillas y mesas, y la Comarca nunca vuelve a considerarlo del todo decente."

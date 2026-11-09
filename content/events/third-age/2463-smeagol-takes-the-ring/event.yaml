@@ -1,0 +1,17 @@
+id: smeagol-takes-the-ring
+age: third-age
+when:
+  # Appendix B gives c. 2463
+  start: { age: third-age, year: 2463 }
+  precision: approximate
+place: gladden-fields
+characters: [ deagol, gollum ]
+arcs: []
+journeys: []
+tags: [ hobbit, lord-of-the-rings, the-ring ]
+status: outline
+source: { book: the-fellowship-of-the-ring, chapter: The Shadow of the Past }   # date from Appendix B
+title: { en: Sméagol Takes the Ring, es: Sméagol se apodera del Anillo }
+summary:
+  en: "Fishing in the Gladden Fields, Déagol finds a golden ring in the river. His friend Sméagol kills him for it, and in time is driven out and hides under the mountains."
+  es: "Pescando en los Campos Gladios, Déagol encuentra un anillo de oro en el río. Su amigo Sméagol lo mata para quedárselo y, con el tiempo, es expulsado y se oculta bajo las montañas."

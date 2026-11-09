@@ -1,0 +1,10 @@
+id: gloin
+name: { en: Glóin, es: Glóin }
+kind: dwarf
+summary:
+  en: "Óin's brother, quick to doubt the burglar at first."
+  es: "Hermano de Óin, al principio rápido para dudar del saqueador."
+color: "#8a3a3a"
+scale: 1.28
+kin:
+  - { id: oin, as: brother }

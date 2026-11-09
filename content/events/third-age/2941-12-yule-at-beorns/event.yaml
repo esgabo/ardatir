@@ -1,0 +1,17 @@
+id: yule-at-beorns
+age: third-age
+when:
+  # Yule is the turn of the year
+  start: { age: third-age, year: 2941, month: 12 }
+  precision: month
+place: beorns-house
+characters: [ bilbo, gandalf, beorn ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, gandalfs-road-2941 ]
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 18 }
+title: { en: Yule at Beorn's, es: Yule en casa de Beorn }
+summary:
+  en: "On the road home, Bilbo and Gandalf spend the winter in Beorn's house, where the Yule feast draws guests from all the lands around."
+  es: "De camino a casa, Bilbo y Gandalf pasan el invierno en casa de Beorn, donde el banquete de Yule atrae invitados de todas las tierras vecinas."

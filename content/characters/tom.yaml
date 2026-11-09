@@ -1,0 +1,8 @@
+id: tom
+name: { en: Tom, es: Tom }
+kind: troll
+summary:
+  en: One of the three stone-trolls of the Trollshaws.
+  es: Uno de los tres trolls de piedra del Bosque de los Trolls.
+color: "#73805e"
+scale: 2.7

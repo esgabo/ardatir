@@ -1,0 +1,8 @@
+id: frodo
+name: { en: Frodo Baggins, es: Frodo Bolsón }
+kind: hobbit
+summary:
+  en: Bilbo's heir, who carries the One Ring into Mordor to destroy it.
+  es: Heredero de Bilbo, que lleva el Anillo Único a Mordor para destruirlo.
+color: "#6a7a5a"
+scale: 1

@@ -1,0 +1,27 @@
+id: death-of-smaug
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: autumn }
+  precision: season
+place: lake-town
+characters: [ smaug, bard, the-master ]
+arcs: [ the-quest-of-erebor ]
+journeys: []
+tags: [ hobbit ]
+status: outline
+source: { book: the-hobbit, chapter: 14 }
+title: { en: Fire and Water, es: Fuego y agua }
+summary:
+  en: "Enraged, Smaug flies south and sets Lake-town ablaze. Bard, told by an old thrush where the dragon's armour is bare, looses his last arrow, and Smaug falls burning into the lake."
+  es: "Enfurecido, Smaug vuela al sur e incendia la Ciudad del Lago. Bardo, a quien un viejo zorzal ha revelado dónde la coraza del dragón está desnuda, dispara su última flecha, y Smaug cae ardiendo en el lago."
+links:
+  - to: bilbo-meets-smaug
+    type: caused-by
+    note:
+      en: The theft and Bilbo's riddling talk send Smaug to punish the Lake-men.
+      es: El robo y la conversación de Bilbo llevan a Smaug a castigar a los Hombres del Lago.
+  - to: bilbo-meets-smaug
+    type: enabled-by
+    note:
+      en: "The thrush overheard Bilbo telling of the bare patch, and carried word to Bard."
+      es: El zorzal oyó a Bilbo hablar del hueco desnudo y llevó la noticia a Bardo.

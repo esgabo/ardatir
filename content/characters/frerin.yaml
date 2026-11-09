@@ -1,0 +1,11 @@
+id: frerin
+name: { en: Frerin, es: Frerin }
+kind: dwarf
+summary:
+  en: "Thorin's younger brother, who fell at Azanulbizar."
+  es: "Hermano menor de Thorin, que cayó en Azanulbizar."
+color: "#7a5a3a"
+scale: 1.3
+kin:
+  - { id: thorin, as: brother }
+  - { id: thrain, as: father }
