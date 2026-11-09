@@ -32,6 +32,7 @@ export function loadEvent(id: string | undefined): Promise<EventDetail> {
       if (!r.ok) throw new Error(`event ${target.id} missing (${r.status})`);
       return r.json() as Promise<EventDetail>;
     });
+    p.catch(() => cache.delete(target.id)); // a failed fetch can be retried
     cache.set(target.id, p);
   }
   return p;

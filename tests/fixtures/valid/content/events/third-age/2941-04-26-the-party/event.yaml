@@ -1,0 +1,14 @@
+id: the-party
+age: third-age
+when:
+  start: { age: third-age, year: 2941, month: 4, day: 26 }
+  precision: day
+place: bag-end
+characters: [ bilbo, gandalf ]
+arcs: [ the-quest ]
+journeys: [ the-road ]
+status: staged
+title: { en: The Party, es: La Fiesta }
+summary: { en: Guests arrive., es: Llegan invitados. }
+beats:
+  - { id: knock, label: { en: A knock, es: Un golpe } }

@@ -1,0 +1,6 @@
+id: the-road
+title: { en: The Road, es: El Camino }
+characters: [ bilbo, gandalf ]
+waypoints:
+  - { place: bag-end, date: { age: third-age, year: 2941, month: 4, day: 26 }, precision: day }
+  - { place: rivendell, date: { age: third-age, year: 2941, season: summer }, end: { age: third-age, year: 2941, season: autumn }, precision: season }

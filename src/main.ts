@@ -9,8 +9,6 @@ import { initialLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
-import { createCosmosStage } from './scene/cosmos';
-import { createDioramaStage } from './scene/dioramaStage';
 import type { Stage } from './scene/stage';
 import './style.css';
 
@@ -72,27 +70,69 @@ let clock: EventClock;
 /** Playhead in seconds of narration; the animation time state.t is derived from it. */
 let playhead = 0;
 
-function buildStage(event: EventDetail): Stage {
+/**
+ * Each zoom level is its own chunk, loaded the first time it is needed, so the front
+ * page (the cosmos) never downloads the diorama code and vice versa.
+ */
+async function buildStage(event: EventDetail): Promise<Stage> {
   if (event.stage === 'cosmos') {
+    const { createCosmosStage } = await import('./scene/cosmos');
     const L = (k: Parameters<typeof ui>[0]) => ui(k, state.lang);
     return createCosmosStage({
       ambar: L('ambar'), vista: L('vista'), ilmen: L('ilmen'),
       vaiya: L('vaiya'), walls: L('walls'), kuma: L('kuma'),
     });
   }
+  const { createDioramaStage } = await import('./scene/dioramaStage');
   return createDioramaStage(event, characterMap, state.lang);
 }
 
-function loadStage(): void {
+/** Bumped on every loadStage, so a slower event or stage load can't replace a newer one. */
+let stageGeneration = 0;
+interface StageLoad { id: string; view: () => { t: number; selected: string | null }; onSwitch?: () => void }
+/** The newest loadStage's request while it is in flight, so a language change can redo it. */
+let pending: StageLoad | undefined;
+let looping = false;
+
+/**
+ * Show an event: fetch it (when `load` is given), build its stage, and only then switch
+ * `state` to it with `view()`, so the old stage never renders with the new event's state
+ * while the chunk loads. Without `load` it rebuilds the current event (a language change).
+ */
+async function loadStage(load?: StageLoad): Promise<void> {
+  const gen = ++stageGeneration;
+  pending = load;
+  let event: EventDetail, next: Stage;
+  try {
+    event = load ? await loadEvent(load.id) : state.event;
+    if (gen !== stageGeneration) return;
+    next = await buildStage(event);
+  } catch (e) {
+    if (gen === stageGeneration) { pending = undefined; showLoadError(e); }
+    return;
+  }
+  if (gen !== stageGeneration) { next.dispose(); return; }
+  pending = undefined;
+
+  if (load) {
+    const v = load.view();
+    state.event = event;
+    state.t = v.t;
+    state.selected = v.selected;
+    load.onSwitch?.();
+  }
+  loadError = false;
+
+  // The previous stage keeps rendering until the new one is ready, then is swapped out.
   stage?.dispose();
   controls?.dispose();
   narration?.dispose();
 
-  stage = buildStage(state.event);
+  stage = next;
   controls = new OrbitControls(stage.camera, renderer.domElement);
   controls.target.copy(stage.target);
   controls.enableDamping = true;
-  if (state.event.stage === 'cosmos') {
+  if (event.stage === 'cosmos') {
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.25;
     controls.minDistance = 6;
@@ -103,13 +143,38 @@ function loadStage(): void {
     controls.minZoom = 0.5;
     controls.maxZoom = 4;
   }
-  clock = new EventClock(state.event, state.lang);
-  narration = new Narration(state.event, state.lang, clock);
+  clock = new EventClock(event, state.lang);
+  narration = new Narration(event, state.lang, clock);
   playhead = clock.secondsAt(state.t);
   stage.select?.(state.selected);
   resize();
   renderStatic();
+  writeRoute();
+  if (!looping) { looping = true; frame(); }
 }
+
+/** Set when the last stage failed to load; the caption shows the error until one loads. */
+let loadError = false;
+
+function showLoadError(e: unknown): void {
+  console.error(e);
+  loadError = true;
+  spoken.textContent = ui('loadFailed', state.lang);
+  unspoken.textContent = '';
+  // No stage was ever shown: still give the visitor the sidebar, so another event can be opened.
+  if (!stage) try { $('disclaimer').textContent = ui('disclaimer', state.lang); sidebar.render(); } catch { /* the index itself failed */ }
+}
+
+// A stale chunk after a deploy (the old index.html asks for files that are gone): reload once
+// to fetch the new build. The guard stops a reload loop when the chunk is really unreachable.
+const RELOAD_KEY = 'ardatir.reloadedForChunk';
+addEventListener('vite:preloadError', () => {
+  let last = 0;
+  try { last = Number(sessionStorage.getItem(RELOAD_KEY)) || 0; } catch { return; /* no storage: don't risk a loop */ }
+  if (Date.now() - last < 60_000) return; // already tried; loadStage shows the error
+  try { sessionStorage.setItem(RELOAD_KEY, String(Date.now())); } catch { return; }
+  location.reload();
+});
 
 // ---------- UI ----------
 const playBtn = $<HTMLButtonElement>('play');
@@ -130,14 +195,12 @@ const menuBtn = $<HTMLButtonElement>('menu');
 let lastDiorama: string | undefined;
 
 async function openEvent(id: string): Promise<void> {
-  if (id === state.event.id) return;
-  state.event = await loadEvent(id);
-  state.t = 0;
-  state.playing = false;
-  state.selected = null;
-  closeMeanwhile();
-  loadStage();
-  writeRoute();
+  if (id === (pending?.id ?? state.event.id)) return;
+  await loadStage({
+    id,
+    view: () => ({ t: 0, selected: null }),
+    onSwitch: () => { state.playing = false; closeMeanwhile(); },
+  });
 }
 
 const sidebar = new Sidebar($('sidebar'), {
@@ -152,8 +215,8 @@ const sidebar = new Sidebar($('sidebar'), {
 function setLang(lang: Lang): void {
   state.lang = lang;
   rememberLang(lang);
-  loadStage(); // labels and names are baked into the stage
-  writeRoute();
+  if (!pending) writeRoute();
+  void loadStage(pending); // labels and names are baked into the stage; redo a load in flight in the new language
 }
 
 function formatDate(e: EventSummary): string {
@@ -165,7 +228,7 @@ function formatDate(e: EventSummary): string {
   const parts: string[] = [];
   if (d.season) { const s = ui(d.season, L); parts.push(s[0].toUpperCase() + s.slice(1)); }
   const month = d.month ? new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'long' }) : '';
-  const day = d.day && d.month ? `${d.day} ${month}` : month;
+  const day = typeof d.day === 'string' ? ui(`day_${d.day}`, L) : d.day && d.month ? `${d.day} ${month}` : month;
   if (day) parts.push(day);
   parts.push(`${tr(dAge?.abbr, L) || tr(dAge?.name, L)} ${d.year}`);
   return parts.join(' · ');
@@ -261,7 +324,8 @@ function updateDynamic(): void {
 function renderNarration(): void {
   let text = '', shown = 1;
   const seg = clock.segmentAt(playhead);
-  if (!state.playing && playhead === 0) text = ui('pressPlay', state.lang);
+  if (loadError) text = ui('loadFailed', state.lang);
+  else if (!state.playing && playhead === 0) text = ui('pressPlay', state.lang);
   else if (seg) {
     text = tr(seg.segment.text, state.lang);
     // Speech usually ends a little before the next passage starts, so finish revealing early.
@@ -367,14 +431,13 @@ addEventListener('keydown', (e) => {
   if (e.code === 'Escape') { closeMeanwhile(); sidebar.setDrawer(false); }
   if (e.code === 'Space' && !tgt.closest('input, textarea, select, button, a')) { e.preventDefault(); setPlaying(!state.playing); }
 });
-addEventListener('hashchange', async () => {
+addEventListener('hashchange', () => {
   const r = parseRoute();
-  if (r.eventId && r.eventId !== state.event.id) {
-    state.event = await loadEvent(r.eventId);
-    state.t = r.t ?? 0;
-    state.selected = r.follow ?? null;
-    loadStage();
-  }
+  // Compare with the event on its way, if any; going back to the shown one while another
+  // loads reloads it, which cancels the other.
+  if (!r.eventId || r.eventId === (pending?.id ?? state.event.id)) return;
+  // loadStage takes its generation before fetching, so only the newest hash change can switch.
+  void loadStage({ id: r.eventId, view: () => ({ t: r.t ?? 0, selected: r.follow ?? null }) });
 });
 
 // Click (not drag) on the scene selects a character.
@@ -430,11 +493,9 @@ async function start(): Promise<void> {
   await loadIndex();
   state.event = await loadEvent(route.eventId);
   if (state.event.id !== route.eventId) state.t = 0;
-  loadStage();
-  writeRoute();
-  frame();
+  await loadStage(); // starts the frame loop once a stage is up; shows the error if it can't load
 }
-start().catch((e) => { caption.textContent = String(e); console.error(e); });
+start().catch(showLoadError);
 
 // Handy for debugging and automated screenshots.
 Object.assign(window, { ardatir: { state, seek: seekTo } });

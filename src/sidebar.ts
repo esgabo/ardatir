@@ -206,7 +206,7 @@ export class Sidebar {
     if (!d) return '';
     const L = this.host.lang();
     const age = index.ages.find((a) => a.id === d.age);
-    const month = d.month ? new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'short' }).replace('.', '') : d.season ? ui(d.season, L) : '';
+    const month = typeof d.day === 'string' ? ui(`day_${d.day}`, L) : d.month ? new Date(2000, d.month - 1, 1).toLocaleString(L, { month: 'short' }).replace('.', '') : d.season ? ui(d.season, L) : '';
     return [month, `${d.year}`].filter(Boolean).join(' ') || tr(age?.abbr, L);
   }
 

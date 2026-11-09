@@ -1,0 +1,12 @@
+id: leaving
+age: third-age
+when:
+  start: { age: third-age, year: 2941, season: summer }
+  precision: season
+place: rivendell
+characters: [ bilbo, gandalf ]
+arcs: [ the-quest ]
+journeys: [ the-road ]
+status: outline
+title: { en: Leaving, es: La partida }
+summary: { en: They ride on., es: Siguen cabalgando. }

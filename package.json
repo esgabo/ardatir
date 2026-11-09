@@ -14,7 +14,9 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "content": "node scripts/content/cli.ts"
+    "content": "node scripts/content/cli.ts",
+    "test": "vitest run",
+    "narration:export": "node scripts/narration/export.ts"
   },
   "dependencies": {
     "three": "^0.170.0"
@@ -24,6 +26,7 @@
     "@types/three": "^0.170.0",
     "typescript": "~5.6.0",
     "vite": "^6.4.5",
+    "vitest": "^3.2.7",
     "yaml": "^2.6.1"
   }
 }

@@ -5,14 +5,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
-import { dateSpan, whenSpan } from '../../src/data/calendar.ts';
+import { dateSpan, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
-  LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
+  EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
   type EventSummary, type Journey, type Keyframe, type Lang, type LinkType, type LocalizedText,
   type NarrationAudio, type NarrationSegment, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
+import { narrationHash, TEXT_HASH } from '../narration/text.ts';
 
 export interface BuildResult {
   index: ContentIndex;
@@ -132,8 +133,15 @@ export function buildContent(contentDir: string): BuildResult {
     if (!age.axis) { R.error(file, `${what}: age "${age.id}" is timeless and has no dates`); return undefined; }
     if (!Number.isInteger(v.year) || (v.year as number) < 1) { R.error(file, `${what}.year: must be a whole number ≥ 1`); return undefined; }
     if (v.month !== undefined && !(Number.isInteger(v.month) && (v.month as number) >= 1 && (v.month as number) <= 12)) R.error(file, `${what}.month: 1–12`);
-    if (v.day !== undefined && !(Number.isInteger(v.day) && (v.day as number) >= 1 && (v.day as number) <= 30)) R.error(file, `${what}.day: 1–30`);
-    if (v.day !== undefined && v.month === undefined) R.error(file, `${what}: a day needs a month`);
+    if (typeof v.day === 'string') {
+      // A day outside the months (2 Yule, 1 Lithe, Mid-year's Day, Overlithe, 2 Lithe, 1 Yule).
+      if (!(EXTRA_DAYS as readonly string[]).includes(v.day)) R.error(file, `${what}.day: 1–30, or one of ${EXTRA_DAYS.join(', ')}`);
+      else if (v.month !== undefined || v.season !== undefined) R.error(file, `${what}: "${v.day}" is outside the months; remove the month or season`);
+      else if (v.day === 'overlithe' && !hasOverlithe(v.year as number)) R.error(file, `${what}: ${v.year} is not a leap year, so it has no Overlithe`);
+    } else {
+      if (v.day !== undefined && !(Number.isInteger(v.day) && (v.day as number) >= 1 && (v.day as number) <= 30)) R.error(file, `${what}.day: 1–30`);
+      if (v.day !== undefined && v.month === undefined) R.error(file, `${what}: a day needs a month`);
+    }
     if (v.season !== undefined && !(SEASONS as readonly string[]).includes(String(v.season))) R.error(file, `${what}.season: one of ${SEASONS.join(', ')}`);
     if (v.season !== undefined && v.month !== undefined) R.error(file, `${what}: give a month or a season, not both`);
     return v as unknown as StoryDate;
@@ -208,12 +216,26 @@ export function buildContent(contentDir: string): BuildResult {
     (Array.isArray(o.waypoints) ? o.waypoints : []).forEach((w, i) => {
       const what = `waypoints[${i}]`;
       if (!isObj(w)) { R.error(f, `${what}: expected { place, date, precision }`); return; }
-      keys(f, w, ['place', 'date', 'precision'], what);
+      keys(f, w, ['place', 'date', 'end', 'endPrecision', 'precision'], what);
       if (!placeIds.has(String(w.place))) R.error(f, `${what}.place: unknown place "${w.place}"`);
       const d = date(f, w.date, `${what}.date`);
+      // `end`: a stay known only within bounds ("summer–autumn"). It has the precision of `date`
+      // unless `endPrecision` says otherwise ("June, until 1 Lithe").
+      const e = w.end !== undefined ? date(f, w.end, `${what}.end`) : undefined;
+      if (w.end !== undefined && !e) return;
+      if (w.endPrecision !== undefined && w.end === undefined) { R.error(f, `${what}.endPrecision: only with an end`); return; }
       const p = precision(f, w.precision, d, what);
-      const span = d && p && dateSpan(d, p, ageMap.get(d.age)!);
-      if (d && p && span) waypoints.push({ place: String(w.place), date: d, precision: p, span, at: (span.from + span.to) / 2 });
+      const ep = e && p ? precision(f, w.endPrecision ?? p, e, `${what}.end`) : undefined;
+      if (e && !ep) return;
+      const ownEp = ep && ep !== p ? { endPrecision: ep } : {};
+      const span = d && p && whenSpan({ start: d, ...e ? { end: e } : {}, precision: p, ...ownEp }, ageMap);
+      if (e && ep && d && p && span) {
+        const s0 = dateSpan(d, p, ageMap.get(d.age)!)!, s1 = dateSpan(e, ep, ageMap.get(e.age)!)!;
+        if (s1.from < s0.from) { R.error(f, `${what}.end is before its date`); return; }
+        // A finer end inside a coarser date would claim nothing: the range would still be the whole date.
+        if (s1.to < s0.to) { R.error(f, `${what}.end ends before its date does; narrow the date instead`); return; }
+      }
+      if (d && p && span) waypoints.push({ place: String(w.place), date: d, ...e ? { end: e } : {}, precision: p, ...ownEp, span, at: (span.from + span.to) / 2 });
     });
     if (waypoints.length < 2) R.error(f, 'a journey needs at least two waypoints');
     // Coarse dates may overlap their neighbours; only a waypoint that ends before the previous one starts is out of order.
@@ -444,6 +466,11 @@ export function buildContent(contentDir: string): BuildResult {
         if (!fs.existsSync(meta)) { R.error(file, `recording without ${lang}.yaml (duration and starts)`); continue; }
         const m = readYaml(meta);
         if (!isObj(m) || !(typeof m.duration === 'number' && m.duration > 0)) { R.error(meta, 'duration: seconds, a positive number'); continue; }
+        // textHash ties the recording to the words it reads (content/README.md, "Recordings").
+        const hash = narrationHash(narration, lang);
+        if (m.textHash === undefined) R.warn(meta, `textHash: missing, so the build can't tell if the recording still matches narration.yaml (text now ${hash})`);
+        else if (typeof m.textHash !== 'string' || !TEXT_HASH.test(m.textHash)) R.error(meta, 'textHash: expected sha256: and 16 hex digits');
+        else if (m.textHash !== hash) R.warn(meta, `stale recording: narration.yaml changed since it was recorded (textHash ${m.textHash}, text now ${hash}); re-record with npm run narration:export -- --changed`);
         let starts: number[] | undefined;
         if (m.starts !== undefined) {
           const st = isObj(m.starts) ? m.starts : {};
@@ -491,6 +518,11 @@ export function buildContent(contentDir: string): BuildResult {
       for (const c of e.characters) if (jr.characters.includes(c) && e.span && jr.span && (e.span.to < jr.span.from || e.span.from > jr.span.to)) {
         R.warn(byId.get(e.id)!.file, `is part of journey "${j}" but falls outside its dates`);
         break;
+      }
+      // A stop on the journey whose dates miss every waypoint at its place: the waypoint can't take its moment.
+      const here = jr.waypoints.filter((w) => w.place === e.place);
+      if (e.span && here.length && !here.some((w) => overlaps(w.span, e.span!))) {
+        R.warn(byId.get(e.id)!.file, `is at "${e.place}" on journey "${j}" but overlaps none of its waypoints there; widen the waypoint (an end?) or check the dates`);
       }
     }
   }
@@ -555,7 +587,6 @@ export function estimatePositions(events: EventSummary[]): void {
 
   // Forward pass in story order: nothing happens before what it follows, whether that's the
   // previous event in a shared character's lane or an event it is caused-by / enabled-by.
-  const STEP = 1 / 360; // a day
   const byId = new Map(events.map((e) => [e.id, e]));
   const lastInLane = new Map<string, number>();
   for (const e of events) {
@@ -566,28 +597,30 @@ export function estimatePositions(events: EventSummary[]): void {
       const x = byId.get(l.to)?.at;
       if (x !== undefined && order.get(l.to)! < order.get(e.id)!) floor = Math.max(floor, x);
     }
-    if (!isAnchor(e) && e.at <= floor) e.at = Math.min(floor + STEP, e.span.to);
+    if (!isAnchor(e) && e.at <= floor) e.at = Math.min(floor + ONE_DAY, e.span.to);
     for (const c of e.characters) lastInLane.set(c, e.at);
   }
 }
 
 /**
  * Best-guess moments for journey waypoints. A waypoint that matches an event on the
- * journey (same place, overlapping dates) takes that event's `at`; exact-dated ones sit
- * at their middle; the rest are spaced between their neighbours, inside their own span.
+ * journey (same place, overlapping dates, and the event's `at` inside the waypoint's range)
+ * takes that event's `at`; other exact-dated ones sit at their middle; the rest are spaced between
+ * their neighbours. Every guess stays inside its waypoint's honest range (`date` to `end`)
+ * and never before the waypoint before it, as far as that range allows.
  */
 export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): void {
   for (const j of journeys) {
     const known: (number | undefined)[] = [];
     let last = -Infinity;
     for (const w of j.waypoints) {
-      let at: number | undefined;
-      if (w.span.to - w.span.from <= ANCHOR_WIDTH) at = (w.span.from + w.span.to) / 2;
-      else {
-        const e = events.find((x) => x.journeys.includes(j.id) && x.place === w.place && x.span && x.at !== undefined
-          && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last);
-        at = e?.at;
-      }
+      // A matching event says more than the middle of a short range (a month-long stay in
+      // Rivendell takes the moon-letters' 1 Lithe, not mid-June), so it comes first.
+      const e = events.find((x) => x.journeys.includes(j.id) && x.place === w.place && x.span && x.at !== undefined
+        && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last
+        && x.at >= w.span.from && x.at <= w.span.to);
+      let at = e?.at;
+      if (at === undefined && w.span.to - w.span.from <= ANCHOR_WIDTH) at = (w.span.from + w.span.to) / 2;
       known.push(at);
       if (at !== undefined) last = at;
     }
@@ -603,6 +636,11 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
         w.at = Math.min(Math.max(g, w.span.from), w.span.to);
       });
       i = k - 1;
+    }
+    // Forward pass: a guess never falls before the previous waypoint's, unless its own range ends earlier.
+    for (let i = 1; i < j.waypoints.length; i++) {
+      const w = j.waypoints[i], prev = j.waypoints[i - 1].at;
+      if (w.at < prev) w.at = Math.min(prev, w.span.to);
     }
   }
 }

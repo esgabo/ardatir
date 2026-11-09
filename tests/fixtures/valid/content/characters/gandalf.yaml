@@ -1,0 +1,4 @@
+id: gandalf
+name: { en: Gandalf, es: Gandalf }
+kind: wizard
+summary: { en: A wizard., es: Un mago. }

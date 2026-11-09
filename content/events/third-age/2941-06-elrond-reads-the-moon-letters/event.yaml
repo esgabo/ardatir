@@ -1,9 +1,11 @@
 id: elrond-reads-the-moon-letters
 age: third-age
 when:
-  # Midsummer's Eve, a single day; kept to the month because our calendar has no convention for the Lithe days yet
-  start: { age: third-age, year: 2941, month: 6 }
-  precision: month
+  # The Hobbit, ch. 3: Elrond reads the runes on Midsummer's Eve, under a moon shaped like the
+  # one they were written by, and the company sets out the next morning, midsummer. In the
+  # Shire Reckoning (Appendix D) Midsummer's Eve is 1 Lithe, the day before Mid-year's Day.
+  start: { age: third-age, year: 2941, day: 1-lithe }
+  precision: day
 place: rivendell
 characters: [ elrond, thorin, bilbo, gandalf ]
 arcs: [ the-quest-of-erebor ]

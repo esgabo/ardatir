@@ -17,6 +17,8 @@ npm run typecheck  # tsc --noEmit
 npm run build      # typecheck + static build into dist/
 npm run preview    # serve dist/ at http://localhost:4173
 npm run content    # validate content/ and write public/data/ (dev and build also do this)
+npm test           # vitest: calendar, best guesses, event clock, content validation (tests/)
+npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event>, --lang es, --changed)
 ```
 
 Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
@@ -53,6 +55,10 @@ content/             THE SOURCE OF TRUTH (YAML); see content/README.md
 scripts/content/
   build.ts           load + validate content/, place on the time axis, reverse links, lookups
   cli.ts             `npm run content`
+tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
+scripts/narration/
+  export.ts          `npm run narration:export`: scripts per event and language for the Voice Studio
+  text.ts            a passage's text per language and the `textHash` that marks a recording stale
 vite.config.ts       runs the content build on start (fails `npm run build` on errors) and on change in dev
 public/data/         GENERATED (gitignored): index.json, events/<id>.json, audio/<id>/<lang>.mp3
 src/
@@ -76,8 +82,9 @@ src/
 - **Everything visible is a pure function of the event time `t` (0 → 1).** That is what makes scrubbing and deep links work. `ambient` seconds may only drive idle motion (shimmer, drift, bobbing), never story state.
 - **The playhead runs in seconds of narration; `t` is derived** via `EventClock.tAt`. Seeking converts back with `secondsAt`. Never advance `t` directly.
 - **Narration timing:** `staging.yaml` gives each passage's `t` (where it belongs in the animation); `audio/<lang>.yaml` gives the second it starts in that recording, keyed by passage id. The build turns both into ordered arrays, and the clock stretches the animation between those points.
+- **Recordings carry a `textHash`** of the words they read (`audio/<lang>.yaml`); the build warns when `narration.yaml` no longer matches. Editing a recorded passage means re-recording it.
 - **The URL is the state**: `#/event/<id>?t=&follow=&lang=`. New view state that matters should be added to the route.
-- **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`.
+- **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.
 - **Date math lives in `src/data/calendar.ts` only.** Spans are widened by precision (a `year` date covers the whole year): that's the honest range.
@@ -111,9 +118,10 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 ## Checking work
 
 - `npm run content` must show `✓ content is valid`, and `npm run build` must pass (it typechecks, then fails on content errors).
+- `npm test` must pass; the deploy workflow runs it before building. New validation rules get a broken case in `tests/build.test.ts` (each one a small change to the fixture in `tests/fixtures/valid/content/`), and date math gets a case in `tests/calendar.test.ts`.
 - After adding content, check the warnings too: missing Spanish, characters in no event, events outside their journey's dates, a sort key that contradicts the dates, a best guess that lands before what it follows.
 - For visual changes, look at the result: run `npm run preview` and screenshot key moments with Playwright, e.g. `#/event/ainulindale?t=0.25`, `?t=0.48`, `?t=0.72`, `?t=0.97`, and `#/event/roast-mutton?t=0.45&follow=bilbo&lang=es`. Headless Chromium needs `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader` for WebGL.
-- When touching `eventClock.ts`, check that a recording with uneven `starts` still lands each passage on its `t`, and that the playhead reaches `t = 1` at the recording's `duration`.
+- When touching `eventClock.ts`, check that a recording with uneven `starts` still lands each passage on its `t`, and that the playhead reaches `t = 1` at the recording's `duration` (`tests/eventClock.test.ts` covers both).
 - Don't commit test audio or placeholder recordings.
 
 ## Open questions
