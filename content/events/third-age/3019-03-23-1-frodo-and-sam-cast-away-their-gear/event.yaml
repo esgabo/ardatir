@@ -8,7 +8,7 @@ characters: [ frodo, sam ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
 journeys: [ frodo-and-sam-across-mordor ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "Mount Doom" }
 title: { en: "The Hobbits Cast Away Their Burdens", es: "Los hobbits arrojan sus cargas" }
 summary:

@@ -8,7 +8,7 @@ characters: [ sam, frodo, shagrat, gorbag ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
 journeys: [ frodo-and-sam-across-mordor ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Tower of Cirith Ungol" }
 title: { en: "Sam Finds Frodo in the Tower", es: "Sam encuentra a Frodo en la Torre" }
 summary:

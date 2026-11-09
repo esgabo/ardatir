@@ -8,7 +8,7 @@ characters: [ eomer, eowyn, faramir, aragorn, legolas, gimli, merry ]
 arcs: [ the-war-of-the-ring, after-the-war ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Steward and the King" }
 title: { en: "Théoden's Funeral", es: "El funeral de Théoden" }
 summary:

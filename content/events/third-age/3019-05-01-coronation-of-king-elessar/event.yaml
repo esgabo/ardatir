@@ -8,7 +8,7 @@ characters: [ aragorn, gandalf, frodo, sam, merry, pippin, faramir, eomer, eowyn
 arcs: [ the-war-of-the-ring, after-the-war ]
 journeys: [ the-road-home ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Steward and the King" }
 title: { en: "The Crowning of King Elessar", es: "La coronación del rey Elessar" }
 summary:
