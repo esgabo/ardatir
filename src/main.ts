@@ -87,14 +87,41 @@ async function buildStage(event: EventDetail): Promise<Stage> {
   return createDioramaStage(event, characterMap, state.lang);
 }
 
-/** Bumped on every loadStage, so a slower stage import can't replace a newer one. */
+/** Bumped on every loadStage, so a slower event or stage load can't replace a newer one. */
 let stageGeneration = 0;
+interface StageLoad { id: string; view: () => { t: number; selected: string | null }; onSwitch?: () => void }
+/** The newest loadStage's request while it is in flight, so a language change can redo it. */
+let pending: StageLoad | undefined;
+let looping = false;
 
-async function loadStage(): Promise<void> {
+/**
+ * Show an event: fetch it (when `load` is given), build its stage, and only then switch
+ * `state` to it with `view()`, so the old stage never renders with the new event's state
+ * while the chunk loads. Without `load` it rebuilds the current event (a language change).
+ */
+async function loadStage(load?: StageLoad): Promise<void> {
   const gen = ++stageGeneration;
-  const event = state.event;
-  const next = await buildStage(event);
+  pending = load;
+  let event: EventDetail, next: Stage;
+  try {
+    event = load ? await loadEvent(load.id) : state.event;
+    if (gen !== stageGeneration) return;
+    next = await buildStage(event);
+  } catch (e) {
+    if (gen === stageGeneration) { pending = undefined; showLoadError(e); }
+    return;
+  }
   if (gen !== stageGeneration) { next.dispose(); return; }
+  pending = undefined;
+
+  if (load) {
+    const v = load.view();
+    state.event = event;
+    state.t = v.t;
+    state.selected = v.selected;
+    load.onSwitch?.();
+  }
+  loadError = false;
 
   // The previous stage keeps rendering until the new one is ready, then is swapped out.
   stage?.dispose();
@@ -122,7 +149,32 @@ async function loadStage(): Promise<void> {
   stage.select?.(state.selected);
   resize();
   renderStatic();
+  writeRoute();
+  if (!looping) { looping = true; frame(); }
 }
+
+/** Set when the last stage failed to load; the caption shows the error until one loads. */
+let loadError = false;
+
+function showLoadError(e: unknown): void {
+  console.error(e);
+  loadError = true;
+  spoken.textContent = ui('loadFailed', state.lang);
+  unspoken.textContent = '';
+  // No stage was ever shown: still give the visitor the sidebar, so another event can be opened.
+  if (!stage) try { $('disclaimer').textContent = ui('disclaimer', state.lang); sidebar.render(); } catch { /* the index itself failed */ }
+}
+
+// A stale chunk after a deploy (the old index.html asks for files that are gone): reload once
+// to fetch the new build. The guard stops a reload loop when the chunk is really unreachable.
+const RELOAD_KEY = 'ardatir.reloadedForChunk';
+addEventListener('vite:preloadError', () => {
+  let last = 0;
+  try { last = Number(sessionStorage.getItem(RELOAD_KEY)) || 0; } catch { return; /* no storage: don't risk a loop */ }
+  if (Date.now() - last < 60_000) return; // already tried; loadStage shows the error
+  try { sessionStorage.setItem(RELOAD_KEY, String(Date.now())); } catch { return; }
+  location.reload();
+});
 
 // ---------- UI ----------
 const playBtn = $<HTMLButtonElement>('play');
@@ -143,14 +195,12 @@ const menuBtn = $<HTMLButtonElement>('menu');
 let lastDiorama: string | undefined;
 
 async function openEvent(id: string): Promise<void> {
-  if (id === state.event.id) return;
-  state.event = await loadEvent(id);
-  state.t = 0;
-  state.playing = false;
-  state.selected = null;
-  closeMeanwhile();
-  writeRoute();
-  await loadStage();
+  if (id === (pending?.id ?? state.event.id)) return;
+  await loadStage({
+    id,
+    view: () => ({ t: 0, selected: null }),
+    onSwitch: () => { state.playing = false; closeMeanwhile(); },
+  });
 }
 
 const sidebar = new Sidebar($('sidebar'), {
@@ -165,8 +215,8 @@ const sidebar = new Sidebar($('sidebar'), {
 function setLang(lang: Lang): void {
   state.lang = lang;
   rememberLang(lang);
-  writeRoute();
-  void loadStage(); // labels and names are baked into the stage
+  if (!pending) writeRoute();
+  void loadStage(pending); // labels and names are baked into the stage; redo a load in flight in the new language
 }
 
 function formatDate(e: EventSummary): string {
@@ -274,7 +324,8 @@ function updateDynamic(): void {
 function renderNarration(): void {
   let text = '', shown = 1;
   const seg = clock.segmentAt(playhead);
-  if (!state.playing && playhead === 0) text = ui('pressPlay', state.lang);
+  if (loadError) text = ui('loadFailed', state.lang);
+  else if (!state.playing && playhead === 0) text = ui('pressPlay', state.lang);
   else if (seg) {
     text = tr(seg.segment.text, state.lang);
     // Speech usually ends a little before the next passage starts, so finish revealing early.
@@ -380,14 +431,13 @@ addEventListener('keydown', (e) => {
   if (e.code === 'Escape') { closeMeanwhile(); sidebar.setDrawer(false); }
   if (e.code === 'Space' && !tgt.closest('input, textarea, select, button, a')) { e.preventDefault(); setPlaying(!state.playing); }
 });
-addEventListener('hashchange', async () => {
+addEventListener('hashchange', () => {
   const r = parseRoute();
-  if (r.eventId && r.eventId !== state.event.id) {
-    state.event = await loadEvent(r.eventId);
-    state.t = r.t ?? 0;
-    state.selected = r.follow ?? null;
-    await loadStage();
-  }
+  // Compare with the event on its way, if any; going back to the shown one while another
+  // loads reloads it, which cancels the other.
+  if (!r.eventId || r.eventId === (pending?.id ?? state.event.id)) return;
+  // loadStage takes its generation before fetching, so only the newest hash change can switch.
+  void loadStage({ id: r.eventId, view: () => ({ t: r.t ?? 0, selected: r.follow ?? null }) });
 });
 
 // Click (not drag) on the scene selects a character.
@@ -443,11 +493,9 @@ async function start(): Promise<void> {
   await loadIndex();
   state.event = await loadEvent(route.eventId);
   if (state.event.id !== route.eventId) state.t = 0;
-  await loadStage();
-  writeRoute();
-  frame();
+  await loadStage(); // starts the frame loop once a stage is up; shows the error if it can't load
 }
-start().catch((e) => { caption.textContent = String(e); console.error(e); });
+start().catch(showLoadError);
 
 // Handy for debugging and automated screenshots.
 Object.assign(window, { ardatir: { state, seek: seekTo } });

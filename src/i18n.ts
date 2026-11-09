@@ -39,6 +39,10 @@ const UI = {
   language: { en: 'Language', es: 'Idioma' },
   progress: { en: 'Event progress', es: 'Progreso del evento' },
   pressPlay: { en: 'Press play to begin', es: 'Pulsa reproducir para comenzar' },
+  loadFailed: {
+    en: 'This scene could not be loaded. Check your connection and reload the page.',
+    es: 'No se pudo cargar esta escena. Revisa tu conexión y recarga la página.',
+  },
   notStaged: { en: 'not yet staged', es: 'aún sin escenificar' },
   disclaimer: {
     en: 'A non-commercial fan project. Not affiliated with the Tolkien Estate or Middle-earth Enterprises.',
