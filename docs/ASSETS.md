@@ -1,10 +1,10 @@
 # Asset plan: The Hobbit
 
-Every model *The Hobbit*'s events need, with body type and shared rig, the events that use it, priority, status, who produces each step, and the issue that tracks it. This is the plan for #36. Today everything on screen is a placeholder (`docs/DESIGN.md` §9), so every asset starts at `brief`.
+Every model *The Hobbit*'s events need, with body type and shared rig, the events that use it, priority, status, who produces each step, and the issue that tracks it. This is the plan for [#36](https://github.com/esgabo/ardatir/issues/36). Today everything on screen is a placeholder (`docs/DESIGN.md` §9), so every asset starts at `brief`.
 
 Generated from `content/events/third-age/*/event.yaml` (and `content/characters/`): an event belongs to *The Hobbit* when it carries the `hobbit` tag. That gives **30 events**. Six of them are backstory or parallel events from the appendices and other books (the Ring, Smaug's coming, Azanulbizar, Thráin, the White Council, Bree), kept because they share places and characters with the main story; they come last. Characters come from each event's `characters` list. Creatures, props and crowds that are not content characters are read from the event summaries and comments; where an event does not clearly say a prop is there, it is marked `(?)` and should be confirmed when that event is scripted.
 
-Style and budgets are in `docs/DESIGN.md` §9; designs come from Tolkien's descriptions, never from the films or series. Pipeline: #20. Rigs and clips: #21.
+Style and budgets are in `docs/DESIGN.md` §9; designs come from Tolkien's descriptions, never from the films or series. Pipeline: [#20](https://github.com/esgabo/ardatir/issues/20). Rigs and clips: [#21](https://github.com/esgabo/ardatir/issues/21).
 
 ## Summary
 
@@ -27,18 +27,18 @@ Style and budgets are in `docs/DESIGN.md` §9; designs come from Tolkien's descr
 | Step | Machine |
 |---|---|
 | `brief` (this plan and the issue text) | cloud |
-| `blockout`, `model` | the issue's label: **local** (Blender node) or **either** (#24, #45) |
-| `rigged`, `animated` (rigs and clips, #21) | local |
-| export to glTF, link from `content/characters/*.yaml` or staging, size check (#20) | cloud |
-| playback driven by the event clock (#22) | cloud |
-| light, mood, weather (#26) and sound (#27) | local |
-| `done`: appears in its events and is reviewed against `docs/ART.md` | cloud |
+| `blockout`, `model` | the issue's label: **local** (Blender node) or **either** ([#24](https://github.com/esgabo/ardatir/issues/24), [#45](https://github.com/esgabo/ardatir/issues/45)) |
+| `rigged`, `animated` (rigs and clips, [#21](https://github.com/esgabo/ardatir/issues/21)) | local |
+| export to glTF, link from `content/characters/*.yaml` or staging, size check ([#20](https://github.com/esgabo/ardatir/issues/20)) | cloud |
+| playback driven by the event clock ([#22](https://github.com/esgabo/ardatir/issues/22)) | cloud |
+| light, mood, weather ([#26](https://github.com/esgabo/ardatir/issues/26)) and sound ([#27](https://github.com/esgabo/ardatir/issues/27)) | local |
+| `done`: appears in its events and is reviewed against the art direction (`docs/DESIGN.md` §9; `docs/ART.md` once [#19](https://github.com/esgabo/ardatir/issues/19) lands) | cloud |
 
 **Priority** follows the suggested order: P0 what the Unexpected Party needs, P1 Roast Mutton, P2 to P5 the journey in story order, P6 backstory. An asset takes the priority of the first event that needs it. `(?)` after an event means likely but not stated in the event text. `company` is Thorin and the twelve dwarves' shared set of events: `unexpected-party`, `bilbo-runs-to-the-green-dragon`, `roast-mutton`, `captured-in-goblin-town`, `rescued-by-the-eagles`, `guests-of-beorn`, `gandalf-leaves-the-company`, `spiders-of-mirkwood`, `prisoners-of-the-elvenking`, `barrels-out-of-bond`, `welcome-at-lake-town`, `the-secret-door`, `battle-of-five-armies`.
 
 | Priority | Stage | Events |
 |---|---|---|
-| P0 | The Unexpected Party (#28) | `unexpected-party` |
+| P0 | The Unexpected Party ([#28](https://github.com/esgabo/ardatir/issues/28)) | `unexpected-party` |
 | P1 | Roast Mutton, then Bilbo runs to the Green Dragon | `roast-mutton`, `bilbo-runs-to-the-green-dragon` |
 | P2 | Rivendell and the Misty Mountains | `elrond-reads-the-moon-letters`, `captured-in-goblin-town`, `riddles-in-the-dark`, `rescued-by-the-eagles` |
 | P3 | Beorn and Mirkwood | `guests-of-beorn`, `gandalf-leaves-the-company`, `spiders-of-mirkwood`, `prisoners-of-the-elvenking`, `barrels-out-of-bond` |
@@ -48,22 +48,22 @@ Style and budgets are in `docs/DESIGN.md` §9; designs come from Tolkien's descr
 
 ## Shared rigs
 
-Reuse first: build each body once, make variants by scale, colour, hair, clothes and props. Rig list is from #21; the last four rows are not there yet.
+Reuse first: build each body once, make variants by scale, colour, hair, clothes and props. Rig list is from [#21](https://github.com/esgabo/ardatir/issues/21); the last four rows are not there yet.
 
 | Rig | Used by | Issue |
 |---|---|---|
-| hobbit | Bilbo (two looks), Déagol, young Sméagol | #21 |
-| dwarf | Thorin, the twelve dwarves, Dáin, Thrór, Thráin, Frerin, Náin | #21 |
-| tall-folk (man/elf) | Elrond, the Elvenking, wood-elf guards, Bard, the Master, townsfolk, Beorn (scaled up) | #21 |
-| wizard (tall, robed) | Gandalf, Saruman | #21 |
-| troll | Bert, Tom, William | #21 |
-| eagle | the Lord of the Eagles and the eagles | #21 (later) |
-| dragon | Smaug | #21 (later) |
-| spider | Mirkwood spiders | #21 (later) |
-| Gollum (own) | Gollum | #39 |
-| goblin | goblins, the Great Goblin, Bolg, Azog | **missing from #21** |
-| quadruped | wargs, Beorn's bear, ponies | **missing from #21** (only "horse" listed) |
-| small bird | the thrush | **missing from #21** |
+| hobbit | Bilbo (two looks), Déagol, young Sméagol | [#21](https://github.com/esgabo/ardatir/issues/21) |
+| dwarf | Thorin, the twelve dwarves, Dáin, Thrór, Thráin, Frerin, Náin | [#21](https://github.com/esgabo/ardatir/issues/21) |
+| tall-folk (man/elf) | Elrond, the Elvenking, wood-elf guards, Bard, the Master, townsfolk, Beorn (scaled up) | [#21](https://github.com/esgabo/ardatir/issues/21) |
+| wizard (tall, robed) | Gandalf, Saruman | [#21](https://github.com/esgabo/ardatir/issues/21) |
+| troll | Bert, Tom, William | [#21](https://github.com/esgabo/ardatir/issues/21) |
+| eagle | the Lord of the Eagles and the eagles | [#21](https://github.com/esgabo/ardatir/issues/21) (later) |
+| dragon | Smaug | [#21](https://github.com/esgabo/ardatir/issues/21) (later) |
+| spider | Mirkwood spiders | [#21](https://github.com/esgabo/ardatir/issues/21) (later) |
+| Gollum (own) | Gollum | [#39](https://github.com/esgabo/ardatir/issues/39) |
+| goblin | goblins, the Great Goblin, Bolg, Azog | **missing from [#21](https://github.com/esgabo/ardatir/issues/21)** |
+| quadruped | wargs, Beorn's bear, ponies | **missing from [#21](https://github.com/esgabo/ardatir/issues/21)** (only "horse" listed) |
+| small bird | the thrush | **missing from [#21](https://github.com/esgabo/ardatir/issues/21)** |
 
 Clips needed beyond the base set, from the events: `sit` and `eat` (the party, Beorn's table, Lake-town feast), `carry` (barrels), `fall` (battle), `hide` (Bilbo), plus a song-by-the-fire pose set for the dwarves.
 
@@ -106,52 +106,52 @@ Clips needed beyond the base set, from the events: `sit` and `eat` (the party, B
 
 | Asset | Name | Body / rig | Events | Priority | Status | Machine | Issue | Notes |
 |---|---|---|---|---|---|---|---|---|
-| `bilbo` | Bilbo Baggins | hobbit | `company` + `elrond-reads-the-moon-letters`, `riddles-in-the-dark`, `bilbo-meets-smaug`, `the-arkenstone`, `thorins-farewell`, `yule-at-beorns`, `return-to-rivendell`, `the-troll-gold`, `the-auction-at-bag-end` | P0 | brief | local | #23 | Two looks: home (waistcoat, bare hairy feet) and travelling (no hat or handkerchief). |
-| `gandalf` | Gandalf | wizard | `gandalf-finds-thrain`, `meeting-in-bree`, `unexpected-party`, `roast-mutton`, `elrond-reads-the-moon-letters`, `captured-in-goblin-town`, `rescued-by-the-eagles`, `guests-of-beorn`, `gandalf-leaves-the-company`, `white-council-drives-out-sauron`, `the-arkenstone`, `battle-of-five-armies`, `thorins-farewell`, `yule-at-beorns`, `return-to-rivendell`, `the-troll-gold`, `the-auction-at-bag-end` | P0 | brief | local | #23 | Tall pointed blue hat, grey cloak, silver scarf, staff. Robe motion baked. |
-| `thorin` | Thorin Oakenshield | dwarf | `smaug-comes-to-erebor`, `battle-of-azanulbizar`, `meeting-in-bree`, `unexpected-party`, `bilbo-runs-to-the-green-dragon`, `roast-mutton`, `elrond-reads-the-moon-letters`, `captured-in-goblin-town`, `rescued-by-the-eagles`, `guests-of-beorn`, `gandalf-leaves-the-company`, `prisoners-of-the-elvenking`, `barrels-out-of-bond`, `welcome-at-lake-town`, `the-secret-door`, `battle-of-five-armies`, `thorins-farewell` | P0 | brief | local | #23 | Variant: travelling hood and armed; in Smaug-era events young Thorin (no beard of age). |
-| `balin` | Balin | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `dwalin` | Dwalin | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `fili` | Fíli | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `kili` | Kíli | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `dori` | Dori | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `nori` | Nori | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `ori` | Ori | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `oin` | Óin | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `gloin` | Glóin | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `bifur` | Bifur | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `bofur` | Bofur | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `bombur` | Bombur | dwarf | `company` | P0 | brief | local | #23 | Dwarf body variant: hood colour from ch. 1, build, beard. |
-| `elrond` | Elrond | tall-folk (elf) | `elrond-reads-the-moon-letters`, `return-to-rivendell` | P2 | brief | local | #37 | Wise, dark-haired, Rivendell robes. |
-| `thranduil` | Thranduil, the Elvenking | tall-folk (elf) | `prisoners-of-the-elvenking`, `the-arkenstone`, `battle-of-five-armies`, `thorin-is-laid-to-rest` | P3 | brief | local | #37 | Crown of leaves and berries (autumn), per the book. |
-| `wood-elf-guard` | Wood-elf guard (and elf host) | tall-folk (elf) | `prisoners-of-the-elvenking`, `barrels-out-of-bond`, `battle-of-five-armies`, `the-arkenstone` (?) | P3 | brief | local | #37 | Generic guard with bow, a few variants; reused as the elven host in the battle. Not a content character. |
-| `beorn-man` | Beorn (man) | tall-folk (man, scaled up) | `guests-of-beorn`, `battle-of-five-armies`, `yule-at-beorns` | P3 | brief | local | #40 | Huge, black hair and beard; content scale 2.2. |
+| `bilbo` | Bilbo Baggins | hobbit | `company` + `elrond-reads-the-moon-letters`, `riddles-in-the-dark`, `bilbo-meets-smaug`, `the-arkenstone`, `thorins-farewell`, `yule-at-beorns`, `return-to-rivendell`, `the-troll-gold`, `the-auction-at-bag-end` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Two looks: home (waistcoat, bare hairy feet) and travelling (no hat or handkerchief). |
+| `gandalf` | Gandalf | wizard | `gandalf-finds-thrain`, `meeting-in-bree`, `unexpected-party`, `roast-mutton`, `elrond-reads-the-moon-letters`, `captured-in-goblin-town`, `rescued-by-the-eagles`, `guests-of-beorn`, `gandalf-leaves-the-company`, `white-council-drives-out-sauron`, `the-arkenstone`, `battle-of-five-armies`, `thorins-farewell`, `yule-at-beorns`, `return-to-rivendell`, `the-troll-gold`, `the-auction-at-bag-end` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Tall pointed blue hat, grey cloak, silver scarf, staff. Robe motion baked. |
+| `thorin` | Thorin Oakenshield | dwarf | `smaug-comes-to-erebor`, `battle-of-azanulbizar`, `meeting-in-bree`, `unexpected-party`, `bilbo-runs-to-the-green-dragon`, `roast-mutton`, `elrond-reads-the-moon-letters`, `captured-in-goblin-town`, `rescued-by-the-eagles`, `guests-of-beorn`, `gandalf-leaves-the-company`, `prisoners-of-the-elvenking`, `barrels-out-of-bond`, `welcome-at-lake-town`, `the-secret-door`, `battle-of-five-armies`, `thorins-farewell` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Variant: travelling hood and armed; in Smaug-era events young Thorin (no beard of age). |
+| `balin` | Balin | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `dwalin` | Dwalin | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `fili` | Fíli | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `kili` | Kíli | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `dori` | Dori | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `nori` | Nori | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `ori` | Ori | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `oin` | Óin | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `gloin` | Glóin | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `bifur` | Bifur | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `bofur` | Bofur | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `bombur` | Bombur | dwarf | `company` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Dwarf body variant: hood colour from ch. 1, build, beard. |
+| `elrond` | Elrond | tall-folk (elf) | `elrond-reads-the-moon-letters`, `return-to-rivendell` | P2 | brief | local | [#37](https://github.com/esgabo/ardatir/issues/37) | Wise, dark-haired, Rivendell robes. |
+| `thranduil` | Thranduil, the Elvenking | tall-folk (elf) | `prisoners-of-the-elvenking`, `the-arkenstone`, `battle-of-five-armies`, `thorin-is-laid-to-rest` | P3 | brief | local | [#37](https://github.com/esgabo/ardatir/issues/37) | Crown of leaves and berries (autumn), per the book. |
+| `wood-elf-guard` | Wood-elf guard (and elf host) | tall-folk (elf) | `prisoners-of-the-elvenking`, `barrels-out-of-bond`, `battle-of-five-armies`, `the-arkenstone` (?) | P3 | brief | local | [#37](https://github.com/esgabo/ardatir/issues/37) | Generic guard with bow, a few variants; reused as the elven host in the battle. Not a content character. |
+| `beorn-man` | Beorn (man) | tall-folk (man, scaled up) | `guests-of-beorn`, `battle-of-five-armies`, `yule-at-beorns` | P3 | brief | local | [#40](https://github.com/esgabo/ardatir/issues/40) | Huge, black hair and beard; content scale 2.2. |
 | `dain` | Dáin | dwarf | `battle-of-azanulbizar`, `battle-of-five-armies`, `thorin-is-laid-to-rest` | P4 | brief | local (no issue yet) | **none** | Iron Hills lord, armoured; young Dáin at Azanulbizar. |
-| `bard` | Bard | tall-folk (man) | `death-of-smaug`, `the-arkenstone`, `battle-of-five-armies`, `thorin-is-laid-to-rest` | P4 | brief | local | #38 | Grim, dark-haired archer; his bow comes with him (arrow is a separate prop). |
-| `the-master` | The Master of Lake-town | tall-folk (man) | `welcome-at-lake-town`, `death-of-smaug` | P4 | brief | local | #38 | Comfortable, well-fed official. |
-| `lake-townsfolk` | Lake-town townsfolk (2-3 variants) | tall-folk (man) | `welcome-at-lake-town`, `death-of-smaug`, `battle-of-five-armies` | P4 | brief | local | #38 | Feasting crowd, fleeing crowd, men of the host. Not content characters. |
+| `bard` | Bard | tall-folk (man) | `death-of-smaug`, `the-arkenstone`, `battle-of-five-armies`, `thorin-is-laid-to-rest` | P4 | brief | local | [#38](https://github.com/esgabo/ardatir/issues/38) | Grim-faced archer; his bow comes with him (arrow is a separate prop). |
+| `the-master` | The Master of Lake-town | tall-folk (man) | `welcome-at-lake-town`, `death-of-smaug` | P4 | brief | local | [#38](https://github.com/esgabo/ardatir/issues/38) | Comfortable, well-fed official. |
+| `lake-townsfolk` | Lake-town townsfolk (2-3 variants) | tall-folk (man) | `welcome-at-lake-town`, `death-of-smaug`, `battle-of-five-armies` | P4 | brief | local | [#38](https://github.com/esgabo/ardatir/issues/38) | Feasting crowd, fleeing crowd, men of the host. Not content characters. |
 | `thror` | Thrór | dwarf | `smaug-comes-to-erebor` | P6 | brief | local (no issue yet) | **none** | Old king, golden look; backstory only. |
 | `thrain` | Thráin | dwarf | `smaug-comes-to-erebor`, `battle-of-azanulbizar`, `gandalf-finds-thrain` | P6 | brief | local (no issue yet) | **none** | Two ages: fleeing king; broken prisoner in Dol Guldur. |
 | `frerin` | Frerin | dwarf | `battle-of-azanulbizar` | P6 | brief | local (no issue yet) | **none** | Azanulbizar only; could be a recoloured Thráin or a crowd dwarf. |
 | `nain` | Náin | dwarf | `battle-of-azanulbizar` | P6 | brief | local (no issue yet) | **none** | Azanulbizar only; could be a recoloured crowd dwarf. |
 | `saruman` | Saruman | wizard | `white-council-drives-out-sauron` | P6 | brief | local (no issue yet) | **none** | Wizard body, white robes; White Council only. |
 | `deagol` | Déagol | hobbit | `smeagol-takes-the-ring` | P6 | brief | local (no issue yet) | **none** | River-folk hobbit variant, fishing. |
-| `smeagol` | Sméagol (before the Ring) | hobbit | `smeagol-takes-the-ring` | P6 | brief | local | #39 | The young hobbit form of content character `gollum`. #39 lists the event but only describes Gollum. |
+| `smeagol` | Sméagol (before the Ring) | hobbit | `smeagol-takes-the-ring` | P6 | brief | local | [#39](https://github.com/esgabo/ardatir/issues/39) | The young hobbit form of content character `gollum`. [#39](https://github.com/esgabo/ardatir/issues/39) lists the event but only describes Gollum. |
 
 ## Creatures
 
 | Asset | Name | Body / rig | Events | Priority | Status | Machine | Issue | Notes |
 |---|---|---|---|---|---|---|---|---|
-| `troll` | Trolls: Bert, Tom, William | troll (one body, 3 variants) | `roast-mutton`, `the-troll-gold` | P1 | brief | local | #23 | Living (night) and stone (dawn onwards) versions; the stone ones stay as scenery in the-troll-gold. |
-| `gollum` | Gollum | own rig (small, four-limbed) | `riddles-in-the-dark` | P2 | brief | local | #39 | Pale, thin, large eyes, long hands and feet. Boat is a prop below. |
-| `great-goblin` | The Great Goblin | goblin (new rig, or dwarf rig variant) | `captured-in-goblin-town` | P2 | brief | local | #41 | Large; keep the proportions rule. |
-| `goblins` | Goblins (rank and file, few variants) | goblin | `captured-in-goblin-town`, `rescued-by-the-eagles`, `battle-of-five-armies` | P2 | brief | local | #41 | Crowd units: keep cheap. |
-| `wargs` | Wargs | quadruped (wolf) | `rescued-by-the-eagles`, `battle-of-five-armies` | P2 | brief | local | #41 | Big grey wolves, crowd units. |
-| `eagles` | Lord of the Eagles and eagles | eagle (own rig) | `rescued-by-the-eagles`, `battle-of-five-armies` | P2 | brief | local | #42 | Flying and perching; big enough to carry a dwarf. |
-| `beorn-bear` | Beorn (bear) | quadruped (bear) | `guests-of-beorn`, `battle-of-five-armies` | P3 | brief | local | #40 | Shares colours and bulk with the man so the change reads. |
-| `spiders` | Giant spiders of Mirkwood (with webs, cocoons) | spider (own rig) | `spiders-of-mirkwood` | P3 | brief | local | #43 | Unsettling, not gruesome. |
+| `troll` | Trolls: Bert, Tom, William | troll (one body, 3 variants) | `roast-mutton`, `the-troll-gold` | P1 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | Living (night) and stone (dawn onwards) versions; the stone ones stay as scenery in the-troll-gold. |
+| `gollum` | Gollum | own rig (small, four-limbed) | `riddles-in-the-dark` | P2 | brief | local | [#39](https://github.com/esgabo/ardatir/issues/39) | Pale, thin, large eyes, long hands and feet. Boat is a prop below. |
+| `great-goblin` | The Great Goblin | goblin (new rig, or dwarf rig variant) | `captured-in-goblin-town` | P2 | brief | local | [#41](https://github.com/esgabo/ardatir/issues/41) | Large; keep the proportions rule. |
+| `goblins` | Goblins (rank and file, few variants) | goblin | `captured-in-goblin-town`, `rescued-by-the-eagles`, `battle-of-five-armies` | P2 | brief | local | [#41](https://github.com/esgabo/ardatir/issues/41) | Crowd units: keep cheap. |
+| `wargs` | Wargs | quadruped (wolf) | `rescued-by-the-eagles`, `battle-of-five-armies` | P2 | brief | local | [#41](https://github.com/esgabo/ardatir/issues/41) | Big grey wolves, crowd units. |
+| `eagles` | Lord of the Eagles and eagles | eagle (own rig) | `rescued-by-the-eagles`, `battle-of-five-armies` | P2 | brief | local | [#42](https://github.com/esgabo/ardatir/issues/42) | Flying and perching; big enough to carry a dwarf. |
+| `beorn-bear` | Beorn (bear) | quadruped (bear) | `guests-of-beorn`, `battle-of-five-armies` | P3 | brief | local | [#40](https://github.com/esgabo/ardatir/issues/40) | Shares colours and bulk with the man so the change reads. |
+| `spiders` | Giant spiders of Mirkwood (with webs, cocoons) | spider (own rig) | `spiders-of-mirkwood` | P3 | brief | local | [#43](https://github.com/esgabo/ardatir/issues/43) | Unsettling, not gruesome. |
 | `ponies` | Company ponies | quadruped (pony/horse) | `guests-of-beorn` | P3 | brief | local (no issue yet) | **none** | Named in guests-of-beorn summary only; low priority. |
-| `bolg` | Bolg | goblin (larger chief) | `battle-of-five-armies` | P4 | brief | local | #41 | Larger goblin chief. |
-| `smaug` | Smaug | dragon (own rig) | `smaug-comes-to-erebor`, `bilbo-meets-smaug`, `death-of-smaug` | P4 | brief | local | #44 | Red-gold, jewelled belly with the bare patch; sleeping, talking, flying; fire effect via #26. |
+| `bolg` | Bolg | goblin (larger chief) | `battle-of-five-armies` | P4 | brief | local | [#41](https://github.com/esgabo/ardatir/issues/41) | Larger goblin chief. |
+| `smaug` | Smaug | dragon (own rig) | `smaug-comes-to-erebor`, `bilbo-meets-smaug`, `death-of-smaug` | P4 | brief | local | [#44](https://github.com/esgabo/ardatir/issues/44) | Red-gold, jewelled belly with the bare patch; sleeping, talking, flying; fire effect via [#26](https://github.com/esgabo/ardatir/issues/26). |
 | `thrush` | The old thrush | small bird (2-3 clips) | `the-secret-door`, `death-of-smaug` | P4 | brief | local (no issue yet) | **none** | Knocks on the stone; tells Bard. |
 | `azog` | Azog | goblin (larger chief) | `battle-of-azanulbizar` | P6 | brief | local (no issue yet) | **none** | Backstory (Azanulbizar); recolour of Bolg. |
 
@@ -159,44 +159,44 @@ Clips needed beyond the base set, from the events: `sit` and `eat` (the party, B
 
 | Asset | Name | Body / rig | Events | Priority | Status | Machine | Issue | Notes |
 |---|---|---|---|---|---|---|---|---|
-| `bilbos-pipe` | Bilbo's pipe | - | `unexpected-party` | P0 | brief | either | #45 | Named in the first narration passage. |
-| `dwarf-instruments` | Dwarf instruments and tools (viol, flute, harp, drum) | - | `unexpected-party` | P0 | brief | local | #23 | For the song by the fire (#28); part of the dwarf variants in #23, or here. |
+| `bilbos-pipe` | Bilbo's pipe | - | `unexpected-party` | P0 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | Named in the first narration passage. |
+| `dwarf-instruments` | Dwarf instruments and tools (viol, flute, harp, drum) | - | `unexpected-party` | P0 | brief | local | [#23](https://github.com/esgabo/ardatir/issues/23) | For the song by the fire ([#28](https://github.com/esgabo/ardatir/issues/28)); part of the dwarf variants in [#23](https://github.com/esgabo/ardatir/issues/23), or here. |
 | `bag-end-tea-set` | Bag End feast set (plates, mugs, food, tea) | - | `unexpected-party`, `bilbo-runs-to-the-green-dragon` | P0 | brief | local (no issue yet) | **none** | Not in any issue; belongs with the Shire kit. Second event shows the same table after the party. |
-| `troll-camp-props` | Troll cooking set: spit, mutton, pot, the talking purse | - | `roast-mutton` | P1 | brief | local (no issue yet) | **none** | Not in #45's list; the purse that cries out is in the narration. |
+| `troll-camp-props` | Troll cooking set: spit, mutton, pot, the talking purse | - | `roast-mutton` | P1 | brief | local (no issue yet) | **none** | Not in [#45](https://github.com/esgabo/ardatir/issues/45)'s list; the purse that cries out is in the narration. |
 | `thorins-note` | Thorin's note | - | `bilbo-runs-to-the-green-dragon` | P1 | brief | local (no issue yet) | **none** | Left on the mantelpiece; tiny. |
-| `glamdring` | Glamdring | - | `captured-in-goblin-town` (?), `battle-of-five-armies` (?) | P2 | brief | either | #45 | Gandalf's sword; Gandalf slays the Great Goblin in captured-in-goblin-town. |
-| `the-ring` | The Ring | - | `smeagol-takes-the-ring`, `riddles-in-the-dark`, `spiders-of-mirkwood`, `prisoners-of-the-elvenking`, `bilbo-meets-smaug` (?), `battle-of-five-armies` (?) | P2 | brief | either | #45 | Plain gold ring. Bilbo's invisibility is a render state, not a model (see #26). |
-| `thrors-map` | Thror's map (with hidden moon-letters) | - | `elrond-reads-the-moon-letters`, `gandalf-finds-thrain`, `unexpected-party` (?), `the-secret-door` (?) | P2 | brief | either | #45 | Needs a "runes revealed" state for the moon-letters moment. |
-| `gollums-boat` | Gollum's boat | - | `riddles-in-the-dark` | P2 | brief | local | #39 | Small boat, paddled; mentioned in #39. |
-| `sting` | Sting | - | `spiders-of-mirkwood`, `riddles-in-the-dark` (?) | P3 | brief | either | #45 | Small elvish blade (named in the spiders event); carried from the troll hoard on. |
-| `barrels` | Barrels | - | `barrels-out-of-bond`, `welcome-at-lake-town`, `prisoners-of-the-elvenking` (?) | P3 | brief | either | #45 | Open and closed, floating; a few variants. |
-| `orcrist` | Orcrist | - | `thorin-is-laid-to-rest`, `captured-in-goblin-town` (?), `battle-of-five-armies` (?) | P4 | brief | either | #45 | Thorin's sword; set on his tomb by the Elvenking. |
-| `arkenstone` | The Arkenstone | - | `the-arkenstone`, `thorin-is-laid-to-rest`, `bilbo-meets-smaug` (?) | P4 | brief | either | #45 | White light; glow handled with lighting (#26). |
-| `thrors-key` | Thror's key | - | `gandalf-finds-thrain`, `the-secret-door`, `unexpected-party` (?) | P4 | brief | either | #45 | Small, ornate dwarf key. |
-| `black-arrow` | The black arrow | - | `death-of-smaug` | P4 | brief | either | #45 | Bard's last arrow, with bow from #38. |
+| `glamdring` | Glamdring | - | `captured-in-goblin-town` (?), `battle-of-five-armies` (?) | P2 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | Gandalf's sword; Gandalf slays the Great Goblin in captured-in-goblin-town. |
+| `the-ring` | The Ring | - | `smeagol-takes-the-ring`, `riddles-in-the-dark`, `spiders-of-mirkwood`, `prisoners-of-the-elvenking`, `bilbo-meets-smaug` (?), `battle-of-five-armies` (?) | P2 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | Plain gold ring. Bilbo's invisibility is a render state, not a model (see [#26](https://github.com/esgabo/ardatir/issues/26)). |
+| `thrors-map` | Thror's map (with hidden moon-letters) | - | `elrond-reads-the-moon-letters`, `gandalf-finds-thrain`, `unexpected-party` (?), `the-secret-door` (?) | P2 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | Needs a "runes revealed" state for the moon-letters moment. |
+| `gollums-boat` | Gollum's boat | - | `riddles-in-the-dark` | P2 | brief | local | [#39](https://github.com/esgabo/ardatir/issues/39) | Small boat, paddled; mentioned in [#39](https://github.com/esgabo/ardatir/issues/39). |
+| `sting` | Sting | - | `spiders-of-mirkwood`, `riddles-in-the-dark` (?) | P3 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | Small elvish blade (named in the spiders event); carried from the troll hoard on. |
+| `barrels` | Barrels | - | `barrels-out-of-bond`, `welcome-at-lake-town`, `prisoners-of-the-elvenking` (?) | P3 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | Open and closed, floating; a few variants. |
+| `orcrist` | Orcrist | - | `thorin-is-laid-to-rest`, `captured-in-goblin-town` (?), `battle-of-five-armies` (?) | P4 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | Thorin's sword; set on his tomb by the Elvenking. |
+| `arkenstone` | The Arkenstone | - | `the-arkenstone`, `thorin-is-laid-to-rest`, `bilbo-meets-smaug` (?) | P4 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | White light; glow handled with lighting ([#26](https://github.com/esgabo/ardatir/issues/26)). |
+| `thrors-key` | Thror's key | - | `gandalf-finds-thrain`, `the-secret-door`, `unexpected-party` (?) | P4 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | Small, ornate dwarf key. |
+| `black-arrow` | The black arrow | - | `death-of-smaug` | P4 | brief | either | [#45](https://github.com/esgabo/ardatir/issues/45) | Bard's last arrow, with bow from [#38](https://github.com/esgabo/ardatir/issues/38). |
 | `smaugs-cup` | Smaug's cup | - | `bilbo-meets-smaug` | P4 | brief | local (no issue yet) | **none** | The stolen cup, from the treasure hoard. |
-| `treasure` | Gold and treasure kit (coins, chests, cups) | - | `the-troll-gold`, `bilbo-meets-smaug`, `the-secret-door` (?), `thorin-is-laid-to-rest` (?) | P4 | brief | local | #49 | Troll hoard (small chests) and the Mountain hoard (heaps); instanced pieces. |
+| `treasure` | Gold and treasure kit (coins, chests, cups) | - | `the-troll-gold`, `bilbo-meets-smaug`, `the-secret-door` (?), `thorin-is-laid-to-rest` (?) | P4 | brief | local | [#49](https://github.com/esgabo/ardatir/issues/49) | Troll hoard (small chests) and the Mountain hoard (heaps); instanced pieces. |
 | `auction-lots` | Auction lots (furniture, notice, spoons) | - | `the-auction-at-bag-end` | P5 | brief | local (no issue yet) | **none** | Bilbo buys back his own chairs and tables. |
 
 ## Environments
 
-One kit per issue; the Events column lists the events set in each place. Terrain per event is #25; light and mood #26; sound #27.
+One kit per issue; the Events column lists the events set in each place. Terrain per event is [#25](https://github.com/esgabo/ardatir/issues/25); light and mood [#26](https://github.com/esgabo/ardatir/issues/26); sound [#27](https://github.com/esgabo/ardatir/issues/27).
 
 | Asset | Name | Body / rig | Events | Priority | Status | Machine | Issue | Notes |
 |---|---|---|---|---|---|---|---|---|
-| `shire-kit` | Shire kit: Bag End hill with cut-away interior, lane, Bywater, the Green Dragon | kit | `unexpected-party`, `bilbo-runs-to-the-green-dragon`, `the-auction-at-bag-end` | P0 | brief | either | #24 | Bag End is both the party (cut-away hall, pantry, parlour) and the auction (exterior). |
-| `trollshaws` | The Trollshaws: wooded slope, fire, troll hole | kit | `roast-mutton`, `the-troll-gold` | P1 | brief | local | #46 | Dawn light is #26. |
-| `rivendell` | Rivendell: Last Homely House, river, bridge, moonlit terrace | kit | `elrond-reads-the-moon-letters`, `return-to-rivendell` | P2 | brief | local | #46 | Moon-letters needs a crescent moon. |
-| `goblin-town` | Goblin-town caves (cut-away) | kit | `captured-in-goblin-town` | P2 | brief | local | #47 | Cut-away diorama view of caves. |
-| `gollums-lake` | Gollum's lake and island | kit | `riddles-in-the-dark` | P2 | brief | local | #47 | Cold black lake, island. |
-| `eyrie` | The eagles' eyrie (and the burning-fir glade) | kit | `rescued-by-the-eagles` | P2 | brief | local | #47 | Burning firs belong to rescued-by-the-eagles. |
-| `beorns-house` | Beorn's house and bee-pastures | kit | `guests-of-beorn`, `yule-at-beorns` | P3 | brief | local | #48 | Same hall hosts the Yule feast. |
-| `forest-gate` | The forest gate (arch of trees) | kit | `gandalf-leaves-the-company` | P3 | brief | local | #48 | Gandalf leaves them here. |
-| `mirkwood` | Mirkwood (dark forest, webs) | kit | `spiders-of-mirkwood` | P3 | brief | local | #48 | Spider webs shared with #43. |
-| `elvenking-halls` | The Elvenking's halls and water-gate | kit | `prisoners-of-the-elvenking`, `barrels-out-of-bond` | P3 | brief | local | #48 | Cave-halls, cellars, river water-gate for the barrels. |
-| `lake-town` | Lake-town (Esgaroth) on piles | kit | `welcome-at-lake-town`, `death-of-smaug` | P4 | brief | local | #49 | Feast hall, burning houses. |
-| `dale` | Dale (ruins, camp, battle valley) | kit | `the-arkenstone`, `thorins-farewell` | P4 | brief | local | #49 | Also the camp tent for Thorin's farewell. |
-| `erebor` | The Lonely Mountain: gate, secret door ledge, treasure hall, tomb | kit | `smaug-comes-to-erebor`, `the-secret-door`, `bilbo-meets-smaug`, `battle-of-five-armies`, `thorin-is-laid-to-rest` | P4 | brief | local | #49 | Battle event is placed at erebor in content. |
+| `shire-kit` | Shire kit: Bag End hill with cut-away interior, lane, Bywater, the Green Dragon | kit | `unexpected-party`, `bilbo-runs-to-the-green-dragon`, `the-auction-at-bag-end` | P0 | brief | either | [#24](https://github.com/esgabo/ardatir/issues/24) | Bag End is both the party (cut-away hall, pantry, parlour) and the auction (exterior). |
+| `trollshaws` | The Trollshaws: wooded slope, fire, troll hole | kit | `roast-mutton`, `the-troll-gold` | P1 | brief | local | [#46](https://github.com/esgabo/ardatir/issues/46) | Dawn light is [#26](https://github.com/esgabo/ardatir/issues/26). |
+| `rivendell` | Rivendell: Last Homely House, river, bridge, moonlit terrace | kit | `elrond-reads-the-moon-letters`, `return-to-rivendell` | P2 | brief | local | [#46](https://github.com/esgabo/ardatir/issues/46) | Moon-letters needs a crescent moon. |
+| `goblin-town` | Goblin-town caves (cut-away) | kit | `captured-in-goblin-town` | P2 | brief | local | [#47](https://github.com/esgabo/ardatir/issues/47) | Cut-away diorama view of caves. |
+| `gollums-lake` | Gollum's lake and island | kit | `riddles-in-the-dark` | P2 | brief | local | [#47](https://github.com/esgabo/ardatir/issues/47) | Cold black lake, island. |
+| `eyrie` | The eagles' eyrie (and the burning-fir glade) | kit | `rescued-by-the-eagles` | P2 | brief | local | [#47](https://github.com/esgabo/ardatir/issues/47) | Burning firs belong to rescued-by-the-eagles. |
+| `beorns-house` | Beorn's house and bee-pastures | kit | `guests-of-beorn`, `yule-at-beorns` | P3 | brief | local | [#48](https://github.com/esgabo/ardatir/issues/48) | Same hall hosts the Yule feast. |
+| `forest-gate` | The forest gate (arch of trees) | kit | `gandalf-leaves-the-company` | P3 | brief | local | [#48](https://github.com/esgabo/ardatir/issues/48) | Gandalf leaves them here. |
+| `mirkwood` | Mirkwood (dark forest, webs) | kit | `spiders-of-mirkwood` | P3 | brief | local | [#48](https://github.com/esgabo/ardatir/issues/48) | Spider webs shared with [#43](https://github.com/esgabo/ardatir/issues/43). |
+| `elvenking-halls` | The Elvenking's halls and water-gate | kit | `prisoners-of-the-elvenking`, `barrels-out-of-bond` | P3 | brief | local | [#48](https://github.com/esgabo/ardatir/issues/48) | Cave-halls, cellars, river water-gate for the barrels. |
+| `lake-town` | Lake-town (Esgaroth) on piles | kit | `welcome-at-lake-town`, `death-of-smaug` | P4 | brief | local | [#49](https://github.com/esgabo/ardatir/issues/49) | Feast hall, burning houses. |
+| `dale` | Dale (ruins, camp, battle valley) | kit | `the-arkenstone`, `thorins-farewell` | P4 | brief | local | [#49](https://github.com/esgabo/ardatir/issues/49) | Also the camp tent for Thorin's farewell. |
+| `erebor` | The Lonely Mountain: gate, secret door ledge, treasure hall, tomb | kit | `smaug-comes-to-erebor`, `the-secret-door`, `bilbo-meets-smaug`, `battle-of-five-armies`, `thorin-is-laid-to-rest` | P4 | brief | local | [#49](https://github.com/esgabo/ardatir/issues/49) | Battle event is placed at erebor in content. |
 | `prancing-pony` | The Prancing Pony (Bree inn) | kit | `meeting-in-bree` | P6 | brief | local (no issue yet) | **none** | Could reuse Green Dragon inn pieces. |
 | `gladden-fields` | Gladden Fields (river, reeds) | kit | `smeagol-takes-the-ring` | P6 | brief | local (no issue yet) | **none** | Small river-bank diorama. |
 | `azanulbizar` | Azanulbizar (Dimrill Dale before the gates of Moria) | kit | `battle-of-azanulbizar` | P6 | brief | local (no issue yet) | **none** | Battle valley with the gates. |
@@ -208,17 +208,17 @@ Not assets, but the assets depend on them.
 
 | Issue | What | Machine |
 |---|---|---|
-| #20 | Blender to glTF pipeline, loader, size check | either |
-| #21 | Shared rigs and clip sets | local |
-| #22 | Playback driven by the event clock | cloud |
-| #25 | Per-event terrain and dioramas | either |
-| #26 | Light, mood, time of day | local |
-| #27 | Sound | local |
-| #28 | Quality target: the Unexpected Party | local |
+| [#20](https://github.com/esgabo/ardatir/issues/20) | Blender to glTF pipeline, loader, size check | either |
+| [#21](https://github.com/esgabo/ardatir/issues/21) | Shared rigs and clip sets | local |
+| [#22](https://github.com/esgabo/ardatir/issues/22) | Playback driven by the event clock | cloud |
+| [#25](https://github.com/esgabo/ardatir/issues/25) | Per-event terrain and dioramas | either |
+| [#26](https://github.com/esgabo/ardatir/issues/26) | Light, mood, time of day | local |
+| [#27](https://github.com/esgabo/ardatir/issues/27) | Sound | local |
+| [#28](https://github.com/esgabo/ardatir/issues/28) | Quality target: the Unexpected Party | local |
 
 ## Gaps
 
-Assets the content needs that no issue covers yet. Natural homes: extra dwarves with #23, Shire props with #24, Bree, Gladden Fields, Azanulbizar and Dol Guldur in a new environment issue.
+Assets the content needs that no issue covers yet. Natural homes: extra dwarves with [#23](https://github.com/esgabo/ardatir/issues/23), Shire props with [#24](https://github.com/esgabo/ardatir/issues/24), Bree, Gladden Fields, Azanulbizar and Dol Guldur in a new environment issue.
 
 - `dain` (Dáin): battle-of-azanulbizar, battle-of-five-armies, thorin-is-laid-to-rest
 - `thror` (Thrór): smaug-comes-to-erebor
@@ -242,12 +242,12 @@ Assets the content needs that no issue covers yet. Natural homes: extra dwarves 
 
 Content notes:
 
-- #36 says The Hobbit has 29 events; the `hobbit` tag gives 30. The extra one is probably `smeagol-takes-the-ring` (also tagged `lord-of-the-rings`, sourced from the Fellowship), which #39 does list.
-- `gollum` is one content character but needs two models: young Sméagol for the Ring event and the creature for the riddles (per-event model override, #20).
+- [#36](https://github.com/esgabo/ardatir/issues/36) says The Hobbit has 29 events; the `hobbit` tag gives 30. The extra one is probably `smeagol-takes-the-ring` (also tagged `lord-of-the-rings`, sourced from the Fellowship), which [#39](https://github.com/esgabo/ardatir/issues/39) does list.
+- `gollum` is one content character but needs two models: young Sméagol for the Ring event and the creature for the riddles (per-event model override, [#20](https://github.com/esgabo/ardatir/issues/20)).
 - `white-council-drives-out-sauron` lists only Gandalf and Saruman, no Elrond or other Council members; fine for assets, but check the scene.
-- `thorin-is-laid-to-rest` has Bard, the Elvenking and Dáin but not Thorin; the tomb is an environment piece in #49.
+- `thorin-is-laid-to-rest` has Bard, the Elvenking and Dáin but not Thorin; the tomb is an environment piece in [#49](https://github.com/esgabo/ardatir/issues/49).
 - `the-troll-gold` has no trolls in its character list, but the stone trolls stand there; counted as needed.
-- `battle-of-five-armies` is placed at `erebor`, while #49 puts the fighting in the valley by Dale.
+- `battle-of-five-armies` is placed at `erebor`, while [#49](https://github.com/esgabo/ardatir/issues/49) puts the fighting in the valley by Dale.
 - `battle-of-dale`, `battle-of-pelargir` and `battle-of-the-pelennor-fields` are not *The Hobbit* and are left out (Dale, Dáin and Gandalf are reused there later).
 
-Also: the rig gaps above (goblin, quadruped, small bird), and #23 and #45 only partly cover the props the Unexpected Party needs.
+Also: the rig gaps above (goblin, quadruped, small bird), and [#23](https://github.com/esgabo/ardatir/issues/23) and [#45](https://github.com/esgabo/ardatir/issues/45) only partly cover the props the Unexpected Party needs.
