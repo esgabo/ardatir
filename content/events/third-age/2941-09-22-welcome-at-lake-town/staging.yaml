@@ -1,0 +1,121 @@
+stage: diorama
+duration: 32
+narration:
+  barrels: 0
+  town: 0.16
+  king: 0.36
+  songs: 0.56
+  feast: 0.76
+  master: 0.9
+beats:
+  town: 0.16
+  king: 0.36
+  songs: 0.56
+  master: 0.9
+tracks:
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: -3.6, z: 2, action: idle, thought: { en: "The Mountain is close. Time to be a king again.", es: "La Montaña está cerca. Es hora de volver a ser rey." } }
+      - { t: 0.28, x: -3.6, z: 2, action: idle }
+      - { t: 0.36, x: -2, z: 0.3, action: walk, thought: { en: "I am Thorin, son of Thráin, King under the Mountain.", es: "Soy Thorin, hijo de Thráin, Rey bajo la Montaña." } }
+      - { t: 0.5, x: 2.4, z: 0.4, action: talk }
+      - { t: 0.56, x: 3.2, z: 0.8, action: talk }
+      - { t: 0.76, x: 2.4, z: 2.8, action: idle }
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: -4.2, z: 4.6, action: idle, thought: { en: "Out of the barrels at last. I think it is my birthday, but never mind.", es: "Fuera de los barriles por fin. Creo que es mi cumpleaños, pero da igual." } }
+      - { t: 0.16, x: -3.2, z: 2.2, action: idle, thought: { en: "A whole town on stilts, and the Mountain beyond.", es: "Una ciudad entera sobre pilotes, y la Montaña al fondo." } }
+      - { t: 0.5, x: -1.5, z: 1.8, action: walk }
+      - { t: 0.76, x: 3.8, z: 3.8, action: idle, thought: { en: "Dry clothes, a fire, and a full plate. Marvellous.", es: "Ropa seca, lumbre y un plato lleno. Maravilloso." } }
+  - characterId: the-master
+    keyframes:
+      - { t: 0, x: 4.8, z: -2.2, action: idle }
+      - { t: 0.36, x: 4.8, z: -2.2, action: idle, thought: { en: "A band of strangers claiming a crown. Nothing good will come of this.", es: "Una banda de forasteros que reclama una corona. De esto no saldrá nada bueno." } }
+      - { t: 0.56, x: 4.8, z: -2.2, action: idle }
+      - { t: 0.88, x: 4.8, z: -2.2, action: idle }
+      - { t: 0.9, x: 4.8, z: -2.2, action: talk, thought: { en: "Give them what they need and see them on their way.", es: "Dadles lo que necesiten y que sigan su camino." } }
+      - { t: 1, x: 3.6, z: 0.2, action: talk }
+  - characterId: balin
+    keyframes:
+      - { t: 0, x: -3.7, z: 3.2, action: idle }
+      - { t: 0.36, x: -3.7, z: 3.2, action: idle }
+      - { t: 0.5, x: -2.75, z: 0.4, action: walk }
+      - { t: 0.56, x: 4.5, z: 0.8, action: talk }
+      - { t: 0.76, x: 3.9, z: 2.8, action: talk }
+  - characterId: dwalin
+    keyframes:
+      - { t: 0, x: -3.87, z: 3.85, action: idle }
+      - { t: 0.36, x: -3.87, z: 3.85, action: idle }
+      - { t: 0.5, x: -2.25, z: 0.4, action: walk }
+      - { t: 0.56, x: 4.33, z: 1.45, action: talk }
+      - { t: 0.76, x: 3.7, z: 3.55, action: talk }
+  - characterId: fili
+    keyframes:
+      - { t: 0, x: -4.35, z: 4.33, action: idle }
+      - { t: 0.36, x: -4.35, z: 4.33, action: idle }
+      - { t: 0.5, x: -1.75, z: 0.4, action: walk }
+      - { t: 0.56, x: 3.85, z: 1.93, action: talk, thought: { en: "They know the songs! They are cheering for us.", es: "¡Conocen las canciones! Nos aclaman." } }
+      - { t: 0.76, x: 3.15, z: 4.1, action: talk }
+  - characterId: kili
+    keyframes:
+      - { t: 0, x: -5, z: 4.5, action: idle }
+      - { t: 0.36, x: -5, z: 4.5, action: idle }
+      - { t: 0.5, x: -1.25, z: 0.4, action: walk }
+      - { t: 0.56, x: 3.2, z: 2.1, action: talk }
+      - { t: 0.76, x: 2.4, z: 4.3, action: talk }
+  - characterId: dori
+    keyframes:
+      - { t: 0, x: -5.65, z: 4.33, action: idle }
+      - { t: 0.36, x: -5.65, z: 4.33, action: idle }
+      - { t: 0.5, x: -0.75, z: 0.4, action: walk }
+      - { t: 0.56, x: 2.55, z: 1.93, action: talk }
+      - { t: 0.76, x: 1.65, z: 4.1, action: talk }
+  - characterId: nori
+    keyframes:
+      - { t: 0, x: -6.13, z: 3.85, action: idle }
+      - { t: 0.36, x: -6.13, z: 3.85, action: idle }
+      - { t: 0.5, x: -0.25, z: 0.4, action: walk }
+      - { t: 0.56, x: 2.07, z: 1.45, action: talk }
+      - { t: 0.76, x: 1.1, z: 3.55, action: talk }
+  - characterId: ori
+    keyframes:
+      - { t: 0, x: -6.3, z: 3.2, action: idle }
+      - { t: 0.36, x: -6.3, z: 3.2, action: idle }
+      - { t: 0.5, x: 0.25, z: 0.4, action: walk }
+      - { t: 0.56, x: 1.9, z: 0.8, action: talk }
+      - { t: 0.76, x: 0.9, z: 2.8, action: talk }
+  - characterId: oin
+    keyframes:
+      - { t: 0, x: -6.13, z: 2.55, action: idle }
+      - { t: 0.36, x: -6.13, z: 2.55, action: idle }
+      - { t: 0.5, x: 0.75, z: 0.4, action: walk }
+      - { t: 0.56, x: 2.07, z: 0.15, action: talk }
+      - { t: 0.76, x: 1.1, z: 2.05, action: talk }
+  - characterId: gloin
+    keyframes:
+      - { t: 0, x: -5.65, z: 2.07, action: idle }
+      - { t: 0.36, x: -5.65, z: 2.07, action: idle }
+      - { t: 0.5, x: 1.25, z: 0.4, action: walk }
+      - { t: 0.56, x: 2.55, z: -0.33, action: talk }
+      - { t: 0.76, x: 1.65, z: 1.5, action: talk }
+  - characterId: bifur
+    keyframes:
+      - { t: 0, x: -5, z: 1.9, action: idle }
+      - { t: 0.36, x: -5, z: 1.9, action: idle }
+      - { t: 0.5, x: 1.75, z: 0.4, action: walk }
+      - { t: 0.56, x: 3.2, z: -0.5, action: talk }
+      - { t: 0.76, x: 2.4, z: 1.3, action: talk }
+  - characterId: bofur
+    keyframes:
+      - { t: 0, x: -4.35, z: 2.07, action: idle, thought: { en: "Stiff, bruised, and not at all in the mood for jokes.", es: "Entumecido, magullado y sin ganas de bromas." } }
+      - { t: 0.36, x: -4.35, z: 2.07, action: idle }
+      - { t: 0.5, x: 2.25, z: 0.4, action: walk }
+      - { t: 0.56, x: 3.85, z: -0.33, action: talk }
+      - { t: 0.76, x: 3.15, z: 1.5, action: talk }
+  - characterId: bombur
+    keyframes:
+      - { t: 0, x: -3.87, z: 2.55, action: idle }
+      - { t: 0.36, x: -3.87, z: 2.55, action: idle }
+      - { t: 0.5, x: 2.75, z: 0.4, action: walk }
+      - { t: 0.56, x: 4.33, z: 0.15, action: talk }
+      - { t: 0.76, x: 3.7, z: 2.05, action: talk, thought: { en: "Hot food. Hot food at last.", es: "Comida caliente. Por fin comida caliente." } }

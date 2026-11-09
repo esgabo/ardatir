@@ -1,0 +1,48 @@
+stage: diorama
+duration: 28
+narration:
+  meanwhile: 0
+  urging: 0.2
+  saruman: 0.42
+  attack: 0.62
+  flight: 0.82
+beats:
+  meanwhile: 0
+  saruman: 0.42
+  attack: 0.62
+  flight: 0.82
+tracks:
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: -5.2, z: 4, action: walk }
+      - { t: 0.2, x: -2.2, z: 1.7, action: talk, thought: { en: "I have asked for years. Strike Dol Guldur now.", es: "Llevo años pidiéndolo. Hay que atacar Dol Guldur ya." } }
+      - { t: 0.42, x: -2.2, z: 1.7, action: idle, thought: { en: "At last he agrees. I wonder why.", es: "Por fin accede. Me pregunto por qué." } }
+      - { t: 0.62, x: 1.8, z: -2.4, action: walk }
+      - { t: 0.82, x: 3, z: -3.4, action: idle, thought: { en: "The shadow is lifted. But where has he gone?", es: "La sombra se ha disipado. Pero ¿adónde se ha ido?" } }
+  - characterId: saruman
+    keyframes:
+      - { t: 0, x: -5.5, z: -1, action: walk }
+      - { t: 0.2, x: -3.6, z: 0.9, action: idle, thought: { en: "Always the same plea. I have said no before.", es: "Siempre la misma súplica. Ya he dicho que no otras veces." } }
+      - { t: 0.42, x: -3.6, z: 0.9, action: talk, thought: { en: "Let them think it is their idea. I will seek the Ring myself.", es: "Que crean que es idea suya. Yo buscaré el Anillo por mi cuenta." } }
+      - { t: 0.62, x: 0.6, z: -3, action: walk }
+      - { t: 0.82, x: 1.6, z: -3.9, action: idle }
+  - characterId: elrond
+    keyframes:
+      - { t: 0, x: -1, z: 5.5, action: walk }
+      - { t: 0.2, x: -2.9, z: 2.6, action: idle, thought: { en: "Gandalf has a point. The south of Mirkwood grows dark.", es: "Gandalf tiene razón. El sur del Bosque Negro se oscurece." } }
+      - { t: 0.62, x: 2.4, z: -1.3, action: walk }
+      - { t: 0.82, x: 4.2, z: -2.4, action: idle }
+  - characterId: galadriel
+    keyframes:
+      - { t: 0, x: -6, z: 2, action: walk }
+      - { t: 0.2, x: -3.7, z: 2.4, action: idle }
+      - { t: 0.42, x: -3.7, z: 2.4, action: idle }
+      - { t: 0.62, x: 3.2, z: -1.9, action: walk }
+      - { t: 0.82, x: 4.4, z: -3.4, action: idle, thought: { en: "The fortress is empty. The dark has fled before us.", es: "La fortaleza está vacía. La oscuridad ha huido ante nosotros." } }
+  - characterId: cirdan
+    keyframes:
+      - { t: 0, x: -1.5, z: -3.5, action: walk }
+      - { t: 0.2, x: -1.4, z: 1.2, action: idle }
+      - { t: 0.42, x: -1.4, z: 1.2, action: idle, thought: { en: "The Wise must agree before we move.", es: "Los Sabios deben ponerse de acuerdo antes de actuar." } }
+      - { t: 0.62, x: 0.8, z: -1.4, action: walk }
+      - { t: 0.82, x: 2.4, z: -2.6, action: idle }

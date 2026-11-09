@@ -10,9 +10,14 @@ characters: [ thorin, bilbo, the-master, balin, dwalin, fili, kili, dori, nori, 
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 10 }
 title: { en: A Welcome at Lake-town, es: La bienvenida en la Ciudad del Lago }
 summary:
   en: "Thorin announces himself as King under the Mountain returned. The people of Esgaroth, remembering the old songs, feast the dwarves, while the Master hopes they will soon move on."
   es: "Thorin se presenta como el Rey bajo la Montaña que regresa. El pueblo de Esgaroth, recordando las viejas canciones, agasaja a los enanos, mientras el Gobernador espera que pronto sigan su camino."
+beats:
+  - { id: town, label: { en: "Esgaroth on its stilts", es: "Esgaroth sobre sus pilotes" } }
+  - { id: king, label: { en: "The king comes home", es: "El rey vuelve a casa" } }
+  - { id: songs, label: { en: "The old songs", es: "Las viejas canciones" } }
+  - { id: master, label: { en: "The uneasy Master", es: "El Gobernador inquieto" } }

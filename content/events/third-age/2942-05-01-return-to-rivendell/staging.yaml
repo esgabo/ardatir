@@ -1,0 +1,42 @@
+stage: diorama
+duration: 26
+narration:
+  arrive: 0
+  tales: 0.2
+  drowsy: 0.42
+  news: 0.6
+  home: 0.82
+beats:
+  arrive: 0
+  tales: 0.2
+  news: 0.6
+  home: 0.82
+tracks:
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 6, z: 5.2, action: walk, thought: { en: "The elves are singing. They are laughing at me, kindly.", es: "Los elfos cantan. Se ríen de mí, pero con cariño." } }
+      - { t: 0.15, x: 0.5, z: 1.6, action: idle }
+      - { t: 0.2, x: 0.5, z: 1.6, action: talk, thought: { en: "And then the dragon said... and I said...", es: "Y entonces el dragón dijo... y yo dije..." } }
+      - { t: 0.4, x: 0.5, z: 1.6, action: talk }
+      - { t: 0.42, x: -0.2, z: 2.6, action: hide, thought: { en: "So warm. So comfortable. I could close my eyes just a little.", es: "Qué calor. Qué comodidad. Podría cerrar los ojos un momentito." } }
+      - { t: 0.6, x: -0.2, z: 2.6, action: hide, thought: { en: "The Necromancer driven out? So that is where Gandalf went!", es: "¿El Nigromante expulsado? ¡Así que ahí estaba Gandalf!" } }
+      - { t: 0.8, x: -0.2, z: 2.6, action: hide }
+      - { t: 0.82, x: -0.2, z: 2.6, action: idle, thought: { en: "Good news, truly. But all I want now is my own chair.", es: "Buenas noticias, de verdad. Pero ahora solo quiero mi propio sillón." } }
+      - { t: 1, x: -4.5, z: 3.2, action: walk }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: 6.2, z: 4.2, action: walk }
+      - { t: 0.15, x: 1.7, z: 2, action: idle, thought: { en: "Rivendell again. A good place to rest.", es: "Rivendel otra vez. Un buen lugar para descansar." } }
+      - { t: 0.2, x: 1.7, z: 2, action: idle }
+      - { t: 0.42, x: 1.1, z: -1.8, action: walk }
+      - { t: 0.46, x: 1.1, z: -1.8, action: talk, thought: { en: "We drove him out of Dol Guldur. Now we must watch.", es: "Lo expulsamos de Dol Guldur. Ahora hay que vigilar." } }
+      - { t: 0.8, x: 1.1, z: -1.8, action: talk }
+  - characterId: elrond
+    keyframes:
+      - { t: 0, x: -2.2, z: -1.4, action: idle, thought: { en: "The travellers are back, and the valley is the merrier.", es: "Los viajeros han vuelto, y el valle está más alegre." } }
+      - { t: 0.15, x: -2.2, z: -1.4, action: idle }
+      - { t: 0.2, x: -1, z: 0.3, action: talk, thought: { en: "A long tale. Let us hear all of it.", es: "Una larga historia. Escuchémosla entera." } }
+      - { t: 0.4, x: -1, z: 0.3, action: idle }
+      - { t: 0.42, x: 2.3, z: -1.9, action: walk }
+      - { t: 0.46, x: 2.3, z: -1.9, action: talk, thought: { en: "The Wise did well, but the Shadow has not ended.", es: "Los Sabios hicieron bien, pero la Sombra no ha terminado." } }
+      - { t: 0.8, x: 2.3, z: -1.9, action: talk }

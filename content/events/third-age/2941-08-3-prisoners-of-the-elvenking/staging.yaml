@@ -1,0 +1,109 @@
+stage: diorama
+duration: 32
+narration:
+  thorin: 0
+  gates: 0.17
+  king: 0.38
+  cells: 0.58
+  wander: 0.74
+  hope: 0.9
+beats:
+  gates: 0.17
+  king: 0.38
+  cells: 0.58
+  hope: 0.9
+tracks:
+  - characterId: thranduil
+    keyframes:
+      - { t: 0, x: -2.2, z: -3, action: idle }
+      - { t: 0.38, x: -2.2, z: -3, action: talk, thought: { en: "Why would dwarves creep through my wood? They will tell me.", es: "¿Por qué se cuelan unos enanos en mi bosque? Me lo dirán." } }
+      - { t: 0.58, x: -2.2, z: -3, action: idle, thought: { en: "A cell apiece will teach them manners.", es: "Una celda para cada uno les enseñará modales." } }
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 1.5, z: -1.8, action: idle, thought: { en: "Taken at their feast. The king shall have nothing from me.", es: "Me apresaron en su banquete. El rey no sacará nada de mí." } }
+      - { t: 0.45, x: 1.5, z: -1.8, action: talk }
+      - { t: 0.66, x: 5, z: 0.2, action: idle }
+      - { t: 0.9, x: 5, z: 0.2, action: talk, thought: { en: "The burglar! Tell the others: keep quiet, and trust him.", es: "¡El saqueador! Decidles a los demás: callad y confiad en él." } }
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: -6.2, z: 5.8, action: hide, thought: { en: "Everyone is too tired to notice me, and the ring does the rest.", es: "Están demasiado cansados para fijarse en mí, y el anillo hace el resto." } }
+      - { t: 0.17, x: -5.4, z: 2.8, action: hide }
+      - { t: 0.27, x: -3.2, z: 1.4, action: hide, thought: { en: "Quick, before the doors shut behind them!", es: "¡Deprisa, antes de que se cierren las puertas!" } }
+      - { t: 0.38, x: -2.6, z: 4.4, action: hide, thought: { en: "Don't sneeze. Whatever you do, don't sneeze.", es: "No estornudes. Pase lo que pase, no estornudes." } }
+      - { t: 0.58, x: -5, z: 4, action: hide }
+      - { t: 0.66, x: -4, z: -3, action: hide, thought: { en: "Lonely work, creeping about with a stolen crust.", es: "Qué solitario es esto de andar a hurtadillas con una corteza robada." } }
+      - { t: 0.74, x: 0, z: -5, action: hide }
+      - { t: 0.82, x: 4.5, z: -4, action: hide }
+      - { t: 0.9, x: 4.2, z: -1.1, action: talk, thought: { en: "There he is. Shh, Thorin, it is only me.", es: "Ahí está. Chsss, Thorin, soy yo." } }
+  - characterId: balin
+    keyframes:
+      - { t: 0, x: -6.25, z: 5, action: idle }
+      - { t: 0.17, x: -3.4, z: 1.6, action: idle, thought: { en: "Doors in a hillside. We are being led somewhere deep.", es: "Puertas en una colina. Nos llevan muy adentro." } }
+      - { t: 0.38, x: 1.3, z: 0.8, action: idle }
+      - { t: 0.58, x: 4.53, z: 2.31, action: idle }
+  - characterId: dwalin
+    keyframes:
+      - { t: 0, x: -5.75, z: 5, action: idle }
+      - { t: 0.17, x: -3.56, z: 2.2, action: idle }
+      - { t: 0.38, x: 1.13, z: 1.45, action: idle, thought: { en: "Not a word about the Mountain.", es: "Ni una palabra sobre la Montaña." } }
+      - { t: 0.58, x: 3.01, z: 4.19, action: idle }
+  - characterId: fili
+    keyframes:
+      - { t: 0, x: -5.25, z: 5, action: idle }
+      - { t: 0.17, x: -4, z: 2.64, action: idle }
+      - { t: 0.38, x: 0.65, z: 1.93, action: idle }
+      - { t: 0.58, x: 0.78, z: 5.14, action: idle }
+  - characterId: kili
+    keyframes:
+      - { t: 0, x: -4.75, z: 5, action: idle }
+      - { t: 0.17, x: -4.6, z: 2.8, action: idle }
+      - { t: 0.38, x: 0, z: 2.1, action: idle }
+      - { t: 0.58, x: -1.63, z: 4.93, action: idle }
+  - characterId: dori
+    keyframes:
+      - { t: 0, x: -4.25, z: 5, action: idle }
+      - { t: 0.17, x: -5.2, z: 2.64, action: idle }
+      - { t: 0.38, x: -0.65, z: 1.93, action: idle }
+      - { t: 0.58, x: -3.66, z: 3.61, action: idle, thought: { en: "Alone behind a door. At least it is quiet.", es: "A solas tras una puerta. Al menos hay silencio." } }
+  - characterId: nori
+    keyframes:
+      - { t: 0, x: -3.75, z: 5, action: idle }
+      - { t: 0.17, x: -5.64, z: 2.2, action: idle }
+      - { t: 0.38, x: -1.13, z: 1.45, action: idle }
+      - { t: 0.58, x: -4.83, z: 1.49, action: idle }
+  - characterId: ori
+    keyframes:
+      - { t: 0, x: -3.25, z: 5, action: idle }
+      - { t: 0.17, x: -5.8, z: 1.6, action: idle }
+      - { t: 0.38, x: -1.3, z: 0.8, action: idle }
+      - { t: 0.58, x: -4.87, z: -0.92, action: idle }
+  - characterId: oin
+    keyframes:
+      - { t: 0, x: -2.75, z: 5, action: idle }
+      - { t: 0.17, x: -5.64, z: 1, action: idle }
+      - { t: 0.38, x: -1.13, z: 0.15, action: idle }
+      - { t: 0.58, x: -3.77, z: -3.08, action: idle }
+  - characterId: gloin
+    keyframes:
+      - { t: 0, x: -2.25, z: 5, action: idle }
+      - { t: 0.17, x: -5.2, z: 0.56, action: idle }
+      - { t: 0.38, x: -0.65, z: -0.33, action: idle }
+      - { t: 0.58, x: -1.79, z: -4.47, action: idle }
+  - characterId: bifur
+    keyframes:
+      - { t: 0, x: -1.75, z: 5, action: idle }
+      - { t: 0.17, x: -4.6, z: 0.4, action: idle }
+      - { t: 0.38, x: 0, z: -0.5, action: idle }
+      - { t: 0.58, x: 0.61, z: -4.76, action: idle }
+  - characterId: bofur
+    keyframes:
+      - { t: 0, x: -1.25, z: 5, action: idle }
+      - { t: 0.17, x: -4, z: 0.56, action: idle }
+      - { t: 0.38, x: 0.65, z: -0.33, action: idle }
+      - { t: 0.58, x: 2.87, z: -3.9, action: idle }
+  - characterId: bombur
+    keyframes:
+      - { t: 0, x: -0.75, z: 5, action: idle, thought: { en: "Spiders, and now this. I only wanted supper.", es: "Arañas, y ahora esto. Yo solo quería cenar." } }
+      - { t: 0.17, x: -3.56, z: 1, action: idle }
+      - { t: 0.38, x: 1.13, z: 0.15, action: idle }
+      - { t: 0.58, x: 4.46, z: -2.07, action: idle }
