@@ -14,7 +14,7 @@ characters: [ tom-bombadil, goldberry ]
 arcs: []
 journeys: []
 tags: [ poems ]
-status: outline
+status: scripted
 source: { book: the-adventures-of-tom-bombadil, chapter: "The Adventures of Tom Bombadil" }
 title: { en: "The Adventures of Tom Bombadil", es: "Las aventuras de Tom Bombadil" }
 summary:

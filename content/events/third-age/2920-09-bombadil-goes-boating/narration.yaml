@@ -1,0 +1,19 @@
+# Told as the Bucklanders' rhyme it is: Shire lore, not history (see the comment in event.yaml).
+- id: autumn
+  en: "Another rhyme from Buckland, made long after the first, tells of one autumn when the leaves were turning brown. Tom mended his little boat and set off down the Withywindle, toward the Brandywine."
+  es: "Otra canción de Los Gamos, compuesta mucho después de la primera, cuenta un otoño en que las hojas se volvían pardas. Tom arregló su barquita y se puso en camino río abajo por el Tornasauce, hacia el Brandivino."
+- id: banter
+  en: "On the way the river-folk teased him: a little bird, an otter who popped up beside the boat, an old swan gliding by. Tom teased them back, and paddled on."
+  es: "Por el camino, la gente del río se burló de él: un pajarillo, una nutria que asomó junto a la barca, un viejo cisne que pasaba deslizándose. Tom les contestó con otras burlas y siguió remando."
+- id: arrows
+  en: "Near Buckland the hobbits on the bank took him for a stranger and shot arrows at his hat. Tom laughed at them, and went on across the Brandywine to the Shire side."
+  es: "Cerca de Los Gamos, los hobbits de la orilla lo tomaron por un forastero y dispararon flechas a su sombrero. Tom se rio de ellos y siguió, cruzando el Brandivino hasta la orilla de la Comarca."
+- id: maggot
+  en: "There Farmer Maggot met him with his cart, and they rode together through the dusk to his farm, an old friend fetching another."
+  es: "Allí lo esperaba el granjero Maggot con su carro, y juntos cruzaron el anochecer hasta la granja, un viejo amigo que va a buscar a otro."
+- id: night
+  en: "There was supper, beer and dancing with the Maggots, and when the house had gone to bed, Tom and the farmer sat up all night trading news of the downs and the Shire."
+  es: "Hubo cena, cerveza y baile con los Maggot, y cuando la casa se fue a dormir, Tom y el granjero pasaron la noche en vela contándose noticias de las quebradas y de la Comarca."
+- id: gone
+  en: "At dawn the Maggots found him gone, as suddenly as he had come, back to his own country beyond the river."
+  es: "Al alba, los Maggot vieron que se había ido, tan de repente como había llegado, de vuelta a su tierra al otro lado del río."

@@ -1,0 +1,19 @@
+# Told as the Bucklanders' rhyme it is: Shire lore, not history (see the comment in event.yaml).
+- id: rhyme
+  en: "The hobbits of Buckland had an old rhyme about Tom Bombadil, the merry fellow who lived by the Old Forest in a blue jacket and yellow boots, with a feather in his hat."
+  es: "Los hobbits de Los Gamos tenían una vieja canción sobre Tom Bombadil, el tipo alegre que vivía junto al Bosque Viejo, con chaqueta azul, botas amarillas y una pluma en el sombrero."
+- id: river
+  en: "One summer day Tom sat idling on the bank of the Withywindle, dabbling his beard in the water. Goldberry, the River-daughter, caught hold of it and pulled him in."
+  es: "Un día de verano, Tom estaba sentado a la orilla del Tornasauce, mojándose la barba en el agua. Baya de Oro, la hija del Río, se la agarró y lo arrastró dentro."
+- id: willow
+  en: "Tom sent her back down to her mother in the deep pools and went on, dripping. Then he dozed under Old Man Willow, and the tree shut him fast in a crack. Tom told it to open up, and it let him go."
+  es: "Tom la mandó de vuelta con su madre, a las pozas hondas, y siguió su camino chorreando. Luego se quedó dormido bajo el Viejo Hombre Sauce, y el árbol lo atrapó en una grieta. Tom le ordenó que se abriera, y lo soltó."
+- id: badgers
+  en: "Next the Badger-folk dragged him down into their burrows, but Tom gave them the same short answer, and they showed him the way out."
+  es: "Después, los tejones lo arrastraron bajo tierra, a sus madrigueras, pero Tom les respondió igual de corto, y le mostraron la salida."
+- id: wight
+  en: "At dusk he came home, and found a Barrow-wight waiting for him in the dark. Tom sent it back to its mound on the downs, and went to bed."
+  es: "Al anochecer volvió a casa y se encontró a un tumulario esperándolo en la oscuridad. Tom lo mandó de vuelta a su túmulo en las quebradas y se fue a dormir."
+- id: wedding
+  en: "In the end Tom went back to the river and won Goldberry for his wife. All night, the rhyme says, things that wished him ill came prowling round the house, but no one troubled the two of them."
+  es: "Al final, Tom volvió al río y ganó a Baya de Oro por esposa. Toda la noche, dice la canción, merodearon por la casa seres que le querían mal, pero nadie molestó a los dos."

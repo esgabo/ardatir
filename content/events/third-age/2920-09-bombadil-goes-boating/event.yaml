@@ -16,7 +16,7 @@ characters: [ tom-bombadil, farmer-maggot ]
 arcs: []
 journeys: []
 tags: [ poems ]
-status: outline
+status: scripted
 source: { book: the-adventures-of-tom-bombadil, chapter: "Bombadil Goes Boating" }
 title: { en: "Bombadil Goes Boating", es: "Bombadil va en bote" }
 summary:
