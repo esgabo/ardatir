@@ -8,7 +8,7 @@ import { afterAll, describe, expect, it } from 'vitest';
 import YAML from 'yaml';
 import { buildContent } from '../scripts/content/build.ts';
 import { publish, type Encoder } from '../scripts/narration/publish.ts';
-import { render } from '../scripts/narration/render.ts';
+import { jobs, render } from '../scripts/narration/render.ts';
 import type { VoiceStudio } from '../scripts/narration/voicestudio.ts';
 import { encodeWav } from '../scripts/narration/wav.ts';
 
@@ -45,8 +45,11 @@ async function rendered(opts: { garble?: (t: string) => boolean; edit?: (content
   await render(buildContent(content), studio(opts.garble), () => Buffer.from('ref'), { lang: ['en'], changed: false, cacheDir, rejects: new Set() });
   return { content, cacheDir };
 }
-const pub = (content: string, cacheDir: string, accept: string[] = []) =>
-  publish(buildContent(content), { lang: ['en'], accept: new Set(accept), cacheDir }, copyEncoder);
+const pub = (content: string, cacheDir: string, accept: string[] = [], rejects: string[] = []) =>
+  publish(buildContent(content), { lang: ['en'], accept: new Set(accept), rejects: new Set(rejects), cacheDir }, copyEncoder);
+const renderAgain = (content: string, cacheDir: string, rejects: string[] = []) =>
+  render(buildContent(content), studio(), () => Buffer.from('ref'), { lang: ['en'], changed: false, cacheDir, rejects: new Set(rejects) });
+const changedJobs = (content: string) => jobs(buildContent(content), { lang: ['en'], changed: true }).map((j) => j.event);
 const meta = (content: string) => YAML.parse(fs.readFileSync(path.join(content, PARTY, 'audio/en.yaml'), 'utf8'));
 
 describe('publish', () => {
@@ -104,5 +107,32 @@ describe('publish', () => {
     await pub(content, cacheDir);
     const [again] = await pub(content, cacheDir);
     expect(again).toMatchObject({ written: false, blockedBy: [], upToDate: true });
+  });
+
+  it('a respelling changed after publishing makes the recording stale, and publishes again', async () => {
+    const { content, cacheDir } = await rendered();
+    await pub(content, cacheDir);
+    expect(changedJobs(content)).toEqual([]);
+    fs.writeFileSync(path.join(content, 'pronunciation.yaml'), 'en: { green: "GREEN-ish" }\n');
+    expect(changedJobs(content)).toEqual(['the-party']);
+    await renderAgain(content, cacheDir);
+    const [r] = await pub(content, cacheDir);
+    expect(r.written).toBe(true);
+    expect(changedJobs(content)).toEqual([]);
+  });
+
+  it('a take rejected after publishing publishes again once re-rendered', async () => {
+    const { content, cacheDir } = await rendered();
+    await pub(content, cacheDir);
+    await renderAgain(content, cacheDir, ['the-party/tea']);
+    const [r] = await pub(content, cacheDir);
+    expect(r.written).toBe(true);
+    expect(meta(content).takes.tea).toMatch(/@1007$/);
+  });
+
+  it('holds an event with a reject not yet re-rendered', async () => {
+    const { content, cacheDir } = await rendered();
+    const [r] = await pub(content, cacheDir, [], ['the-party/tea']);
+    expect(r).toMatchObject({ written: false, blockedBy: ['the-party/tea'] });
   });
 });

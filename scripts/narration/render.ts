@@ -8,7 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
 import type { BuildResult } from '../content/build.ts';
-import type { Lang, Narrator } from '../../src/data/types.ts';
+import type { Lang, Narrator, NarratorVoice } from '../../src/data/types.ts';
 import { checkPassage, normalizeWords, type Flag } from './checks.ts';
 import { respell, type Lexicon } from './pronounce.ts';
 import { narrationHash, passageHash, type Passage } from './text.ts';
@@ -24,6 +24,8 @@ export interface RenderOptions {
   cacheDir: string;
   /** "event/passage" takes the author rejected: re-render with the next seed. */
   rejects: Set<string>;
+  /** Called with "event/passage" once a rejected take's replacement is written. */
+  onReject?: (id: string) => void;
   log?: (line: string) => void;
 }
 
@@ -44,10 +46,14 @@ const SEED_STEP = 1000;
 /** Takes a narrator needs before pace is judged against its median. */
 const PACE_AFTER = 5;
 
-/** What makes a take reusable: the words, who reads them, and how the names are said. */
-export function cacheKey(passageHash: string, narrator: { id: string; version: number }, used: string[], lex: Lexicon, lang: Lang): string {
+/**
+ * What makes a take reusable: the words, the voice that reads them (its version, reference
+ * and settings, so a replaced reference can't keep old takes), and how the names are said.
+ */
+export function cacheKey(passageHash: string, narratorId: string, voice: NarratorVoice, used: string[], lex: Lexicon, lang: Lang): string {
   const names = used.map((n) => [n, lex[lang]?.[n] ?? '']);
-  return createHash('sha256').update(JSON.stringify([passageHash, narrator.id, narrator.version, lang, names])).digest('hex').slice(0, 12);
+  const sound = [voice.version, voice.engine, voice.referenceHash, voice.refText, voice.speed, voice.params ?? {}];
+  return createHash('sha256').update(JSON.stringify([passageHash, narratorId, sound, lang, names])).digest('hex').slice(0, 12);
 }
 
 export interface Job { event: string; lang: Lang; narrator: Narrator; passages: Passage[]; dir: string }
@@ -68,21 +74,31 @@ export function jobs(content: BuildResult, o: Pick<RenderOptions, 'only' | 'age'
     for (const lang of o.lang) {
       if (!narrator.voices[lang]) continue;
       const job = { event: e.id, lang, narrator, passages, dir: content.eventDirs[e.id] };
-      if (o.changed && recordingCurrent(job)) continue;
+      if (o.changed && recordingCurrent(job, content.pronunciation)) continue;
       out.push(job);
     }
   }
   return out;
 }
 
-/** Does the event folder already hold a recording of exactly this text, by this voice? */
-export function recordingCurrent(j: Job): boolean {
+/** audio/<lang>.yaml as publish writes it. `takes`: each passage's "<cacheKey>@<seed>". */
+export interface RecordingMeta { textHash?: string; narrator?: { id?: string; version?: number }; passages?: Record<string, string>; takes?: Record<string, string> }
+
+export function readRecording(j: Pick<Job, 'dir' | 'lang'>): RecordingMeta | undefined {
   const meta = path.join(j.dir, 'audio', `${j.lang}.yaml`);
-  if (!fs.existsSync(meta)) return false;
-  const m = YAML.parse(fs.readFileSync(meta, 'utf8')) as { textHash?: string; narrator?: { id?: string; version?: number }; passages?: Record<string, string> } | null;
-  return !!m && m.textHash === narrationHash(j.passages, j.lang)
-    && m.narrator?.id === j.narrator.id && m.narrator?.version === j.narrator.voices[j.lang]!.version
-    && j.passages.every((p) => m.passages?.[p.id] === passageHash(p, j.lang));
+  return fs.existsSync(meta) ? (YAML.parse(fs.readFileSync(meta, 'utf8')) as RecordingMeta | null) ?? undefined : undefined;
+}
+
+/**
+ * Does the event folder already hold a recording of exactly this text, by this voice, with
+ * the names said as listed now? (A respelling or voice change re-renders, so it's stale.)
+ */
+export function recordingCurrent(j: Job, lex: Lexicon): boolean {
+  const m = readRecording(j);
+  if (!m || m.textHash !== narrationHash(j.passages, j.lang)) return false;
+  if (m.narrator?.id !== j.narrator.id || m.narrator?.version !== j.narrator.voices[j.lang]!.version) return false;
+  return passageKeys(j, lex).every(({ passage: p, key }) =>
+    m.passages?.[p.id] === passageHash(p, j.lang) && m.takes?.[p.id]?.split('@')[0] === key);
 }
 
 /** Where a passage's take lives in the cache. */
@@ -96,7 +112,7 @@ export function passageKeys(j: Job, lex: Lexicon): { passage: Passage; key: stri
   return j.passages.map((p) => {
     const raw = p.text[j.lang] || p.text.en;
     const { text, used } = respell(raw.replace(/\s+/g, ' ').trim(), j.lang, lex);
-    return { passage: p, key: cacheKey(passageHash(p, j.lang), { id: j.narrator.id, version: voice.version }, used, lex, j.lang), text, used };
+    return { passage: p, key: cacheKey(passageHash(p, j.lang), j.narrator.id, voice, used, lex, j.lang), text, used };
   });
 }
 
@@ -165,6 +181,7 @@ export async function render(
         log(`    flagged: ${flags.map((f) => f.kind).join(', ')}`);
       }
       writeTake(take!, wav!);
+      if (rejected) o.onReject?.(`${j.event}/${p.id}`);
       if (!take!.flags.length) passed.push(take!);
       takes.push({ ...take!, reused: false });
     }

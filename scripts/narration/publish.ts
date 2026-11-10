@@ -8,7 +8,7 @@ import path from 'node:path';
 import YAML from 'yaml';
 import type { BuildResult } from '../content/build.ts';
 import type { Lang } from '../../src/data/types.ts';
-import { jobs, passageKeys, readTake, recordingCurrent, takePath } from './render.ts';
+import { jobs, passageKeys, readRecording, readTake, recordingCurrent, takePath } from './render.ts';
 import { narrationHash, passageHash } from './text.ts';
 import { encodeWav, joinWithGaps, parseWav } from './wav.ts';
 
@@ -28,21 +28,26 @@ export const DEFAULT_GAP = 0.8;
 
 export async function publish(
   content: BuildResult,
-  o: { only?: string[]; age?: string[]; lang: Lang[]; accept: Set<string>; cacheDir: string },
+  o: { only?: string[]; age?: string[]; lang: Lang[]; accept: Set<string>; cacheDir: string; rejects?: Set<string> },
   encode: Encoder,
 ): Promise<PublishResult[]> {
   const results: PublishResult[] = [];
   for (const j of jobs(content, { ...o, changed: false })) {
     const base = { event: j.event, lang: j.lang, duration: 0, starts: {} };
-    if (recordingCurrent(j) && fs.existsSync(path.join(j.dir, 'audio', `${j.lang}.mp3`))) {
+    const keys = passageKeys(j, content.pronunciation);
+    const takes = keys.map((k) => readTake(takePath(o.cacheDir, j, k.passage.id, k.key)));
+    const takeIds = Object.fromEntries(keys.map((k, i) => [k.passage.id, `${k.key}@${takes[i]?.seed}`]));
+    // Current only if the folder holds these very takes (a reject re-rendered one: publish it).
+    const rec = readRecording(j);
+    if (recordingCurrent(j, content.pronunciation) && fs.existsSync(path.join(j.dir, 'audio', `${j.lang}.mp3`))
+      && keys.every((k, i) => !takes[i] || rec?.takes?.[k.passage.id] === takeIds[k.passage.id])) {
       results.push({ ...base, written: false, blockedBy: [], upToDate: true });
       continue;
     }
-    const keys = passageKeys(j, content.pronunciation);
-    const takes = keys.map((k) => readTake(takePath(o.cacheDir, j, k.passage.id, k.key)));
+    const id = (k: (typeof keys)[number]) => `${j.event}/${k.passage.id}`;
     const blockedBy = keys
-      .filter((k, i) => !takes[i] || (takes[i]!.flags.length && !o.accept.has(`${j.event}/${k.passage.id}`)))
-      .map((k) => `${j.event}/${k.passage.id}`);
+      .filter((k, i) => !takes[i] || o.rejects?.has(id(k)) || (takes[i]!.flags.length && !o.accept.has(id(k))))
+      .map(id);
     if (blockedBy.length) { results.push({ ...base, written: false, blockedBy }); continue; }
 
     const voice = j.narrator.voices[j.lang]!;
@@ -57,6 +62,7 @@ export async function publish(
       textHash: narrationHash(j.passages, j.lang),
       narrator: { id: j.narrator.id, version: voice.version },
       passages: Object.fromEntries(j.passages.map((p) => [p.id, passageHash(p, j.lang)])),
+      takes: takeIds,
     };
     fs.writeFileSync(path.join(dir, `${j.lang}.yaml`),
       `# Written by npm run narration:publish; don't edit by hand.\n${YAML.stringify(meta, { flowCollectionPadding: true })}`);

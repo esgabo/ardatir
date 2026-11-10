@@ -46,9 +46,15 @@ for (const n of content.narrators) for (const [lang, v] of Object.entries(n.voic
   if (v.engineVersion !== version) console.warn(`  warning  ${n.id}/${lang} was made on VoiceStudio ${v.engineVersion}; the box runs ${version}. Listen closely.`);
 }
 
-// Rejects are consumed: logged, then cleared, so each one re-renders once.
+// A reject stays in rejects.txt until its replacement take is written, then moves to the log:
+// each re-renders once, and one outside this run's --only/--lang/--changed waits for its run.
 const rejectsFile = path.join(outDir, 'rejects.txt');
-const rejects = new Set(fs.existsSync(rejectsFile) ? fs.readFileSync(rejectsFile, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')) : []);
+const readRejects = () => (fs.existsSync(rejectsFile) ? fs.readFileSync(rejectsFile, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')) : []);
+const rejects = new Set(readRejects());
+const onReject = (id: string) => {
+  fs.writeFileSync(rejectsFile, readRejects().filter((l) => l !== id).map((l) => `${l}\n`).join(''));
+  fs.appendFileSync(path.join(outDir, 'rejects.log'), `${new Date().toISOString()} ${id}\n`);
+};
 
 const refs = new Map<string, Buffer>();
 const reference = (n: Narrator, lang: Lang) => {
@@ -58,13 +64,8 @@ const reference = (n: Narrator, lang: Lang) => {
 };
 
 const takes = await render(content, vs, reference, {
-  only: args!.only, age: args!.age, lang: langs, changed: args!.changed, cacheDir, rejects, log: (l) => console.log(l),
+  only: args!.only, age: args!.age, lang: langs, changed: args!.changed, cacheDir, rejects, onReject, log: (l) => console.log(l),
 });
-
-if (rejects.size) {
-  fs.appendFileSync(path.join(outDir, 'rejects.log'), [...rejects].map((r) => `${new Date().toISOString()} ${r}\n`).join(''));
-  fs.writeFileSync(rejectsFile, '');
-}
 
 // A narrator still earning trust gets a bigger sample: fewer than 3 published events.
 const published = (narrator: string) => content.index.events.filter((e) => {

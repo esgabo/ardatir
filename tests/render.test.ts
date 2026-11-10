@@ -57,14 +57,17 @@ const ref = () => Buffer.from('reference');
 const dropLast = (t: string) => t.split(' ').slice(0, -1).join(' ');
 
 describe('cacheKey', () => {
-  it('changes with the text, the narrator version and the respellings used', () => {
-    const k = cacheKey('sha256:aaaa', { id: 'v', version: 1 }, [], {}, 'en');
+  const voice = { engine: 'omnivoice', engineVersion: '0.5.6', instruct: 'x', seed: 7, speed: 0.9, reference: 'r.flac', referenceHash: 'sha256:aa', refText: 'Words.', version: 1 };
+  it('changes with the text, the voice and the respellings used', () => {
+    const k = cacheKey('sha256:aaaa', 'v', voice, [], {}, 'en');
     expect(k).toMatch(/^[0-9a-f]{12}$/);
-    expect(cacheKey('sha256:bbbb', { id: 'v', version: 1 }, [], {}, 'en')).not.toBe(k);
-    expect(cacheKey('sha256:aaaa', { id: 'v', version: 2 }, [], {}, 'en')).not.toBe(k);
+    expect(cacheKey('sha256:bbbb', 'v', voice, [], {}, 'en')).not.toBe(k);
+    expect(cacheKey('sha256:aaaa', 'v', { ...voice, version: 2 }, [], {}, 'en')).not.toBe(k);
+    expect(cacheKey('sha256:aaaa', 'v', { ...voice, referenceHash: 'sha256:bb' }, [], {}, 'en')).not.toBe(k);
+    expect(cacheKey('sha256:aaaa', 'v', { ...voice, speed: 1 }, [], {}, 'en')).not.toBe(k);
     const lex = { en: { Bilbo: 'BIL-bo' } };
-    expect(cacheKey('sha256:aaaa', { id: 'v', version: 1 }, ['Bilbo'], lex, 'en'))
-      .not.toBe(cacheKey('sha256:aaaa', { id: 'v', version: 1 }, ['Bilbo'], { en: { Bilbo: 'BILL-bo' } }, 'en'));
+    expect(cacheKey('sha256:aaaa', 'v', voice, ['Bilbo'], lex, 'en'))
+      .not.toBe(cacheKey('sha256:aaaa', 'v', voice, ['Bilbo'], { en: { Bilbo: 'BILL-bo' } }, 'en'));
   });
 });
 
@@ -135,6 +138,13 @@ describe('render', () => {
     expect(takes.find((t) => t.passage === 'tea')!.reused).toBe(false);
   });
 
+  it('reports each reject it acted on, and only those', async () => {
+    const { content, cacheDir } = await (async () => { const x = setup(); await render(buildContent(x.content), fakeStudio().vs, ref, opts(x.cacheDir)); return x; })();
+    const done: string[] = [];
+    await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir, { rejects: new Set(['the-party/tea', 'elsewhere/x']), onReject: (id) => done.push(id) }));
+    expect(done).toEqual(['the-party/tea']);
+  });
+
   it('skips ages without a narrator voice in that language', async () => {
     const { content, cacheDir } = setup();
     const { vs, sent } = fakeStudio();
@@ -144,13 +154,9 @@ describe('render', () => {
 
   it('--changed skips an event whose recording is current', async () => {
     const { content, cacheDir } = setup();
-    const r = buildContent(content);
-    const audio = path.join(r.eventDirs['the-party'], 'audio');
-    fs.mkdirSync(audio);
-    fs.writeFileSync(path.join(audio, 'en.mp3'), '');
-    const { narrationHash, passageHash } = await import('../scripts/narration/text.ts');
-    const ps = r.scripts.find((s) => s.id === 'the-party')!.passages;
-    fs.writeFileSync(path.join(audio, 'en.yaml'), `duration: 9\ntextHash: ${narrationHash(ps, 'en')}\nnarrator: { id: the-voice, version: 1 }\npassages: { ${ps.map((p) => `${p.id}: ${passageHash(p, 'en')}`).join(', ')} }\n`);
+    await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir));
+    const { publish } = await import('../scripts/narration/publish.ts');
+    await publish(buildContent(content), { lang: ['en'], accept: new Set(), cacheDir }, async (wav, out) => { fs.writeFileSync(out, wav); });
     const { vs, sent } = fakeStudio();
     expect(await render(buildContent(content), vs, ref, opts(cacheDir, { changed: true }))).toEqual([]);
     expect(sent).toEqual([]);

@@ -5,6 +5,7 @@
 // listened and passes --accept for it. Then npm run content validates the result.
 
 import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { buildContent } from '../content/build.ts';
@@ -38,11 +39,14 @@ const encode: Encoder = async (wav, out) => {
   if (Math.abs(got - want) > 0.05) throw new Error(`${path.relative(root, out)}: encoded ${got.toFixed(3)} s, expected ${want.toFixed(3)} s; starts would drift`);
 };
 
-const results = await publish(content, { only: args!.only, age: args!.age, lang: langs, accept: new Set(args!.accept ?? []), cacheDir: path.join(root, 'out', 'narration-cache') }, encode);
+// Takes the author rejected and render hasn't replaced yet hold their event back.
+const rejectsFile = path.join(root, 'out', 'narration', 'rejects.txt');
+const rejects = new Set(fs.existsSync(rejectsFile) ? fs.readFileSync(rejectsFile, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')) : []);
+const results = await publish(content, { only: args!.only, age: args!.age, lang: langs, accept: new Set(args!.accept ?? []), rejects, cacheDir: path.join(root, 'out', 'narration-cache') }, encode);
 for (const r of results) {
   if (r.upToDate) console.log(`  current  ${r.event}/${r.lang}`);
   else if (r.written) console.log(`  wrote    ${r.event}/${r.lang}  ${r.duration.toFixed(1)} s, ${Object.keys(r.starts).length} passages`);
-  else console.log(`  held     ${r.event}/${r.lang}: ${r.blockedBy.join(', ')} (render first, or listen and --accept)`);
+  else console.log(`  held     ${r.event}/${r.lang}: ${r.blockedBy.join(', ')} (render first; listen and --accept a flagged take; a rejected one waits for render)`);
 }
 const held = results.filter((r) => !r.written && !r.upToDate).length;
 console.log(held ? `${held} recording(s) held back.` : `✓ ${results.filter((r) => r.written).length} recording(s) written; run npm run content`);

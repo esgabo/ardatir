@@ -442,6 +442,27 @@ describe('broken content', () => {
       expect(r.warnings.some((w) => w.includes("the age's narrator is the-voice")), r.warnings.join('\n')).toBe(true);
     });
 
+    it('a passage added after recording warns and drops the starts, instead of failing the build', () => {
+      const r = buildWith([
+        { file: `${PARTY}/audio/en.yaml`, write: `duration: 20\ntextHash: ${hash}\nstarts: { door: 0.8, tea: 9 }\n` },
+        { file: `${PARTY}/audio/en.mp3`, write: '' },
+        { file: `${PARTY}/narration.yaml`, replace: ['- id: tea', '- id: cake\n  en: Cake runs out.\n  es: Se acaba el pastel.\n- id: tea'] },
+        { file: `${PARTY}/staging.yaml`, replace: ['narration: { door: 0, tea: 0.5 }', 'narration: { door: 0, cake: 0.3, tea: 0.5 }'] },
+      ]);
+      expect(r.errors).toEqual([]);
+      expect(r.warnings.some((w) => w.includes('en.yaml: stale recording') && w.includes('passages were added or removed')), r.warnings.join('\n')).toBe(true);
+      expect(r.details.find((d) => d.id === 'the-party')!.audioFiles.en?.starts).toBeUndefined();
+    });
+
+    it('a passage removed after recording warns too', () => {
+      const r = buildWith([
+        { file: `${PARTY}/audio/en.yaml`, write: `duration: 20\ntextHash: ${hash}\nstarts: { door: 0.8, tea: 9, gone: 12 }\n` },
+        { file: `${PARTY}/audio/en.mp3`, write: '' },
+      ]);
+      expect(r.errors).toEqual([]);
+      expect(r.warnings.some((w) => w.includes('passages were added or removed')), r.warnings.join('\n')).toBe(true);
+    });
+
     it('warns "stale recording" when a recorded passage changes', () => {
       const r = buildWith([...recording(hash), { file: `${PARTY}/narration.yaml`, replace: ['far too many guests', 'a great many guests'] }]);
       expect(r.errors).toEqual([]);

@@ -567,13 +567,20 @@ export function buildContent(contentDir: string): BuildResult {
         if (m.starts !== undefined) {
           const st = isObj(m.starts) ? m.starts : {};
           starts = [];
-          for (const k of Object.keys(st)) if (!narration.some((p) => p.id === k)) R.error(meta, `starts: no passage "${k}"`);
+          // Passages added or removed since recording: an ordinary script edit, so warn and fall
+          // back to stretching the animation to the recording, rather than failing the build.
+          const extra = Object.keys(st).filter((k) => !narration.some((p) => p.id === k));
+          const missing = narration.filter((p) => st[p.id] === undefined).map((p) => p.id);
+          if (extra.length || missing.length) {
+            R.warn(meta, `stale recording: passages were added or removed since it was recorded (${[...missing.map((x) => `+${x}`), ...extra.map((x) => `-${x}`)].join(', ')}); its timing is ignored until re-recorded with npm run narration:render -- --changed`);
+            starts = undefined;
+          }
           let prev = -1;
-          for (const p of narration) {
+          for (const p of starts ? narration : []) {
             const v = st[p.id];
             if (typeof v !== 'number' || v < 0 || v > (m.duration as number)) { R.error(meta, `starts.${p.id}: needs a second within the recording`); starts = undefined; break; }
             if (v < prev) R.error(meta, `starts.${p.id}: earlier than the passage before it`);
-            starts.push(prev = v);
+            starts!.push(prev = v);
           }
         }
         const ext = path.extname(file);

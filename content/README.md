@@ -99,7 +99,7 @@ narrator: { id: the-elder, version: 1 }                       # who read it (opt
 passages: { fire: sha256:1f0c…, trolls: sha256:9a2b… }        # each passage's hash (optional)
 ```
 
-`narrator` and `passages` are written by `npm run narration:publish`. With `passages`, the build warns **stale passage "<id>"** for exactly the passages whose words changed, and the pipeline re-records only those. With `narrator`, it warns when the narrator's voice has a newer `version`, or when the age now has a different narrator. A passage's hash is the same line `textHash` hashes, for that passage alone (`passageHash` in `scripts/narration/text.ts`).
+`narrator`, `passages` and `takes` (each passage's take, `<cache key>@<seed>`) are written by `npm run narration:publish`; `takes` is how the pipeline knows a respelling, a voice change or a rejected take means the recording must be published again. Adding or removing a passage after recording warns too, and the recording's timing is ignored until it is re-recorded. With `passages`, the build warns **stale passage "<id>"** for exactly the passages whose words changed, and the pipeline re-records only those. With `narrator`, it warns when the narrator's voice has a newer `version`, or when the age now has a different narrator. A passage's hash is the same line `textHash` hashes, for that passage alone (`passageHash` in `scripts/narration/text.ts`).
 
 **Getting the script to record:** `npm run narration:export` writes, for every event with a `narration.yaml` and every language:
 
