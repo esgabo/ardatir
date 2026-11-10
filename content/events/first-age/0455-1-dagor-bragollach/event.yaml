@@ -9,7 +9,7 @@ arcs: [ the-siege-of-angband ]
 tags: [ silmarillion ]
 status: scripted
 source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
-title: { en: "Dagor Bragollach, the Battle of Sudden Flame", es: "Dagor Bragollach, la Batalla de la Llama Repentina" }
+title: { en: "Dagor Bragollach, the Battle of Sudden Flame", es: "Dagor Bragollach, la Batalla de la Llama Súbita" }
 summary:
   en: "In the dead of winter, rivers of fire pour out of Angband. The plain of Ard-galen burns, Glaurung comes forth, and the Siege of Angband is broken."
   es: "En pleno invierno, ríos de fuego brotan de Angband. La llanura de Ard-galen arde, sale Glaurung, y el Sitio de Angband queda roto."

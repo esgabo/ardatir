@@ -11,8 +11,8 @@ status: scripted
 source: { book: the-silmarillion, chapter: "Of the Ruin of Doriath" }
 title: { en: "Thingol is slain by Dwarves", es: "Los Enanos matan a Thingol" }
 summary:
-  en: "Thingol has the Silmaril set in the Nauglamír. The Dwarves who do the work covet it. They kill the King and flee with the jewel, and Melian leaves the world."
-  es: "Thingol manda engastar el Silmaril en el Nauglamír. Los Enanos que hacen el trabajo lo codician. Matan al Rey y huyen con la joya, y Melian abandona el mundo."
+  en: "Thingol has the Silmaril set in the Nauglamír. The Dwarves who do the work covet it and kill the King. They flee with the necklace but are hunted down and it is brought back; Melian leaves Middle-earth."
+  es: "Thingol manda engastar el Silmaril en el Nauglamír. Los Enanos que hacen el trabajo lo codician y matan al Rey. Huyen con el collar, pero los persiguen y lo recuperan; Melian abandona la Tierra Media."
 links:
   - to: hurin-brings-the-hoard-to-menegroth
     type: caused-by

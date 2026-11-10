@@ -11,8 +11,8 @@ status: scripted
 source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
 title: { en: "Beren and Lúthien return", es: "Beren y Lúthien regresan" }
 summary:
-  en: "They awake in the woods of Doriath. Thingol accepts the Silmaril, and the two spend their remaining days in Ossiriand, free of the world's troubles."
-  es: "Despiertan en los bosques de Doriath. Thingol acepta el Silmaril, y los dos pasan el tiempo que les queda en Ossiriand, lejos de los males del mundo."
+  en: "They awake in the woods of Doriath and see Thingol and Melian once more; Melian sees that her daughter is now mortal. Then the two spend their remaining days in Ossiriand, free of the world's troubles."
+  es: "Despiertan en los bosques de Doriath y vuelven a ver a Thingol y Melian, que comprende que su hija es ahora mortal. Luego los dos pasan el tiempo que les queda en Ossiriand, lejos de los males del mundo."
 links:
   - to: luthien-before-mandos
     type: caused-by

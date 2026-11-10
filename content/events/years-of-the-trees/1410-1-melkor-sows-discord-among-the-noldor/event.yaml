@@ -13,7 +13,7 @@ source: { book: the-silmarillion, chapter: "Of the Silmarils and the Unrest of t
 title: { en: "Melkor sows discord among the Noldor", es: "Melkor siembra la discordia entre los Noldor" }
 summary:
   en: "Melkor whispers lies of Valar who hold the Elves captive and fear Men's coming. Fëanor and his half-brother Fingolfin grow bitter toward each other."
-  es: "Melkor susurra mentiras: los Valar tendrían cautivos a los Elfos y temerían la llegada de los Hombres. Fëanor y su hermanastro Fingolfin se enemistan."
+  es: "Melkor susurra mentiras: los Valar tendrían cautivos a los Elfos y temerían la llegada de los Hombres. Fëanor y su medio hermano Fingolfin se enemistan."
 links:
   - to: melkor-feigns-repentance
     type: caused-by
