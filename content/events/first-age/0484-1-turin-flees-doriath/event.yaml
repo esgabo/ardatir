@@ -8,7 +8,7 @@ characters: [ turin, beleg, thingol ]
 arcs: [ the-children-of-hurin ]
 journeys: [ turins-wanderings ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
 title: { en: "Túrin kills Saeros and flees Doriath", es: "Túrin mata a Saeros y huye de Doriath" }
 summary:

@@ -7,7 +7,7 @@ place: angband
 characters: [ beren, luthien, carcharoth ]
 arcs: [ beren-and-luthien ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
 title: { en: "Carcharoth bites off Beren's hand", es: "Carcharoth arranca la mano de Beren" }
 summary:

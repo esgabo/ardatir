@@ -7,12 +7,12 @@ place: sirion-pass
 characters: [ hurin, huor, turgon ]
 arcs: [ the-children-of-hurin, the-fall-of-gondolin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Fifth Battle: Nirnaeth Arnoediad" }
 title: { en: "Húrin and Huor cover Turgon's retreat", es: "Húrin y Huor cubren la retirada de Turgon" }
 summary:
-  en: "As the rout deepens, Huor and Húrin hold a narrow ford while Turgon withdraws toward the hidden city. Huor falls, and Húrin fights on until he is taken alive."
-  es: "Cuando la derrota se hace general, Huor y Húrin defienden un vado estrecho mientras Turgon se retira hacia la ciudad oculta. Huor cae, y Húrin sigue luchando hasta ser capturado vivo."
+  en: "As the rout deepens, Huor and Húrin hold the rear behind the Fen of Serech, with the stream of Rivil before them, while Turgon withdraws toward the hidden city. Huor falls, and Húrin fights on until he is taken alive."
+  es: "Cuando la derrota se hace general, Huor y Húrin cubren la retaguardia tras la Ciénaga de Serech, con el arroyo Rivil delante, mientras Turgon se retira hacia la ciudad oculta. Huor cae, y Húrin sigue luchando hasta ser capturado vivo."
 links:
   - to: nirnaeth-arnoediad
     type: caused-by

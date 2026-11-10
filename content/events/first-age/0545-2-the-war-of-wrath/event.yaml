@@ -5,10 +5,10 @@ when:
   end: { age: first-age, year: 587 }
   precision: approximate
 place: beleriand
-characters: [ earendil, melkor, gil-galad, maedhros ]
+characters: [ earendil, melkor, maedhros ]
 arcs: [ the-war-of-wrath ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
 title: { en: "The War of Wrath", es: "La Guerra de la Cólera" }
 summary:

@@ -7,7 +7,7 @@ place: valinor
 characters: [ melkor, ungoliant, finwe, feanor ]
 arcs: [ the-flight-of-the-noldor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Darkening of Valinor" }
 title: { en: "The Trees are darkened and Finwë is slain", es: "Los Árboles se oscurecen y muere Finwë" }
 summary:

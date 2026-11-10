@@ -7,7 +7,7 @@ place: thangorodrim
 characters: [ fingon, maedhros, melkor ]
 arcs: [ the-flight-of-the-noldor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Return of the Noldor" }
 title: { en: "Fingon rescues Maedhros", es: "Fingon rescata a Maedhros" }
 summary:
