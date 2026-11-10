@@ -860,6 +860,8 @@ body.opening, body.opening.sb-open { --sb: 0px; }
 body.opening .sidebar, body.opening .scrim, body.opening .stage-top, body.opening #event-panel, body.opening #selection-panel,
 body.opening .caption, body.opening .timeline, body.opening .meanwhile { display: none !important; }
 body.opening .disclaimer { display: block; z-index: 21; }
+/* The cosmos' names stay out from under the invitation (they show again once it is closed). */
+body.opening .stage-labels { opacity: 0; transition: opacity 0.4s ease; }
 .opening {
   position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
   padding: 24px 24px calc(64px + 6vh);

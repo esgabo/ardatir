@@ -551,11 +551,12 @@ export class Slab {
       const s0 = 0.82 - hash(si % segs, 6, 9) * 0.12, s1 = 0.82 - hash((si + 1) % segs, 6, 9) * 0.12;
       const d0 = -0.9 - hash(si % segs, 5, 9) * 0.9, d1 = -0.9 - hash((si + 1) % segs, 5, 9) * 0.9;
       const o = si * 27;
-      const rim0 = [gx[k0], gy[k0], gz[k0]], rim1 = [gx[k1], gy[k1], gz[k1]];
-      const in0 = [gx[k0] * s0, d0, gz[k0] * s0], in1 = [gx[k1] * s1, d1, gz[k1] * s1];
-      const tip = [0, -3.2, 0];
-      const pts = [rim0, in0, rim1, rim1, in0, in1, in0, tip, in1];
-      pts.forEach((q, i) => p(q[0], q[1], q[2], o + i * 3));
+      // rim0, in0, rim1 | rim1, in0, in1 | in0, tip, in1, written straight into underPos.
+      const r0x = gx[k0], r0y = gy[k0], r0z = gz[k0], r1x = gx[k1], r1y = gy[k1], r1z = gz[k1];
+      const i0x = r0x * s0, i0z = r0z * s0, i1x = r1x * s1, i1z = r1z * s1;
+      p(r0x, r0y, r0z, o); p(i0x, d0, i0z, o + 3); p(r1x, r1y, r1z, o + 6);
+      p(r1x, r1y, r1z, o + 9); p(i0x, d0, i0z, o + 12); p(i1x, d1, i1z, o + 15);
+      p(i0x, d0, i0z, o + 18); p(0, -3.2, 0, o + 21); p(i1x, d1, i1z, o + 24);
     }
     this.under.geometry.attributes.position.needsUpdate = true;
     this.under.geometry.computeBoundingSphere();

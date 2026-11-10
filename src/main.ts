@@ -99,6 +99,7 @@ const labelRenderer = new CSS2DRenderer();
 labelRenderer.domElement.style.position = 'absolute';
 labelRenderer.domElement.style.inset = '0';
 labelRenderer.domElement.style.pointerEvents = 'none';
+labelRenderer.domElement.classList.add('stage-labels');
 viewport.appendChild(labelRenderer.domElement);
 
 let stage: Stage;

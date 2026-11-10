@@ -273,12 +273,14 @@ export function createSunMoonStage(labels: CosmosLabels): Stage {
       // --- names ---
       showLabel(telLabel, ramp(t, 0.03, 0.07) * (1 - ramp(t, 0.33, 0.37)));
       showLabel(lauLabel, ramp(t, 0.03, 0.07) * (1 - ramp(t, 0.33, 0.37)));
-      tilionLabel.position.copy(moonPos).setY(moonPos.y + 0.55);
-      arienLabel.position.copy(sunPos).setY(sunPos.y + 0.55);
+      // The two vessels start close together: Tilion's name above his, Arien's below hers.
+      tilionLabel.position.copy(moonPos).addScaledVector(N, 0.25).setY(moonPos.y + 0.6);
+      arienLabel.position.copy(sunPos).addScaledVector(S, 0.25).setY(sunPos.y - 0.5);
       showLabel(tilionLabel, ramp(t, 0.41, 0.45) * (1 - ramp(t, 0.53, 0.56)));
       showLabel(arienLabel, ramp(t, 0.43, 0.47) * (1 - ramp(t, 0.53, 0.56)));
       moonLabel.position.copy(moonPos).setY(moonPos.y + 0.75);
-      sunLabel.position.copy(sunPos).setY(sunPos.y + 1.05);
+      // Beside the Sun, towards the middle of the stage (above it, it sat under the event card).
+      sunLabel.position.copy(sunPos).addScaledVector(E, 2.5).setY(sunPos.y + 0.2);
       showLabel(moonLabel, ramp(t, 0.58, 0.62) * (1 - ramp(t, 0.86, 0.9)));
       showLabel(sunLabel, ramp(t, 0.76, 0.8));
       showLabel(hostLabel, ramp(t, T.host, T.host + 0.03) * (1 - ramp(t, 0.9, 0.93)));
