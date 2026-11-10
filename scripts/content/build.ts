@@ -14,7 +14,7 @@ import {
   type NarrationAudio, type NarrationSegment, type Narrator, type NarratorVoice, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
-import { narrationHash, TEXT_HASH } from '../narration/text.ts';
+import { narrationHash, passageHash, TEXT_HASH } from '../narration/text.ts';
 import type { Lexicon } from '../narration/pronounce.ts';
 
 export interface BuildResult {
@@ -542,6 +542,25 @@ export function buildContent(contentDir: string): BuildResult {
         if (m.textHash === undefined) R.warn(meta, `textHash: missing, so the build can't tell if the recording still matches narration.yaml (text now ${hash})`);
         else if (typeof m.textHash !== 'string' || !TEXT_HASH.test(m.textHash)) R.error(meta, 'textHash: expected sha256: and 16 hex digits');
         else if (m.textHash !== hash) R.warn(meta, `stale recording: narration.yaml changed since it was recorded (textHash ${m.textHash}, text now ${hash}); re-record with npm run narration:export -- --changed`);
+        // Per passage: which ones changed since recording (the pipeline re-records only those).
+        if (m.passages !== undefined) {
+          if (!isObj(m.passages)) R.error(meta, 'passages: expected { <passage id>: <hash> }');
+          else for (const p of narration) {
+            const h = m.passages[p.id];
+            const now = passageHash(p, lang);
+            if (h === undefined) R.warn(meta, `stale passage "${p.id}": not in this recording`);
+            else if (h !== now) R.warn(meta, `stale passage "${p.id}": its words changed since recording (now ${now})`);
+          }
+        }
+        // Who read it: a changed voice (a new version) or another narrator makes it stale too.
+        if (m.narrator !== undefined) {
+          const nr = isObj(m.narrator) ? m.narrator : {};
+          const ageNarrator = ageMap.get(r.summary.age)?.narrator;
+          const current = narrators.find((n) => n.id === nr.id)?.voices[lang]?.version;
+          if (typeof nr.id !== 'string' || !Number.isInteger(nr.version)) R.error(meta, 'narrator: expected { id, version }');
+          else if (ageNarrator && nr.id !== ageNarrator) R.warn(meta, `recorded by ${nr.id}, but the age's narrator is ${ageNarrator}; re-record`);
+          else if (current !== undefined && current !== nr.version) R.warn(meta, `stale recording: recorded with ${nr.id} v${nr.version}, now v${current}; re-record`);
+        }
         let starts: number[] | undefined;
         if (m.starts !== undefined) {
           const st = isObj(m.starts) ? m.starts : {};

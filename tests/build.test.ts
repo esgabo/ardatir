@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { buildContent, type BuildResult } from '../scripts/content/build.ts';
-import { narrationHash } from '../scripts/narration/text.ts';
+import { narrationHash, passageHash } from '../scripts/narration/text.ts';
 import { nearness } from '../src/data/calendar.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -412,6 +412,34 @@ describe('broken content', () => {
       const r = buildWith(recording(hash));
       expect(r.errors).toEqual([]);
       expect(r.warnings).toEqual([]);
+    });
+
+    const door = passageHash({ id: 'door', text: { en: 'Someone knocks at the green door.' } }, 'en');
+    const tea = passageHash({ id: 'tea', text: { en: 'Tea is poured for far too many guests.' } }, 'en');
+    const recorded = (extra: string): Change[] => [
+      { file: `${PARTY}/audio/en.yaml`, write: `duration: 20\ntextHash: ${hash}\n${extra}` },
+      { file: `${PARTY}/audio/en.mp3`, write: '' },
+    ];
+
+    it('gives no warning when the passages and narrator match', () => {
+      const r = buildWith(recorded(`narrator: { id: the-voice, version: 1 }\npassages: { door: ${door}, tea: ${tea} }\n`));
+      expect(r.errors).toEqual([]);
+      expect(r.warnings).toEqual([]);
+    });
+
+    it('per-passage stale warning', () => {
+      const r = buildWith(recorded(`passages: { door: ${door}, tea: sha256:0000000000000000 }\n`));
+      expect(r.warnings.filter((w) => w.includes('stale passage'))).toEqual([expect.stringContaining('stale passage "tea"')]);
+    });
+
+    it('narrator version stale', () => {
+      const r = buildWith(recorded('narrator: { id: the-voice, version: 0 }\n'));
+      expect(r.warnings.some((w) => w.includes('recorded with the-voice v0, now v1')), r.warnings.join('\n')).toBe(true);
+    });
+
+    it('narrator of another age', () => {
+      const r = buildWith([...recorded('narrator: { id: someone-else, version: 1 }\n')]);
+      expect(r.warnings.some((w) => w.includes("the age's narrator is the-voice")), r.warnings.join('\n')).toBe(true);
     });
 
     it('warns "stale recording" when a recorded passage changes', () => {
