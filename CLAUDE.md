@@ -22,7 +22,7 @@ npm run narration:export   # narration scripts for the Voice Studio → out/narr
 npm run model:pack -- <export.glb> characters/<id>/<id>.glb   # meshopt-compress a Blender export into assets/ (docs/MODELS.md)
 ```
 
-Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
+Requires Node 22. What a machine needs for `runs:local` issues (Blender, devices) is in [`docs/LOCAL.md`](docs/LOCAL.md). Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
 
 ## Decisions (and why)
 
