@@ -9,7 +9,7 @@ characters: [ nazgul, butterbur ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "A Knife in the Dark" }
 title: { en: "The Night Raid on the Inn at Bree", es: "El asalto nocturno a la posada de Bree" }
 summary:

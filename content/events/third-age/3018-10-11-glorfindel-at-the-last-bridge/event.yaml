@@ -8,7 +8,7 @@ characters: [ glorfindel, nazgul ]
 arcs: [ the-war-of-the-ring ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
 title: { en: "Glorfindel Drives the Riders from the Bridge", es: "Glorfindel expulsa a los Jinetes del puente" }
 summary:

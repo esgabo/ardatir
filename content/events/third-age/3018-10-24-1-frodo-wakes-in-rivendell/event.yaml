@@ -8,7 +8,7 @@ characters: [ frodo, gandalf, elrond, bilbo, sam ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ with-strider-to-rivendell ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "Many Meetings" }
 title: { en: "Frodo Wakes in Rivendell", es: "Frodo despierta en Rivendel" }
 summary:

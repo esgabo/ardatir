@@ -8,7 +8,7 @@ characters: [ boromir, frodo ]
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
 journeys: [ the-fellowship-after-moria, boromirs-road ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "The Breaking of the Fellowship" }
 title: { en: "Boromir Tries to Take the Ring", es: "Boromir intenta quitarle el Anillo" }
 summary:

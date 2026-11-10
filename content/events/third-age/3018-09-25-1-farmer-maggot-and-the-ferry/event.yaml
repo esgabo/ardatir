@@ -9,7 +9,7 @@ characters: [ frodo, sam, pippin, farmer-maggot ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ the-road-to-crickhollow ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "A Short Cut to Mushrooms" }
 title: { en: "Farmer Maggot Lends a Hand", es: "El granjero Maggot echa una mano" }
 summary:
