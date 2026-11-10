@@ -121,6 +121,7 @@ async function buildStage(event: EventDetail): Promise<Stage> {
       ambar: L('ambar'), vista: L('vista'), ilmen: L('ilmen'),
       vaiya: L('vaiya'), walls: L('walls'), kuma: L('kuma'),
       moon: L('moon'), sun: L('sun'), straightRoad: L('straightRoad'),
+      elves: L('elves'), men: L('men'),
     });
   }
   const { createDioramaStage } = await import('./scene/dioramaStage');

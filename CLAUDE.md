@@ -89,7 +89,7 @@ src/
   scene/cosmosTrees.ts, cosmosSunMoon.ts, cosmosBeleriand.ts, cosmosRound.ts   the Two Trees, the first Moon and Sun, Beleriand drowned, the world made round (each its own chunk)
   scene/cosmosLands.ts   what those four share: the map on the slab by age, the bendable Slab, forests, the Two Trees
   scene/cosmosForetold.ts   what is foretold shares (DESIGN §4.8): the dream register, the round world as a Globe that breaks and is made again, the Silmarils
-  scene/cosmosLightsOut.ts, cosmosJewels.ts, cosmosRekindled.ts, cosmosLevelled.ts   the Sun and Moon destroyed, the Silmarils recovered, the Trees rekindled, the Pelóri levelled (each its own chunk)
+  scene/cosmosLightsOut.ts, cosmosJewels.ts, cosmosRekindled.ts, cosmosLevelled.ts, cosmosSecondMusic.ts   the Sun and Moon destroyed, the Silmarils recovered, the Trees rekindled, the Pelóri levelled, the Second Music (each its own chunk)
   scene/dioramaStage.ts, diorama.ts, figure.ts   event dioramas (figure.ts: the placeholder, swapped for a model by useModel)
   scene/models.ts    glTF models: GLTFLoader + meshopt, cached per URL, scaled to Character.scale, clips set from t (its own chunk)
   scene/modelClips.ts   which clip plays for a pose, and its time at t: pure, tested
