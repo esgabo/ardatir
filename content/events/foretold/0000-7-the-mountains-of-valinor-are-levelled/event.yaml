@@ -17,6 +17,13 @@ title: { en: "The Mountains of Valinor are levelled", es: "Las Montañas de Vali
 summary:
   en: "The Pelóri fall, and the light of the Trees spreads across the whole world. The Valar are made young, and the Elves wake with all their dead. Of Men the prophecy names only Túrin."
   es: "Las Pelóri caen, y la luz de los Árboles se extiende por el mundo entero. Los Valar rejuvenecen, y los Elfos despiertan con todos sus muertos. De los Hombres, la profecía solo nombra a Túrin."
+# The world's shape after the end (#59): the prophecy says the Earth is broken and made again, but
+# not what shape it takes, and Tolkien never reconciled it with the round world after Númenor. We
+# show it remade round here (cosmosJewels.ts, ROUND_WORLD), then the Trees and the Pelóri on the
+# flat map of the Elder Days (cosmosRekindled.ts, cosmosLevelled.ts, ELDER), and say so in `note`.
+note:
+  en: "Like the scene before, this one shows the world of the Elder Days, flat, with Valinor in the West, because the prophecy speaks of its mountains and its Trees. After the Silmarils were recovered the remade Earth was shown round. Tolkien never settled the world's shape after the end, so we show each scene in the shape its own words call for."
+  es: "Como la escena anterior, esta muestra el mundo de los Días Antiguos, plano y con Valinor en el Oeste, porque la profecía habla de sus montañas y sus Árboles. Tras recuperarse los Silmarils, la Tierra rehecha se mostró redonda. Tolkien nunca decidió la forma del mundo después del fin, así que mostramos cada escena con la forma que piden sus propias palabras."
 beats:
   - { id: levelled, label: { en: The mountains brought low, es: Las montañas abatidas } }
   - { id: light, label: { en: Light over the world, es: Luz sobre el mundo } }

@@ -97,6 +97,9 @@ export function renderLearn(root: HTMLElement, ev: EventSummary, host: LearnHost
     root.append(h('h3', {}, title), ...body.filter((x): x is Node => !!x));
   };
 
+  // A note on the sources, when the scene had to choose (it answers "why does it look like this?").
+  if (ev.note) section(S('sceneNote'), h('p', { class: 'learn-note' }, tr(ev.note, L)));
+
   // Where is this?
   const place = index.places.find((p) => p.id === ev.place);
   const age = index.ages.find((a) => a.id === ev.age);

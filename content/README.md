@@ -74,6 +74,16 @@ foretoldBy: mandos        # a character id; only in a foretold age; leave it out
 
 Add a comment saying which version you tell and where the others differ. Links to history work as usual (`caused-by` the curse on Húrin's house).
 
+### A note for readers: `note`
+
+When the sources disagree or say nothing, and a scene had to choose, say so where visitors will see it, in our own words. Any event may have a `note`; it appears first in *About this scene* and under the summary on the event's page. Keep the details for the YAML comment.
+
+```yaml
+note:
+  en: Tolkien never said what shape the world takes after the end, so this scene shows ...
+  es: Tolkien nunca dijo qué forma tiene el mundo después del fin, así que esta escena muestra ...
+```
+
 ## Writing the script: `narration.yaml`
 
 Passages in order, one to three sentences each, in our own words. Set `status: scripted`.

@@ -265,6 +265,7 @@ describe('the valid fixture', () => {
     expect(ok.index.ages.at(-1)!.axis).toBeUndefined();
     const end = ok.index.events.at(-1)!;
     expect(end).toMatchObject({ id: 'the-end', foretoldBy: 'bilbo', source: { book: 'the-lost-road' } });
+    expect(end.note).toBeUndefined();
     expect(end.span).toBeUndefined();
     expect(end.at).toBeUndefined();
     // A link from prophecy into history is kept, with its reverse.
@@ -363,6 +364,7 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'foretold age with an axis', changes: [...FORETOLD, { file: 'ages/foretold.yaml', replace: ['timeless: true', 'axis: { start: 9000 }'] }], error: 'a foretold age must be timeless' },
   { name: 'foretold age before a dated age', changes: [...FORETOLD, { file: 'ages/foretold.yaml', replace: ['order: 7', 'order: 1'] }], error: 'order: a foretold age comes after every dated age' },
   { name: 'foretold event without a source', changes: [...FORETOLD, { file: END, replace: ['source: { book: the-lost-road, chapter: Quenta Silmarillion }', ''] }], error: 'source: required for what is foretold' },
+  { name: 'note without English', changes: [{ file: LETTERS, replace: ['status: outline', 'status: outline\nnote: { es: Una nota }'] }], error: 'note: needs an English text (en)' },
   { name: 'foretoldBy outside a foretold age', changes: [{ file: LETTERS, replace: ['status: outline', 'status: outline\nforetoldBy: gandalf'] }], error: 'foretoldBy: only for events in a foretold age' },
   { name: 'foretoldBy an unknown character', changes: [...FORETOLD, { file: END, replace: ['foretoldBy: bilbo', 'foretoldBy: mandos'] }], error: 'foretoldBy: unknown character "mandos"' },
 
@@ -508,6 +510,13 @@ describe('broken content', () => {
     const r = buildWith([{ file: '../assets/characters/test-figure/test-figure.blend', write: new Uint8Array(20_000_001) }]);
     expect(r.errors).toEqual([]);
     expect(r.warnings.some((w) => w.includes('test-figure.blend: 20 MB, over 20 MB for a Blender source'))).toBe(true);
+  });
+
+  it('carries an event\'s note for readers into the index', () => {
+    const r = buildWith([{ file: LETTERS, replace: ['status: outline', 'status: outline\nnote: { en: The sources disagree., es: Las fuentes no coinciden. }'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings).toEqual([]);
+    expect(r.index.events.find((e) => e.id === 'moon-letters')?.note).toEqual({ en: 'The sources disagree.', es: 'Las fuentes no coinciden.' });
   });
 
   it('warns about missing Spanish and unknown fields', () => {

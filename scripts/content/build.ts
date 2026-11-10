@@ -304,7 +304,7 @@ export function buildContent(contentDir: string): BuildResult {
     const f = path.join(dir, 'event.yaml');
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'pronounce', 'summary', 'links', 'beats', 'sides'], 'event');
+    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'pronounce', 'summary', 'note', 'links', 'beats', 'sides'], 'event');
     const eid = id(f, o.id, eventIds, 'event');
     if (!eid) continue;
     const folder = path.basename(dir);
@@ -378,6 +378,9 @@ export function buildContent(contentDir: string): BuildResult {
       else foretoldBy = o.foretoldBy;
     }
 
+    // A note for readers: where the sources disagree or are silent (About this scene, the event's page).
+    const note = o.note !== undefined ? text(f, o.note, 'note') : undefined;
+
     // narration.yaml
     const nf = path.join(dir, 'narration.yaml');
     let narration: NarrationSegment[] | undefined;
@@ -412,7 +415,7 @@ export function buildContent(contentDir: string): BuildResult {
       summary: {
         id: eid, age: String(o.age), ...when ? { when } : {}, ...span ? { span } : {}, ...place ? { place } : {},
         characters: chars, arcs: evArcs, journeys: evJourneys, tags: strList(f, o.tags, 'tags'), status,
-        ...source ? { source } : {}, ...foretoldBy ? { foretoldBy } : {}, title: text(f, o.title, 'title')!, ...say(pronounce(f, o.pronounce)), summary: text(f, o.summary, 'summary')!,
+        ...source ? { source } : {}, ...foretoldBy ? { foretoldBy } : {}, title: text(f, o.title, 'title')!, ...say(pronounce(f, o.pronounce)), summary: text(f, o.summary, 'summary')!, ...note ? { note } : {},
         links, ...sides ? { sides } : {}, audio: [],
       },
     });

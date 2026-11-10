@@ -239,6 +239,12 @@ export interface EventSummary {
   /** How to say the title, when it is a hard name (the Ainulindalë). */
   pronounce?: LocalizedText;
   summary: LocalizedText;
+  /**
+   * A short note for readers, in our own words: where the sources disagree or are silent, and
+   * what the scene chose (the remade world's shape at the end of days). Shown in "About this
+   * scene" and on the event's page.
+   */
+  note?: LocalizedText;
   links: EventLink[];
   /**
    * A battle's sides: groups of allied faction ids, each group against the others

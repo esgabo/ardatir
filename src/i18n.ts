@@ -374,6 +374,7 @@ const UI = {
   readInSub: { en: 'Here it is told in a few words of our own; Tolkien tells it in full, and far better.', es: 'Aquí se cuenta en pocas palabras nuestras; Tolkien lo cuenta entero, y mucho mejor.' },
   chapterN: { en: 'chapter {n}', es: 'capítulo {n}' },
   aboutScene: { en: 'About this scene', es: 'Sobre esta escena' },
+  sceneNote: { en: 'A note on this scene', es: 'Una nota sobre esta escena' },
   whereIsThis: { en: 'Where is this?', es: '¿Dónde ocurre?' },
   whenIsThis: { en: 'When is this?', es: '¿Cuándo ocurre?' },
   whoIsThis: { en: 'Who is here?', es: '¿Quién aparece?' },

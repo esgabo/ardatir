@@ -83,6 +83,7 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     h('span', { html: ICONS.time }), `${S('seeOnTimeline')} →`));
   art.append(h('p', { class: 'r-status' }, h('span', { class: 'r-status-mark', 'aria-hidden': 'true' }), S(ev.status === 'outline' ? 'status_outline' : 'status_scripted')));
   art.append(h('p', { class: 'r-summary' }, tr(ev.summary, L)));
+  if (ev.note) art.append(h('aside', { class: 'r-note' }, h('span', { class: 'r-label' }, S('sceneNote')), h('p', {}, tr(ev.note, L))));
 
   // ---- The telling: the narration, read as text ----
   if (ev.status !== 'outline') {
