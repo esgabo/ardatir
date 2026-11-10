@@ -8,7 +8,7 @@ characters: [ aragorn, arwen, elrond, gandalf ]
 arcs: [ the-war-of-the-ring, after-the-war ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-lord-of-the-rings, chapter: "Appendix A (Aragorn and Arwen)" }
 title: { en: "The Wedding of Aragorn and Arwen", es: "La boda de Aragorn y Arwen" }
 summary:

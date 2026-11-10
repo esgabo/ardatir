@@ -8,7 +8,7 @@ characters: [ denethor, gandalf, pippin, imrahil, beregond, witch-king ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [ gandalf-the-whites-road, pippins-road-to-gondor ]
 tags: [ lord-of-the-rings, battle ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Siege of Gondor" }
 title: { en: "The Siege of Minas Tirith Begins", es: "Comienza el asedio de Minas Tirith" }
 summary:

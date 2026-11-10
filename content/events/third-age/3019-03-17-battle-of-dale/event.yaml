@@ -10,7 +10,7 @@ sides:
   - [ men-of-dale, dwarves-of-erebor ]
   - [ easterlings ]
 arcs: [ the-war-of-the-ring ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: Appendix B }
 title: { en: The Battle of Dale, es: La batalla de Valle }
 summary:

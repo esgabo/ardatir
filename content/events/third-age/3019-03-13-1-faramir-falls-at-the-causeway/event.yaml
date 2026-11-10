@@ -8,7 +8,7 @@ characters: [ faramir, imrahil, denethor ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [  ]
 tags: [ lord-of-the-rings, battle ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Siege of Gondor" }
 title: { en: "Faramir Is Wounded at the Causeway Forts", es: "Faramir es herido en los fuertes de la Calzada" }
 summary:

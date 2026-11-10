@@ -8,7 +8,7 @@ characters: [ frodo, sam, gandalf, aragorn, merry, pippin, legolas, gimli, eomer
 arcs: [ the-war-of-the-ring, after-the-war ]
 journeys: [ the-road-home ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Field of Cormallen" }
 title: { en: "The Field of Cormallen", es: "Los Campos de Cormallen" }
 summary:

@@ -8,7 +8,7 @@ characters: [ frodo, sam, gollum ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
 journeys: [ through-the-emyn-muil, the-ring-to-mordor ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Taming of Sméagol" }
 title: { en: "Frodo and Sam Meet Gollum", es: "Frodo y Sam encuentran a Gollum" }
 summary:

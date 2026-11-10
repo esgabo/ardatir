@@ -8,7 +8,7 @@ characters: [ aragorn, legolas, gimli, gandalf ]
 arcs: [ the-war-of-the-ring, the-war-in-rohan ]
 journeys: [ aragorn-legolas-and-gimlis-road, gandalf-the-whites-road ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The White Rider" }
 title: { en: "Gandalf the White", es: "Gandalf el Blanco" }
 summary:

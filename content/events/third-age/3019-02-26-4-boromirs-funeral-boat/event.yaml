@@ -8,7 +8,7 @@ characters: [ boromir, aragorn, legolas, gimli ]
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Departure of Boromir" }
 title: { en: "Boromir's Funeral", es: "El funeral de Boromir" }
 summary:

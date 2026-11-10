@@ -10,7 +10,7 @@ characters: [ frodo, sam ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
 journeys: [ frodo-and-sam-across-mordor ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Land of Shadow" }
 title: { en: "Frodo and Sam Among the Orcs", es: "Frodo y Sam entre los orcos" }
 summary:

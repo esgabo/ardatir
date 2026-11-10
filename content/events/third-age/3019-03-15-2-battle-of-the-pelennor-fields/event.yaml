@@ -7,7 +7,7 @@ place: pelennor-fields
 characters: [ theoden, eowyn, merry, witch-king, aragorn, legolas, gimli, gandalf ]
 arcs: [ the-war-of-the-ring ]
 tags: [ lord-of-the-rings, battle ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: The Battle of the Pelennor Fields }
 title: { en: The Battle of the Pelennor Fields, es: La batalla de los Campos del Pelennor }
 summary:

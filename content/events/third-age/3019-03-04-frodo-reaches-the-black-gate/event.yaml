@@ -10,7 +10,7 @@ characters: [ frodo, sam, gollum ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
 journeys: [ the-ring-to-mordor ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Black Gate is Closed" }
 title: { en: "The Black Gate Is Closed", es: "La Puerta Negra está cerrada" }
 summary:

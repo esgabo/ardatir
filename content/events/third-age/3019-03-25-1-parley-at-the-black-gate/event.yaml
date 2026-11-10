@@ -9,7 +9,7 @@ characters: [ aragorn, gandalf, mouth-of-sauron, pippin, imrahil, eomer ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [ gandalf-the-whites-road, pippins-road-to-gondor, aragorn-legolas-and-gimlis-road ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Black Gate Opens" }
 title: { en: "Parley at the Black Gate", es: "Parlamento ante la Puerta Negra" }
 summary:

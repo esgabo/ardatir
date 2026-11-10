@@ -8,7 +8,7 @@ characters: [ aragorn, legolas, gimli ]
 arcs: [ the-war-of-the-ring, the-war-in-rohan ]
 journeys: [ aragorn-legolas-and-gimlis-road ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Departure of Boromir" }
 title: { en: "Aragorn Chooses to Follow the Orcs", es: "Aragorn decide seguir a los orcos" }
 summary:
