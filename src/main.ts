@@ -6,7 +6,7 @@ import { characterMap, eventById, index, loadEvent, loadIndex, playable } from '
 import { LANGS, type EventDetail, type EventSummary, type Lang } from './data/types';
 import { h } from './dom';
 import { honestDate } from './format';
-import { foretoldBadge } from './foretold';
+import { foretoldBadge, foretoldParts, isForetold } from './foretold';
 import { ICONS } from './icons';
 import { initialLang, isLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { renderReader } from './reader';
@@ -99,6 +99,7 @@ const labelRenderer = new CSS2DRenderer();
 labelRenderer.domElement.style.position = 'absolute';
 labelRenderer.domElement.style.inset = '0';
 labelRenderer.domElement.style.pointerEvents = 'none';
+labelRenderer.domElement.classList.add('stage-labels');
 viewport.appendChild(labelRenderer.domElement);
 
 let stage: Stage;
@@ -472,7 +473,13 @@ function renderStatic(): void {
   const say = sayHint(state.event.pronounce, L);
   $('event-say').replaceChildren(...say ? [say] : []);
   $('event-say').hidden = !say;
-  $('event-date').textContent = honestDate(state.event, L);
+  // What is foretold says so on the card, and the stage takes on its dream register (style.css).
+  const foretold = isForetold(state.event);
+  document.body.classList.toggle('foretold-stage', foretold);
+  if (foretold) {
+    const { by, source } = foretoldParts(state.event, L);
+    $('event-date').replaceChildren(foretoldBadge(state.event, L) ?? '', h('span', { class: 'fl-by' }, ` ${by}`), h('span', { class: 'fl-src' }, source && ` ${source}`));
+  } else $('event-date').textContent = honestDate(state.event, L);
   $('event-summary').textContent = tr(state.event.summary, L);
   const sides = sidesLine(state.event, L);
   $('event-sides').replaceChildren(...sides ? [sides] : []);

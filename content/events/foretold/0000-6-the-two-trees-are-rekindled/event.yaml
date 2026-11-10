@@ -4,13 +4,13 @@ place: valinor
 characters: [ feanor, yavanna ]
 arcs: [ the-end-of-days ]
 tags: [ silmarillion, prophecy ]
-status: scripted
+status: staged
 # The Second Prophecy of Mandos (1937 Quenta Silmarillion, The Lost Road, as in the 1930 Quenta,
 # The Shaping of Middle-earth): Fëanor takes the three jewels to Yavanna, who breaks them and with
 # their fire kindles the Two Trees again. In the 1926 Sketch it is Maidros who breaks them, and
 # Belaurin (Yavanna) who rekindles the Trees. The published Silmarillion keeps only the other side of
-# it: after the Darkening, Yavanna asks for the Silmarils to heal the Trees and Fëanor refuses
-# ("Of the Darkening of Valinor").
+# it: after the Darkening, Yavanna says only the light of the Silmarils could heal the Trees, Manwë
+# asks Fëanor for them on behalf of the Valar, and Fëanor refuses ("Of the Darkening of Valinor").
 source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
 foretoldBy: mandos
 title: { en: "The Two Trees are rekindled", es: "Los Dos Árboles se encienden de nuevo" }

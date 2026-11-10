@@ -115,7 +115,9 @@ export function createTreesStage(labels: CosmosLabels): Stage {
   const telLabel = nameLabel(world, 'Telperion');
   const lauLabel = nameLabel(world, 'Laurelin');
 
-  const c = new THREE.Color(), v3 = new THREE.Vector3();
+  const c = new THREE.Color(), v3 = new THREE.Vector3(), off = new THREE.Vector3();
+  // Light carried through the Calacirya onto the Bay of Eldamar and Tol Eressëa: u, v, height, size.
+  const PASS_AT = [[CALACIRYA.u + 0.05, CALACIRYA.v, 0.35, 1.4], [CALACIRYA.u + 0.42, CALACIRYA.v - 0.02, 0.15, 1.8], [ERESSEA.u, ERESSEA.v, 0.22, 1.5]] as const;
   const mix = new THREE.Color();
 
   return {
@@ -191,8 +193,7 @@ export function createTreesStage(labels: CosmosLabels): Stage {
       Glows.set(mingleGlow, v3.copy(moundAt).setY(moundAt.y + 1.0), 4.5, mingling * 0.45);
 
       // Light carried through the Calacirya onto the Bay of Eldamar and Tol Eressëa.
-      const passAt = [[CALACIRYA.u + 0.05, CALACIRYA.v, 0.35, 1.4], [CALACIRYA.u + 0.42, CALACIRYA.v - 0.02, 0.15, 1.8], [ERESSEA.u, ERESSEA.v, 0.22, 1.5]];
-      passGlows.forEach((g, i) => Glows.set(g, at(passAt[i][0], passAt[i][1], passAt[i][2], v3), passAt[i][3], light * 0.12));
+      passGlows.forEach((g, i) => Glows.set(g, at(PASS_AT[i][0], PASS_AT[i][1], PASS_AT[i][2], v3), PASS_AT[i][3], light * 0.12));
       (passGlows[0].material as THREE.MeshBasicMaterial).color.copy(mix);
       (passGlows[1].material as THREE.MeshBasicMaterial).color.copy(mix);
       (passGlows[2].material as THREE.MeshBasicMaterial).color.copy(mix);
@@ -205,7 +206,7 @@ export function createTreesStage(labels: CosmosLabels): Stage {
       const valarOn = ramp(t, T.valar[0], T.valar[1]) * (1 - 0.6 * ramp(t, T.cycle[0], T.cycle[1]));
       valar.forEach((g, i) => {
         const a = (i / valar.length) * Math.PI * 2 + 0.3;
-        const p = v3.copy(moundAt).add(new THREE.Vector3(Math.cos(a) * 0.72, 0.1, Math.sin(a) * 0.72));
+        const p = v3.copy(moundAt).add(off.set(Math.cos(a) * 0.72, 0.1, Math.sin(a) * 0.72));
         Glows.set(g, p, 0.32, valarOn * 0.55);
       });
       let i = 0;

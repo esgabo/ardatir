@@ -28,10 +28,16 @@ export function sourceLabel(source: EventSummary['source'], L: Lang): string {
  * the source: "Foretold by Mandos, not told as history. Source: The Lost Road…, “Quenta Silmarillion”."
  */
 export function foretoldLine(e: Pick<EventSummary, 'foretoldBy' | 'source'>, L: Lang): string {
-  const by = e.foretoldBy ? tr(characterMap.get(e.foretoldBy)?.name, L) : '';
-  const first = by ? ui('foretoldBy', L).replace('{a}', by) : ui('foretoldNoOne', L);
+  const { by, source } = foretoldParts(e, L);
+  return source ? `${by} ${source}` : by;
+}
+
+/** The two halves of that line: "Foretold by Mandos, not told as history." and "Source: …." ('' without one). */
+export function foretoldParts(e: Pick<EventSummary, 'foretoldBy' | 'source'>, L: Lang): { by: string; source: string } {
+  const who = e.foretoldBy ? tr(characterMap.get(e.foretoldBy)?.name, L) : '';
+  const by = who ? ui('foretoldBy', L).replace('{a}', who) : ui('foretoldNoOne', L);
   const src = sourceLabel(e.source, L);
-  return src ? `${first} ${ui('foretoldSource', L).replace('{s}', src)}` : first;
+  return { by, source: src ? ui('foretoldSource', L).replace('{s}', src) : '' };
 }
 
 /** The small "Foretold" badge, or nothing for history. */

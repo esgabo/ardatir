@@ -202,7 +202,7 @@ export function showLabel(l: CSS2DObject, v: number): void {
 
 /**
  * Keep the camera's direction but step back on narrow screens, so a subject `halfWidth`
- * wide stays in view (never closer than `minDist`). Returns the aspect it fitted.
+ * wide stays in view (never closer than `minDist`). Also sets the camera's aspect to w / h.
  */
 export function fitCamera(camera: THREE.PerspectiveCamera, target: THREE.Vector3, w: number, h: number, minDist: number, halfWidth: number): void {
   camera.aspect = w / h;
