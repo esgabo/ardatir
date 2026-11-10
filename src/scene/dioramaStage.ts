@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import type { Character, EventDetail, Faction, Lang } from '../data/types';
 import { createArmies } from './armies';
 import { t as ui, tr, type UiKey } from '../i18n';
-import { onTile, samplePose } from '../timeline';
+import { actionMix, headingAt, onTile, samplePose, strideSeconds } from '../timeline';
+import { clipLayers, GAIT_PACE } from './modelClips';
 import { createDiorama, groundHeight } from './diorama';
 import { createFigure, FIGURE_HEIGHT, setSelected, useModel } from './figure';
 import type { ModelInstance } from './models';
@@ -83,11 +84,18 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
         if (!fig) continue;
         const pose = samplePose(track, t);
         fig.visible = onTile(pose);
-        // A model with clips plays them from t; without, the placeholder's bob and crouch stand in.
-        const clip = fig.visible ? models.get(track.characterId)?.pose(pose.action, t, eventSeconds) : undefined;
+        // A model with clips plays them from t (cross-faded at changes, feet paced by the ground
+        // covered); without, the placeholder's bob and crouch stand in.
+        const model = fig.visible ? models.get(track.characterId) : undefined;
+        let clip: string | undefined;
+        if (model) {
+          const height = FIGURE_HEIGHT * (characters.get(track.characterId)?.scale ?? 1);
+          const strides = strideSeconds(track, t, eventSeconds, (a) => (GAIT_PACE[a] ?? 0) * height);
+          clip = model.play(clipLayers(actionMix(track, t, eventSeconds), eventSeconds, t, strides));
+        }
         const bob = pose.moving && !clip ? Math.abs(Math.sin(ambient * (pose.action === 'run' ? 14 : 8))) * 0.05 : 0;
         fig.position.set(pose.x, groundHeight(diorama, pose.x, pose.z) + bob, pose.z);
-        if (pose.moving) fig.rotation.y = pose.heading;
+        fig.rotation.y = headingAt(track, t, eventSeconds);
         fig.scale.y = pose.action === 'hide' && clip !== 'hide' ? 0.75 : 1;
       }
     },
@@ -101,6 +109,11 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
 
     select(id) {
       for (const [cid, fig] of figures) setSelected(fig, cid === id);
+    },
+
+    focus(id) {
+      const fig = figures.get(id);
+      return fig?.visible ? fig.position.clone().setY(fig.position.y + FIGURE_HEIGHT * 0.5) : null;
     },
 
     info(id, t) {

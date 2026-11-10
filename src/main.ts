@@ -820,6 +820,26 @@ eventFold.addEventListener('click', () => {
   paintFold();
 });
 
+// The followed character stays framed: when they walk out toward the edge of the view, the
+// camera glides after them (target and camera move together, so the user's orbit and zoom are
+// kept). A dead zone in the middle leaves the view alone while they stay comfortably in it.
+// This moves the viewpoint only, never what happens in the scene.
+const FRAME_DEAD_ZONE = 0.45;
+const followNdc = new THREE.Vector3();
+const followStep = new THREE.Vector3();
+function keepFramed(dt: number): void {
+  const p = state.selected ? stage.focus?.(state.selected) : null;
+  if (!p) return;
+  followNdc.copy(p).project(stage.camera);
+  const out = Math.max(Math.abs(followNdc.x), Math.abs(followNdc.y));
+  if (out <= FRAME_DEAD_ZONE) return;
+  // Faster the further out they are; past the edge it catches up within about a second.
+  const k = 1 - Math.exp(-dt * (out > 1 ? 4 : 2.5 * (out - FRAME_DEAD_ZONE) / (1 - FRAME_DEAD_ZONE)));
+  followStep.copy(p).sub(controls.target).multiplyScalar(k).setY(0); // pan over the ground, never up or down
+  controls.target.add(followStep);
+  stage.camera.position.add(followStep);
+}
+
 const flash = $('flash');
 const frameClock = new THREE.Clock();
 let ambient = 0;
@@ -838,6 +858,7 @@ function frame(): void {
   narration.sync(playhead, state.playing);
   renderNarration();
   stage.update(state.t, ambient, clock.duration);
+  keepFramed(dt);
   opening.sync(state.t);
   flash.style.opacity = String(stage.flash?.(state.t) ?? 0);
   controls.update();

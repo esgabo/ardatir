@@ -25,6 +25,8 @@ export interface Stage {
   pick?(ray: THREE.Raycaster): string | null;
   select?(id: string | null): void;
   info?(id: string, t: number): SelectionInfo | null;
+  /** Where a selected thing stands now (world space), so the camera can keep it framed; null when it is offstage. */
+  focus?(id: string): THREE.Vector3 | null;
   /** Full-screen flash strength 0 → 1 (e.g. the moment of Eä). */
   flash?(t: number): number;
   dispose(): void;

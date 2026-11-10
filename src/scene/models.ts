@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
-import { clipFor, clipTime, type Action } from './modelClips';
+import { clipFor, wrapClip, type Action, type ClipLayer } from './modelClips';
 
 /** A loaded model, shared by every figure that uses it. */
 export interface Model {
@@ -53,6 +53,12 @@ export interface ModelInstance {
    * `clipTime` gives. Returns the clip used, or undefined when the model has no clip for it.
    */
   pose(action: Action, t: number, eventSeconds: number): Action | undefined;
+  /**
+   * Blend clips by weight (`clipLayers`: a cross-fade after an action changes, gait cycles
+   * paced by the ground covered). Layers whose actions fall back to the same clip add up.
+   * Returns the clip with the most weight, or undefined when the model has none of them.
+   */
+  play(layers: readonly ClipLayer[]): Action | undefined;
   /** Free this copy's skeletons and stop its mixer (geometry and materials stay shared with the cache). */
   dispose(): void;
 }
@@ -81,20 +87,28 @@ export function instantiate(model: Model, height: number): ModelInstance {
   return {
     object,
     pose(action, t, eventSeconds) {
-      const name = clipFor(action, names);
-      if (!name) {
-        // No clip for this action: put the model back in its rest pose (pose depends on t alone).
-        for (const a of actions.values()) a.setEffectiveWeight(0);
-        mixer.update(0);
-        return undefined;
+      return this.play([{ action, seconds: t * eventSeconds, w: 1 }]);
+    },
+    play(layers) {
+      // Each clip's weight and time come from the layers alone (the heaviest layer that uses a
+      // clip sets its time): the mixer never runs free, it is only applied with a zero step.
+      const weight = new Map<string, number>(), time = new Map<string, number>();
+      for (const l of layers) {
+        const name = clipFor(l.action, names);
+        if (!name || !(l.w > 0)) continue;
+        weight.set(name, (weight.get(name) ?? 0) + l.w);
+        if (!time.has(name)) time.set(name, l.seconds);
       }
-      // The mixer never runs free: each clip's time is SET from t, then applied with a zero step.
+      let top: Action | undefined, best = 0;
       for (const [n, a] of actions) {
-        a.setEffectiveWeight(n === name ? 1 : 0);
-        a.time = clipTime(t, eventSeconds, a.getClip().duration);
+        const w = weight.get(n) ?? 0;
+        a.setEffectiveWeight(w);
+        a.time = w > 0 ? wrapClip(time.get(n)!, a.getClip().duration) : 0;
+        if (w > best) { best = w; top = n as Action; }
       }
+      // With no clip for any layer, every weight is 0: the model rests in its bind pose.
       mixer.update(0);
-      return name;
+      return top;
     },
     dispose() {
       mixer.stopAllAction();

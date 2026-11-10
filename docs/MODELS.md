@@ -68,7 +68,8 @@ Before exporting:
 - **Facing**: the character looks toward **−Y in Blender** (towards you in *Front* view, Numpad 1). With *+Y Up* that becomes glTF's +Z, which is "forward" in the diorama.
 - **Materials**: flat colours (base colour, roughness) wherever possible; one small shared texture atlas at most. No transparency unless needed (hair cards are not the look).
 - **Clips** (one action each, looping): `idle`, `walk`, `run`, `talk`, `hide`, `fight`, named exactly so. The diorama plays the clip for the pose sampled at `t` in the event's `staging.yaml` (`action:` of the keyframes; a figure moving between keyframes walks or runs). A missing clip falls back: `run` → `walk` → `idle`; `talk`, `hide`, `fight` → `idle`. With no clips at all, the figure keeps the placeholder's motion (bobbing on the move, crouching to hide). The build warns about any other clip name; more clips (gesture, sit) can be added here when staging gets a way to ask for them.
-- **Walk and run cycles** loop seamlessly (first and last frame match) and stay in place (no root motion): the site moves the figure along its track.
+- **Walk and run cycles** loop seamlessly (first and last frame match) and stay in place (no root motion): the site moves the figure along its track. Make them at a natural pace: a walk covering about 0.8 of the figure's height per second, a run about 2 (`GAIT_PACE` in `src/scene/modelClips.ts`). A figure moving faster or slower on its track plays the cycle faster or slower to match, between half and two and a half times the clip's pace, so feet keep up with the ground.
+- **Playback** (#22): when an action changes, the old clip fades into the new one over a quarter of a second of event time (`FADE_SECONDS`, `actionMix` in `src/timeline.ts`); a figure turns to face each new direction of travel over about a third of a second, the short way round, and keeps facing it while it stands (`headingAt`). All of it is worked out from the keyframes and `t` alone, so a scrub or a deep link lands on the same pose and heading. The selection ring stays under the model, and a selected (followed) character is kept in view: when they walk toward the edge, the camera glides after them.
 
 ## Budgets
 
@@ -117,7 +118,7 @@ It copies each model once into `public/data/models/`, and warns about any `.blen
 
 - `src/scene/models.ts` (its own chunk, loaded only when an event has a model): `GLTFLoader` with the meshopt decoder, one load per URL shared by every figure, a clone per figure (skeletons too), scaled to `0.82 × Character.scale` units, the height of the placeholder.
 - `src/scene/dioramaStage.ts` draws the placeholder at once and swaps in the model when it arrives; if it fails to load, the placeholder stays (with a console warning).
-- Clips are driven by an `AnimationMixer` whose time is **set** from `t` each frame (`clipTime` in `src/scene/modelClips.ts`: the event's seconds at `t`, wrapped to the clip), never advanced by the wall clock, so scrubbing and deep links show exactly the same frame.
+- Clips are driven by an `AnimationMixer` whose weights and times are **set** from `t` each frame (`clipLayers` in `src/scene/modelClips.ts`: the event's seconds at `t`, or for walk and run the ground-paced `strideSeconds`, wrapped to the clip; two layers during a cross-fade), never advanced by the wall clock, so scrubbing and deep links show exactly the same frame.
 
 ## The test model
 

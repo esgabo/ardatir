@@ -81,7 +81,7 @@ src/
   eventClock.ts      ONE clock for animation, narration text and audio
   narration.ts       plays the optional recording, following the clock
   i18n.ts            languages, fallbacks, interface strings
-  timeline.ts        samples character tracks (pose, thought) at time t
+  timeline.ts        samples character tracks (pose, thought) at time t; cross-fades, heading and gait pace between poses: pure, tested
   scene/stage.ts     the Stage interface every zoom level implements
   scene/cosmos.ts    the cosmos stage: picks the event's animation; the Ainulindalë
   scene/cosmosWorld.ts   what every cosmos event shares: the Void, Arda's shells, stars, lights, camera
@@ -124,7 +124,7 @@ src/
 - **Narration timing:** `staging.yaml` gives each passage's `t` (where it belongs in the animation); `audio/<lang>.yaml` gives the second it starts in that recording, keyed by passage id. The build turns both into ordered arrays, and the clock stretches the animation between those points.
 - **Recordings carry a `textHash`** of the words they read (`audio/<lang>.yaml`); the build warns when `narration.yaml` no longer matches. Editing a recorded passage means re-recording it.
 - **The URL is the state**: `#/event/<id>?t=&follow=&lang=` (a staged event's stage, any other event's page), `#/lives?with=a,b` (character lanes), `#/time/<age>/<date>?zoom=&from=` (the time cursor; `<date>` is `3019`, `3019-03`, `3019-03-15`, `3019-midyear`, `2941-summer`, or an axis position). New view state that matters should be added to the route (`src/routes.ts`); in-site links are plain hrefs from there.
-- **Models play from `t` too.** A glTF's clips are driven by an `AnimationMixer` whose clip times are *set* from `t` (`clipTime` in `scene/modelClips.ts`) and applied with `update(0)`; never let a mixer run free on the wall clock. `scene/models.ts` is loaded with a dynamic `import()` only when an event has a model.
+- **Models play from `t` too.** A glTF's clips are driven by an `AnimationMixer` whose clip weights and times are *set* from `t` (`clipLayers` in `scene/modelClips.ts`; cross-fades from `actionMix`, gait pace from `strideSeconds`, in `timeline.ts`) and applied with `update(0)`; never let a mixer run free on the wall clock. A figure's heading is `headingAt(track, t)`, never the last frame's rotation. `scene/models.ts` is loaded with a dynamic `import()` only when an event has a model.
 - **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.

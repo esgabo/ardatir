@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import * as THREE from 'three';
 import { describe, expect, it } from 'vitest';
-import { clipFor, clipTime } from '../src/scene/modelClips.ts';
+import { clipFor, clipLayers, clipTime, wrapClip } from '../src/scene/modelClips.ts';
 import { instantiate, parseModel, type Model } from '../src/scene/models.ts';
 
 const file = path.join(import.meta.dirname, 'fixtures/valid/assets/characters/test-figure/test-figure.glb');
@@ -30,6 +30,21 @@ describe('clips', () => {
     expect(clipTime(0.51, 30, 2)).toBeCloseTo(1.3);
     expect(clipTime(1, 30, 0.7)).toBeCloseTo(30 % 0.7);
     expect(clipTime(0.3, 30, 0)).toBe(0);
+  });
+});
+
+describe('clip layers', () => {
+  it('is the action alone, away from a change', () => {
+    expect(clipLayers({ action: 'talk', w: 1 }, 10, 0.5, 99)).toEqual([{ action: 'talk', seconds: 5, w: 1 }]);
+  });
+  it('cross-fades from the previous action, heaviest first; gaits run on strides, the rest on seconds', () => {
+    const l = clipLayers({ action: 'idle', previous: 'walk', w: 0.3 }, 10, 0.5, 7.5);
+    expect(l).toEqual([{ action: 'walk', seconds: 7.5, w: 0.7 }, { action: 'idle', seconds: 5, w: 0.3 }]);
+  });
+  it('wraps a cycle into its clip', () => {
+    expect(wrapClip(7.5, 2)).toBeCloseTo(1.5);
+    expect(wrapClip(-0.5, 2)).toBeCloseTo(1.5);
+    expect(wrapClip(3, 0)).toBe(0);
   });
 });
 
@@ -62,6 +77,22 @@ describe('the test model', () => {
     expect(inst.pose('run', 0.5, 12)).toBe('walk');
     expect(inst.pose('hide', 0.5, 12)).toBe('idle');
     expect(inst.pose('talk', 0.5, 12)).toBe('talk');
+  });
+
+  it('blends two clips by weight, the same frame for the same layers', async () => {
+    const inst = instantiate(await load(), 1);
+    const arm = inst.object.getObjectByName('arm-left')!;
+    const at = (w: number) => {
+      inst.play(clipLayers({ action: 'talk', previous: 'walk', w }, 12, 0.4, 3.1));
+      return arm.quaternion.clone();
+    };
+    const walk = at(0), talk = at(1), half = at(0.5);
+    expect(half.angleTo(walk)).toBeGreaterThan(1e-3);
+    expect(half.angleTo(talk)).toBeGreaterThan(1e-3);
+    at(0.9); at(0.1);
+    expect(at(0.5).toArray()).toEqual(half.toArray());
+    // Two layers that fall back to the same clip add up: hide and talk-less idle both play idle.
+    expect(inst.play([{ action: 'hide', seconds: 1, w: 0.6 }, { action: 'idle', seconds: 1, w: 0.4 }])).toBe('idle');
   });
 
   it('plays nothing without clips, so the placeholder motion stays', async () => {
