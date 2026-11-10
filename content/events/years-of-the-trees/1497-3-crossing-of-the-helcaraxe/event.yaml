@@ -8,7 +8,7 @@ place: helcaraxe
 characters: [ fingolfin, fingon, finrod, galadriel ]
 arcs: [ the-flight-of-the-noldor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Return of the Noldor" }
 title: { en: "The crossing of the Helcaraxë", es: "La travesía del Helcaraxë" }
 summary:

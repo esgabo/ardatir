@@ -18,7 +18,8 @@ export interface Stage {
   camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
   /** Point the orbit controls circle around. */
   target: THREE.Vector3;
-  update(t: number, ambient: number): void;
+  /** `eventSeconds`: the event clock's length (the recording's, when there is one), for motion keyed to seconds. */
+  update(t: number, ambient: number, eventSeconds?: number): void;
   resize(width: number, height: number): void;
   /** Return a selectable id under the ray, if any. */
   pick?(ray: THREE.Raycaster): string | null;

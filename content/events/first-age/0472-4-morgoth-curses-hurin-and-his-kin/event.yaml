@@ -7,7 +7,7 @@ place: thangorodrim
 characters: [ melkor, hurin ]
 arcs: [ the-children-of-hurin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
 title: { en: "Morgoth curses Húrin and his kin", es: "Morgoth maldice a Húrin y a los suyos" }
 summary:

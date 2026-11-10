@@ -7,7 +7,7 @@ place: brethil
 characters: [ nienor, turin ]
 arcs: [ the-children-of-hurin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
 title: { en: "Nienor comes to Brethil", es: "Nienor llega a Brethil" }
 summary:

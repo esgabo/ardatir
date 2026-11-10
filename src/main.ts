@@ -567,6 +567,9 @@ function updateDynamic(): void {
   const panel = $('selection-panel');
   const info = state.selected ? stage.info?.(state.selected, state.t) : null;
   panel.hidden = !info;
+  // The panels on the right never cover the selection card: they shrink to the space below it.
+  const below = info ? panel.getBoundingClientRect().bottom + 8 : 68;
+  for (const el of [learnPanel, meanwhilePanel]) el.style.maxHeight = info ? `${Math.max(120, innerHeight - 96 - below)}px` : '';
   if (info) {
     $('sel-title').textContent = info.title;
     // How to say their name: rebuilt only when the selection or the language changes.
@@ -699,6 +702,7 @@ function openLearn(): void {
     // A name selects that character on the stage, when the stage has them; else their life opens.
     select: (id) => {
       if (!stage.info?.(id, state.t)) return false;
+      if (matchMedia(PHONE_QUERY).matches) closeLearn(); // on a phone the panel would cover the card
       state.selected = id;
       stage.select?.(id);
       writeRoute();
@@ -764,8 +768,13 @@ function startOpening(): void {
 
 addEventListener('keydown', (e) => {
   const tgt = e.target as HTMLElement;
-  if (e.code === 'Escape') { closeMeanwhile(); closeLearn(); sidebar.setDrawer(false); }
-  if (e.code === 'Space' && !page && stage && !tgt.closest('input, textarea, select, button, a')) { e.preventDefault(); setPlaying(!state.playing); }
+  if (e.code === 'Escape') {
+    // Closing a panel that holds focus would drop it to the page: hand it back to the button.
+    const inLearn = learnPanel.contains(tgt), inMeanwhile = meanwhilePanel.contains(tgt);
+    closeMeanwhile(); closeLearn(); sidebar.setDrawer(false);
+    if (inLearn) learnBtn.focus(); else if (inMeanwhile) meanwhileBtn.focus();
+  }
+  if (e.code === 'Space' && !page && stage && !opening.open && !tgt.closest('input, textarea, select, button, a, #opening')) { e.preventDefault(); setPlaying(!state.playing); }
 });
 addEventListener('hashchange', () => { focusHeading = true; applyRoute(parseRoute()); });
 
@@ -827,7 +836,7 @@ function frame(): void {
   }
   narration.sync(playhead, state.playing);
   renderNarration();
-  stage.update(state.t, ambient);
+  stage.update(state.t, ambient, clock.duration);
   opening.sync(state.t);
   flash.style.opacity = String(stage.flash?.(state.t) ?? 0);
   controls.update();

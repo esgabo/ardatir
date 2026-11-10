@@ -53,6 +53,8 @@ export interface ModelInstance {
    * `clipTime` gives. Returns the clip used, or undefined when the model has no clip for it.
    */
   pose(action: Action, t: number, eventSeconds: number): Action | undefined;
+  /** Free this copy's skeletons and stop its mixer (geometry and materials stay shared with the cache). */
+  dispose(): void;
 }
 
 /** A figure's own copy (skeletons cloned too), scaled so it stands `height` tall. */
@@ -80,7 +82,12 @@ export function instantiate(model: Model, height: number): ModelInstance {
     object,
     pose(action, t, eventSeconds) {
       const name = clipFor(action, names);
-      if (!name) return undefined;
+      if (!name) {
+        // No clip for this action: put the model back in its rest pose (pose depends on t alone).
+        for (const a of actions.values()) a.setEffectiveWeight(0);
+        mixer.update(0);
+        return undefined;
+      }
       // The mixer never runs free: each clip's time is SET from t, then applied with a zero step.
       for (const [n, a] of actions) {
         a.setEffectiveWeight(n === name ? 1 : 0);
@@ -88,6 +95,11 @@ export function instantiate(model: Model, height: number): ModelInstance {
       }
       mixer.update(0);
       return name;
+    },
+    dispose() {
+      mixer.stopAllAction();
+      mixer.uncacheRoot(inner);
+      inner.traverse((o) => { if ((o as THREE.SkinnedMesh).isSkinnedMesh) (o as THREE.SkinnedMesh).skeleton.dispose(); });
     },
   };
 }

@@ -8,7 +8,7 @@ place: tirion
 characters: [ feanor ]
 arcs: [  ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Silmarils and the Unrest of the Noldor" }
 title: { en: "The making of the Silmarils", es: "La hechura de los Silmarils" }
 summary:

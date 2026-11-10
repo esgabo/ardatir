@@ -7,7 +7,7 @@ place: thangorodrim
 characters: [ ancalagon, earendil ]
 arcs: [ the-war-of-wrath ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
 title: { en: "Ancalagon falls", es: "Cae Ancalagon" }
 summary:

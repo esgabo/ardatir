@@ -7,7 +7,7 @@ place: dor-lomin
 characters: [ hurin, morwen, turin ]
 arcs: [ the-children-of-hurin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
 title: { en: "The birth of Túrin", es: "El nacimiento de Túrin" }
 summary:

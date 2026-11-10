@@ -7,7 +7,7 @@ place: angband
 characters: [ hurin, melkor ]
 arcs: [ the-children-of-hurin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
 title: { en: "Morgoth releases Húrin", es: "Morgoth libera a Húrin" }
 summary:

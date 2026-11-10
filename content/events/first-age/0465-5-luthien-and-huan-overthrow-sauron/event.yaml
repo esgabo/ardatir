@@ -8,7 +8,7 @@ characters: [ luthien, huan, sauron, beren ]
 arcs: [ beren-and-luthien ]
 journeys: [ berens-quest ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
 title: { en: "Lúthien and Huan overthrow Sauron", es: "Lúthien y Huan derrotan a Sauron" }
 summary:

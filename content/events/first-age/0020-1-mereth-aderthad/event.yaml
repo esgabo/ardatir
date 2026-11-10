@@ -7,7 +7,7 @@ place: ivrin
 characters: [ fingolfin, maedhros, finrod ]   # Thingol sent Mablung and Daeron in his place
 arcs: [ the-siege-of-angband ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
 title: { en: "Mereth Aderthad, the Feast of Reunion", es: "Mereth Aderthad, la Fiesta de la Reunión" }
 summary:

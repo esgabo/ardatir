@@ -8,7 +8,7 @@ place: nargothrond
 characters: [ finrod, orodreth ]
 arcs: [  ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Beleriand and its Realms" }
 title: { en: "Finrod founds Nargothrond", es: "Finrod funda Nargothrond" }
 summary:

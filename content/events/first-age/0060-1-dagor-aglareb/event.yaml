@@ -7,7 +7,7 @@ place: beleriand
 characters: [ fingolfin, maedhros, melkor ]
 arcs: [ the-siege-of-angband ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
 title: { en: "Dagor Aglareb, the Glorious Battle", es: "Dagor Aglareb, la Batalla Gloriosa" }
 summary:

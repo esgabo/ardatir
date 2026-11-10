@@ -7,7 +7,7 @@ place: anfauglith
 characters: [ fingon, maedhros, turgon, hurin, huor, gothmog, melkor ]
 arcs: [ the-children-of-hurin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Fifth Battle: Nirnaeth Arnoediad" }
 title: { en: "Nirnaeth Arnoediad, the Battle of Unnumbered Tears", es: "Nirnaeth Arnoediad, la Batalla de las Lágrimas Innumerables" }
 summary:
