@@ -1,0 +1,173 @@
+// narration:render against a fake Voice Studio: passage by passage, cached, checked,
+// retried (scripts/narration/render.ts). The fixture's staged event is "the-party", in the
+// Third Age, told by the fixture narrator "the-voice" (seed 7).
+
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { afterAll, describe, expect, it } from 'vitest';
+import { buildContent } from '../scripts/content/build.ts';
+import { cacheKey, render, type RenderOptions } from '../scripts/narration/render.ts';
+import { writeReport } from '../scripts/narration/report.ts';
+import type { SynthRequest, VoiceStudio } from '../scripts/narration/voicestudio.ts';
+import { encodeWav } from '../scripts/narration/wav.ts';
+
+const FIXTURE = path.join(import.meta.dirname, 'fixtures/valid/content');
+const PARTY = 'events/third-age/2941-04-26-the-party';
+const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ardatir-render-'));
+afterAll(() => fs.rmSync(tmp, { recursive: true, force: true }));
+
+let n = 0;
+/** A fresh copy of the fixture content and an empty cache. */
+function setup(write: Record<string, string> = {}) {
+  const dir = path.join(tmp, `case-${n++}`);
+  const content = path.join(dir, 'content');
+  fs.cpSync(FIXTURE, content, { recursive: true });
+  for (const [f, s] of Object.entries(write)) fs.writeFileSync(path.join(content, f), s);
+  return { content, cacheDir: path.join(dir, 'cache') };
+}
+
+/** A tone as long as a natural reading of the text: 0.07 s per character. */
+const speech = (text: string) => {
+  const len = Math.round(text.length * 0.07 * 24000);
+  return encodeWav({ sampleRate: 24000, samples: Int16Array.from({ length: len }, (_, i) => Math.round(Math.sin(i / 10) * 12000)) });
+};
+
+/** Echoes what it was asked to say; `hear` can garble the transcript of a given call. */
+function fakeStudio(opts: { hear?: (text: string, call: number) => string; fail?: (call: number) => boolean } = {}) {
+  const sent: SynthRequest[] = [];
+  let heard = '';
+  const vs: VoiceStudio = {
+    async synthesize(r) {
+      const call = sent.length;
+      sent.push(r);
+      if (opts.fail?.(call)) throw new Error('Voice Studio /generate: HTTP 502');
+      heard = opts.hear ? opts.hear(r.text, call) : r.text;
+      return speech(r.text);
+    },
+    async transcribe() { return { text: heard }; },
+    async version() { return '0.5.6'; },
+  };
+  return { vs, sent };
+}
+
+const opts = (cacheDir: string, over: Partial<RenderOptions> = {}): RenderOptions =>
+  ({ lang: ['en'], changed: false, cacheDir, rejects: new Set(), ...over });
+const ref = () => Buffer.from('reference');
+const dropLast = (t: string) => t.split(' ').slice(0, -1).join(' ');
+
+describe('cacheKey', () => {
+  it('changes with the text, the narrator version and the respellings used', () => {
+    const k = cacheKey('sha256:aaaa', { id: 'v', version: 1 }, [], {}, 'en');
+    expect(k).toMatch(/^[0-9a-f]{12}$/);
+    expect(cacheKey('sha256:bbbb', { id: 'v', version: 1 }, [], {}, 'en')).not.toBe(k);
+    expect(cacheKey('sha256:aaaa', { id: 'v', version: 2 }, [], {}, 'en')).not.toBe(k);
+    const lex = { en: { Bilbo: 'BIL-bo' } };
+    expect(cacheKey('sha256:aaaa', { id: 'v', version: 1 }, ['Bilbo'], lex, 'en'))
+      .not.toBe(cacheKey('sha256:aaaa', { id: 'v', version: 1 }, ['Bilbo'], { en: { Bilbo: 'BILL-bo' } }, 'en'));
+  });
+});
+
+describe('render', () => {
+  it('renders every passage once', async () => {
+    const { content, cacheDir } = setup();
+    const { vs, sent } = fakeStudio();
+    const takes = await render(buildContent(content), vs, ref, opts(cacheDir));
+    expect(sent.map((r) => r.text)).toEqual(['Someone knocks at the green door.', 'Tea is poured for far too many guests.']);
+    expect(sent.every((r) => r.seed === 7 && r.voice.refText.length > 0)).toBe(true);
+    expect(takes.map((t) => [t.event, t.passage, t.flags.length, t.tries])).toEqual([['the-party', 'door', 0, 1], ['the-party', 'tea', 0, 1]]);
+    expect(fs.existsSync(takes[0].file)).toBe(true);
+  });
+
+  it('respells before sending', async () => {
+    const { content, cacheDir } = setup({ 'pronunciation.yaml': 'en: { green: "GREEN-ish" }\n' });
+    const { vs, sent } = fakeStudio();
+    await render(buildContent(content), vs, ref, opts(cacheDir));
+    expect(sent[0].text).toBe('Someone knocks at the GREEN-ish door.');
+  });
+
+  it('reuses the cache, and re-renders only the changed passage', async () => {
+    const { content, cacheDir } = setup();
+    await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir));
+    const again = fakeStudio();
+    const takes = await render(buildContent(content), again.vs, ref, opts(cacheDir));
+    expect(again.sent).toEqual([]);
+    expect(takes.every((t) => t.reused)).toBe(true);
+
+    const nf = path.join(content, PARTY, 'narration.yaml');
+    fs.writeFileSync(nf, fs.readFileSync(nf, 'utf8').replace('far too many guests', 'a great many guests'));
+    const third = fakeStudio();
+    await render(buildContent(content), third.vs, ref, opts(cacheDir));
+    expect(third.sent.map((r) => r.text)).toEqual(['Tea is poured for a great many guests.']);
+  });
+
+  it('retries a flagged take with a new seed', async () => {
+    const { content, cacheDir } = setup();
+    const { vs, sent } = fakeStudio({ hear: (t, call) => (call === 0 ? dropLast(t) : t) });
+    const takes = await render(buildContent(content), vs, ref, opts(cacheDir));
+    expect(sent.map((r) => r.seed)).toEqual([7, 1007, 7]);
+    expect(takes[0]).toMatchObject({ passage: 'door', seed: 1007, tries: 2, flags: [] });
+  });
+
+  it('gives up after 3 retries and flags the take', async () => {
+    const { content, cacheDir } = setup();
+    const { vs, sent } = fakeStudio({ hear: (t, call) => (call < 4 ? dropLast(t) : t) });
+    const takes = await render(buildContent(content), vs, ref, opts(cacheDir));
+    expect(sent.slice(0, 4).map((r) => r.seed)).toEqual([7, 1007, 2007, 3007]);
+    expect(takes[0].tries).toBe(4);
+    expect(takes[0].flags.map((f) => f.kind)).toContain('edges');
+  });
+
+  it('resumes after a failed call', async () => {
+    const { content, cacheDir } = setup();
+    await expect(render(buildContent(content), fakeStudio({ fail: (c) => c === 1 }).vs, ref, opts(cacheDir))).rejects.toThrow(/502/);
+    const again = fakeStudio();
+    await render(buildContent(content), again.vs, ref, opts(cacheDir));
+    expect(again.sent.map((r) => r.text)).toEqual(['Tea is poured for far too many guests.']);
+  });
+
+  it('re-renders a rejected take with the next seed', async () => {
+    const { content, cacheDir } = setup();
+    await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir));
+    const again = fakeStudio();
+    const takes = await render(buildContent(content), again.vs, ref, opts(cacheDir, { rejects: new Set(['the-party/tea']) }));
+    expect(again.sent.map((r) => [r.text, r.seed])).toEqual([['Tea is poured for far too many guests.', 1007]]);
+    expect(takes.find((t) => t.passage === 'tea')!.reused).toBe(false);
+  });
+
+  it('skips ages without a narrator voice in that language', async () => {
+    const { content, cacheDir } = setup();
+    const { vs, sent } = fakeStudio();
+    expect(await render(buildContent(content), vs, ref, opts(cacheDir, { lang: ['es'] }))).toEqual([]);
+    expect(sent).toEqual([]);
+  });
+
+  it('--changed skips an event whose recording is current', async () => {
+    const { content, cacheDir } = setup();
+    const r = buildContent(content);
+    const audio = path.join(r.eventDirs['the-party'], 'audio');
+    fs.mkdirSync(audio);
+    fs.writeFileSync(path.join(audio, 'en.mp3'), '');
+    const { narrationHash, passageHash } = await import('../scripts/narration/text.ts');
+    const ps = r.scripts.find((s) => s.id === 'the-party')!.passages;
+    fs.writeFileSync(path.join(audio, 'en.yaml'), `duration: 9\ntextHash: ${narrationHash(ps, 'en')}\nnarrator: { id: the-voice, version: 1 }\npassages: { ${ps.map((p) => `${p.id}: ${passageHash(p, 'en')}`).join(', ')} }\n`);
+    const { vs, sent } = fakeStudio();
+    expect(await render(buildContent(content), vs, ref, opts(cacheDir, { changed: true }))).toEqual([]);
+    expect(sent).toEqual([]);
+  });
+});
+
+describe('writeReport', () => {
+  it('lists every flagged take first, the sample after, and a summary', async () => {
+    const { content, cacheDir } = setup();
+    const { vs } = fakeStudio({ hear: (t, call) => (call < 4 ? dropLast(t) : t) });
+    const takes = await render(buildContent(content), vs, ref, opts(cacheDir));
+    const out = path.join(cacheDir, 'report.html');
+    writeReport(takes, out, () => 5);
+    const html = fs.readFileSync(out, 'utf8');
+    expect(html).toContain('the-party/door');
+    expect(html.indexOf('the-party/door')).toBeLessThan(html.indexOf('the-party/tea'));
+    expect(html).toMatch(/1 flagged/);
+    expect(html).toContain('rejects.txt');
+  });
+});

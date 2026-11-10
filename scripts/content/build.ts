@@ -31,6 +31,8 @@ export interface BuildResult {
   narrators: Narrator[];
   /** content/pronunciation.yaml: how unusual names are said, per language. */
   pronunciation: Lexicon;
+  /** Each event's folder, by event id (for the narration pipeline). */
+  eventDirs: Record<string, string>;
 }
 
 const REVERSE: Record<LinkType, LinkType> = {
@@ -643,7 +645,7 @@ export function buildContent(contentDir: string): BuildResult {
 
   return {
     index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes },
-    details, scripts, narrators, pronunciation, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
+    details, scripts, narrators, pronunciation, eventDirs: Object.fromEntries(raws.map((r) => [r.summary.id, r.dir])), copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
   };
 }
 
