@@ -47,7 +47,9 @@ Story beats at this level:
 
 They form the arc *The Shape of Arda* with the Ainulindalë. Each is a small event of its own, staged with `stage: cosmos`, so the time cursor and the Meanwhile panel treat them like any other.
 
-Past the end of history the cosmos has one more story, **what is foretold** (§4.8): the arc *The End of Days*, the Last Battle and the world remade as Mandos prophesied them, then the Second Music. Its world-sized scenes (the Sun and Moon put out, the Silmarils rising out of sea, earth and air, the Second Music) belong to the cosmos too, and its scenes in Valinor to event dioramas; they are scripted, not staged yet. Wherever they appear they are marked as prophecy, never shown as history.
+Past the end of history the cosmos has one more story, **what is foretold** (§4.8): the arc *The End of Days*, the Last Battle and the world remade as Mandos prophesied them, then the Second Music. Its world-sized scenes belong to the cosmos too, and four are staged there: the Sun and Moon put out over the round world and Eärendil driving Morgoth from the airs (`the-sun-and-moon-are-destroyed`), the Earth broken and made again with the Silmarils rising out of sea, earth and air (`the-silmarils-are-recovered`), the Trees rekindled on Ezellohar (`the-two-trees-are-rekindled`) and the Pelóri levelled with the light flowing over the world (`the-mountains-of-valinor-are-levelled`); the rest are scripted. Wherever they appear they are marked as prophecy, never shown as history.
+
+**Prophecy is seen as a dream.** The foretold cosmos scenes share a register of their own (`scene/cosmosForetold.ts`): a violet-tinted Void, a slow pale mist, colours drawn a little towards a pale lavender ivory, and soft, hazy edges round the stage (`body.foretold-stage` in `style.css`, set for any foretold event); the stage card says *Foretold by Mandos, not told as history* in place of a date. The look stays the same low-poly, warm and luminous one, only softer, so it never reads as history.
 
 ### World
 

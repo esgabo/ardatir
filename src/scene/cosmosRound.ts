@@ -3,7 +3,7 @@ import type { Stage } from './stage';
 import { clamp01, disposeTree, hash, pulse, ramp } from './util';
 import { createCosmosWorld, fitCamera, Glows, nameLabel, shellMaterial, showLabel, type CosmosLabels } from './cosmosWorld';
 import {
-  amanCoast, at, E, ERESSEA, heightsFor, landColor, mergeFlat, N, NUMENOR, S, SECOND_AGE, Slab, toU, toV, W,
+  amanCoast, at, E, ERESSEA, heightsFor, landColor, N, NUMENOR, S, SECOND_AGE, shipGeo, Slab, toU, toV, W,
 } from './cosmosLands';
 
 /**
@@ -84,13 +84,6 @@ export function createRoundStage(labels: CosmosLabels): Stage {
   const amanHome = new THREE.Vector3(cx, 0, cz);
 
   // ---------- ships ----------
-  const shipGeo = (hull: string, sail: string) => {
-    const h = new THREE.ConeGeometry(0.35, 1.6, 4);
-    h.rotateX(Math.PI / 2); h.scale(1, 0.45, 1); h.translate(0, 0.12, 0);
-    const s = new THREE.ConeGeometry(0.42, 1.0, 3);
-    s.scale(0.25, 1, 1); s.translate(0, 0.62, -0.05);
-    return mergeFlat([{ geo: h, color: new THREE.Color(hull) }, { geo: s, color: new THREE.Color(sail) }]);
-  };
   const FLEET = 54;
   const fleet = new THREE.InstancedMesh(shipGeo('#2c2724', '#caa24c'), new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.7 }), FLEET);
   const fleetPath = Array.from({ length: FLEET }, (_, i) => {

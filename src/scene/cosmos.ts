@@ -13,6 +13,11 @@ export async function createCosmosStage(eventId: string, labels: CosmosLabels): 
   if (eventId === 'the-first-moon-and-sun') return (await import('./cosmosSunMoon')).createSunMoonStage(labels);
   if (eventId === 'beleriand-is-drowned') return (await import('./cosmosBeleriand')).createBeleriandStage(labels);
   if (eventId === 'the-world-is-made-round') return (await import('./cosmosRound')).createRoundStage(labels);
+  // What is foretold (docs/DESIGN.md §4.8), in its own dream register.
+  if (eventId === 'the-sun-and-moon-are-destroyed') return (await import('./cosmosLightsOut')).createLightsOutStage(labels);
+  if (eventId === 'the-silmarils-are-recovered') return (await import('./cosmosJewels')).createJewelsStage(labels);
+  if (eventId === 'the-two-trees-are-rekindled') return (await import('./cosmosRekindled')).createRekindledStage(labels);
+  if (eventId === 'the-mountains-of-valinor-are-levelled') return (await import('./cosmosLevelled')).createLevelledStage(labels);
   if (eventId === 'ainulindale') return createAinulindale(labels);
   // A cosmos event with no animation of its own yet: Arda at rest in its shells.
   const rest = createAinulindale(labels);

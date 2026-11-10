@@ -1,0 +1,9 @@
+stage: cosmos
+duration: 50
+narration:
+  remade: 0
+  sea-and-earth: 0.23
+  air: 0.58
+beats:
+  remade: 0.03
+  three-jewels: 0.25

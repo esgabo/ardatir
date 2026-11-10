@@ -242,6 +242,15 @@ export function mergeFlat(parts: { geo: THREE.BufferGeometry; color?: THREE.Colo
   return out;
 }
 
+/** A small ship (hull and one sail), pointing along +z: Númenor's fleet, the Elves' ships, Vingilot. */
+export function shipGeo(hull: string, sail: string): THREE.BufferGeometry {
+  const h = new THREE.ConeGeometry(0.35, 1.6, 4);
+  h.rotateX(Math.PI / 2); h.scale(1, 0.45, 1); h.translate(0, 0.12, 0);
+  const s = new THREE.ConeGeometry(0.42, 1.0, 3);
+  s.scale(0.25, 1, 1); s.translate(0, 0.62, -0.05);
+  return mergeFlat([{ geo: h, color: new THREE.Color(hull) }, { geo: s, color: new THREE.Color(sail) }]);
+}
+
 /**
  * Forests of small two-tiered conifers, merged into one mesh. Each frame the event says
  * how high the ground is under each tree and how big the tree is (0 hides it).
