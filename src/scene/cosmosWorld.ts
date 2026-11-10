@@ -16,6 +16,8 @@ export interface CosmosLabels {
   ambar: string; vista: string; ilmen: string; vaiya: string; walls: string; kuma: string;
   /** Glossed names used by later cosmos events (the first Moon and Sun, the Change of the World). */
   moon: string; sun: string; straightRoad: string;
+  /** The Children of Ilúvatar, as they join the Second Music. */
+  elves: string; men: string;
 }
 
 export interface Shell { mesh: THREE.Mesh; mat: THREE.ShaderMaterial; label: CSS2DObject; appear: number; strength: number }

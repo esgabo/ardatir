@@ -18,6 +18,7 @@ export async function createCosmosStage(eventId: string, labels: CosmosLabels): 
   if (eventId === 'the-silmarils-are-recovered') return (await import('./cosmosJewels')).createJewelsStage(labels);
   if (eventId === 'the-two-trees-are-rekindled') return (await import('./cosmosRekindled')).createRekindledStage(labels);
   if (eventId === 'the-mountains-of-valinor-are-levelled') return (await import('./cosmosLevelled')).createLevelledStage(labels);
+  if (eventId === 'the-second-music-of-the-ainur') return (await import('./cosmosSecondMusic')).createSecondMusicStage(labels);
   if (eventId === 'ainulindale') return createAinulindale(labels);
   // A cosmos event with no animation of its own yet: Arda at rest in its shells.
   const rest = createAinulindale(labels);

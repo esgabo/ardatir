@@ -82,6 +82,8 @@ const UI = {
   moon: { en: 'Isil · the Moon', es: 'Isil · la Luna' },
   sun: { en: 'Anar · the Sun', es: 'Anar · el Sol' },
   straightRoad: { en: 'the Straight Road', es: 'el Camino Recto' },
+  elves: { en: 'Elves', es: 'Elfos' },
+  men: { en: 'Men', es: 'Hombres' },
   // Sidebar (docs/DESIGN.md §3.3)
   navigation: { en: 'Navigation', es: 'Navegación' },
   home: { en: 'Ardatir home: the cosmos', es: 'Inicio de Ardatir: el cosmos' },
