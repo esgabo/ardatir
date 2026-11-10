@@ -3,3 +3,4 @@ name: { en: "Osgiliath", es: "Osgiliath" }
 summary:
   en: "The Citadel of the Stars, Gondor's first capital, built on both banks of the Anduin; in ruins by the War of the Ring."
   es: "La Ciudadela de las Estrellas, primera capital de Gondor, a ambos lados del Anduin; en ruinas en tiempos de la Guerra del Anillo."
+pronounce: { en: os-GIL-ee-ath, es: os-GUI-li-az }   # how to say it: syllables, the stressed one in capitals

@@ -10,7 +10,7 @@ characters: [ theoden, eomer, aragorn, legolas, gimli, erkenbrand, gandalf ]
 arcs: [ the-war-of-the-ring, the-war-in-rohan ]
 journeys: [ aragorn-legolas-and-gimlis-road, gandalf-the-whites-road ]
 tags: [ lord-of-the-rings, battle ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "Helm's Deep" }
 title: { en: "The Battle of the Hornburg", es: "La batalla del Cuernavilla" }
 summary:

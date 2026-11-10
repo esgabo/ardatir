@@ -9,7 +9,7 @@ characters: [ frodo, sam, merry, pippin, tom-bombadil, goldberry ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ the-road-to-bree ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "In the House of Tom Bombadil" }
 title: { en: "In the House of Tom Bombadil", es: "En casa de Tom Bombadil" }
 summary:

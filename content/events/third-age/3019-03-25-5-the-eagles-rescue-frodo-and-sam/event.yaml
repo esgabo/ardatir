@@ -9,7 +9,7 @@ characters: [ frodo, sam, gandalf, gwaihir ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
 journeys: [ frodo-and-sam-across-mordor, gandalf-the-whites-road ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Field of Cormallen" }
 title: { en: "The Eagles Rescue Frodo and Sam", es: "Las águilas rescatan a Frodo y a Sam" }
 summary:

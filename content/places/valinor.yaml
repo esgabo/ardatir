@@ -3,3 +3,4 @@ name: { en: "Valinor", es: "Valinor" }
 summary:
   en: "The land of the Valar in the far west, beyond the Great Sea."
   es: "La tierra de los Valar en el lejano oeste, más allá del Gran Mar."
+pronounce: { en: VA-lee-nor, es: VA-li-nor }   # how to say it: syllables, the stressed one in capitals

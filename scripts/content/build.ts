@@ -14,7 +14,9 @@ import {
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
 import { narrationHash, TEXT_HASH } from '../narration/text.ts';
+import { pronounceProblem } from '../../src/data/pronounce.ts';
 import { battlesByFaction, readArmies, readFactions, readSides } from './factions.ts';
+import { checkSources, readModel } from './models.ts';
 
 export interface BuildResult {
   index: ContentIndex;
@@ -56,6 +58,10 @@ class Report {
 
 export function buildContent(contentDir: string): BuildResult {
   const R = new Report(path.dirname(contentDir));
+  // Models live beside content/, in assets/ (docs/MODELS.md); the build copies the ones in use.
+  const assetsDir = path.join(path.dirname(contentDir), 'assets');
+  const copies: BuildResult['copies'] = [];
+  checkSources(R, assetsDir);
 
   // ---------- generic readers ----------
   const readYaml = (file: string): unknown => {
@@ -90,6 +96,18 @@ export function buildContent(contentDir: string): BuildResult {
     }
     return v as LocalizedText;
   };
+  /** How to say a hard name: `{ en, es }` respellings, each well formed (src/data/pronounce.ts). */
+  const pronounce = (file: string, v: unknown): LocalizedText | undefined => {
+    if (v === undefined) return undefined;
+    const p = text(file, v, 'pronounce');
+    if (!p) return undefined;
+    for (const [k, s] of Object.entries(p)) {
+      const why = typeof s === 'string' ? pronounceProblem(s) : undefined;
+      if (why) R.error(file, `pronounce.${k}: ${why} (write it like AR-da: syllables joined by hyphens, the stressed one in CAPITALS)`);
+    }
+    return p;
+  };
+  const say = (p: LocalizedText | undefined) => (p ? { pronounce: p } : {});
   const strList = (file: string, v: unknown, what: string): string[] => {
     if (v === undefined) return [];
     if (!Array.isArray(v) || v.some((x) => typeof x !== 'string')) { R.error(file, `${what}: must be a list of ids`); return []; }
@@ -111,7 +129,7 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'ages'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis', 'foretold'], 'age');
+    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis', 'foretold', 'pronounce'], 'age');
     const aid = id(f, o.id, ageIds, 'age');
     if (!aid) continue;
     if (typeof o.order !== 'number') R.error(f, 'order: must be a number');
@@ -129,7 +147,7 @@ export function buildContent(contentDir: string): BuildResult {
     if (foretold && o.timeless !== true) R.error(f, 'a foretold age must be timeless: what is foretold has no dates');
     ages.push({
       id: aid, order: Number(o.order), name: text(f, o.name, 'name')!, abbr: text(f, o.abbr, 'abbr', false), summary: text(f, o.summary, 'summary')!,
-      ...axis ? { axis } : {}, ...foretold ? { foretold } : {},
+      ...axis ? { axis } : {}, ...foretold ? { foretold } : {}, ...say(pronounce(f, o.pronounce)),
     });
     ageFile.set(aid, f);
   }
@@ -179,7 +197,7 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'characters'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin', 'home'], 'character');
+    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin', 'home', 'model', 'pronounce'], 'character');
     const cid = id(f, o.id, charIds, 'character');
     if (!cid) continue;
     if (typeof o.kind !== 'string') R.error(f, 'kind: required (hobbit, elf, man, ...)');
@@ -187,10 +205,11 @@ export function buildContent(contentDir: string): BuildResult {
     if (o.scale !== undefined && !(typeof o.scale === 'number' && o.scale > 0)) R.error(f, 'scale: a positive number');
     const kin = Array.isArray(o.kin) ? o.kin.filter(isObj).map((k) => ({ id: String(k.id), as: String(k.as) })) : undefined;
     if (o.home !== undefined && typeof o.home !== 'string') R.error(f, 'home: a place id');
+    const model = o.model === undefined ? undefined : readModel(R, f, o.model, 'model', assetsDir, copies, 'characters');
     characters.push({
       id: cid, name: text(f, o.name, 'name')!, kind: String(o.kind), summary: text(f, o.summary, 'summary')!,
       ...o.color ? { color: String(o.color) } : {}, ...o.scale ? { scale: Number(o.scale) } : {}, ...kin ? { kin } : {},
-      ...typeof o.home === 'string' ? { home: o.home } : {},
+      ...typeof o.home === 'string' ? { home: o.home } : {}, ...model ? { model } : {}, ...say(pronounce(f, o.pronounce)),
     });
     charFile.set(cid, f);
   }
@@ -201,11 +220,11 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'places'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'summary', 'world'], 'place');
+    keys(f, o, ['id', 'name', 'summary', 'world', 'pronounce'], 'place');
     const pid = id(f, o.id, placeIds, 'place');
     if (!pid) continue;
     const world = isObj(o.world) && typeof o.world.x === 'number' && typeof o.world.z === 'number' ? { x: o.world.x, z: o.world.z } : undefined;
-    places.push({ id: pid, name: text(f, o.name, 'name')!, summary: text(f, o.summary, 'summary')!, ...world ? { world } : {} });
+    places.push({ id: pid, name: text(f, o.name, 'name')!, summary: text(f, o.summary, 'summary')!, ...world ? { world } : {}, ...say(pronounce(f, o.pronounce)) });
   }
   // A character who stays in one place (Tom Bombadil): the time cursor shows them there between their events.
   for (const c of characters) if (c.home && !placeIds.has(c.home)) R.error(charFile.get(c.id)!, `home: unknown place "${c.home}"`);
@@ -285,7 +304,7 @@ export function buildContent(contentDir: string): BuildResult {
     const f = path.join(dir, 'event.yaml');
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'summary', 'links', 'beats', 'sides'], 'event');
+    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'pronounce', 'summary', 'links', 'beats', 'sides'], 'event');
     const eid = id(f, o.id, eventIds, 'event');
     if (!eid) continue;
     const folder = path.basename(dir);
@@ -393,7 +412,7 @@ export function buildContent(contentDir: string): BuildResult {
       summary: {
         id: eid, age: String(o.age), ...when ? { when } : {}, ...span ? { span } : {}, ...place ? { place } : {},
         characters: chars, arcs: evArcs, journeys: evJourneys, tags: strList(f, o.tags, 'tags'), status,
-        ...source ? { source } : {}, ...foretoldBy ? { foretoldBy } : {}, title: text(f, o.title, 'title')!, summary: text(f, o.summary, 'summary')!,
+        ...source ? { source } : {}, ...foretoldBy ? { foretoldBy } : {}, title: text(f, o.title, 'title')!, ...say(pronounce(f, o.pronounce)), summary: text(f, o.summary, 'summary')!,
         links, ...sides ? { sides } : {}, audio: [],
       },
     });
@@ -439,7 +458,6 @@ export function buildContent(contentDir: string): BuildResult {
 
   // ---------- staging, audio → details ----------
   const details: EventDetail[] = [];
-  const copies: BuildResult['copies'] = [];
   for (const r of raws) {
     const s = r.staging;
     if (!s) continue;
@@ -476,6 +494,9 @@ export function buildContent(contentDir: string): BuildResult {
     (Array.isArray(s.tracks) ? s.tracks : []).forEach((tr, i) => {
       if (!isObj(tr) || typeof tr.characterId !== 'string' || !Array.isArray(tr.keyframes)) { R.error(sf, `tracks[${i}]: expected { characterId, keyframes }`); return; }
       if (!r.summary.characters.includes(tr.characterId)) R.error(sf, `tracks[${i}]: "${tr.characterId}" is not in the event's characters`);
+      keys(sf, tr, ['characterId', 'keyframes', 'model'], `tracks[${i}]`);
+      // This event's own model for the character (Bilbo in a barrel), instead of their usual one.
+      const model = tr.model === undefined ? undefined : readModel(R, sf, tr.model, `tracks[${i}].model`, assetsDir, copies, 'characters');
       const kfs: Keyframe[] = [];
       let lt = -1;
       tr.keyframes.forEach((k, j) => {
@@ -485,7 +506,7 @@ export function buildContent(contentDir: string): BuildResult {
         lt = k.t;
         kfs.push({ t: k.t, x: k.x, z: k.z, ...k.action ? { action: k.action as Keyframe['action'] } : {}, ...k.thought ? { thought: text(sf, k.thought, `${what}.thought`) } : {} });
       });
-      tracks.push({ characterId: tr.characterId, keyframes: kfs });
+      tracks.push({ characterId: tr.characterId, keyframes: kfs, ...model ? { model } : {} });
     });
 
     const armies = readArmies(FC, sf, s.armies, r.summary);
@@ -731,15 +752,16 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
  */
 export function characterLanes(characterIds: string[], events: EventSummary[], journeys: Journey[], foretoldAges = new Set<string>()): Record<string, LaneEntry[]> {
   const chars = new Map(events.map((e) => [e.id, e.characters]));
+  const story = new Map(events.map((e, i) => [e.id, i]));
   const lanes: Record<string, LaneEntry[]> = {};
   for (const c of characterIds) {
     const mine = events.filter((e) => e.characters.includes(c));
-    const legs: { at: number; entry: LaneEntry }[] = [];
+    const legs: { at: number; entry: LaneEntry; after?: number }[] = [];
     for (const j of journeys) {
       if (!j.characters.includes(c)) continue;
       j.waypoints.forEach((w, i) => {
         if (w.event && chars.get(w.event)?.includes(c)) return; // that event is in the lane already
-        legs.push({ at: w.at, entry: { journey: j.id, waypoint: i } });
+        legs.push({ at: w.at, entry: { journey: j.id, waypoint: i }, after: w.event ? story.get(w.event) : undefined });
       });
     }
     legs.sort((a, b) => a.at - b.at); // stable: a journey's own order breaks ties
@@ -748,7 +770,10 @@ export function characterLanes(characterIds: string[], events: EventSummary[], j
     for (const e of mine) {
       // What is foretold comes after every journey: the lane's history ends before its prophecy.
       if (foretoldAges.has(e.age)) while (k < legs.length) lane.push(legs[k++].entry);
-      while (k < legs.length && e.at !== undefined && legs[k].at < e.at) lane.push(legs[k++].entry);
+      // A leg guessed at the same moment as the event comes first when the event it is tied to
+      // (the waypoint's `event`, one this character is not in) comes earlier in story order.
+      const si = story.get(e.id)!;
+      while (k < legs.length && e.at !== undefined && (legs[k].at < e.at || (legs[k].at === e.at && (legs[k].after ?? Infinity) < si))) lane.push(legs[k++].entry);
       lane.push({ event: e.id });
     }
     while (k < legs.length) lane.push(legs[k++].entry);

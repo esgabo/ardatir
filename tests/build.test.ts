@@ -11,12 +11,14 @@ import { nearness } from '../src/data/calendar.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
 const FIXTURE = path.join(import.meta.dirname, 'fixtures/valid/content');
+/** The fixture's models, beside its content/ (the test model: scripts/models/make-test-model.ts). */
+const ASSETS = path.join(import.meta.dirname, 'fixtures/valid/assets');
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ardatir-content-'));
 afterAll(() => fs.rmSync(tmp, { recursive: true, force: true }));
 
 type Change =
   | { file: string; replace: [string, string] }   // swap text in a fixture file (must be found)
-  | { file: string; write: string }                // add or overwrite a file
+  | { file: string; write: string | Uint8Array }   // add or overwrite a file (`../assets/…` for models)
   | { file: string; remove: true };                // delete a file
 
 const PARTY = 'events/third-age/2941-04-26-the-party';
@@ -34,11 +36,24 @@ const FORETOLD: Change[] = [
   ].join('\n') },
 ];
 
+const GANDALF = 'characters/gandalf.yaml';
+const TEST_MODEL = 'characters/test-figure/test-figure.glb';
+/** A minimal .glb around a glTF JSON (no buffers): enough for the build's checks, which read only the JSON. */
+function glb(json: object): Uint8Array {
+  let text = JSON.stringify({ asset: { version: '2.0' }, ...json });
+  while (text.length % 4) text += ' ';
+  const b = Buffer.alloc(20 + text.length);
+  b.write('glTF', 0, 'ascii'); b.writeUInt32LE(2, 4); b.writeUInt32LE(b.length, 8);
+  b.writeUInt32LE(text.length, 12); b.write('JSON', 16, 'ascii'); b.write(text, 20, 'utf8');
+  return b;
+}
+
 /** Build a copy of the valid fixture with some changes applied. */
 let n = 0;
 function buildWith(changes: Change[]): BuildResult {
   const dir = path.join(tmp, `case-${n++}`, 'content');
   fs.cpSync(FIXTURE, dir, { recursive: true });
+  fs.cpSync(ASSETS, path.join(dir, '../assets'), { recursive: true });
   for (const c of changes) {
     const f = path.join(dir, c.file);
     if ('remove' in c) fs.rmSync(f);
@@ -171,6 +186,11 @@ describe('the valid fixture', () => {
     expect(ev('the-music').atReason).toBeUndefined();
   });
 
+  it('carries how to say a name through to the index', () => {
+    expect(r.index.places.find((p) => p.id === 'rivendell')!.pronounce).toEqual({ en: 'RIV-en-del', es: 'RI-ven-del' });
+    expect(r.index.places.find((p) => p.id === 'bag-end')!.pronounce).toBeUndefined();
+  });
+
   it('keeps a character\'s home', () => {
     expect(r.index.characters.find((c) => c.id === 'bilbo')!.home).toBe('bag-end');
     expect(r.index.characters.find((c) => c.id === 'gandalf')!.home).toBeUndefined();
@@ -286,6 +306,17 @@ describe('the valid fixture', () => {
     expect(d.armies).toEqual([{ faction: 'bagginses', size: 'small', keyframes: [{ t: 0, x: -3, z: 2 }, { t: 0.5, x: -1, z: 1, action: 'walk' }] }]);
   });
 
+  it('links the test model to its character and per-event overrides, and copies it once', () => {
+    const url = 'data/models/characters/test-figure/test-figure.glb';
+    expect(r.index.characters.find((c) => c.id === 'gandalf')!.model).toBe(url);
+    expect(r.index.characters.find((c) => c.id === 'bilbo')!.model).toBeUndefined();
+    expect(r.copies.filter((c) => c.to === url)).toHaveLength(1);
+    const over = buildWith([{ file: `${PARTY}/staging.yaml`, replace: ['characterId: bilbo\n', `characterId: bilbo\n    model: ${TEST_MODEL}\n`] }]);
+    expect(over.errors).toEqual([]);
+    expect(over.details.find((x) => x.id === 'the-party')!.tracks[0].model).toBe(url);
+    expect(over.copies.filter((c) => c.to === url)).toHaveLength(1);
+  });
+
   it('reads a recording with uneven starts', () => {
     const ok = buildWith([
       { file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 1.5, tea: 14 }\n' },
@@ -294,7 +325,7 @@ describe('the valid fixture', () => {
     expect(ok.errors).toEqual([]);
     const d = ok.details.find((x) => x.id === 'the-party')!;
     expect(d.audioFiles.en).toEqual({ src: 'data/audio/the-party/en.mp3', duration: 20, starts: [1.5, 14] });
-    expect(ok.copies).toHaveLength(1);
+    expect(ok.copies.filter((c) => c.to.startsWith('data/audio/'))).toHaveLength(1);
   });
 });
 
@@ -309,6 +340,9 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'bad colour', changes: [{ file: 'characters/bilbo.yaml', replace: ['"#6a8a3a"', 'green'] }], error: 'color: use #rrggbb' },
   { name: 'unknown kin', changes: [{ file: 'characters/bilbo.yaml', write: 'id: bilbo\nname: { en: Bilbo, es: Bilbo }\nkind: hobbit\nsummary: { en: A, es: A }\nkin:\n  - { id: frodo, as: cousin }\n' }], error: 'kin: unknown character "frodo"' },
   { name: 'unknown home', changes: [{ file: 'characters/bilbo.yaml', replace: ['home: bag-end', 'home: hobbiton'] }], error: 'home: unknown place "hobbiton"' },
+  { name: 'pronunciation without a stressed syllable', changes: [{ file: 'places/rivendell.yaml', replace: ['en: RIV-en-del', 'en: riv-en-del'] }], error: 'pronounce.en: "riv-en-del": needs exactly one stressed syllable in CAPITALS' },
+  { name: 'pronunciation with stray marks', changes: [{ file: 'places/rivendell.yaml', replace: ['es: RI-ven-del', 'es: RI/ven/del'] }], error: 'pronounce.es: only letters' },
+  { name: 'pronunciation without English', changes: [{ file: 'characters/gandalf.yaml', replace: ['kind: wizard\n', 'kind: wizard\npronounce: { es: GAN-dalf }\n'] }], error: 'pronounce: needs an English text (en)' },
   { name: 'age with neither axis nor timeless', changes: [{ file: 'ages/third-age.yaml', replace: ['axis: { start: 4032 }', ''] }], error: 'needs either `timeless: true` or `axis: { start }`' },
 
   // Events: references and status
@@ -383,6 +417,15 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'recording without a timing file', changes: [{ file: `${PARTY}/audio/es.mp3`, write: '' }], error: 'recording without es.yaml' },
   { name: 'recording starts out of order', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 10, tea: 4 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: earlier than the passage before it' },
   { name: 'textHash not a hash', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\ntextHash: 12\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'textHash: expected sha256: and 16 hex digits' },
+  // Models (docs/MODELS.md)
+  { name: 'missing model', changes: [{ file: GANDALF, replace: [TEST_MODEL, 'characters/gandalf/gandalf.glb'] }], error: 'model: assets/characters/gandalf/gandalf.glb not found' },
+  { name: 'model over its budget', changes: [{ file: `../assets/${TEST_MODEL}`, write: new Uint8Array(300_001) }], error: /over the characters budget of 300 kB/ },
+  { name: 'model not a .glb path', changes: [{ file: GANDALF, replace: [TEST_MODEL, '../gandalf.gltf'] }], error: 'model: a .glb path under assets/' },
+  { name: 'character model outside characters/', changes: [{ file: GANDALF, replace: [TEST_MODEL, 'props/staff.glb'] }], error: 'model: expected a model under characters/' },
+  { name: 'model of an unknown asset type', changes: [{ file: GANDALF, replace: [TEST_MODEL, 'people/gandalf.glb'] }], error: '"people/" is not an asset type' },
+  { name: 'model that is not glTF', changes: [{ file: `../assets/${TEST_MODEL}`, write: 'not a model' }], error: 'not a binary glTF (.glb)' },
+  { name: 'model with Draco', changes: [{ file: `../assets/${TEST_MODEL}`, write: glb({ scenes: [{}], extensionsUsed: ['KHR_draco_mesh_compression'] }) }], error: 'uses KHR_draco_mesh_compression' },
+  { name: 'missing per-event model', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['characterId: bilbo\n', 'characterId: bilbo\n    model: characters/bilbo/barrel.glb\n'] }], error: 'tracks[0].model: assets/characters/bilbo/barrel.glb not found' },
   { name: 'recording start past its end', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 0, tea: 25 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: needs a second within the recording' },
 ];
 
@@ -444,6 +487,27 @@ describe('broken content', () => {
     expect(r.errors).toEqual([]);
     expect(r.warnings.some((w) => w.includes('factions/bagginses.yaml: kind: "ent" has no army look yet'))).toBe(true);
     expect(buildWith([]).warnings.some((w) => w.includes('has no army look'))).toBe(false);
+  });
+
+  it('warns about a model that is not meshopt-compressed, has extra scenes, or clips the diorama does not play', () => {
+    const r = buildWith([{ file: `../assets/${TEST_MODEL}`, write: glb({ scenes: [{}, {}], animations: [{ name: 'idle' }, { name: 'dance' }] }) }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('test-figure.glb: not meshopt-compressed'))).toBe(true);
+    expect(r.warnings.some((w) => w.includes('has 2 scenes'))).toBe(true);
+    expect(r.warnings.some((w) => w.includes('animation "dance" is not one the diorama plays'))).toBe(true);
+    expect(r.warnings.some((w) => w.includes('"idle"'))).toBe(false);
+  });
+
+  it('warns about a character model with clips but no idle', () => {
+    const r = buildWith([{ file: `../assets/${TEST_MODEL}`, write: glb({ scenes: [{}], animations: [{ name: 'walk' }] }) }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('no "idle" clip'))).toBe(true);
+  });
+
+  it('warns about a Blender source too big for git', () => {
+    const r = buildWith([{ file: '../assets/characters/test-figure/test-figure.blend', write: new Uint8Array(20_000_001) }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('test-figure.blend: 20 MB, over 20 MB for a Blender source'))).toBe(true);
   });
 
   it('warns about missing Spanish and unknown fields', () => {

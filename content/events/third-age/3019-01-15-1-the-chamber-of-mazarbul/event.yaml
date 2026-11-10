@@ -8,8 +8,8 @@ characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, borom
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
 journeys: [ the-fellowship-of-the-ring ]
 tags: [ lord-of-the-rings ]
-status: outline
-source: { book: the-fellowship-of-the-ring, chapter: "A Journey in the Dark" }
+status: scripted
+source: { book: the-fellowship-of-the-ring, chapter: "The Bridge of Khazad-dûm" }
 title: { en: "The Chamber of Mazarbul", es: "La Cámara de Mazarbul" }
 summary:
   en: "In Balin's tomb the Company reads the last pages of the dwarves' colony. Then drums sound in the deep and orcs break into the chamber."

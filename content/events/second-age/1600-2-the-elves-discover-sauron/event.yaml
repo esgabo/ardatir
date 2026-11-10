@@ -4,10 +4,10 @@ when:
   start: { age: second-age, year: 1600 }   # App. B: c. 1600
   precision: approximate
 place: ost-in-edhil
-characters: [ sauron, celebrimbor, galadriel ]
+characters: [ celebrimbor ]
 arcs: [ the-forging-of-the-rings ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
 title: { en: "The Elves discover Sauron's deceit", es: "Los Elfos descubren el engaño de Sauron" }
 summary:

@@ -5,11 +5,11 @@ when:
   start: { age: third-age, year: 3019, month: 1, day: 13 }
   precision: day
 place: moria
-characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir, gollum ]
+characters: [ frodo, sam, merry, pippin, gandalf, aragorn, legolas, gimli, boromir ]
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
 journeys: [ the-fellowship-of-the-ring ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "A Journey in the Dark" }
 title: { en: "The West-gate of Moria", es: "La Puerta Oeste de Moria" }
 summary:

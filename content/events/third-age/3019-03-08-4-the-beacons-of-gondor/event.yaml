@@ -8,7 +8,7 @@ characters: [ gandalf, pippin ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [ gandalf-the-whites-road, pippins-road-to-gondor ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "Minas Tirith" }
 title: { en: "The Beacons Are Lit", es: "Se encienden los fuegos de alarma" }
 summary:

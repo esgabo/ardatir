@@ -9,7 +9,7 @@ characters: [ eomer, ugluk, grishnakh, merry, pippin ]
 arcs: [ the-war-of-the-ring, the-war-in-rohan ]
 journeys: [ merry-and-pippins-road ]
 tags: [ lord-of-the-rings, battle ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Uruk-hai" }
 title: { en: "The Riders Destroy the Uruk-hai", es: "Los Jinetes destruyen a los Uruk-hai" }
 summary:

@@ -7,6 +7,12 @@ tracks:
     keyframes:
       - { t: 0, x: 0, z: 0, action: idle }
       - { t: 1, x: 1, z: 0, action: walk, thought: { en: So many dwarves., es: Cuántos enanos. } }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: 1.5, z: -1.5, action: talk }
+      - { t: 0.4, x: 1.5, z: -1.5, action: talk }
+      - { t: 0.8, x: -0.5, z: 0.5, action: run }
+      - { t: 1, x: -0.5, z: 0.5, action: idle }
 armies:
   - faction: bagginses
     size: small

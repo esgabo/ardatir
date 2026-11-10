@@ -7,7 +7,7 @@ place: eregion
 characters: [ sauron, gil-galad, celebrimbor ]
 arcs: [ the-forging-of-the-rings ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
 title: { en: "Sauron makes war on the Elves", es: "Sauron declara la guerra a los Elfos" }
 summary:

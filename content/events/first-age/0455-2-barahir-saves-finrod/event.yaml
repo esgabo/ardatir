@@ -3,12 +3,12 @@ age: first-age
 when:
   start: { age: first-age, year: 455 }   # during the Bragollach
   precision: year
-place: dorthonion
+place: sirion-pass   # the Fen of Serech, at the northern mouth of the Pass
 characters: [ barahir, finrod ]
 arcs: [ the-siege-of-angband ]
 tags: [ silmarillion ]
-status: outline
-source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
+status: scripted
+source: { book: the-silmarillion, chapter: "Of the Ruin of Beleriand and the Fall of Fingolfin" }
 title: { en: "Barahir saves Finrod", es: "Barahir salva a Finrod" }
 summary:
   en: "At the Fen of Serech, Barahir cuts through the orcs to rescue Finrod. In gratitude, Finrod gives him his ring and swears friendship to his house."

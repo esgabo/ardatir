@@ -10,7 +10,7 @@ characters: [ frodo, sam, gollum, shelob ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
 journeys: [ the-ring-to-mordor ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "Shelob's Lair" }
 title: { en: "Shelob's Lair", es: "La guarida de Ella-Laraña" }
 summary:

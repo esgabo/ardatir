@@ -10,7 +10,7 @@ characters: [ gandalf, frodo, sam ]
 arcs: [  ]
 journeys: [  ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "The Shadow of the Past" }
 title: { en: "Gandalf Tells Frodo About the Ring", es: "Gandalf habla a Frodo del Anillo" }
 summary:

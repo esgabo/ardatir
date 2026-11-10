@@ -17,6 +17,7 @@ import { eventHref, livesHref, timeHref } from './routes';
 import { momentOfEvent, momentPath } from './moment';
 import { foretoldBadge, foretoldLine, isForetold, sourceLabel } from './foretold';
 import { factionById, factionChip, listNodes, sidesLine } from './sides';
+import { bookPointer, infoToggle, sayHint } from './learn';
 
 export interface ReaderHost {
   lang(): Lang;
@@ -51,15 +52,27 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     h('p', { class: 'r-over' }, [tr(age?.name, L), ...arcs.map((a) => tr(a.title, L))].filter(Boolean).join('  ·  ')),
     h('h1', { class: 'r-title' }, tr(ev.title, L)),
   );
+  // How to say the title, when it is a hard name (the Ainulindalë).
+  const titleSay = sayHint(ev.pronounce, L);
+  if (titleSay) art.append(h('p', { class: 'r-say' }, titleSay));
   // Prophecy, not history: said before anything else, with who foretold it and where it comes from.
   if (foretold) art.append(h('p', { class: 'r-foretold' }, foretoldBadge(ev, L), h('span', {}, foretoldLine(ev, L))));
   const meta = h('ul', { class: 'r-meta' });
   meta.append(h('li', {}, h('span', { html: ICONS.clock }), h('span', {}, honestDate(ev, L))));
-  if (ev.place) meta.append(h('li', {}, h('span', { html: ICONS.places }), h('span', {}, placeName(ev.place, L))));
+  // Where is this? The place, how to say it, and on demand what it is.
+  const place = index.places.find((p) => p.id === ev.place);
+  let placeNote: HTMLElement | undefined;
+  if (place) {
+    const [btn, note] = infoToggle(`${S('aboutPlace')}: ${tr(place.name, L)}`, [
+      h('span', { class: 'info-name' }, tr(place.name, L)), document.createTextNode(' '), h('span', {}, tr(place.summary, L))]);
+    placeNote = note;
+    meta.append(h('li', {}, h('span', { html: ICONS.places }), h('span', {}, tr(place.name, L)), sayHint(place.pronounce, L), btn));
+  }
   const sides = sidesLine(ev, L);
   if (sides) meta.append(h('li', { class: 'r-sides' }, h('span', { html: ICONS.sides }), sides));
   if (ev.source) meta.append(h('li', {}, h('span', { html: ICONS.books }), h('span', {}, sourceLabel(ev.source, L))));
   art.append(meta);
+  if (placeNote) art.append(placeNote);
   // How the event sits on the timeline when its date isn't exact: words, never the guess as a date.
   if (ev.atReason && ev.atReason.kind !== 'exact') {
     const parts = placementParts(ev, L);
@@ -92,7 +105,7 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     for (const c of people) {
       const kind = ui(`kind_${c.kind}` as UiKey, L) || c.kind;
       ul.append(h('li', {}, h('a', { class: 'r-person', href: livesHref([c.id], L), title: S('followLife') },
-        h('span', { class: 'r-person-name' }, tr(c.name, L)), h('span', { class: 'r-person-kind' }, kind),
+        h('span', { class: 'r-person-name' }, tr(c.name, L), sayHint(c.pronounce, L)), h('span', { class: 'r-person-kind' }, kind),
         h('span', { class: 'r-person-sum' }, tr(c.summary, L)))));
     }
     const lanes = people.filter((c) => hasLane(c.id)).slice(0, MAX_LANES).map((c) => c.id);
@@ -192,6 +205,10 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     }
     art.append(box);
   }
+
+  // ---- In the books: where to read it, gently ----
+  const ptr = bookPointer(ev, L, 'book-ptr r-book');
+  if (ptr) art.append(h('section', { class: 'r-section' }, heading(S('inTheBooks')), ptr));
 
   // ---- Before and after, in story order ----
   const i = index.events.findIndex((e) => e.id === ev.id);

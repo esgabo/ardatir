@@ -1,0 +1,14 @@
+stage: cosmos
+duration: 66
+narration:
+  aman: 0
+  song: 0.22
+  telperion: 0.42
+  laurelin: 0.62
+  mingling: 0.8
+beats:
+  aman: 0.03
+  song: 0.22
+  telperion: 0.43
+  laurelin: 0.62
+  mingling: 0.81

@@ -10,7 +10,7 @@ characters: [ treebeard, merry, pippin ]
 arcs: [ the-war-of-the-ring, the-war-in-rohan ]
 journeys: [ merry-and-pippins-road ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "Treebeard" }
 title: { en: "The Entmoot", es: "La Asamblea de los Ents" }
 summary:

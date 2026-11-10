@@ -9,7 +9,7 @@ characters: [ nazgul, fatty-bolger ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 # Told afterwards, at Rivendell, in "Flight to the Ford".
 source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
 title: { en: "The Riders at Crickhollow", es: "Los Jinetes en Cricava" }

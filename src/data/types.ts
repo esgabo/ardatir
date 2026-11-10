@@ -66,6 +66,8 @@ export interface Age {
    * it shows one (docs/DESIGN.md §4.8).
    */
   foretold?: boolean;
+  /** How to say a hard name (`ee-LOO-va-tar`), per language: data/pronounce.ts, docs/DESIGN.md §3.5. */
+  pronounce?: LocalizedText;
 }
 
 export interface Kin {
@@ -91,6 +93,13 @@ export interface Character {
    * shows them there when no journey of theirs covers the moment, within the span of their events.
    */
   home?: string;
+  /**
+   * The character's glTF model, as a URL under the site root (`data/models/characters/bilbo/bilbo.glb`),
+   * from `model:` (a path under assets/). Without one, the diorama draws the placeholder figure.
+   */
+  model?: string;
+  /** How to say a hard name (`ee-LOO-va-tar`), per language: data/pronounce.ts, docs/DESIGN.md §3.5. */
+  pronounce?: LocalizedText;
 }
 
 export interface Place {
@@ -99,6 +108,8 @@ export interface Place {
   summary: LocalizedText;
   /** Position on Ardatir's own world map, once it exists. */
   world?: { x: number; z: number };
+  /** How to say a hard name (`ee-LOO-va-tar`), per language: data/pronounce.ts, docs/DESIGN.md §3.5. */
+  pronounce?: LocalizedText;
 }
 
 /**
@@ -225,6 +236,8 @@ export interface EventSummary {
   /** In a foretold age: who foretells it (a character id, e.g. Mandos), when the source names one. */
   foretoldBy?: string;
   title: LocalizedText;
+  /** How to say the title, when it is a hard name (the Ainulindalë). */
+  pronounce?: LocalizedText;
   summary: LocalizedText;
   links: EventLink[];
   /**
@@ -252,6 +265,8 @@ export interface Keyframe {
 export interface Track {
   characterId: string;
   keyframes: Keyframe[];
+  /** This event's model for the character, overriding `Character.model` (same URL form). */
+  model?: string;
 }
 
 export const ARMY_SIZES = ['small', 'medium', 'large'] as const;

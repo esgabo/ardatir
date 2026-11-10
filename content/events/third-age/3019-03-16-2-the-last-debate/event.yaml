@@ -8,7 +8,7 @@ characters: [ aragorn, gandalf, imrahil, eomer ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [ gandalf-the-whites-road, aragorn-legolas-and-gimlis-road ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Last Debate" }
 title: { en: "The Last Debate", es: "El último debate" }
 summary:

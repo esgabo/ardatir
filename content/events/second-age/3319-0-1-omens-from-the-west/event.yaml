@@ -7,7 +7,7 @@ place: armenelos
 characters: [ ar-pharazon, sauron ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "Omens from the West", es: "Presagios del Oeste" }
 summary:

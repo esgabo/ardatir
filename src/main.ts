@@ -14,7 +14,7 @@ import { sidesLine } from './sides';
 import { linkedEvents, sameTime } from './related';
 import { likelyParts, whyToggle } from './placement';
 import { MAX_LANES, PHONE_QUERY, renderLanes } from './lanes';
-import { eventHref, livesHref, parseRoute, timeHref, type Route } from './routes';
+import { eventHref, livesHref, parseRoute, startHref, timeHref, type Route } from './routes';
 import { DEFAULT_MOMENT, momentOfEvent, momentPath, parseMoment } from './moment';
 import { fitZoom, ZOOMS, type Zoom } from './timeAxis';
 import { momentHref, renderTime, resolveMoment, type TimeState } from './timeCursor';
@@ -22,6 +22,8 @@ import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
 import type { Stage } from './scene/stage';
+import { Opening, openingSeen } from './opening';
+import { renderLearn, sayHint } from './learn';
 import './style.css';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -46,6 +48,7 @@ const timeHrefFor = (e: EventSummary) => timeHref(momentPath(momentOfEvent(e, in
 
 /** Update the URL in place (no history entry) to what is on screen. */
 function writeRoute(): void {
+  if (opening.open) { history.replaceState(null, '', startHref(state.lang)); return; } // the opening is #/start
   if (page) { history.replaceState(null, '', pageHref(page)); return; }
   if (!state.event) return;
   history.replaceState(null, '', eventHref(state.event.id, state.lang, {
@@ -116,6 +119,7 @@ async function buildStage(event: EventDetail): Promise<Stage> {
     return createCosmosStage(event.id, {
       ambar: L('ambar'), vista: L('vista'), ilmen: L('ilmen'),
       vaiya: L('vaiya'), walls: L('walls'), kuma: L('kuma'),
+      moon: L('moon'), sun: L('sun'), straightRoad: L('straightRoad'),
     });
   }
   const { createDioramaStage } = await import('./scene/dioramaStage');
@@ -254,6 +258,9 @@ function applyRoute(r: Route): void {
     rememberLang(state.lang);
     if (state.event) stageStale = true; // labels and names are baked into the stage
   }
+  // The opening over the cosmos (a first visit, or "Start here"); any other route takes it down.
+  if (r.kind === 'start') { startOpening(); return; }
+  if (opening.open) opening.hide();
   if (r.kind === 'lives') {
     laneIds = r.with.filter((id) => index.characters.some((c) => c.id === id)).slice(0, MAX_LANES);
     showPage({ kind: 'lives', ids: laneIds });
@@ -294,7 +301,7 @@ function applyRoute(r: Route): void {
   void loadStage({
     id,
     view: () => ({ t: target ? r.t ?? 0 : 0, selected: target ? r.follow ?? null : null }),
-    onSwitch: () => { state.playing = false; closeMeanwhile(); },
+    onSwitch: () => { state.playing = false; closeMeanwhile(); closeLearn(); },
   });
 }
 
@@ -305,6 +312,7 @@ function showPage(p: Page): void {
   page = p;
   state.playing = false;
   closeMeanwhile();
+  closeLearn();
   document.body.classList.add('page-open');
   renderPage();
   if (!same) pageEl.scrollTop = 0;
@@ -387,6 +395,7 @@ const sidebar = new Sidebar($('sidebar'), {
 function setLang(lang: Lang): void {
   state.lang = lang;
   rememberLang(lang);
+  opening.refresh();
   if (page) {
     // The page redraws now; the stage underneath (labels and names baked in) when it is next shown.
     renderPage();
@@ -451,12 +460,18 @@ function renderStatic(): void {
   prevBtn.disabled = i <= 0;
   nextBtn.disabled = i < 0 || i >= list.length - 1;
   meanwhileBtn.innerHTML = `${ICONS.clock}<span>${L_('meanwhile')}</span>`;
+  learnBtn.innerHTML = `${ICONS.info}<span>${L_('aboutScene')}</span>`; learnBtn.setAttribute('aria-label', L_('aboutScene'));
+  if (!learnPanel.hidden) openLearn(); // redrawn in the new language, or for the new event
   renderCrumbs(state.event.age, state.event.arcs, tr(state.event.title, L));
   renderZoom(state.event.stage === 'cosmos' ? 'cosmos' : 'event');
   if (state.event.stage !== 'cosmos') lastDiorama = state.event.id;
   sidebar.render();
 
+  paintFold();
   $('event-title').textContent = tr(state.event.title, L);
+  const say = sayHint(state.event.pronounce, L);
+  $('event-say').replaceChildren(...say ? [say] : []);
+  $('event-say').hidden = !say;
   $('event-date').textContent = honestDate(state.event, L);
   $('event-summary').textContent = tr(state.event.summary, L);
   const sides = sidesLine(state.event, L);
@@ -528,6 +543,7 @@ function layoutBeats(): void {
 
 new ResizeObserver(() => layoutBeats()).observe(beatsEl);
 
+let selSayKey = '';
 function updateDynamic(): void {
   const L = state.lang;
   if (beatEls.length && currentBeat((state.event.beats ?? []).map((b) => b.t), state.t) !== beatCurrent) layoutBeats();
@@ -544,8 +560,19 @@ function updateDynamic(): void {
   const panel = $('selection-panel');
   const info = state.selected ? stage.info?.(state.selected, state.t) : null;
   panel.hidden = !info;
+  // The panels on the right never cover the selection card: they shrink to the space below it.
+  const below = info ? panel.getBoundingClientRect().bottom + 8 : 68;
+  for (const el of [learnPanel, meanwhilePanel]) el.style.maxHeight = info ? `${Math.max(120, innerHeight - 96 - below)}px` : '';
   if (info) {
     $('sel-title').textContent = info.title;
+    // How to say their name: rebuilt only when the selection or the language changes.
+    const sayKey = `${state.selected}|${L}`;
+    if (selSayKey !== sayKey) {
+      selSayKey = sayKey;
+      const say = sayHint(characterMap.get(state.selected!)?.pronounce, L);
+      $('sel-say').replaceChildren(...say ? [say] : []);
+      $('sel-say').hidden = !say;
+    }
     $('sel-subtitle').textContent = info.subtitle ?? '';
     $('sel-body').textContent = info.body;
     $('sel-thought').textContent = info.thought ?? '';
@@ -655,10 +682,92 @@ meanwhileBtn.addEventListener('click', () => {
   meanwhileBtn.setAttribute('aria-expanded', String(open));
 });
 
+// ---------- About this scene: who, where, before and after, the books (learn.ts) ----------
+const learnBtn = $<HTMLButtonElement>('learn');
+const learnPanel = $('learn-panel');
+function closeLearn(): void {
+  learnPanel.hidden = true;
+  learnBtn.setAttribute('aria-expanded', 'false');
+}
+function openLearn(): void {
+  renderLearn(learnPanel, state.event, {
+    lang: () => state.lang,
+    // A name selects that character on the stage, when the stage has them; else their life opens.
+    select: (id) => {
+      if (!stage.info?.(id, state.t)) return false;
+      if (matchMedia(PHONE_QUERY).matches) closeLearn(); // on a phone the panel would cover the card
+      state.selected = id;
+      stage.select?.(id);
+      writeRoute();
+      updateDynamic();
+      return true;
+    },
+  });
+  learnPanel.hidden = false;
+  learnBtn.setAttribute('aria-expanded', 'true');
+}
+learnBtn.addEventListener('click', () => {
+  if (learnPanel.hidden) { closeMeanwhile(); openLearn(); } else closeLearn();
+});
+meanwhileBtn.addEventListener('click', closeLearn); // one panel at a time
+
+// ---------- The opening (opening.ts): a first visit's welcome, or #/start ----------
+/** Where "Follow a story" begins: The Hobbit's first scene. */
+const storyStart = () => eventById('unexpected-party')?.id ?? index.events.find((e) => e.source?.book === 'the-hobbit')?.id ?? homeId() ?? '';
+const opening = new Opening($('opening'), {
+  lang: () => state.lang,
+  seek: (t) => { if (!state.event) return; seekTo(t); if (!state.playing) setPlaying(true); },
+  toggleLang: () => setLang(LANGS[(LANGS.indexOf(state.lang) + 1) % LANGS.length]),
+  storyHref: () => eventHref(storyStart(), state.lang),
+  timeHref: () => timeHref(undefined, state.lang),
+  lifeHref: () => livesHref(['bilbo'], state.lang),
+  lifeName: () => tr(characterMap.get('bilbo')?.name, state.lang),
+  closed: () => {
+    writeRoute(); // back to the cosmos' own route
+    if (!state.event) return;
+    renderStatic();
+    resize();
+    const h1 = $('event-title');
+    h1.tabIndex = -1;
+    h1.focus({ preventScroll: true });
+  },
+});
+
+/** Open the opening over the cosmos, with the Ainulindalë playing from its first moment. */
+function startOpening(): void {
+  const id = homeId();
+  if (!id) return;
+  focusHeading = false; // the opening takes focus itself
+  closeMeanwhile();
+  closeLearn();
+  sidebar.setDrawer(false);
+  opening.show();
+  if (state.event?.id === id && !pending) {
+    if (page) hidePage();
+    state.selected = null;
+    state.t = 0;
+    state.playing = true;
+    if (stageStale) { void loadStage(); return; } // the language changed under a page: rebuild (it seeks to state.t)
+    playhead = 0;
+    stage.select?.(null);
+    renderStatic();
+    resize();
+    writeRoute();
+    return;
+  }
+  if (pending?.id === id) return;
+  void loadStage({ id, view: () => ({ t: 0, selected: null }), onSwitch: () => { closeMeanwhile(); closeLearn(); state.playing = true; } });
+}
+
 addEventListener('keydown', (e) => {
   const tgt = e.target as HTMLElement;
-  if (e.code === 'Escape') { closeMeanwhile(); sidebar.setDrawer(false); }
-  if (e.code === 'Space' && !page && stage && !tgt.closest('input, textarea, select, button, a')) { e.preventDefault(); setPlaying(!state.playing); }
+  if (e.code === 'Escape') {
+    // Closing a panel that holds focus would drop it to the page: hand it back to the button.
+    const inLearn = learnPanel.contains(tgt), inMeanwhile = meanwhilePanel.contains(tgt);
+    closeMeanwhile(); closeLearn(); sidebar.setDrawer(false);
+    if (inLearn) learnBtn.focus(); else if (inMeanwhile) meanwhileBtn.focus();
+  }
+  if (e.code === 'Space' && !page && stage && !opening.open && !tgt.closest('input, textarea, select, button, a, #opening')) { e.preventDefault(); setPlaying(!state.playing); }
 });
 addEventListener('hashchange', () => { focusHeading = true; applyRoute(parseRoute()); });
 
@@ -682,18 +791,26 @@ function resize(): void {
   const w = viewport.clientWidth || innerWidth, h = viewport.clientHeight || innerHeight;
   renderer.setSize(w, h);
   labelRenderer.setSize(w, h);
-  stage.resize(w, h, cardInset());
-}
-/** How far the event card reaches into the stage from the left, on a desktop (0 on phones or when hidden). */
-function cardInset(): number {
-  const card = $('event-panel');
-  if (!matchMedia('(min-width: 721px)').matches || card.hidden || !card.getClientRects().length) return 0;
-  return Math.max(0, card.getBoundingClientRect().right - viewport.getBoundingClientRect().left);
+  stage.resize(w, h);
 }
 addEventListener('resize', () => { if (stage) resize(); });
-const sizes = new ResizeObserver(() => { if (stage) resize(); });
-sizes.observe(viewport);
-sizes.observe($('event-panel'));
+new ResizeObserver(() => { if (stage) resize(); }).observe(viewport);
+
+// The event card folds down to its title and date (desktop); remembered per visitor.
+const eventCard = $('event-panel');
+const eventFold = $('event-fold');
+function paintFold(): void {
+  const folded = eventCard.classList.contains('folded');
+  eventFold.setAttribute('aria-expanded', String(!folded));
+  eventFold.setAttribute('aria-label', ui(folded ? 'expandCard' : 'collapseCard', state.lang));
+  eventFold.innerHTML = ICONS.chevron;
+}
+try { if (localStorage.getItem('ardatir.cardFolded') === '1') eventCard.classList.add('folded'); } catch { /* storage unavailable */ }
+eventFold.addEventListener('click', () => {
+  const folded = eventCard.classList.toggle('folded');
+  try { localStorage.setItem('ardatir.cardFolded', folded ? '1' : '0'); } catch { /* storage unavailable */ }
+  paintFold();
+});
 
 const flash = $('flash');
 const frameClock = new THREE.Clock();
@@ -712,7 +829,8 @@ function frame(): void {
   }
   narration.sync(playhead, state.playing);
   renderNarration();
-  stage.update(state.t, ambient);
+  stage.update(state.t, ambient, clock.duration);
+  opening.sync(state.t);
   flash.style.opacity = String(stage.flash?.(state.t) ?? 0);
   controls.update();
   renderer.render(stage.scene, stage.camera);
@@ -723,8 +841,10 @@ function frame(): void {
 async function start(): Promise<void> {
   await loadIndex();
   // A staged event (or the cosmos) loads its stage, which starts the frame loop; any other
-  // event opens its page, and no stage loads until one is needed.
-  applyRoute(route);
+  // event opens its page, and no stage loads until one is needed. A first visit to the front
+  // door opens with the opening (docs/DESIGN.md §3.5); deep links are never interrupted.
+  const frontDoor = route.kind === 'event' && !route.eventId;
+  applyRoute(frontDoor && !openingSeen() ? { kind: 'start', lang: route.lang } : route);
 }
 start().catch(showLoadError);
 

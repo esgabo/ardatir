@@ -8,7 +8,7 @@ characters: [ sam, rosie, frodo ]
 arcs: [ the-war-of-the-ring, after-the-war ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Grey Havens" }
 title: { en: "Sam Marries Rosie", es: "Sam se casa con Rosita" }
 summary:

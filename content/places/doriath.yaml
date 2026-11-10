@@ -3,3 +3,4 @@ name: { en: "Doriath", es: "Doriath" }
 summary:
   en: "The hidden forest-kingdom of Thingol and Melian, guarded by the Girdle."
   es: "El reino oculto en el bosque de Thingol y Melian, protegido por la Cintura."
+pronounce: { en: DOR-ee-ath, es: DO-ri-az }   # how to say it: syllables, the stressed one in capitals

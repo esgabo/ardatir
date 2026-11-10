@@ -1,0 +1,13 @@
+stage: cosmos
+duration: 64
+narration:
+  invasion: 0
+  plea: 0.22
+  change: 0.36
+  round: 0.58
+  straight-road: 0.79
+beats:
+  invasion: 0.03
+  change: 0.37
+  round: 0.58
+  straight-road: 0.8

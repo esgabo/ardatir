@@ -7,7 +7,7 @@ place: valinor
 characters: [ finwe ]
 arcs: [ the-great-journey ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Eldamar and the Princes of the Eldalië" }
 title: { en: "The Vanyar and Noldor reach Valinor", es: "Los Vanyar y los Noldor llegan a Valinor" }
 summary:

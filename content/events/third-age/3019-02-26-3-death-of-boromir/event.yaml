@@ -8,7 +8,7 @@ characters: [ boromir, aragorn, merry, pippin, ugluk ]
 arcs: [ the-war-of-the-ring, the-fellowship-of-the-ring ]
 journeys: [ the-fellowship-after-moria, boromirs-road, merry-and-pippins-road ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Departure of Boromir" }
 title: { en: "The Death of Boromir", es: "La muerte de Boromir" }
 summary:

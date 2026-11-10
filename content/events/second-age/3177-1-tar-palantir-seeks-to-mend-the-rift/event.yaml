@@ -1,15 +1,15 @@
 id: tar-palantir-seeks-to-mend-the-rift
 age: second-age
 when:
-  start: { age: second-age, year: 3177 }   # his reign begins in SA 3177; the repentance follows
+  start: { age: second-age, year: 3177 }   # UT: Tar-Palantír takes the sceptre in 3177; App. B dates his repentance to 3175
   precision: approximate
 place: numenor
 characters: [ tar-palantir, tar-miriel ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
-title: { en: "Tar-Palantir seeks to mend the rift", es: "Tar-Palantir intenta reparar la ruptura" }
+title: { en: "Tar-Palantír seeks to mend the rift", es: "Tar-Palantír intenta reparar la ruptura" }
 summary:
   en: "The new king repents of his ancestors' pride and tries to return the Faithful to honour. His brother Gimilkhâd leads the King's Men against him, and the shadow only deepens."
   es: "El nuevo rey se arrepiente del orgullo de sus antepasados e intenta devolver su honor a los Fieles. Su hermano Gimilkhâd encabeza a los Hombres del Rey contra él, y la sombra solo se hace más profunda."

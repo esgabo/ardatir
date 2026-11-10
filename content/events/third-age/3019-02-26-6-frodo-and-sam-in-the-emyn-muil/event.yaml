@@ -8,7 +8,7 @@ characters: [ frodo, sam ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
 journeys: [ through-the-emyn-muil ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Taming of Sméagol" }
 title: { en: "Frodo and Sam Enter the Emyn Muil", es: "Frodo y Sam entran en las Emyn Muil" }
 summary:

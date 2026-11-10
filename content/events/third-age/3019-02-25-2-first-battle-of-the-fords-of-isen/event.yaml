@@ -8,7 +8,7 @@ characters: [ theodred ]
 arcs: [ the-war-of-the-ring, the-war-in-rohan ]
 journeys: [  ]
 tags: [ lord-of-the-rings, battle ]
-status: outline
+status: scripted
 source: { book: the-lord-of-the-rings, chapter: "Appendix B" }
 title: { en: "The First Battle of the Fords of Isen", es: "La primera batalla de los Vados del Isen" }
 summary:

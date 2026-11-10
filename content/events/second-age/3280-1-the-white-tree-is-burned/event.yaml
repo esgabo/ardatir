@@ -7,7 +7,7 @@ place: armenelos
 characters: [ sauron, ar-pharazon ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "The White Tree Nimloth is burned", es: "Se quema el Blanco Árbol Nimloth" }
 summary:

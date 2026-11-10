@@ -19,6 +19,7 @@ npm run preview    # serve dist/ at http://localhost:4173
 npm run content    # validate content/ and write public/data/ (dev and build also do this)
 npm test           # vitest: calendar, best guesses, event clock, armies, content validation (tests/)
 npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event>, --lang es, --changed)
+npm run model:pack -- <export.glb> characters/<id>/<id>.glb   # meshopt-compress a Blender export into assets/ (docs/MODELS.md)
 ```
 
 Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
@@ -33,6 +34,7 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Low-poly faceted diorama style** | Faceted terrain with cut earth sides; characters and trees slightly higher-poly than terrain. |
 | **Film-like proportions, simplified faces** for characters | Low-poly with enough detail to look good; no enlarged heads; faces kept simple, expression through posture and animation. Relative heights come from `Character.scale`. |
 | **Characters modelled in Blender, exported as glTF**, with shared rigs per body type | The look the project needs can't come from code primitives. Today's figures and terrain are placeholders (`docs/DESIGN.md` §9). |
+| **Models in `assets/`, meshopt-compressed `.glb`, within a size budget; no Git LFS** (`assets/characters/<id>/<id>.glb`, `.blend` beside it, never deployed; `model:` on characters, per-event on tracks) | GitHub Pages doesn't serve LFS, so models live in git and must stay small (characters ≤ 300 kB, kits ≤ 800 kB, props ≤ 100 kB: `MODEL_BUDGETS` in `scripts/content/models.ts`). Meshopt over Draco: a smaller decoder. The placeholder figure stays while loading or without a model. Export settings and conventions in [`docs/MODELS.md`](docs/MODELS.md). Decided 2026-11-09 (#20). |
 | **Start with *The Hobbit*** for event dioramas | First book to cover end to end. |
 | **English default, Spanish second** | Every content text is `LocalizedText` (`{ en, es? }`); `en` is required. |
 | **Narration = our own script**, shown on screen in sync with the animation and optional audio | Audio files are provided per event and language; how they are produced is outside this project (the author uses a Voice Studio in a homelab). |
@@ -49,6 +51,7 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Factions are one file per side** (`content/factions/`: name, banner colour, kind, summary, leaders), reused across battles; a battle's `sides` are groups of allied factions; staging places `armies` (faction, size, keyframes) as blocks of small figures in the faction's colour | Pages and the time cursor can say who fought whom, battles are findable by faction, and a diorama can show hosts without giving every soldier a track. Named characters keep their own tracks and lead them. One being who comes alone (Beorn) is a character, a host (the Eagles) a faction. See `docs/DESIGN.md` §2 (battles) and §4.9. Decided 2026-11-09 (#18). |
 | **The time cursor is a page at a readable moment** (`#/time/third-age/3019-03-15`, `…/3019`, `…/before-time`): the ages as log-width segments (timeless ones apart, before the axis) and a finer scale down to a day; likely / possibly by `nearnessDuring`; whereabouts from journeys by company, honest first | Ages differ a hundredfold in length, so each needs room; a moment is said exactly as precisely as it was picked; "somewhere between" when the sources allow several stops, with our guess labelled. See `docs/DESIGN.md` §3.1. Decided 2026-11-09. |
 | **What is foretold is its own timeless age, after the Fourth Age** (`content/ages/foretold.yaml`, `foretold: true`): the Dagor Dagorath and the Second Music, never on the dated axis; every event in it cites its `source` and may name who foretold it (`foretoldBy`); marked as prophecy wherever it appears (a *Foretold* badge, *Foretold by Mandos, not told as history. Source: …* on its page, a dashed segment after the axis) | Prophecy must never read as history. The flag lives on the age so no event can forget it. We tell the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*, *The Lost Road*), one scene per event, so its strongest moments can each be animated. See `docs/DESIGN.md` §4.8. Decided 2026-11-09 (#57). |
+| **Wonder and learning** (#29): a first visit to the front door opens with a short guided opening over the Ainulindalë (`#/start`), then three ways in (a story, a moment, a life); skippable at once, shown once per visitor (localStorage), reopened from the sidebar's *Start here*. Hard names carry `pronounce: { en, es }` in the *AR-da* style; the stage has *About this scene*; event pages point to the book and chapter | A newcomer needs a door and a hand, not a control panel; nothing else appears unasked. Respellings per language, because English and Spanish readers sound letters differently. See `docs/DESIGN.md` §3.5. Decided 2026-11-09. |
 
 ## Architecture
 
@@ -56,16 +59,21 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 content/             THE SOURCE OF TRUTH (YAML); see content/README.md
   ages/ characters/ places/ arcs/ journeys/ factions/   (factions: sides in battles)
   events/<age>/<sort-key>-<id>/  event.yaml, narration.yaml, staging.yaml, audio/<lang>.{mp3,yaml}
+assets/              models: characters/<id>/<id>.glb (+ .blend source), kits/<kit>/, props/<id>/; see docs/MODELS.md
 scripts/content/
   build.ts           load + validate content/, place on the time axis, reverse links, lookups, character lanes
   factions.ts        factions, a battle's `sides` and its staging `armies` (read and checked for build.ts); byFaction
+  models.ts          `model:` paths: exists, loadable .glb, MODEL_BUDGETS per asset type; copies into public/data/models/
+scripts/models/
+  pack.ts            `npm run model:pack`: gltfpack (meshopt) a Blender export into assets/, with the budget
+  make-test-model.ts writes the fixture's test model (tests/fixtures/valid/assets/): tests only, never real content
   cli.ts             `npm run content`
 tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
 scripts/narration/
   export.ts          `npm run narration:export`: scripts per event and language for the Voice Studio
   text.ts            a passage's text per language and the `textHash` that marks a recording stale
 vite.config.ts       runs the content build on start (fails `npm run build` on errors) and on change in dev
-public/data/         GENERATED (gitignored): index.json, events/<id>.json, scripts/<id>.json, audio/<id>/<lang>.mp3
+public/data/         GENERATED (gitignored): index.json, events/<id>.json, scripts/<id>.json, audio/<id>/<lang>.mp3, models/<path>.glb
 src/
   data/types.ts      the compiled data model the site loads (EventSummary, EventDetail, ContentIndex)
   data/calendar.ts   the shared time axis: dates → spans, precision, overlaps (used by build and site)
@@ -78,7 +86,11 @@ src/
   scene/cosmos.ts    the cosmos stage: picks the event's animation; the Ainulindalë
   scene/cosmosWorld.ts   what every cosmos event shares: the Void, Arda's shells, stars, lights, camera
   scene/cosmosLamps.ts   the Spring of Arda: the two Lamps, Almaren, their fall (its own chunk)
-  scene/dioramaStage.ts, diorama.ts, figure.ts   event dioramas
+  scene/cosmosTrees.ts, cosmosSunMoon.ts, cosmosBeleriand.ts, cosmosRound.ts   the Two Trees, the first Moon and Sun, Beleriand drowned, the world made round (each its own chunk)
+  scene/cosmosLands.ts   what those four share: the map on the slab by age, the bendable Slab, forests, the Two Trees
+  scene/dioramaStage.ts, diorama.ts, figure.ts   event dioramas (figure.ts: the placeholder, swapped for a model by useModel)
+  scene/models.ts    glTF models: GLTFLoader + meshopt, cached per URL, scaled to Character.scale, clips set from t (its own chunk)
+  scene/modelClips.ts   which clip plays for a pose, and its time at t: pure, tested
   scene/armies.ts    a battle's armies: instanced blocks of small figures in their faction's colour, banners (pure in t)
   sidebar.ts         the collapsible sidebar: rail + panel views built from the index
   reader.ts          an event's page, for events that can't be watched yet (DESIGN §3.4)
@@ -95,6 +107,10 @@ src/
   related.ts         an event's links and what overlaps it, likely vs possibly (Meanwhile, event pages)
   placement.ts       a best guess in words: how an event is placed (from atReason), why another is "likely"
   foretold.ts        what is foretold (DESIGN §4.8): is an event prophecy, its badge, "Foretold by …, not told as history. Source: …"
+  opening.ts         the first visit's opening over the cosmos (#/start): its steps in t, remembered per visitor (DESIGN §3.5)
+  learn.ts           learning on demand: how to say a name (sayHint), "Read this in …" (bookPointer), the stage's "About this scene"
+  books.ts           chapter titles in each language (The Hobbit by number, the rest by English title), "Read this in …": pure, tested
+  data/pronounce.ts  `pronounce` respellings: their form (checked by the build) and syllables for display: pure, tested
   dom.ts, icons.ts   a tiny element builder; inline stroke SVG icons
   main.ts            app shell: routing, pages vs stage, playback loop, panels, breadcrumb, zoom switch, Meanwhile
 ```
@@ -106,6 +122,7 @@ src/
 - **Narration timing:** `staging.yaml` gives each passage's `t` (where it belongs in the animation); `audio/<lang>.yaml` gives the second it starts in that recording, keyed by passage id. The build turns both into ordered arrays, and the clock stretches the animation between those points.
 - **Recordings carry a `textHash`** of the words they read (`audio/<lang>.yaml`); the build warns when `narration.yaml` no longer matches. Editing a recorded passage means re-recording it.
 - **The URL is the state**: `#/event/<id>?t=&follow=&lang=` (a staged event's stage, any other event's page), `#/lives?with=a,b` (character lanes), `#/time/<age>/<date>?zoom=&from=` (the time cursor; `<date>` is `3019`, `3019-03`, `3019-03-15`, `3019-midyear`, `2941-summer`, or an axis position). New view state that matters should be added to the route (`src/routes.ts`); in-site links are plain hrefs from there.
+- **Models play from `t` too.** A glTF's clips are driven by an `AnimationMixer` whose clip times are *set* from `t` (`clipTime` in `scene/modelClips.ts`) and applied with `update(0)`; never let a mixer run free on the wall clock. `scene/models.ts` is loaded with a dynamic `import()` only when an event has a model.
 - **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.
@@ -129,6 +146,8 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 - **Cite, don't quote:** `source: { book, chapter }` is for checking accuracy.
 - **Narration passages** are short (one to three sentences) and placed at the animation moment they describe. Keep the beat markers (`beats`) aligned with them.
 - **Every text needs `en`**; add `es` alongside it when writing new content.
+- **Hard names get `pronounce: { en, es }`** (characters, places, ages; events whose title is a name): `ee-LOO-va-tar` / `i-LÚ-va-tar`, syllables joined by hyphens, the stressed one in capitals, one per word. Each language respells for its own readers.
+- **A chapter cited by name** needs its Spanish title in `src/books.ts` (a test checks); The Hobbit's chapters are cited by number.
 
 ## IP rules (fan project)
 
@@ -140,10 +159,10 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 
 ## Checking work
 
-- `npm run content` must show `✓ content is valid`, and `npm run build` must pass (it typechecks, then fails on content errors).
+- `npm run content` must show `✓ content is valid`, and `npm run build` must pass (it typechecks, then fails on content errors) with no chunk over its budget (`chunkBudgets` in `vite.config.ts`: 500 kB, three.js 600 kB).
 - `npm test` must pass; the deploy workflow runs it before building. New validation rules get a broken case in `tests/build.test.ts` (each one a small change to the fixture in `tests/fixtures/valid/content/`), and date math gets a case in `tests/calendar.test.ts`.
 - After adding content, check the warnings too: missing Spanish, characters in no event, events outside their journey's dates, a sort key that contradicts the dates, a best guess that lands before what it follows.
-- For visual changes, look at the result: run `npm run preview` and screenshot key moments with Playwright, e.g. `#/event/ainulindale?t=0.25`, `?t=0.48`, `?t=0.72`, `?t=0.97`, and `#/event/roast-mutton?t=0.45&follow=bilbo&lang=es`. Headless Chromium needs `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader` for WebGL.
+- For visual changes, look at the result: run `npm run preview` and screenshot key moments with Playwright (on a fresh profile a visit to `#/` shows the opening; `#/start` reopens it), e.g. `#/event/ainulindale?t=0.25`, `?t=0.48`, `?t=0.72`, `?t=0.97`, and `#/event/roast-mutton?t=0.45&follow=bilbo&lang=es`. Headless Chromium needs `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader` for WebGL.
 - When touching `eventClock.ts`, check that a recording with uneven `starts` still lands each passage on its `t`, and that the playhead reaches `t = 1` at the recording's `duration` (`tests/eventClock.test.ts` covers both).
 - Don't commit test audio or placeholder recordings.
 

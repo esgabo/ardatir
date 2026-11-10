@@ -11,7 +11,7 @@ characters: [ gandalf, tom-bombadil ]
 arcs: [ after-the-war ]
 journeys: [ gandalf-goes-to-bombadil ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "Homeward Bound" }
 title: { en: "Gandalf Goes to Talk with Bombadil", es: "Gandalf va a hablar con Bombadil" }
 summary:

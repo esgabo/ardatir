@@ -3,3 +3,4 @@ name: { en: "Barad-dûr", es: "Barad-dûr" }
 summary:
   en: "The Dark Tower, Sauron's fortress in Mordor."
   es: "La Torre Oscura, fortaleza de Sauron en Mordor."
+pronounce: { en: BA-rad DOOR, es: BA-rad DUR }   # how to say it: syllables, the stressed one in capitals

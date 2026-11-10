@@ -1,13 +1,13 @@
 id: the-shadow-falls-on-numenor
 age: second-age
 when:
-  start: { age: second-age, year: 2251 }   # App. B 2251; UT gives Tar-Atanamir's reign as 2029–2221
+  start: { age: second-age, year: 2251 }   # App. B: Tar-Atanamir takes the sceptre in 2251 and the division begins; UT's Line of Elros gives his reign as 2029–2221; we follow the Appendices
   precision: approximate
 place: numenor
 characters: [  ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "The shadow falls on Númenor", es: "La sombra cae sobre Númenor" }
 summary:

@@ -9,7 +9,8 @@ import { fold, h } from './dom';
 import { shortDate } from './format';
 import { foretoldBadge } from './foretold';
 import { hasLane, laneColor, MAX_LANES } from './lanes';
-import { eventHref, livesHref, timeHref } from './routes';
+import { eventHref, livesHref, startHref, timeHref } from './routes';
+import { sayHint } from './learn';
 import { momentLabel } from './format';
 import { momentOfEvent, parseMoment } from './moment';
 import { MOMENTS } from './moments';
@@ -148,12 +149,16 @@ export class Sidebar {
     const panel = h('div', { class: 'sb-panel' });
     const close = h('button', { type: 'button', class: 'sb-close', 'data-fk': 'close', 'aria-label': this.L('closeMenu'), html: ICONS.close });
     close.addEventListener('click', () => this.setDrawer(false));
+    // The opening again (opening.ts): the welcome a first visit sees, for anyone who wants it.
+    const start = h('a', { class: 'sb-start', href: startHref(L), 'data-fk': 'start', title: this.L('startHereHint') },
+      h('span', { html: ICONS.star }), this.L('startHere'));
+    start.addEventListener('click', () => { this.drawer = false; });
     const input = h('input', { type: 'search', 'data-fk': 'search', placeholder: this.L('search'), 'aria-label': this.L('search'), value: this.query }) as HTMLInputElement;
     input.value = this.query;
     input.addEventListener('input', () => { this.query = input.value; this.renderBody(); });
     panel.append(
       h('header', { class: 'sb-head' },
-        h('div', { class: 'sb-brand' }, h('div', { class: 'wordmark' }, 'Ardatir'), h('div', { class: 'tagline' }, this.L('tagline'))),
+        h('div', { class: 'sb-brand' }, h('div', { class: 'wordmark' }, 'Ardatir'), h('div', { class: 'tagline' }, this.L('tagline')), start),
         close),
       h('label', { class: 'sb-search', html: ICONS.search }, input),
       h('div', { class: 'sb-title' }, h('span', {}, this.L(`title_${this.view}` as UiKey)), h('span', { class: 'rule' }), h('span', { class: 'diamond' })),
@@ -320,7 +325,8 @@ export class Sidebar {
     return this.group(`char:${c.id}`, [
       h('span', { class: 'who' }, h('span', { class: 'who-name' }, tr(c.name, L)), h('span', { class: 'who-kind' }, kind)),
     ], () => {
-      const box = h('div', { class: 'who-body' }, h('p', {}, tr(c.summary, L)));
+      const say = sayHint(c.pronounce, L);
+      const box = h('div', { class: 'who-body' }, say && h('p', { class: 'who-say' }, say), h('p', {}, tr(c.summary, L)));
       if (c.kin?.length) {
         const kin = h('p', { class: 'kin' }, `${this.L('kinOf')}: `);
         c.kin.forEach((k, i) => {
@@ -428,7 +434,7 @@ export class Sidebar {
     for (const p of places) {
       ul.append(this.group(`place:${p.id}`, [
         h('span', { class: 'who' }, h('span', { class: 'who-name' }, tr(p.name, L)), h('span', { class: 'who-kind' }, String(index.byPlace[p.id].length))),
-      ], () => h('div', { class: 'who-body' }, h('p', {}, tr(p.summary, L)), this.eventList(index.byPlace[p.id]))));
+      ], () => { const say = sayHint(p.pronounce, L); return h('div', { class: 'who-body' }, say && h('p', { class: 'who-say' }, say), h('p', {}, tr(p.summary, L)), this.eventList(index.byPlace[p.id])); }));
     }
     return ul;
   }
