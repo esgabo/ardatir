@@ -15,6 +15,7 @@ import {
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
 import { narrationHash, TEXT_HASH } from '../narration/text.ts';
+import type { Lexicon } from '../narration/pronounce.ts';
 
 export interface BuildResult {
   index: ContentIndex;
@@ -28,6 +29,8 @@ export interface BuildResult {
   copies: { from: string; to: string }[];
   /** Every narrator, with the voices that validated (content/narrators/). */
   narrators: Narrator[];
+  /** content/pronunciation.yaml: how unusual names are said, per language. */
+  pronunciation: Lexicon;
 }
 
 const REVERSE: Record<LinkType, LinkType> = {
@@ -142,6 +145,24 @@ export function buildContent(contentDir: string): BuildResult {
       if (ok) voices[lang as Lang] = v as unknown as NarratorVoice;
     }
     narrators.push({ id: nid, brief: text(f, o.brief, 'brief')!, voices });
+  }
+
+  // ---------- pronunciation (content/pronunciation.yaml): name → respelling, per language ----------
+  const pronunciation: Lexicon = {};
+  const pf = path.join(contentDir, 'pronunciation.yaml');
+  if (fs.existsSync(pf)) {
+    const o = readYaml(pf) ?? {};
+    if (!isObj(o)) R.error(pf, 'expected a mapping of languages');
+    else for (const [lang, names] of Object.entries(o)) {
+      if (!(LANGS as readonly string[]).includes(lang)) { R.error(pf, `pronunciation: unknown language "${lang}"`); continue; }
+      if (!isObj(names)) { R.error(pf, `pronunciation.${lang}: expected name: respelling`); continue; }
+      const m: Record<string, string> = {};
+      for (const [name, say] of Object.entries(names)) {
+        if (typeof say !== 'string' || !say.trim()) R.error(pf, `pronunciation.${lang}.${name}: must be text`);
+        else m[name] = say;
+      }
+      pronunciation[lang as Lang] = m;
+    }
   }
 
   // ---------- ages ----------
@@ -603,7 +624,7 @@ export function buildContent(contentDir: string): BuildResult {
 
   return {
     index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes },
-    details, scripts, narrators, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
+    details, scripts, narrators, pronunciation, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
   };
 }
 

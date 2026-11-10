@@ -379,6 +379,24 @@ describe('broken content', () => {
     });
   });
 
+  describe('pronunciation', () => {
+    it('loads the list', () => {
+      const r = buildWith([{ file: 'pronunciation.yaml', write: 'en: { "Eä": "EH-ah" }\n' }]);
+      expect(r.errors).toEqual([]);
+      expect(r.pronunciation).toEqual({ en: { 'Eä': 'EH-ah' } });
+    });
+
+    it('respellings must be text', () => {
+      const r = buildWith([{ file: 'pronunciation.yaml', write: 'en: { Eä: 5 }\n' }]);
+      expect(r.errors.some((e) => e.includes('pronunciation.en.Eä: must be text')), r.errors.join('\n')).toBe(true);
+    });
+
+    it('only known languages', () => {
+      const r = buildWith([{ file: 'pronunciation.yaml', write: 'fr: { Eä: "E-a" }\n' }]);
+      expect(r.errors.some((e) => e.includes('pronunciation: unknown language "fr"')), r.errors.join('\n')).toBe(true);
+    });
+  });
+
   describe('textHash', () => {
     // The fixture's English script, as narration.yaml has it.
     const hash = narrationHash([

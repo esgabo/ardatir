@@ -1,0 +1,12 @@
+# How unusual names are said, per language: name as written → respelling.
+# The narration pipeline swaps these into the text it sends to the Voice Studio
+# (whole words, case-sensitive). Changing an entry re-records the passages that use it.
+# `# unheard` marks a respelling no one has listened to yet (narration voices plan, Task 9).
+#
+# Common names the voice already says well (Bilbo, Gandalf, Thorin, Shire) need no entry.
+en:
+  Ilúvatar: "ee-LOO-vah-tar"   # unheard; candidate A said it well as written
+  Ainur: "EYE-noor"            # unheard; candidate A said it well as written
+  Melkor: "MEL-kor"            # unheard; candidate A said it well as written
+  Eä: "AY-ah"                  # unheard; as written, candidate A said a single "E"
+  Arda: "AR-dah"               # unheard
