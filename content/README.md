@@ -102,6 +102,8 @@ tracks:
       - { t: 0, x: -4, z: 3, action: walk, thought: { en: ..., es: ... } }
 ```
 
+A track may give the character this event's own model, `model: characters/bilbo/bilbo-barrel.glb` (next to `characterId`), instead of their usual one (`docs/MODELS.md`).
+
 The tile runs about -7 to 7 on both axes. A figure whose position is off the tile (say `x: 11, z: 11`) is not drawn: off the tile = offstage. Use it to wait out the scenes before an entrance. A figure moving between two `hide` keyframes stays hidden (it is not shown walking).
 
 ## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`
@@ -162,7 +164,10 @@ scale: 1.85                          # height relative to a hobbit
 kin:
   - { id: turin, as: cousin }
 home: old-forest                     # optional: a place they stay in (see below)
+model: characters/tuor/tuor.glb      # optional: their glTF model, a path under assets/ (docs/MODELS.md)
 ```
+
+`model` points to an export in `assets/characters/`; the build checks that it exists and fits the budget (300 kB), and copies it into the site. Without one, the diorama draws the placeholder figure in `color`, `scale` tall.
 
 `home` is for characters who don't travel: Tom Bombadil stays in his own country (save his trip to Maggot's in a hobbit rhyme). Between their first and last events (honest ranges), when no journey of theirs covers the moment, the time cursor shows them *in their own country* at that place, in a quiet "At home" group. It must be a known place id. Travellers don't need it: their journeys say where they are.
 

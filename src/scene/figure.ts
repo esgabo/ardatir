@@ -1,9 +1,14 @@
 import * as THREE from 'three';
 import type { Character } from '../data/types';
+import { disposeTree } from './util';
+
+/** Height of the placeholder figure at `Character.scale` 1; a glTF model is scaled to match. */
+export const FIGURE_HEIGHT = 0.82;
 
 /**
- * Placeholder low-poly figure with film-like proportions (small head, long body),
- * until real rigged glTF models replace it.
+ * Placeholder low-poly figure with film-like proportions (small head, long body). Stands in
+ * for a character without a glTF model, and for one whose model is still loading
+ * (`useModel` swaps it out).
  */
 export function createFigure(character: Character): THREE.Group {
   const s = character.scale ?? 1;
@@ -21,7 +26,10 @@ export function createFigure(character: Character): THREE.Group {
   body.position.y = 0.24 * s + bodyH / 2;
   const head = new THREE.Mesh(new THREE.IcosahedronGeometry(0.075 * s, 0), skin);
   head.position.y = 0.24 * s + bodyH + 0.08 * s;
-  fig.add(legs, body, head);
+  const placeholder = new THREE.Group();
+  placeholder.name = 'placeholder';
+  placeholder.add(legs, body, head);
+  fig.add(placeholder);
 
   // Selection ring, hidden until the character is picked.
   const ring = new THREE.Mesh(
@@ -36,6 +44,16 @@ export function createFigure(character: Character): THREE.Group {
 
   fig.traverse((o) => { if (o instanceof THREE.Mesh && o !== ring) o.castShadow = true; });
   return fig;
+}
+
+/** Replace the placeholder with a loaded model (already scaled); the selection ring stays. */
+export function useModel(fig: THREE.Group, model: THREE.Object3D): void {
+  const placeholder = fig.getObjectByName('placeholder');
+  if (placeholder) {
+    fig.remove(placeholder);
+    disposeTree(placeholder);
+  }
+  fig.add(model);
 }
 
 export function setSelected(fig: THREE.Object3D, on: boolean): void {
