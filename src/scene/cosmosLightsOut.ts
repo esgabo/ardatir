@@ -104,7 +104,8 @@ export function createLightsOutStage(labels: CosmosLabels): Stage {
   hemi.groundColor.set('#141a26');
 
   const sunLabel = nameLabel(world, labels.sun), moonLabel = nameLabel(world, labels.moon);
-  sunLabel.position.copy(SUN_AT).setY(SUN_AT.y + 0.85);
+  // Below the Sun and a little to the west, clear of the event card above it.
+  sunLabel.position.copy(SUN_AT).addScaledVector(W, 0.35).setY(SUN_AT.y - 0.62);
   moonLabel.position.copy(MOON_AT).setY(MOON_AT.y + 0.7);
   const morgothLabel = nameLabel(world, 'Morgoth', '');
   const earendilLabel = nameLabel(world, 'Eärendil');
@@ -114,6 +115,19 @@ export function createLightsOutStage(labels: CosmosLabels): Stage {
   const smokeDark = new THREE.Color('#020104'), smokeEdge = new THREE.Color('#0d0610');
   const ember = new THREE.Color('#ff5a26'), white = new THREE.Color('#f4f8ff'), gold = new THREE.Color('#ffc860'), silver = new THREE.Color('#dfe8ff');
   const night = new THREE.Color('#5d68a8'), day = new THREE.Color('#fff1da');
+  const SUN_LIT = new THREE.Color('#ffd77a'), SUN_DEAD = new THREE.Color('#140b09');
+  const MOON_LIT = new THREE.Color('#e8eeff'), MOON_DEAD = new THREE.Color('#121219');
+  const DARK_SEA = new THREE.Color('#16243a'), SUN_RAY = new THREE.Color('#ffe6bc');
+  const AIR_LIT = new THREE.Color('#9fd8ff'), AIR_DARK = new THREE.Color('#5a5f90');
+  const ARMS = [[SUN_AT, 33], [MOON_AT, 34]] as const;
+  // Per-frame inputs for the callbacks below, made once so no closure is built per frame.
+  let frameT = 0, lit = 0, starGleam = 0;
+  const trailAt = (s: number, out: THREE.Vector3) => (frameT < T.strike ? diveAt(s, out) : out.copy(head));
+  const paintWorld = (f: number, col: THREE.Color) => {
+    pale(col, 0.16);
+    col.multiplyScalar(0.62 + 0.38 * lit + 0.2 * starGleam);
+    if (globe.water[f]) col.lerp(DARK_SEA, 0.4 * (1 - lit));
+  };
 
   /** Where Morgoth's shadow is at t. */
   const shadowAt = (t: number, out: THREE.Vector3) => {
@@ -133,14 +147,15 @@ export function createLightsOutStage(labels: CosmosLabels): Stage {
     scene, camera, target,
 
     update(t, ambient) {
+      frameT = t;
       // --- the lights of heaven, and their going out ---
       const sunOn = 1 - ramp(t, T.sunOut[0], T.sunOut[1]);
       const moonOn = 1 - ramp(t, T.moonOut[0], T.moonOut[1]);
       const sunDying = pulse(t, T.sunOut[0] - 0.03, T.sunOut[0] + 0.03, T.sunOut[1]);
       const moonDying = pulse(t, T.moonOut[0] - 0.03, T.moonOut[0] + 0.03, T.moonOut[1]);
       const flick = (k: number) => 1 - k * 0.45 * (0.5 + 0.5 * Math.sin(ambient * 23)) * (0.5 + 0.5 * Math.sin(ambient * 37 + 1));
-      sunMat.color.set('#140b09').lerp(c.set('#ffd77a'), sunOn);
-      moonMat.color.set('#121219').lerp(c.set('#e8eeff'), moonOn);
+      sunMat.color.copy(SUN_DEAD).lerp(SUN_LIT, sunOn);
+      moonMat.color.copy(MOON_DEAD).lerp(MOON_LIT, moonOn);
       Glows.set(sunGlow, SUN_AT, 1.6, sunOn * 0.95 * flick(sunDying));
       Glows.set(sunHalo, SUN_AT, 5.5, sunOn * 0.42 * flick(sunDying));
       Glows.set(moonGlow, MOON_AT, 1.1, moonOn * 0.8 * flick(moonDying));
@@ -201,12 +216,12 @@ export function createLightsOutStage(labels: CosmosLabels): Stage {
         sPos[i * 3 + 1] = M.y + r * Math.cos(ph) * 0.75 + 0.15 * Math.sin(ambient * 0.4 + s);
         sPos[i * 3 + 2] = M.z + r * Math.sin(ph) * Math.sin(th) * 1.3;
         c.copy(smokeDark).lerp(smokeEdge, h3);
-        sCol.set([c.r, c.g, c.b], i * 3);
+        sCol[i * 3] = c.r; sCol[i * 3 + 1] = c.g; sCol[i * 3 + 2] = c.b;
       }
       smokeMat.opacity = 0.8 * come * (1 - 0.6 * broken) * (1 - ramp(t, 0.9, 0.98));
       smoke.visible = smokeMat.opacity > 0.01;
       // Arms: from the shadow to each light, curling, then drawn back.
-      for (const [goal, seed] of [[SUN_AT, 33], [MOON_AT, 34]] as const) {
+      for (const [goal, seed] of ARMS) {
         for (let a = 0; a < ARM; a++, i++) {
           const q = a / ARM;
           const along = q * reach;
@@ -217,7 +232,7 @@ export function createLightsOutStage(labels: CosmosLabels): Stage {
           v3.y += (hash(a, 2, seed) - 0.5) * w;
           v3.z += (hash(a, 3, seed) - 0.5) * w;
           v3.toArray(sPos, i * 3);
-          sCol.set([smokeDark.r, smokeDark.g, smokeDark.b], i * 3);
+          sCol[i * 3] = smokeDark.r; sCol[i * 3 + 1] = smokeDark.g; sCol[i * 3 + 2] = smokeDark.b;
           // Drawn back in, an arm is just more of the smoke.
           if (reach <= 0.02) sPos.copyWithin(i * 3, (a + (seed - 33) * ARM) * 3, (a + (seed - 33) * ARM) * 3 + 3);
         }
@@ -231,9 +246,9 @@ export function createLightsOutStage(labels: CosmosLabels): Stage {
       for (let e = 0; e < EMBER; e++, j++) {
         const h1 = hash(e, 1, 35), h2 = hash(e, 2, 35), h3 = hash(e, 3, 35);
         const th = h1 * Math.PI * 2 - ambient * 0.12, ph = Math.acos(2 * h2 - 1), r = (0.2 + 1.3 * h3) * size;
-        lPos.set([M.x + r * Math.sin(ph) * Math.cos(th) * 1.3, M.y + r * Math.cos(ph) * 0.7, M.z + r * Math.sin(ph) * Math.sin(th) * 1.3], j * 3);
+        lPos[j * 3] = M.x + r * Math.sin(ph) * Math.cos(th) * 1.3; lPos[j * 3 + 1] = M.y + r * Math.cos(ph) * 0.7; lPos[j * 3 + 2] = M.z + r * Math.sin(ph) * Math.sin(th) * 1.3;
         const b = emberK * (0.15 + 0.85 * Math.max(0, Math.sin(ambient * (1 + h3 * 2) + e))) * 0.45 * (h2 > 0.55 ? 1 : 0.3);
-        lCol.set([ember.r * b, ember.g * b, ember.b * b], j * 3);
+        lCol[j * 3] = ember.r * b; lCol[j * 3 + 1] = ember.g * b; lCol[j * 3 + 2] = ember.b * b;
       }
       Glows.set(emberGlow, M, 3 * size, 0.05 * emberK);
       // Sparks shed by the dying Sun and Moon, falling away.
@@ -244,36 +259,32 @@ export function createLightsOutStage(labels: CosmosLabels): Stage {
         const from = sunSide ? SUN_AT : MOON_AT;
         const life = clamp01(dying * 1.4 - h3 * 0.4);
         const ang = h1 * Math.PI * 2, rr = 0.2 + life * (0.6 + h2 * 1.2);
-        lPos.set([from.x + Math.cos(ang) * rr, from.y - life * life * 1.6 + Math.sin(ang) * rr * 0.6, from.z + Math.sin(ang) * rr * 0.6], j * 3);
+        lPos[j * 3] = from.x + Math.cos(ang) * rr; lPos[j * 3 + 1] = from.y - life * life * 1.6 + Math.sin(ang) * rr * 0.6; lPos[j * 3 + 2] = from.z + Math.sin(ang) * rr * 0.6;
         const b = Math.sin(life * Math.PI) * 0.8;
         c.copy(sunSide ? gold : silver).multiplyScalar(b);
-        lCol.set([c.r, c.g, c.b], j * 3);
+        lCol[j * 3] = c.r; lCol[j * 3 + 1] = c.g; lCol[j * 3 + 2] = c.b;
       }
-      fillTrail(lPos, lCol, j, TRAIL, Math.min(1, diveE), 0.45, (s, out) => (t < T.strike ? diveAt(s, out) : out.copy(head)), white, flame * (t < T.strike ? 1.1 : 0.35), ambient, t < T.strike ? 0.12 : 0.6, 37);
+      fillTrail(lPos, lCol, j, TRAIL, Math.min(1, diveE), 0.45, trailAt, white, flame * (t < T.strike ? 1.1 : 0.35), ambient, t < T.strike ? 0.12 : 0.6, 37);
       j += TRAIL;
       const bt = ramp(t, T.strike, T.strike + 0.12);
       for (let b = 0; b < BURST; b++, j++) {
         const h1 = hash(b, 1, 38), h2 = hash(b, 2, 38), h3 = hash(b, 3, 38);
         const th = h1 * Math.PI * 2, ph = Math.acos(2 * h2 - 1), r = bt * (1 + 2.6 * h3);
-        lPos.set([M.x + r * Math.sin(ph) * Math.cos(th), M.y + r * Math.cos(ph), M.z + r * Math.sin(ph) * Math.sin(th)], j * 3);
+        lPos[j * 3] = M.x + r * Math.sin(ph) * Math.cos(th); lPos[j * 3 + 1] = M.y + r * Math.cos(ph); lPos[j * 3 + 2] = M.z + r * Math.sin(ph) * Math.sin(th);
         const k = (t > T.strike ? 1 : 0) * (1 - bt) * 0.9;
-        lCol.set([white.r * k, white.g * k, white.b * k], j * 3);
+        lCol[j * 3] = white.r * k; lCol[j * 3 + 1] = white.g * k; lCol[j * 3 + 2] = white.b * k;
       }
       lGeo.attributes.position.needsUpdate = true;
       lGeo.attributes.color.needsUpdate = true;
       lGeo.computeBoundingSphere();
 
       // --- the world below: lit, then dark as before the first sunrise, then a white gleam ---
-      const lit = Math.max(sunOn, 0.45 * moonOn);
-      const starGleam = starOn * (0.25 + 0.75 * flame) * (1 - 0.5 * ramp(t, T.back[0], T.back[1]));
-      globe.update(0, (f, col) => {
-        pale(col, 0.16);
-        col.multiplyScalar(0.62 + 0.38 * lit + 0.2 * starGleam);
-        if (globe.water[f]) col.lerp(c.set('#16243a'), 0.4 * (1 - lit));
-      });
+      lit = Math.max(sunOn, 0.45 * moonOn);
+      starGleam = starOn * (0.25 + 0.75 * flame) * (1 - 0.5 * ramp(t, T.back[0], T.back[1]));
+      globe.update(0, paintWorld);
       sun.position.copy(SUN_AT);
       sun.target.position.copy(CENTRE);
-      sun.color.set('#ffe6bc');
+      sun.color.copy(SUN_RAY);
       sun.intensity = 1.5 * sunOn;
       moonLight.position.copy(MOON_AT);
       moonLight.target.position.copy(CENTRE);
@@ -294,12 +305,13 @@ export function createLightsOutStage(labels: CosmosLabels): Stage {
 
       // --- sky ---
       starMat.opacity = (0.35 + 0.5 * (1 - lit)) * (0.85 + 0.15 * Math.sin(ambient * 2));
-      shells.forEach((sh, si) => {
+      for (let si = 0; si < shells.length; si++) {
+        const sh = shells[si];
         sh.mat.uniforms.uOpacity.value = si < 2 ? 0 : sh.strength * (0.35 + 0.35 * lit);
         sh.mesh.visible = si >= 2;
-      });
+      }
       airMat.uniforms.uOpacity.value = 0.12 + 0.3 * lit + 0.12 * starGleam;
-      (airMat.uniforms.uColor.value as THREE.Color).set('#9fd8ff').lerp(c.set('#5a5f90'), 1 - lit);
+      (airMat.uniforms.uColor.value as THREE.Color).copy(AIR_LIT).lerp(AIR_DARK, 1 - lit);
       dream.update(ambient);
       glows.face(camera);
     },

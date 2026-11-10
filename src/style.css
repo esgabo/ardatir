@@ -242,6 +242,12 @@ blockquote:empty { display: none; }
   text-shadow: 0 1px 8px #000, 0 0 2px #000; pointer-events: none;
 }
 .caption .unspoken { opacity: 0.35; transition: opacity 0.2s; }
+/* The foretold scenes grow bright (the Trees' light over the land): a soft dark haze behind the words. */
+body.foretold-stage .caption {
+  padding: 10px 18px; border-radius: 24px;
+  background: radial-gradient(ellipse at center, rgba(8, 7, 20, 0.55) 0%, rgba(8, 7, 20, 0.38) 60%, rgba(8, 7, 20, 0) 100%);
+  text-shadow: 0 1px 10px #000, 0 0 3px #000, 0 0 1px #000;
+}
 
 .timeline {
   position: fixed; z-index: 5; left: calc(var(--sb) + var(--gap)); right: var(--gap); bottom: 26px;

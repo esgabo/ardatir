@@ -52,7 +52,7 @@ export function createJewelsStage(labels: CosmosLabels): Stage {
   };
   const SEA_UP = SEA.clone().addScaledVector(seaDir, 0.7).addScaledVector(upish, 1.1);
   const FIRE_UP = FIRE.clone().addScaledVector(fireDir, 0.7).addScaledVector(upish, 1.2);
-  const SKY = CENTRE.clone().addScaledVector(face, 3.5).addScaledVector(upish, 7.5).addScaledVector(side, -3.5);
+  const SKY = CENTRE.clone().addScaledVector(face, 3.5).addScaledVector(upish, 5.6).addScaledVector(side, -3.5); // low enough that Vingilot clears the breadcrumb
   const GIVE = CENTRE.clone().addScaledVector(face, 1.2).addScaledVector(upish, R + 2.3).addScaledVector(side, 0.9);
 
   const ship = new THREE.Mesh(shipGeo('#f4f1ea', '#ffffff'), new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true }));
@@ -111,6 +111,7 @@ export function createJewelsStage(labels: CosmosLabels): Stage {
   const GIVEN = GIVE.clone().addScaledVector(upish, -0.5);
   const hot = new THREE.Color('#ff6a1e'), goldSeam = new THREE.Color('#ffd27a'), white = new THREE.Color('#f4f8ff');
   const sea = new THREE.Color('#cfeaff'), ember = new THREE.Color('#ff8a3a'), fresh = new THREE.Color('#7fd05a');
+  const DIM_SKY = new THREE.Color('#9aa2d6'), NEW_SKY = new THREE.Color('#efe9ff');
 
   /** Vingilot's path: down out of the sky to where the jewel is given, then away. */
   const shipAt = (t: number, out: THREE.Vector3) => {
@@ -121,29 +122,33 @@ export function createJewelsStage(labels: CosmosLabels): Stage {
     return out.lerp(SKY, a * a);
   };
 
+  // Per-frame inputs for the paint callback, made once so no closure is built per frame.
+  let crack = 0, renew = 0, goldLeft = 0, riftK = 0;
+  const paintWorld = (f: number, col: THREE.Color, glow: THREE.Color) => {
+    pale(col, 0.22 - 0.1 * renew);
+    if (!globe.water[f]) col.lerp(fresh, 0.18 * renew);
+    col.multiplyScalar(0.7 + 0.3 * renew);
+    const k = globe.crack[f];
+    if (k > 0) glow.copy(hot).multiplyScalar(k * crack * 0.9).add(c.copy(goldSeam).multiplyScalar(k * goldLeft));
+    if (riftK > 0) {
+      const d = globe.dir;
+      const dot = d[f * 3] * fireDir.x + d[f * 3 + 1] * fireDir.y + d[f * 3 + 2] * fireDir.z;
+      const near = clamp01((dot - 0.985) / 0.013);
+      if (near > 0) glow.add(c.copy(hot).multiplyScalar(near * riftK * 0.8));
+    }
+  };
+
   return {
     scene, camera, target,
 
     update(t, ambient) {
       // --- the Earth broken and made again ---
-      const crack = ramp(t, T.crack[0], T.crack[1]) * (1 - ramp(t, T.cool[0], T.cool[1]));
+      crack = ramp(t, T.crack[0], T.crack[1]) * (1 - ramp(t, T.cool[0], T.cool[1]));
       const part = PART * ramp(t, T.part[0], T.part[1]) * (1 - ramp(t, T.close[0], T.close[1]));
-      const renew = ramp(t, T.renew[0], T.renew[1]);
-      const goldLeft = 0.25 * pulse(t, T.cool[0], T.cool[1], 0.5);
-      const riftK = pulse(t, T.rift[0], T.rift[1], T.rift[2]);
-      globe.update(part, (f, col, glow) => {
-        pale(col, 0.22 - 0.1 * renew);
-        if (!globe.water[f]) col.lerp(fresh, 0.18 * renew);
-        col.multiplyScalar(0.7 + 0.3 * renew);
-        const k = globe.crack[f];
-        if (k > 0) glow.copy(hot).multiplyScalar(k * crack * 0.9).add(c.copy(goldSeam).multiplyScalar(k * goldLeft));
-        if (riftK > 0) {
-          const d = globe.dir;
-          const dot = d[f * 3] * fireDir.x + d[f * 3 + 1] * fireDir.y + d[f * 3 + 2] * fireDir.z;
-          const near = clamp01((dot - 0.985) / 0.013);
-          if (near > 0) glow.add(c.copy(hot).multiplyScalar(near * riftK * 0.8));
-        }
-      });
+      renew = ramp(t, T.renew[0], T.renew[1]);
+      goldLeft = 0.25 * pulse(t, T.cool[0], T.cool[1], 0.5);
+      riftK = pulse(t, T.rift[0], T.rift[1], T.rift[2]);
+      globe.update(part, paintWorld);
       core.visible = part > 0.002;
       const inner = Math.max(part / PART, 0.4 * crack);
       Glows.set(coreGlow, CENTRE, 7 * (0.6 + 0.4 * inner), 0.55 * inner);
@@ -151,12 +156,13 @@ export function createJewelsStage(labels: CosmosLabels): Stage {
       // --- the jewel from the sea ---
       const rise1 = ramp(t, T.sea[0], T.sea[1]);
       jewels[0].set(pos0.lerpVectors(SEA, SEA_UP, rise1), ramp(t, T.sea[0], T.sea[0] + 0.03), ambient, 1, 0);
-      rings.forEach((m, i) => {
+      for (let i = 0; i < rings.length; i++) {
+        const m = rings[i];
         const k = clamp01((t - T.ripple[0] - i * 0.025) / (T.ripple[1] - T.ripple[0] - 0.05));
         m.scale.setScalar(0.05 + k * 0.7);
         (m.material as THREE.MeshBasicMaterial).opacity = 0.6 * Math.sin(k * Math.PI);
         m.visible = k > 0 && k < 1;
-      });
+      }
       Glows.set(seaGlow, SEA, 1.5, 0.45 * pulse(t, T.ripple[0], T.sea[0] + 0.02, T.sea[1] + 0.05));
 
       // --- the jewel from the fire under the earth ---
@@ -185,7 +191,7 @@ export function createJewelsStage(labels: CosmosLabels): Stage {
       const g = ramp(t, T.gather[0], T.gather[1]);
       if (g > 0) {
         const turn = 0.6 * (t - T.gather[0]);
-        jewels.forEach((j, i) => j.set(ps[i].lerp(home(i, turn, p), g), 1, ambient, 1 + 0.15 * g, i));
+        for (let i = 0; i < 3; i++) jewels[i].set(ps[i].lerp(home(i, turn, p), g), 1, ambient, 1 + 0.15 * g, i);
       }
       Glows.set(together, TOGETHER, 5, 0.25 * ramp(t, T.gather[1] - 0.05, 1));
 
@@ -197,7 +203,7 @@ export function createJewelsStage(labels: CosmosLabels): Stage {
         p.copy(pos0).addScaledVector(seaDir, -life * 0.9 * rise1).addScaledVector(side, (h2 - 0.5) * 0.2);
         p.toArray(pPos, i * 3);
         const b = pulse(t, T.sea[0], T.sea[0] + 0.04, T.sea[1] + 0.06) * (1 - life) * 0.7;
-        pCol.set([sea.r * b, sea.g * b, sea.b * b], i * 3);
+        pCol[i * 3] = sea.r * b; pCol[i * 3 + 1] = sea.g * b; pCol[i * 3 + 2] = sea.b * b;
       }
       for (let e = 0; e < EMBERS; e++, i++) {
         const h1 = hash(e, 1, 62), h2 = hash(e, 2, 62), h3 = hash(e, 3, 62);
@@ -205,9 +211,9 @@ export function createJewelsStage(labels: CosmosLabels): Stage {
         p.copy(FIRE).addScaledVector(fireDir, life * (0.4 + 1.2 * rise2)).addScaledVector(side, (h2 - 0.5) * 0.35 * (1 - life * 0.5)).addScaledVector(upish, (h3 - 0.5) * 0.3);
         p.toArray(pPos, i * 3);
         const b = riftK * Math.sin(life * Math.PI) * 0.8;
-        pCol.set([ember.r * b, ember.g * b, ember.b * b], i * 3);
+        pCol[i * 3] = ember.r * b; pCol[i * 3 + 1] = ember.g * b; pCol[i * 3 + 2] = ember.b * b;
       }
-      fillTrail(pPos, pCol, i, WAKE, t, 0.06, (s, out) => shipAt(s, out), white, shipOn * 0.6 * (t < T.give[0] ? 1 : 0.4), ambient, 0.15, 63);
+      fillTrail(pPos, pCol, i, WAKE, t, 0.06, shipAt, white, shipOn * 0.6 * (t < T.give[0] ? 1 : 0.4), ambient, 0.15, 63);
       i += WAKE;
       for (let s = 0; s < SEAM; s++, i++) {
         const f = seamFaces[Math.floor(hash(s, 1, 64) * seamFaces.length)];
@@ -217,7 +223,7 @@ export function createJewelsStage(labels: CosmosLabels): Stage {
         p.set(d[f * 3], d[f * 3 + 1], d[f * 3 + 2]).multiplyScalar(R * (1.01 + life * 0.25)).add(CENTRE).addScaledVector(piece, part);
         p.toArray(pPos, i * 3);
         const b = crack * Math.sin(life * Math.PI) * 0.8;
-        pCol.set([hot.r * b, hot.g * b, hot.b * b], i * 3);
+        pCol[i * 3] = hot.r * b; pCol[i * 3 + 1] = hot.g * b; pCol[i * 3 + 2] = hot.b * b;
       }
       pGeo.attributes.position.needsUpdate = true;
       pGeo.attributes.color.needsUpdate = true;
@@ -231,14 +237,15 @@ export function createJewelsStage(labels: CosmosLabels): Stage {
 
       // --- light: dim after the battle, then the soft light of the world made new ---
       const light = 0.55 + 0.45 * renew + 0.15 * g;
-      hemi.color.set('#9aa2d6').lerp(c.set('#efe9ff'), renew);
+      hemi.color.copy(DIM_SKY).lerp(NEW_SKY, renew);
       hemi.intensity = 0.4 + 0.45 * light;
       key.intensity = 0.9 * light;
       starMat.opacity = 0.6 * (0.85 + 0.15 * Math.sin(ambient * 2));
-      shells.forEach((sh, si) => {
+      for (let si = 0; si < shells.length; si++) {
+        const sh = shells[si];
         sh.mat.uniforms.uOpacity.value = si < 2 ? 0 : sh.strength * 0.55;
         sh.mesh.visible = si >= 2;
-      });
+      }
       airMat.uniforms.uOpacity.value = (0.18 + 0.22 * renew) * (1 - 0.8 * part / PART);
       dream.update(ambient);
       glows.face(camera);

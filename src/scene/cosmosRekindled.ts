@@ -87,10 +87,17 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
   headGeo.translate(0, 0.165, 0);
   const figure = new THREE.Group();
   figure.add(new THREE.Mesh(robe, figMat), new THREE.Mesh(headGeo, figMat));
-  figure.scale.setScalar(1.5);
+  figure.scale.setScalar(1.9);
 
   // Where Fëanor walks: up from the Calacirya to the foot of the mound, then up it.
   const path = [at(CALACIRYA.u + 0.36, CALACIRYA.v - 0.04, 0.05), at(CALACIRYA.u - 0.1, CALACIRYA.v - 0.02, 0.1), moundAt.clone().addScaledVector(E, 0.5).addScaledVector(S, 0.1).setY(0.08)];
+  // The ground along that path, sampled once, so he walks on the land and not inside it.
+  const GROUND_N = 40, ground = new Float32Array(GROUND_N + 1), gp = new THREE.Vector3();
+  for (let k = 0; k <= GROUND_N; k++) {
+    const w = (2 * k) / GROUND_N;
+    if (w <= 1) gp.lerpVectors(path[0], path[1], w); else gp.lerpVectors(path[1], path[2], w - 1);
+    ground[k] = heightsFor(Float32Array.of(gp.x), Float32Array.of(gp.z), ELDER)[0];
+  }
   const top = moundAt.clone().addScaledVector(E, 0.2).setY(moundAt.y + MOUND_H + 0.02);
   const before = moundAt.clone().addScaledVector(E, 0.1).setY(moundAt.y + MOUND_H + 0.32);
   const yavannaAt = moundAt.clone().addScaledVector(S, 0.08).addScaledVector(E, 0.02).setY(moundAt.y + MOUND_H + 0.16);
@@ -120,8 +127,11 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
   const jewels = [new Jewel(scene, glows), new Jewel(scene, glows), new Jewel(scene, glows)];
 
   target.copy(moundAt).setY(0.72).addScaledVector(E, -0.15);
-  const view = new THREE.Vector3().copy(E).addScaledVector(S, 0.8).normalize();
-  camera.position.copy(target).addScaledVector(view, CAM_D * Math.cos(0.92)).setY(target.y + CAM_D * Math.sin(0.92));
+  // From the east, turned ~40° north of the old south-east view, so Laurelin no longer hides Telperion.
+  const VIEW_A = Math.atan2(0.8, 1) - 0.7;
+  const view = new THREE.Vector3().copy(E).multiplyScalar(Math.cos(VIEW_A)).addScaledVector(S, Math.sin(VIEW_A)).normalize();
+  const across = new THREE.Vector3().crossVectors(view, new THREE.Vector3(0, 1, 0)).normalize();
+  camera.position.copy(target).addScaledVector(view, CAM_D * Math.cos(1.06)).setY(target.y + CAM_D * Math.sin(1.06));
   hemi.groundColor.set('#141a26');
   sun.intensity = 0;
 
@@ -134,60 +144,75 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
   yavannaLabel.position.copy(yavannaAt).addScaledVector(W, 0.5).setY(yavannaAt.y + 0.2);
 
   const c = new THREE.Color(), v3 = new THREE.Vector3(), fp = new THREE.Vector3(), jp = new THREE.Vector3(), off = new THREE.Vector3(), mix = new THREE.Color();
-  const deadBark = new THREE.Color('#6b645d'), deadLeaf = new THREE.Color('#767a78'), white = new THREE.Color('#ffffff');
+  // Grey, not black, and each a little its own grey (Telperion cool, Laurelin warm), so they read as two.
+  const telDeadBark = new THREE.Color('#948f92'), telDeadLeaf = new THREE.Color('#a4acb8');
+  const lauDeadBark = new THREE.Color('#9e9284'), lauDeadLeaf = new THREE.Color('#b4ab98'), white = new THREE.Color('#ffffff');
+  const deadSheen = new THREE.Color('#2c2e38'), sheen = new THREE.Color();
+  const MOUND_DEAD = new THREE.Color('#4e6a45'), MOUND_LIVE = new THREE.Color('#6fbf50');
+  const BLOSSOM_DEAD = new THREE.Color('#3f3a30'), BLOSSOM_LIVE = new THREE.Color('#ffd36a'), STARLIGHT = new THREE.Color('#8890c8');
+  const POURS = [[telAt, telTop, tel.color, 67], [lauAt, lauTop, lau.color, 68]] as const;
   const ember = new THREE.Color('#ff8a3a'), song = new THREE.Color('#c8f08a'), dimNight = new THREE.Color('#2a3048');
 
   /** Fëanor's place at t. */
   const feanorAt = (t: number, out: THREE.Vector3) => {
     const w = ramp(t, T.walk[0], T.walk[1]) * 2;
     if (w <= 1) out.lerpVectors(path[0], path[1], w); else out.lerpVectors(path[1], path[2], w - 1);
-    // The old refusal: a step back, holding them close.
-    out.addScaledVector(E, 0.12 * pulse(t, T.clutch[0], T.clutch[1], T.clutch[2]));
+    const gk = (w / 2) * GROUND_N, g0 = Math.min(GROUND_N - 1, Math.floor(gk));
+    out.y = Math.max(out.y, ground[g0] + (ground[g0 + 1] - ground[g0]) * (gk - g0) + 0.01);
+    // A memory of the old refusal (our staging, not the prophecy's): a small pause, holding them close.
+    out.addScaledVector(E, 0.05 * pulse(t, T.clutch[0], T.clutch[1], T.clutch[2]));
     return out.lerp(top, ramp(t, T.climb[0], T.climb[1]));
+  };
+
+  // Per-frame inputs for the callbacks below, made once so no closure is built per frame.
+  let light = 0, flood = 0, memory = 0, amb = 0;
+  const paintLand = (f: number, water: boolean, _y: number, col: THREE.Color, glow: THREE.Color) => {
+    landColor(fu[f], fv[f], faceRaw[f], slab.seed[f], col);
+    pale(col, 0.16);
+    // Valinor dark around the dead Trees, then lit from the mound outwards.
+    const lit = inAman[f] ? Math.max(light * near[f] * near[f] * 1.6, flood * (0.55 + 0.45 * near[f])) : 0.35 * flood;
+    col.lerp(dimNight, (0.32 - 0.28 * clamp01(lit)) * (1 + 0.3 * memory));
+    if (lit > 0.003) glow.copy(mix).multiplyScalar(clamp01(lit) * (water ? 0.1 : 0.06));
+    return true;
+  };
+  const treeY = (i: number) => forestY[i];
+  const treeOn = (i: number) => (forestY[i] > 0.03 ? 1 : 0);
+  const place = (p: TreeParts, k: number, wake: number, pl: THREE.PointLight, g: THREE.Mesh, top: THREE.Vector3) => {
+    p.glowMat.opacity = k;
+    p.leaves.emissive.copy(p.color).multiplyScalar(0.12 * k).add(sheen.copy(deadSheen).multiplyScalar(1 - wake));
+    pl.intensity = k * 5;
+    Glows.set(g, v3.copy(top).setY(top.y + 0.25), 2.6, k * 0.5 * (0.95 + 0.05 * Math.sin(amb * 1.7)));
   };
 
   return {
     scene, camera, target,
 
     update(t, ambient) {
+      amb = ambient;
       // --- the Trees wake, and their light comes back ---
       const wake = ramp(t, T.wake[0], T.wake[1]);
       const cyc = ramp(t, T.cycle[0], T.cycle[0] + 0.04);
       const wave = 0.5 + 0.5 * Math.cos(((t - T.cycle[0]) / (T.cycle[1] - T.cycle[0])) * Math.PI);
       let telK = ramp(t, T.telLight[0], T.telLight[1]), lauK = ramp(t, T.lauLight[0], T.lauLight[1]);
       telK *= 1 - cyc * 0.25 * (1 - wave); lauK *= 1 - cyc * 0.25 * wave;
-      const light = Math.max(telK, lauK);
-      const flood = ramp(t, T.flood[0], T.flood[1]);
+      light = Math.max(telK, lauK);
+      flood = ramp(t, T.flood[0], T.flood[1]);
       mix.copy(tel.color).multiplyScalar(telK).add(c.copy(lau.color).multiplyScalar(lauK));
       mix.multiplyScalar(1 / Math.max(mix.r, mix.g, mix.b, 1e-3));
-      const memory = pulse(t, T.clutch[0] - 0.02, T.clutch[1], T.clutch[2]);
+      memory = pulse(t, T.clutch[0] - 0.02, T.clutch[1], T.clutch[2]);
 
-      slab.update((f, water, _y, col, glow) => {
-        landColor(fu[f], fv[f], faceRaw[f], slab.seed[f], col);
-        pale(col, 0.16);
-        // Valinor dark around the dead Trees, then lit from the mound outwards.
-        const lit = inAman[f] ? Math.max(light * near[f] * near[f] * 1.6, flood * (0.55 + 0.45 * near[f])) : 0.35 * flood;
-        col.lerp(dimNight, (0.32 - 0.28 * clamp01(lit)) * (1 + 0.6 * memory));
-        if (lit > 0.003) glow.copy(mix).multiplyScalar(clamp01(lit) * (water ? 0.1 : 0.06));
-        return true;
-      });
-      forest.update((i) => forestY[i], (i) => (forestY[i] > 0.03 ? 1 : 0));
-      moundMat.color.set('#4e6a45').lerp(c.set('#6fbf50'), wake);
+      slab.update(paintLand);
+      forest.update(treeY, treeOn);
+      moundMat.color.copy(MOUND_DEAD).lerp(MOUND_LIVE, wake);
 
       // --- the Trees: grey and dead, then living ---
-      tel.bark.color.copy(deadBark).lerp(telBark, wake);
-      lau.bark.color.copy(deadBark).lerp(lauBark, wake);
-      tel.leaves.color.copy(deadLeaf).lerp(white, wake);
-      lau.leaves.color.copy(deadLeaf).lerp(white, wake);
-      const place = (p: TreeParts, k: number, pl: THREE.PointLight, g: THREE.Mesh, top: THREE.Vector3) => {
-        p.glowMat.opacity = k;
-        p.leaves.emissive.copy(p.color).multiplyScalar(0.12 * k);
-        pl.intensity = k * 5;
-        Glows.set(g, v3.copy(top).setY(top.y + 0.25), 2.6, k * 0.5 * (0.95 + 0.05 * Math.sin(ambient * 1.7)));
-      };
-      place(tel, telK, telLight, telGlow, telTop);
-      place(lau, lauK, lauLight, lauGlow, lauTop);
-      if (lau.blossomMat) lau.blossomMat.color.set('#3f3a30').lerp(c.set('#ffd36a'), lauK).multiplyScalar(1 + lauK * 0.5);
+      tel.bark.color.copy(telDeadBark).lerp(telBark, wake);
+      lau.bark.color.copy(lauDeadBark).lerp(lauBark, wake);
+      tel.leaves.color.copy(telDeadLeaf).lerp(white, wake);
+      lau.leaves.color.copy(lauDeadLeaf).lerp(white, wake);
+      place(tel, telK, wake, telLight, telGlow, telTop);
+      place(lau, lauK, wake, lauLight, lauGlow, lauTop);
+      if (lau.blossomMat) lau.blossomMat.color.copy(BLOSSOM_DEAD).lerp(BLOSSOM_LIVE, lauK).multiplyScalar(1 + lauK * 0.5);
       Glows.set(mingle, v3.copy(moundAt).setY(moundAt.y + 1.1), 5, 0.4 * Math.min(telK, lauK) * cyc);
       Glows.set(valinorGlow, v3.copy(moundAt).setY(0.5), 6, 0.16 * flood);
 
@@ -195,7 +220,8 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
       feanorAt(t, fp);
       const fOn = ramp(t, T.walk[0] - 0.02, T.walk[0] + 0.02) * (1 - 0.6 * ramp(t, T.break, T.break + 0.1));
       const flick = 0.9 + 0.1 * Math.sin(ambient * 5.3) * Math.sin(ambient * 3.1);
-      Glows.set(feanor, v3.copy(fp).setY(fp.y + 0.1), 0.42, fOn * 0.45 * flick);
+      // While he holds them close, the glows draw in so his figure shows through.
+      Glows.set(feanor, v3.copy(fp).setY(fp.y + 0.1), 0.42 * (1 - 0.35 * memory), fOn * 0.45 * flick * (1 - 0.4 * memory));
       Glows.set(feanorCore, v3.copy(fp).setY(fp.y + 0.12), 0.1, fOn * 0.6);
       figure.position.copy(fp);
       figure.lookAt(v3.copy(before).setY(fp.y));
@@ -206,15 +232,15 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
       const lay = ramp(t, T.lay[0], T.lay[1]);
       const broken = t >= T.break;
       const hold = 0.09 + 0.05 * (1 - memory);
-      jewels.forEach((j, i) => {
+      for (let i = 0; i < 3; i++) {
         const a = (i / 3) * Math.PI * 2 + (t - T.walk[0]) * 10 * (1 - lay);
-        jp.copy(fp).addScaledVector(E, -0.14).setY(fp.y + 0.26 + 0.03 * Math.sin(a * 2));
+        jp.copy(fp).addScaledVector(E, -0.14).setY(fp.y + 0.26 + 0.1 * memory + 0.03 * Math.sin(a * 2));
         jp.x += Math.cos(a) * hold; jp.z += Math.sin(a) * hold;
         const b = (i / 3) * Math.PI * 2 + 0.4;
         v3.copy(before).add(off.set(Math.cos(b) * 0.09, 0.04 * Math.sin(b), Math.sin(b) * 0.09));
         jp.lerp(v3, lay);
-        j.set(jp, broken ? 0 : ramp(t, T.walk[0], T.walk[0] + 0.04), ambient, 0.34, i);
-      });
+        jewels[i].set(jp, broken ? 0 : ramp(t, T.walk[0], T.walk[0] + 0.04), ambient, 0.34 * (1 - 0.45 * memory), i);
+      }
 
       // --- Yavanna, and the breaking ---
       const yOn = ramp(t, 0.06, 0.12);
@@ -222,10 +248,10 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
       Glows.set(yavanna, yavannaAt, 0.9, yOn * yBright * (0.92 + 0.08 * Math.sin(ambient * 2.3)));
       const burst = pulse(t, T.break - 0.004, T.break + 0.003, T.break + 0.06);
       Glows.set(breakGlow, before, 1.5 + 3 * burst, burst * 0.9);
-      valar.forEach((g, i) => {
+      for (let i = 0; i < valar.length; i++) {
         const a = (i / valar.length) * Math.PI * 2 + 0.3;
-        Glows.set(g, v3.copy(moundAt).add(off.set(Math.cos(a) * 0.85, 0.12, Math.sin(a) * 0.85)), 0.3, (0.25 + 0.35 * light) * yOn);
-      });
+        Glows.set(valar[i], v3.copy(moundAt).add(off.set(Math.cos(a) * 0.85, 0.12, Math.sin(a) * 0.85)), 0.3, (0.25 + 0.35 * light) * yOn);
+      }
 
       // --- particles ---
       let i = 0;
@@ -233,24 +259,24 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
       for (let m = 0; m < MOTES; m++, i++) {
         const h1 = hash(m, 1, 5), h2 = hash(m, 2, 5), life = (ambient * 0.1 + h1) % 1;
         const ang = h2 * Math.PI * 2 + life * 5, rr = 0.08 + life * 0.5;
-        pPos.set([yavannaAt.x + Math.cos(ang) * rr, yavannaAt.y + life * 1.2, yavannaAt.z + Math.sin(ang) * rr], i * 3);
+        pPos[i * 3] = yavannaAt.x + Math.cos(ang) * rr; pPos[i * 3 + 1] = yavannaAt.y + life * 1.2; pPos[i * 3 + 2] = yavannaAt.z + Math.sin(ang) * rr;
         const b = songK * Math.sin(life * Math.PI) * 0.6;
-        pCol.set([song.r * b, song.g * b, song.b * b], i * 3);
+        pCol[i * 3] = song.r * b; pCol[i * 3 + 1] = song.g * b; pCol[i * 3 + 2] = song.b * b;
       }
       for (let e = 0; e < EMBERS; e++, i++) {
         const h1 = hash(e, 1, 66), h2 = hash(e, 2, 66), life = (ambient * 0.45 + h1) % 1;
-        pPos.set([fp.x + (h2 - 0.5) * 0.12, fp.y + 0.08 + life * 0.45, fp.z + (hash(e, 3, 66) - 0.5) * 0.12], i * 3);
+        pPos[i * 3] = fp.x + (h2 - 0.5) * 0.12; pPos[i * 3 + 1] = fp.y + 0.08 + life * 0.45; pPos[i * 3 + 2] = fp.z + (hash(e, 3, 66) - 0.5) * 0.12;
         const b = fOn * Math.sin(life * Math.PI) * 0.7;
-        pCol.set([ember.r * b, ember.g * b, ember.b * b], i * 3);
+        pCol[i * 3] = ember.r * b; pCol[i * 3 + 1] = ember.g * b; pCol[i * 3 + 2] = ember.b * b;
       }
       // The light pouring out of the broken jewels, spiralling into each Tree and up to its crown.
       const pour = clamp01((t - T.pour[0]) / (T.pour[1] - T.pour[0]));
       const pourK = pulse(t, T.pour[0] - 0.01, T.pour[0] + 0.05, T.pour[1] + 0.04);
-      for (const [base, crown, color, seed] of [[telAt, telTop, tel.color, 67], [lauAt, lauTop, lau.color, 68]] as const) {
+      for (const [base, crown, color, seed] of POURS) {
         for (let q = 0; q < POUR; q++, i++) {
           const h1 = hash(q, 1, seed), h2 = hash(q, 2, seed);
           const s = (h1 + ambient * 0.25) % 1;
-          if (s > pour * 1.2) { pPos.set([before.x, before.y, before.z], i * 3); pCol.set([0, 0, 0], i * 3); continue; }
+          if (s > pour * 1.2) { before.toArray(pPos, i * 3); pCol[i * 3] = 0; pCol[i * 3 + 1] = 0; pCol[i * 3 + 2] = 0; continue; }
           const k1 = clamp01(s / 0.35), k2 = clamp01((s - 0.35) / 0.65);
           v3.lerpVectors(before, base, k1 * k1 * (3 - 2 * k1)).setY(before.y + (base.y + 0.02 - before.y) * k1 + Math.sin(k1 * Math.PI) * 0.15);
           if (k2 > 0) {
@@ -259,7 +285,7 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
           }
           v3.toArray(pPos, i * 3);
           const b = pourK * (0.6 + 0.4 * Math.sin(s * 30 + h2 * 6)) * 1.4;
-          pCol.set([color.r * b, color.g * b, color.b * b], i * 3);
+          pCol[i * 3] = color.r * b; pCol[i * 3 + 1] = color.g * b; pCol[i * 3 + 2] = color.b * b;
         }
       }
       fillDrops(pPos, pCol, i, DROPS, telAt, TREE_S, ambient, tel.color, telK * 0.85, 8);
@@ -268,16 +294,17 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
       const sk = ramp(t, T.break, T.break + 0.08);
       for (let s = 0; s < SHARDS; s++, i++) {
         const th = hash(s, 1, 69) * Math.PI * 2, ph = Math.acos(2 * hash(s, 2, 69) - 1), r = sk * (0.15 + 0.6 * hash(s, 3, 69));
-        pPos.set([before.x + r * Math.sin(ph) * Math.cos(th), before.y + r * Math.cos(ph) - sk * sk * 0.2, before.z + r * Math.sin(ph) * Math.sin(th)], i * 3);
+        pPos[i * 3] = before.x + r * Math.sin(ph) * Math.cos(th); pPos[i * 3 + 1] = before.y + r * Math.cos(ph) - sk * sk * 0.2; pPos[i * 3 + 2] = before.z + r * Math.sin(ph) * Math.sin(th);
         const b = (broken ? 1 - sk : 0) * 1.2;
-        pCol.set([b, b * 0.96, b * 0.88], i * 3);
+        pCol[i * 3] = b; pCol[i * 3 + 1] = b * 0.96; pCol[i * 3 + 2] = b * 0.88;
       }
       pGeo.attributes.position.needsUpdate = true;
       pGeo.attributes.color.needsUpdate = true;
       pGeo.computeBoundingSphere();
 
       // --- names ---
-      feanorLabel.position.copy(fp).addScaledVector(S, 0.12).setY(fp.y + 0.45);
+      // Above and to one side of him, clear of the jewels' glow.
+      feanorLabel.position.copy(fp).addScaledVector(across, -0.24).setY(fp.y + 0.62);
       showLabel(feanorLabel, ramp(t, 0.05, 0.09) * (1 - ramp(t, T.lay[1], T.lay[1] + 0.04)));
       showLabel(yavannaLabel, ramp(t, 0.1, 0.14) * (1 - ramp(t, T.break + 0.06, T.break + 0.1)));
       showLabel(moundLabel, ramp(t, 0.02, 0.06) * (1 - ramp(t, 0.2, 0.24)));
@@ -285,13 +312,14 @@ export function createRekindledStage(labels: CosmosLabels): Stage {
       showLabel(lauLabel, ramp(t, T.lauLight[0] + 0.02, T.lauLight[0] + 0.06));
 
       // --- sky: no Sun, no Moon; starlight, then the Trees ---
-      hemi.color.set('#8890c8').lerp(c.copy(mix), 0.35 * light);
-      hemi.intensity = 0.68 + 0.12 * light - 0.2 * memory;
+      hemi.color.copy(STARLIGHT).lerp(mix, 0.35 * light);
+      hemi.intensity = 0.68 + 0.12 * light - 0.1 * memory;
       starMat.opacity = (0.75 - 0.25 * flood) * (0.85 + 0.15 * Math.sin(ambient * 2));
-      shells.forEach((sh, si) => {
+      for (let si = 0; si < shells.length; si++) {
+        const sh = shells[si];
         sh.mat.uniforms.uOpacity.value = sh.strength * (0.55 + (si === 0 ? 0.3 * flood : 0));
         sh.mesh.visible = true;
-      });
+      }
       dream.update(ambient);
       glows.face(camera);
     },

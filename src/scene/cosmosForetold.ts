@@ -242,12 +242,14 @@ export class Jewel {
   }
 }
 
+const TRAIL_V = new THREE.Vector3();
+
 /** Fill `count` points of a trail behind a moving light: `at(s)` gives where it was at s ≤ head. */
 export function fillTrail(
   pos: Float32Array, col: Float32Array, from: number, count: number, head: number, length: number,
   at: (s: number, out: THREE.Vector3) => THREE.Vector3, color: THREE.Color, b: number, ambient: number, spread = 0.05, seed = 0,
 ): void {
-  const v = new THREE.Vector3();
+  const v = TRAIL_V;
   for (let i = 0; i < count; i++) {
     const k = from + i, q = i / count;
     at(Math.max(0, head - q * length), v);

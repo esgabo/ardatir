@@ -110,16 +110,18 @@ export function createLevelledStage(labels: CosmosLabels): Stage {
   const valar = Array.from({ length: 14 }, () => glows.make('#fff4e0'));
   const turin = glows.make('#ff8a2a'), turinCore = glows.make('#fff0dc');
 
-  target.copy(at(-1.9, 0.0, 0.25));
+  // Nearer Ezellohar, so the Trees sit in the middle of the stage, not against the card or the edge.
+  target.copy(at(-2.7, 0.0, 0.25));
   const view = new THREE.Vector3().copy(S).addScaledVector(E, 0.75).normalize();
   camera.position.copy(target).addScaledVector(view, CAM_D * Math.cos(0.7)).setY(target.y + CAM_D * Math.sin(0.7));
   hemi.groundColor.set('#141a26');
   sun.intensity = 0;
 
   const peloriLabel = nameLabel(world, 'Pelóri', '');
-  peloriLabel.position.copy(at(-2.5, -1.3, 1.1));
+  // Both names away from Ezellohar, so the Trees' glow does not wash them out.
+  peloriLabel.position.copy(at(-2.4, -1.9, 0.75));
   const valinorLabel = nameLabel(world, 'Valinor');
-  valinorLabel.position.copy(at(-3.3, 0.9, 0.55));
+  valinorLabel.position.copy(at(-4.0, -1.25, 0.3));
   const mandosLabel = nameLabel(world, 'Mandos', '');
   mandosLabel.position.copy(mandosAt).setY(0.55);
   const turinAt = moundAt.clone().addScaledVector(S, 1.0).addScaledVector(E, 0.8).setY(0.24);
@@ -128,6 +130,26 @@ export function createLevelledStage(labels: CosmosLabels): Stage {
 
   const c = new THREE.Color(), v3 = new THREE.Vector3(), off = new THREE.Vector3();
   const mix = new THREE.Color('#fff1d0'), night = new THREE.Color('#283049'), elf = new THREE.Color('#d8e6ff'), dust = new THREE.Color('#bdb3c8');
+  const STARLIGHT = new THREE.Color('#8890c8'), TREELIGHT = new THREE.Color('#fff0d8');
+  const AIR_BLUE = new THREE.Color('#8fd0ff'), AIR_GOLD = new THREE.Color('#ffe2b0');
+
+  // Per-frame inputs for the callbacks below, made once so no closure is built per frame.
+  let front = 0;
+  const paintLand = (f: number, water: boolean, _y: number, col: THREE.Color, glow: THREE.Color) => {
+    const r = (raw[tris[f * 3]] + raw[tris[f * 3 + 1]] + raw[tris[f * 3 + 2]]) / 3;
+    landColor(fu[f], fv[f], r, slab.seed[f], col);
+    pale(col, water ? 0.06 : 0.15);
+    // Before: only Valinor is lit, behind its wall.
+    const inside = inValinor[f] ? clamp01(1 - dist[f] / 1.6) * 0.8 + 0.25 : 0;
+    const reached = clamp01((front - dist[f]) / 0.6);
+    const edge = pulse(front - dist[f], 0, 0.15, 0.9);
+    const lit = Math.max(inside, reached);
+    col.lerp(night, 0.5 * (1 - lit));
+    glow.copy(mix).multiplyScalar((water ? 0.04 : 0.018) * lit + 0.12 * edge);
+    return true;
+  };
+  const treeY = (i: number) => forestY[i];
+  const treeOn = (i: number) => (forestY[i] > 0.03 ? 1 : 0);
 
   return {
     scene, camera, target,
@@ -141,21 +163,9 @@ export function createLevelledStage(labels: CosmosLabels): Stage {
       }
       // --- the light flows out: a front from Ezellohar across the world ---
       const f0 = ramp(t, T.flood[0], T.flood[1]);
-      const front = f0 * 7.2;
-      slab.update((f, water, _y, col, glow) => {
-        const r = (raw[tris[f * 3]] + raw[tris[f * 3 + 1]] + raw[tris[f * 3 + 2]]) / 3;
-        landColor(fu[f], fv[f], r, slab.seed[f], col);
-        pale(col, water ? 0.06 : 0.15);
-        // Before: only Valinor is lit, behind its wall.
-        const inside = inValinor[f] ? clamp01(1 - dist[f] / 1.6) * 0.8 + 0.25 : 0;
-        const reached = clamp01((front - dist[f]) / 0.6);
-        const edge = pulse(front - dist[f], 0, 0.15, 0.9);
-        const lit = Math.max(inside, reached);
-        col.lerp(night, 0.5 * (1 - lit));
-        glow.copy(mix).multiplyScalar((water ? 0.04 : 0.018) * lit + 0.12 * edge);
-        return true;
-      });
-      forest.update((i) => forestY[i], (i) => (forestY[i] > 0.03 ? 1 : 0));
+      front = f0 * 7.2;
+      slab.update(paintLand);
+      forest.update(treeY, treeOn);
 
       // --- the Trees ---
       const tw = 0.95 + 0.05 * Math.sin(ambient * 1.7);
@@ -168,10 +178,10 @@ export function createLevelledStage(labels: CosmosLabels): Stage {
 
       // --- the Valar made young, Túrin among them ---
       const young = ramp(t, T.young[0], T.young[1]);
-      valar.forEach((g, i) => {
+      for (let i = 0; i < valar.length; i++) {
         const a = (i / valar.length) * Math.PI * 2 + 0.2;
-        Glows.set(g, v3.copy(moundAt).add(off.set(Math.cos(a) * 0.95, 0.12 + 0.08 * young, Math.sin(a) * 0.95)), 0.2 + 0.14 * young, (0.22 + 0.4 * young) * (0.92 + 0.08 * Math.sin(ambient * 1.3 + i)));
-      });
+        Glows.set(valar[i], v3.copy(moundAt).add(off.set(Math.cos(a) * 0.95, 0.12 + 0.08 * young, Math.sin(a) * 0.95)), 0.2 + 0.14 * young, (0.22 + 0.4 * young) * (0.92 + 0.08 * Math.sin(ambient * 1.3 + i)));
+      }
       const tu = ramp(t, T.turin[0], T.turin[1]);
       Glows.set(turin, turinAt, 0.75, 1.0 * tu * (0.9 + 0.1 * Math.sin(ambient * 1.1)));
       Glows.set(turinCore, turinAt, 0.16, 1.0 * tu);
@@ -183,9 +193,9 @@ export function createLevelledStage(labels: CosmosLabels): Stage {
         const d = Math.hypot(toU(p.x, p.z) - EZELLOHAR.u, toV(p.x, p.z) - EZELLOHAR.v);
         // Each wakes as the light reaches it, during the waking.
         const k = clamp01((ramp(t, T.elves[0], T.elves[1]) * 1.3 - d / 7.2 * 0.7 - hash(e, 4, 73) * 0.3) * 4);
-        pPos.set([p.x, p.y + 0.06 * k, p.z], i * 3);
+        pPos[i * 3] = p.x; pPos[i * 3 + 1] = p.y + 0.06 * k; pPos[i * 3 + 2] = p.z;
         const b = k * (0.6 + 0.4 * Math.sin(ambient * 1.6 + e));
-        pCol.set([elf.r * b, elf.g * b, elf.b * b], i * 3);
+        pCol[i * 3] = elf.r * b; pCol[i * 3 + 1] = elf.g * b; pCol[i * 3 + 2] = elf.b * b;
       }
       for (let d = 0; d < DEAD; d++, i++) {
         const s = clamp01((t - T.dead[0]) / (T.dead[1] - T.dead[0]) * 1.4 - hash(d, 1, 75) * 0.4);
@@ -194,7 +204,7 @@ export function createLevelledStage(labels: CosmosLabels): Stage {
         v3.y = 0.14 + 0.03 * Math.sin(ambient * 2 + d);
         v3.toArray(pPos, i * 3);
         const b = (s > 0 ? 1 : 0) * (0.5 + 0.5 * Math.sin(s * Math.PI * 0.9 + 0.3)) * 0.75;
-        pCol.set([elf.r * b, elf.g * b, elf.b * b], i * 3);
+        pCol[i * 3] = elf.r * b; pCol[i * 3 + 1] = elf.g * b; pCol[i * 3 + 2] = elf.b * b;
       }
       Glows.set(mandosGlow, v3.copy(mandosAt).setY(0.25), 1.3, 0.35 * pulse(t, T.dead[0] - 0.02, T.dead[0] + 0.05, T.dead[1]));
       fillDrops(pPos, pCol, i, DROPS, telAt, TREE_S, ambient, tel.color, 0.8, 8);
@@ -209,10 +219,10 @@ export function createLevelledStage(labels: CosmosLabels): Stage {
         const p = peloriPts[d % peloriPts.length];
         const h1 = hash(d, 1, 76), h2 = hash(d, 2, 76);
         const life = (ambient * 0.12 + h1) % 1;
-        dPos.set([p.x + (h2 - 0.5) * 0.5 + life * 0.2, p.y + 0.1 + life * 0.9, p.z + (hash(d, 3, 76) - 0.5) * 0.5], d * 3);
+        dPos[d * 3] = p.x + (h2 - 0.5) * 0.5 + life * 0.2; dPos[d * 3 + 1] = p.y + 0.1 + life * 0.9; dPos[d * 3 + 2] = p.z + (hash(d, 3, 76) - 0.5) * 0.5;
         const b = dk * Math.sin(life * Math.PI);
         c.copy(dust).multiplyScalar(b);
-        dCol.set([c.r, c.g, c.b], d * 3);
+        dCol[d * 3] = c.r; dCol[d * 3 + 1] = c.g; dCol[d * 3 + 2] = c.b;
       }
       (dustPts.material as THREE.PointsMaterial).opacity = 0.55 * dk;
       dustPts.visible = dk > 0.005;
@@ -227,14 +237,15 @@ export function createLevelledStage(labels: CosmosLabels): Stage {
       showLabel(turinLabel, ramp(t, T.turin[0] + 0.01, T.turin[1] + 0.01));
 
       // --- sky: no Sun, no Moon; the light of the Trees on everything ---
-      hemi.color.set('#8890c8').lerp(c.set('#fff0d8'), 0.5 * f0);
+      hemi.color.copy(STARLIGHT).lerp(TREELIGHT, 0.5 * f0);
       hemi.intensity = 0.5 + 0.25 * f0;
       starMat.opacity = (0.75 - 0.35 * f0) * (0.85 + 0.15 * Math.sin(ambient * 2));
-      shells.forEach((sh, si) => {
+      for (let si = 0; si < shells.length; si++) {
+        const sh = shells[si];
         sh.mat.uniforms.uOpacity.value = sh.strength * (0.6 + (si === 0 ? 0.12 * f0 : 0));
         sh.mesh.visible = true;
-      });
-      (shells[0].mat.uniforms.uColor.value as THREE.Color).set('#8fd0ff').lerp(c.set('#ffe2b0'), 0.35 * f0);
+      }
+      (shells[0].mat.uniforms.uColor.value as THREE.Color).copy(AIR_BLUE).lerp(AIR_GOLD, 0.35 * f0);
       dream.update(ambient);
       glows.face(camera);
     },
