@@ -10,7 +10,7 @@ import { t as ui, type UiKey } from './i18n';
 /** The Hobbit cites chapters by number; their titles. */
 const HOBBIT: Record<number, { en: string; es: string }> = {
   1: { en: 'An Unexpected Party', es: 'Una tertulia inesperada' },
-  2: { en: 'Roast Mutton', es: 'Cordero asado' },
+  2: { en: 'Roast Mutton', es: 'Carnero asado' },
   3: { en: 'A Short Rest', es: 'Un breve descanso' },
   4: { en: 'Over Hill and Under Hill', es: 'Sobre la colina y bajo la colina' },
   5: { en: 'Riddles in the Dark', es: 'Acertijos en las tinieblas' },
