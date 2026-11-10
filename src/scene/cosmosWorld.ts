@@ -12,7 +12,11 @@ import { hash, glowTexture } from './util';
 /** Radius of Ambar, the slab of land. */
 export const SLAB_RADIUS = 4;
 
-export interface CosmosLabels { ambar: string; vista: string; ilmen: string; vaiya: string; walls: string; kuma: string }
+export interface CosmosLabels {
+  ambar: string; vista: string; ilmen: string; vaiya: string; walls: string; kuma: string;
+  /** Glossed names used by later cosmos events (the first Moon and Sun, the Change of the World). */
+  moon: string; sun: string; straightRoad: string;
+}
 
 export interface Shell { mesh: THREE.Mesh; mat: THREE.ShaderMaterial; label: CSS2DObject; appear: number; strength: number }
 
@@ -33,7 +37,7 @@ export interface CosmosWorld {
 }
 
 /** Translucent shell with a glowing rim (fresnel), used for the airs and seas around Arda. */
-function shellMaterial(color: string): THREE.ShaderMaterial {
+export function shellMaterial(color: string): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     uniforms: { uColor: { value: new THREE.Color(color) }, uOpacity: { value: 0 } },
     vertexShader: /* glsl */ `
@@ -149,4 +153,60 @@ export function setOpacity(o: THREE.Object3D, v: number): void {
     const m = (x as THREE.Mesh).material as THREE.Material | undefined;
     if (m) { m.opacity = v; m.visible = v > 0.001; }
   });
+}
+
+// ---------------------------------------------------------------------------------------
+// Pieces shared by the cosmos events after the Ainulindalë (each in its own module).
+// ---------------------------------------------------------------------------------------
+
+/** Soft camera-facing glows: quads with the shared glow texture, turned to the camera in `face`. */
+export class Glows {
+  readonly list: THREE.Mesh[] = [];
+  private readonly quad = new THREE.PlaneGeometry(1, 1);
+  constructor(private readonly tex: THREE.Texture, private readonly scene: THREE.Scene) {}
+
+  make(color: THREE.ColorRepresentation): THREE.Mesh {
+    const m = new THREE.Mesh(this.quad, new THREE.MeshBasicMaterial({
+      color, map: this.tex, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false,
+    }));
+    m.visible = false;
+    this.list.push(m);
+    this.scene.add(m);
+    return m;
+  }
+
+  /** Place a glow; it hides itself when (nearly) dark. */
+  static set(m: THREE.Mesh, pos: THREE.Vector3, scale: number, opacity: number): void {
+    m.position.copy(pos);
+    m.scale.setScalar(scale);
+    (m.material as THREE.MeshBasicMaterial).opacity = opacity;
+    m.visible = opacity > 0.002;
+  }
+
+  face(camera: THREE.Camera): void {
+    for (const g of this.list) g.quaternion.copy(camera.quaternion);
+  }
+}
+
+/** A name over a place (Quenya and Sindarin names read the same in every language). */
+export function nameLabel(world: CosmosWorld, text: string, cls = 'big'): CSS2DObject {
+  const l = world.mkLabel(text, cls);
+  world.scene.add(l);
+  world.labels.push(l);
+  return l;
+}
+
+export function showLabel(l: CSS2DObject, v: number): void {
+  (l.element as HTMLElement).style.opacity = String(Math.min(Math.max(v, 0), 1));
+}
+
+/**
+ * Keep the camera's direction but step back on narrow screens, so a subject `halfWidth`
+ * wide stays in view (never closer than `minDist`). Returns the aspect it fitted.
+ */
+export function fitCamera(camera: THREE.PerspectiveCamera, target: THREE.Vector3, w: number, h: number, minDist: number, halfWidth: number): void {
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  const d = Math.max(minDist, halfWidth / (Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect));
+  camera.position.sub(target).setLength(d).add(target);
 }

@@ -9,7 +9,7 @@ characters: [ iluvatar, manwe ]
 arcs: [ the-downfall-of-numenor, the-shape-of-arda ]
 journeys: []
 tags: [ cosmology, silmarillion ]
-status: scripted
+status: staged
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title:
   en: The World is made round

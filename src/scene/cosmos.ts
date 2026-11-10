@@ -9,6 +9,10 @@ import { createCosmosWorld, setOpacity, SLAB_RADIUS, type CosmosLabels } from '.
  */
 export async function createCosmosStage(eventId: string, labels: CosmosLabels): Promise<Stage> {
   if (eventId === 'the-spring-of-arda') return (await import('./cosmosLamps')).createLampsStage(labels);
+  if (eventId === 'the-two-trees') return (await import('./cosmosTrees')).createTreesStage(labels);
+  if (eventId === 'the-first-moon-and-sun') return (await import('./cosmosSunMoon')).createSunMoonStage(labels);
+  if (eventId === 'beleriand-is-drowned') return (await import('./cosmosBeleriand')).createBeleriandStage(labels);
+  if (eventId === 'the-world-is-made-round') return (await import('./cosmosRound')).createRoundStage(labels);
   if (eventId === 'ainulindale') return createAinulindale(labels);
   // A cosmos event with no animation of its own yet: Arda at rest in its shells.
   const rest = createAinulindale(labels);

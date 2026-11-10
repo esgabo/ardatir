@@ -79,6 +79,9 @@ const UI = {
   vaiya: { en: 'Vaiya · the encircling seas', es: 'Vaiya · los mares circundantes' },
   walls: { en: 'Ilurambar · the Walls of the World', es: 'Ilurambar · los Muros del Mundo' },
   kuma: { en: 'Kúma · the Void', es: 'Kúma · el Vacío' },
+  moon: { en: 'Isil · the Moon', es: 'Isil · la Luna' },
+  sun: { en: 'Anar · the Sun', es: 'Anar · el Sol' },
+  straightRoad: { en: 'the Straight Road', es: 'el Camino Recto' },
   // Sidebar (docs/DESIGN.md §3.3)
   navigation: { en: 'Navigation', es: 'Navegación' },
   home: { en: 'Ardatir home: the cosmos', es: 'Inicio de Ardatir: el cosmos' },
