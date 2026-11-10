@@ -256,7 +256,7 @@ body.foretold-stage .caption {
 }
 .icon-btn { width: 36px; height: 36px; flex: none; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 8px; background: transparent; color: var(--muted); }
 .icon-btn:not(:disabled):hover { color: var(--ink); }
-.icon-btn .icon { width: 18px; height: 18px; }
+.icon-btn .icon { width: 18px; height: 18px; pointer-events: none; }
 .play-btn {
   width: 44px; height: 44px; flex: none; display: flex; align-items: center; justify-content: center;
   border: 1px solid var(--gold); border-radius: 50%; background: rgba(232, 199, 122, 0.14); color: var(--gold);

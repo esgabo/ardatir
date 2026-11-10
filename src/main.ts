@@ -551,15 +551,26 @@ function layoutBeats(): void {
 
 new ResizeObserver(() => layoutBeats()).observe(beatsEl);
 
+/**
+ * Set a button's icon and label only when they change. updateDynamic runs every UI tick;
+ * rewriting innerHTML each time swaps the <svg> out from under a press, and the click is lost (#61).
+ */
+const iconShown = new WeakMap<HTMLElement, string>();
+function setIconButton(btn: HTMLElement, icon: string, label: string): void {
+  const key = `${icon}\u0000${label}`;
+  if (iconShown.get(btn) === key) return;
+  iconShown.set(btn, key);
+  btn.innerHTML = icon;
+  btn.setAttribute('aria-label', label);
+}
+
 let selSayKey = '';
 function updateDynamic(): void {
   const L = state.lang;
   if (beatEls.length && currentBeat((state.event.beats ?? []).map((b) => b.t), state.t) !== beatCurrent) layoutBeats();
   scrubber.value = String(Math.round(state.t * 1000));
-  playBtn.innerHTML = state.playing ? ICONS.pause : ICONS.play;
-  playBtn.setAttribute('aria-label', ui(state.playing ? 'pause' : 'play', L));
-  muteBtn.innerHTML = narration?.muted ? ICONS.muted : ICONS.sound;
-  muteBtn.setAttribute('aria-label', ui(narration?.muted ? 'unmute' : 'mute', L));
+  setIconButton(playBtn, state.playing ? ICONS.pause : ICONS.play, ui(state.playing ? 'pause' : 'play', L));
+  setIconButton(muteBtn, narration?.muted ? ICONS.muted : ICONS.sound, ui(narration?.muted ? 'unmute' : 'mute', L));
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
   $('time-label').textContent = `${fmt(playhead)} / ${fmt(clock.duration)}`;
