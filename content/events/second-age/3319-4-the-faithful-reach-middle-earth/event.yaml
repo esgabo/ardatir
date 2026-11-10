@@ -8,7 +8,7 @@ characters: [ elendil, gil-galad ]
 arcs: [ the-downfall-of-numenor ]
 journeys: [ elendils-flight-from-numenor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "The Faithful reach Middle-earth", es: "Los Fieles llegan a la Tierra Media" }
 summary:

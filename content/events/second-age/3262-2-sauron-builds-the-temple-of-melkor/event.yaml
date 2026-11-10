@@ -8,7 +8,7 @@ place: armenelos
 characters: [ sauron, ar-pharazon ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "Sauron builds the Temple of Melkor", es: "Sauron construye el Templo de Melkor" }
 summary:

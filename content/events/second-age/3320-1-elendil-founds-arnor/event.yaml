@@ -7,7 +7,7 @@ place: annuminas
 characters: [ elendil, gil-galad ]
 arcs: [ the-downfall-of-numenor ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
 title: { en: "Elendil founds Arnor", es: "Elendil funda Arnor" }
 summary:

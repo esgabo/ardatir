@@ -7,7 +7,7 @@ place: lindon   # they never went to Aman; the choice was made known to them in 
 characters: [ elrond, elros ]
 arcs: [  ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "The choice of Elrond and Elros", es: "La elección de Elrond y Elros" }
 summary:
