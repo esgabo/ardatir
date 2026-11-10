@@ -72,6 +72,7 @@ export const CHAPTERS_ES: Record<string, string> = {
   'The Council of Elrond': 'El Concilio de Elrond',
   'The Ring Goes South': 'El Anillo va hacia el sur',
   'A Journey in the Dark': 'Un viaje en la oscuridad',
+  'The Bridge of Khazad-dûm': 'El puente de Khazad-dûm',
   'Lothlórien': 'Lothlórien',
   'The Mirror of Galadriel': 'El espejo de Galadriel',
   'Farewell to Lórien': 'Adiós a Lórien',
