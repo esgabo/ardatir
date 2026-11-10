@@ -66,7 +66,7 @@ export function readModel(
     return undefined;
   }
   const kind = v.split('/')[0];
-  if (!(kind in MODEL_BUDGETS)) { R.error(file, `${what}: "${kind}/" is not an asset type (${Object.keys(MODEL_BUDGETS).join(', ')})`); return undefined; }
+  if (!Object.hasOwn(MODEL_BUDGETS, kind)) { R.error(file, `${what}: "${kind}/" is not an asset type (${Object.keys(MODEL_BUDGETS).join(', ')})`); return undefined; }
   if (type && kind !== type) { R.error(file, `${what}: expected a model under ${type}/, got ${v}`); return undefined; }
   const src = path.join(assetsDir, v);
   if (!fs.existsSync(src)) { R.error(file, `${what}: assets/${v} not found (export it from Blender, then npm run model:pack; see docs/MODELS.md)`); return undefined; }
@@ -87,6 +87,7 @@ export function readModel(
     if (scenes.length !== 1) R.warn(src, `has ${scenes.length} scenes; export one scene per asset`);
     if (type === 'characters') {
       const clips = ((j.animations as { name?: string }[] | undefined) ?? []).map((a) => a.name ?? '');
+      if (clips.length && !clips.includes('idle')) R.warn(src, 'has animations but no "idle" clip; the diorama falls back to it for every action without its own');
       for (const c of clips) if (!(CLIP_NAMES as readonly string[]).includes(c)) R.warn(src, `animation "${c}" is not one the diorama plays (${CLIP_NAMES.join(', ')})`);
     }
     copies.push({ from: src, to });

@@ -498,6 +498,12 @@ describe('broken content', () => {
     expect(r.warnings.some((w) => w.includes('"idle"'))).toBe(false);
   });
 
+  it('warns about a character model with clips but no idle', () => {
+    const r = buildWith([{ file: `../assets/${TEST_MODEL}`, write: glb({ scenes: [{}], animations: [{ name: 'walk' }] }) }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('no "idle" clip'))).toBe(true);
+  });
+
   it('warns about a Blender source too big for git', () => {
     const r = buildWith([{ file: '../assets/characters/test-figure/test-figure.blend', write: new Uint8Array(20_000_001) }]);
     expect(r.errors).toEqual([]);
