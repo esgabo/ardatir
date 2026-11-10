@@ -12,7 +12,7 @@ characters: [ yavanna, nienna, varda, tilion, arien ]
 arcs: [ the-shape-of-arda ]
 journeys: []
 tags: [ cosmology, silmarillion ]
-status: scripted
+status: staged
 source: { book: the-silmarillion, chapter: "Of the Sun and Moon and the Hiding of Valinor" }
 title:
   en: The first Moon and Sun

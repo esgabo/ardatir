@@ -119,6 +119,7 @@ async function buildStage(event: EventDetail): Promise<Stage> {
     return createCosmosStage(event.id, {
       ambar: L('ambar'), vista: L('vista'), ilmen: L('ilmen'),
       vaiya: L('vaiya'), walls: L('walls'), kuma: L('kuma'),
+      moon: L('moon'), sun: L('sun'), straightRoad: L('straightRoad'),
     });
   }
   const { createDioramaStage } = await import('./scene/dioramaStage');

@@ -1,0 +1,13 @@
+stage: cosmos
+duration: 70
+narration:
+  dark: 0
+  last-light: 0.19
+  vessels: 0.32
+  moonrise: 0.53
+  sunrise: 0.71
+  years: 0.9
+beats:
+  last-light: 0.2
+  moonrise: 0.54
+  sunrise: 0.72

@@ -11,7 +11,7 @@ characters: []
 arcs: [ the-war-of-wrath, the-shape-of-arda ]
 journeys: []
 tags: [ cosmology, silmarillion ]
-status: scripted
+status: staged
 source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
 title:
   en: Beleriand is drowned
