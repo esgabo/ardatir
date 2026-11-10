@@ -9,6 +9,7 @@ waypoints:
   - { place: edoras, date: { age: third-age, year: 3019, month: 3, day: 2 }, precision: day }
   - { place: helms-deep, date: { age: third-age, year: 3019, month: 3, day: 3 }, end: { age: third-age, year: 3019, month: 3, day: 4 }, precision: day }
   - { place: isengard, date: { age: third-age, year: 3019, month: 3, day: 5 }, precision: day }
+  - { place: fords-of-isen, date: { age: third-age, year: 3019, month: 3, day: 6 }, precision: day }
   - { place: helms-deep, date: { age: third-age, year: 3019, month: 3, day: 6 }, precision: day }
   - { place: dunharrow, date: { age: third-age, year: 3019, month: 3, day: 7 }, precision: day }
   - { place: paths-of-the-dead, date: { age: third-age, year: 3019, month: 3, day: 8 }, precision: day }

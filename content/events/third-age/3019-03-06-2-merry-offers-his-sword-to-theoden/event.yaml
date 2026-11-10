@@ -5,7 +5,7 @@ when:
   start: { age: third-age, year: 3019, month: 3, day: 6 }
   precision: day
 place: helms-deep
-characters: [ merry, theoden, eowyn ]
+characters: [ merry, theoden ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [ merrys-ride-with-theoden ]
 tags: [ lord-of-the-rings ]

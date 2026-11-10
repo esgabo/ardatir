@@ -13,8 +13,8 @@ status: scripted
 source: { book: the-two-towers, chapter: "The Window on the West" }
 title: { en: "Faramir Sees Boromir's Boat", es: "Faramir ve la barca de Boromir" }
 summary:
-  en: "Faramir sees, in a vision on the river, a boat bearing his dead brother, with the broken horn at his side."
-  es: "Faramir ve, en una visión sobre el río, una barca que lleva a su hermano muerto, con el cuerno roto a su lado."
+  en: "Faramir sees, in a vision on the river, a grey boat bearing his dead brother, with his broken sword on his knees."
+  es: "Faramir ve, en una visión sobre el río, una barca gris que lleva a su hermano muerto, con la espada rota sobre las rodillas."
 links:
   - to: boromirs-funeral-boat
     type: caused-by

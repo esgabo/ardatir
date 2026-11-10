@@ -4,7 +4,7 @@ when:
   # Early hours of the 6th, per Appendix B. Théoden rides for Harrowdale the same day.
   start: { age: third-age, year: 3019, month: 3, day: 6 }
   precision: day
-place: helms-deep
+place: fords-of-isen
 characters: [ aragorn, halbarad, legolas, gimli ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [ aragorn-legolas-and-gimlis-road ]
