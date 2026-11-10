@@ -14,6 +14,7 @@ import {
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
 import { narrationHash, TEXT_HASH } from '../narration/text.ts';
+import { pronounceProblem } from '../../src/data/pronounce.ts';
 import { battlesByFaction, readArmies, readFactions, readSides } from './factions.ts';
 import { checkSources, readModel } from './models.ts';
 
@@ -95,6 +96,18 @@ export function buildContent(contentDir: string): BuildResult {
     }
     return v as LocalizedText;
   };
+  /** How to say a hard name: `{ en, es }` respellings, each well formed (src/data/pronounce.ts). */
+  const pronounce = (file: string, v: unknown): LocalizedText | undefined => {
+    if (v === undefined) return undefined;
+    const p = text(file, v, 'pronounce');
+    if (!p) return undefined;
+    for (const [k, s] of Object.entries(p)) {
+      const why = typeof s === 'string' ? pronounceProblem(s) : undefined;
+      if (why) R.error(file, `pronounce.${k}: ${why} (write it like AR-da: syllables joined by hyphens, the stressed one in CAPITALS)`);
+    }
+    return p;
+  };
+  const say = (p: LocalizedText | undefined) => (p ? { pronounce: p } : {});
   const strList = (file: string, v: unknown, what: string): string[] => {
     if (v === undefined) return [];
     if (!Array.isArray(v) || v.some((x) => typeof x !== 'string')) { R.error(file, `${what}: must be a list of ids`); return []; }
@@ -116,7 +129,7 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'ages'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis', 'foretold'], 'age');
+    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis', 'foretold', 'pronounce'], 'age');
     const aid = id(f, o.id, ageIds, 'age');
     if (!aid) continue;
     if (typeof o.order !== 'number') R.error(f, 'order: must be a number');
@@ -134,7 +147,7 @@ export function buildContent(contentDir: string): BuildResult {
     if (foretold && o.timeless !== true) R.error(f, 'a foretold age must be timeless: what is foretold has no dates');
     ages.push({
       id: aid, order: Number(o.order), name: text(f, o.name, 'name')!, abbr: text(f, o.abbr, 'abbr', false), summary: text(f, o.summary, 'summary')!,
-      ...axis ? { axis } : {}, ...foretold ? { foretold } : {},
+      ...axis ? { axis } : {}, ...foretold ? { foretold } : {}, ...say(pronounce(f, o.pronounce)),
     });
     ageFile.set(aid, f);
   }
@@ -184,7 +197,7 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'characters'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin', 'home', 'model'], 'character');
+    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin', 'home', 'model', 'pronounce'], 'character');
     const cid = id(f, o.id, charIds, 'character');
     if (!cid) continue;
     if (typeof o.kind !== 'string') R.error(f, 'kind: required (hobbit, elf, man, ...)');
@@ -196,7 +209,7 @@ export function buildContent(contentDir: string): BuildResult {
     characters.push({
       id: cid, name: text(f, o.name, 'name')!, kind: String(o.kind), summary: text(f, o.summary, 'summary')!,
       ...o.color ? { color: String(o.color) } : {}, ...o.scale ? { scale: Number(o.scale) } : {}, ...kin ? { kin } : {},
-      ...typeof o.home === 'string' ? { home: o.home } : {}, ...model ? { model } : {},
+      ...typeof o.home === 'string' ? { home: o.home } : {}, ...model ? { model } : {}, ...say(pronounce(f, o.pronounce)),
     });
     charFile.set(cid, f);
   }
@@ -207,11 +220,11 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'places'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'summary', 'world'], 'place');
+    keys(f, o, ['id', 'name', 'summary', 'world', 'pronounce'], 'place');
     const pid = id(f, o.id, placeIds, 'place');
     if (!pid) continue;
     const world = isObj(o.world) && typeof o.world.x === 'number' && typeof o.world.z === 'number' ? { x: o.world.x, z: o.world.z } : undefined;
-    places.push({ id: pid, name: text(f, o.name, 'name')!, summary: text(f, o.summary, 'summary')!, ...world ? { world } : {} });
+    places.push({ id: pid, name: text(f, o.name, 'name')!, summary: text(f, o.summary, 'summary')!, ...world ? { world } : {}, ...say(pronounce(f, o.pronounce)) });
   }
   // A character who stays in one place (Tom Bombadil): the time cursor shows them there between their events.
   for (const c of characters) if (c.home && !placeIds.has(c.home)) R.error(charFile.get(c.id)!, `home: unknown place "${c.home}"`);
@@ -291,7 +304,7 @@ export function buildContent(contentDir: string): BuildResult {
     const f = path.join(dir, 'event.yaml');
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'summary', 'links', 'beats', 'sides'], 'event');
+    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'pronounce', 'summary', 'links', 'beats', 'sides'], 'event');
     const eid = id(f, o.id, eventIds, 'event');
     if (!eid) continue;
     const folder = path.basename(dir);
@@ -399,7 +412,7 @@ export function buildContent(contentDir: string): BuildResult {
       summary: {
         id: eid, age: String(o.age), ...when ? { when } : {}, ...span ? { span } : {}, ...place ? { place } : {},
         characters: chars, arcs: evArcs, journeys: evJourneys, tags: strList(f, o.tags, 'tags'), status,
-        ...source ? { source } : {}, ...foretoldBy ? { foretoldBy } : {}, title: text(f, o.title, 'title')!, summary: text(f, o.summary, 'summary')!,
+        ...source ? { source } : {}, ...foretoldBy ? { foretoldBy } : {}, title: text(f, o.title, 'title')!, ...say(pronounce(f, o.pronounce)), summary: text(f, o.summary, 'summary')!,
         links, ...sides ? { sides } : {}, audio: [],
       },
     });

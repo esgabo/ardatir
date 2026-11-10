@@ -6,3 +6,4 @@ summary:
   es: "Elwë, rey de Doriath, señor de los Sindar y esposo de la maia Melian."
 color: "#5a7a9a"
 scale: 2
+pronounce: { en: THING-gol, es: ZIN-gol }   # how to say it: syllables, the stressed one in capitals

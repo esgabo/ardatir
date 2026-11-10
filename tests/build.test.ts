@@ -186,6 +186,11 @@ describe('the valid fixture', () => {
     expect(ev('the-music').atReason).toBeUndefined();
   });
 
+  it('carries how to say a name through to the index', () => {
+    expect(r.index.places.find((p) => p.id === 'rivendell')!.pronounce).toEqual({ en: 'RIV-en-del', es: 'RI-ven-del' });
+    expect(r.index.places.find((p) => p.id === 'bag-end')!.pronounce).toBeUndefined();
+  });
+
   it('keeps a character\'s home', () => {
     expect(r.index.characters.find((c) => c.id === 'bilbo')!.home).toBe('bag-end');
     expect(r.index.characters.find((c) => c.id === 'gandalf')!.home).toBeUndefined();
@@ -335,6 +340,9 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'bad colour', changes: [{ file: 'characters/bilbo.yaml', replace: ['"#6a8a3a"', 'green'] }], error: 'color: use #rrggbb' },
   { name: 'unknown kin', changes: [{ file: 'characters/bilbo.yaml', write: 'id: bilbo\nname: { en: Bilbo, es: Bilbo }\nkind: hobbit\nsummary: { en: A, es: A }\nkin:\n  - { id: frodo, as: cousin }\n' }], error: 'kin: unknown character "frodo"' },
   { name: 'unknown home', changes: [{ file: 'characters/bilbo.yaml', replace: ['home: bag-end', 'home: hobbiton'] }], error: 'home: unknown place "hobbiton"' },
+  { name: 'pronunciation without a stressed syllable', changes: [{ file: 'places/rivendell.yaml', replace: ['en: RIV-en-del', 'en: riv-en-del'] }], error: 'pronounce.en: "riv-en-del": needs exactly one stressed syllable in CAPITALS' },
+  { name: 'pronunciation with stray marks', changes: [{ file: 'places/rivendell.yaml', replace: ['es: RI-ven-del', 'es: RI/ven/del'] }], error: 'pronounce.es: only letters' },
+  { name: 'pronunciation without English', changes: [{ file: 'characters/gandalf.yaml', replace: ['kind: wizard\n', 'kind: wizard\npronounce: { es: GAN-dalf }\n'] }], error: 'pronounce: needs an English text (en)' },
   { name: 'age with neither axis nor timeless', changes: [{ file: 'ages/third-age.yaml', replace: ['axis: { start: 4032 }', ''] }], error: 'needs either `timeless: true` or `axis: { start }`' },
 
   // Events: references and status

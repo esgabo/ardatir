@@ -51,6 +51,7 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Factions are one file per side** (`content/factions/`: name, banner colour, kind, summary, leaders), reused across battles; a battle's `sides` are groups of allied factions; staging places `armies` (faction, size, keyframes) as blocks of small figures in the faction's colour | Pages and the time cursor can say who fought whom, battles are findable by faction, and a diorama can show hosts without giving every soldier a track. Named characters keep their own tracks and lead them. One being who comes alone (Beorn) is a character, a host (the Eagles) a faction. See `docs/DESIGN.md` §2 (battles) and §4.9. Decided 2026-11-09 (#18). |
 | **The time cursor is a page at a readable moment** (`#/time/third-age/3019-03-15`, `…/3019`, `…/before-time`): the ages as log-width segments (timeless ones apart, before the axis) and a finer scale down to a day; likely / possibly by `nearnessDuring`; whereabouts from journeys by company, honest first | Ages differ a hundredfold in length, so each needs room; a moment is said exactly as precisely as it was picked; "somewhere between" when the sources allow several stops, with our guess labelled. See `docs/DESIGN.md` §3.1. Decided 2026-11-09. |
 | **What is foretold is its own timeless age, after the Fourth Age** (`content/ages/foretold.yaml`, `foretold: true`): the Dagor Dagorath and the Second Music, never on the dated axis; every event in it cites its `source` and may name who foretold it (`foretoldBy`); marked as prophecy wherever it appears (a *Foretold* badge, *Foretold by Mandos, not told as history. Source: …* on its page, a dashed segment after the axis) | Prophecy must never read as history. The flag lives on the age so no event can forget it. We tell the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*, *The Lost Road*), one scene per event, so its strongest moments can each be animated. See `docs/DESIGN.md` §4.8. Decided 2026-11-09 (#57). |
+| **Wonder and learning** (#29): a first visit to the front door opens with a short guided opening over the Ainulindalë (`#/start`), then three ways in (a story, a moment, a life); skippable at once, shown once per visitor (localStorage), reopened from the sidebar's *Start here*. Hard names carry `pronounce: { en, es }` in the *AR-da* style; the stage has *About this scene*; event pages point to the book and chapter | A newcomer needs a door and a hand, not a control panel; nothing else appears unasked. Respellings per language, because English and Spanish readers sound letters differently. See `docs/DESIGN.md` §3.5. Decided 2026-11-09. |
 
 ## Architecture
 
@@ -104,6 +105,10 @@ src/
   related.ts         an event's links and what overlaps it, likely vs possibly (Meanwhile, event pages)
   placement.ts       a best guess in words: how an event is placed (from atReason), why another is "likely"
   foretold.ts        what is foretold (DESIGN §4.8): is an event prophecy, its badge, "Foretold by …, not told as history. Source: …"
+  opening.ts         the first visit's opening over the cosmos (#/start): its steps in t, remembered per visitor (DESIGN §3.5)
+  learn.ts           learning on demand: how to say a name (sayHint), "Read this in …" (bookPointer), the stage's "About this scene"
+  books.ts           chapter titles in each language (The Hobbit by number, the rest by English title), "Read this in …": pure, tested
+  data/pronounce.ts  `pronounce` respellings: their form (checked by the build) and syllables for display: pure, tested
   dom.ts, icons.ts   a tiny element builder; inline stroke SVG icons
   main.ts            app shell: routing, pages vs stage, playback loop, panels, breadcrumb, zoom switch, Meanwhile
 ```
@@ -139,6 +144,8 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 - **Cite, don't quote:** `source: { book, chapter }` is for checking accuracy.
 - **Narration passages** are short (one to three sentences) and placed at the animation moment they describe. Keep the beat markers (`beats`) aligned with them.
 - **Every text needs `en`**; add `es` alongside it when writing new content.
+- **Hard names get `pronounce: { en, es }`** (characters, places, ages; events whose title is a name): `ee-LOO-va-tar` / `i-LÚ-va-tar`, syllables joined by hyphens, the stressed one in capitals, one per word. Each language respells for its own readers.
+- **A chapter cited by name** needs its Spanish title in `src/books.ts` (a test checks); The Hobbit's chapters are cited by number.
 
 ## IP rules (fan project)
 
@@ -153,7 +160,7 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 - `npm run content` must show `✓ content is valid`, and `npm run build` must pass (it typechecks, then fails on content errors) with no chunk over its budget (`chunkBudgets` in `vite.config.ts`: 500 kB, three.js 600 kB).
 - `npm test` must pass; the deploy workflow runs it before building. New validation rules get a broken case in `tests/build.test.ts` (each one a small change to the fixture in `tests/fixtures/valid/content/`), and date math gets a case in `tests/calendar.test.ts`.
 - After adding content, check the warnings too: missing Spanish, characters in no event, events outside their journey's dates, a sort key that contradicts the dates, a best guess that lands before what it follows.
-- For visual changes, look at the result: run `npm run preview` and screenshot key moments with Playwright, e.g. `#/event/ainulindale?t=0.25`, `?t=0.48`, `?t=0.72`, `?t=0.97`, and `#/event/roast-mutton?t=0.45&follow=bilbo&lang=es`. Headless Chromium needs `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader` for WebGL.
+- For visual changes, look at the result: run `npm run preview` and screenshot key moments with Playwright (on a fresh profile a visit to `#/` shows the opening; `#/start` reopens it), e.g. `#/event/ainulindale?t=0.25`, `?t=0.48`, `?t=0.72`, `?t=0.97`, and `#/event/roast-mutton?t=0.45&follow=bilbo&lang=es`. Headless Chromium needs `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader` for WebGL.
 - When touching `eventClock.ts`, check that a recording with uneven `starts` still lands each passage on its `t`, and that the playhead reaches `t = 1` at the recording's `duration` (`tests/eventClock.test.ts` covers both).
 - Don't commit test audio or placeholder recordings.
 

@@ -8,3 +8,4 @@ color: "#e0d9a8"
 scale: 1.9
 kin:
   - { id: celeborn, as: husband }
+pronounce: { en: ga-LAD-ree-el, es: ga-LA-dri-el }   # how to say it: syllables, the stressed one in capitals

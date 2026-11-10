@@ -5,7 +5,8 @@
 import { characterMap, index } from './chronicle';
 import type { EventSummary, Lang } from './data/types';
 import { h } from './dom';
-import { t as ui, tr, type UiKey } from './i18n';
+import { t as ui, tr } from './i18n';
+import { bookTitle, chapterTitle } from './books';
 
 /** Is this age (or this event's age) prophecy rather than history? */
 export const isForetoldAge = (ageId: string | undefined) => !!index.ages.find((a) => a.id === ageId)?.foretold;
@@ -14,9 +15,11 @@ export const isForetold = (e: Pick<EventSummary, 'age'>) => isForetoldAge(e.age)
 /** "The Lost Road and Other Writings, “Quenta Silmarillion”": a source cited by book and chapter. */
 export function sourceLabel(source: EventSummary['source'], L: Lang): string {
   if (!source) return '';
-  const book = ui(`book_${source.book}` as UiKey, L) || source.book;
+  const book = bookTitle(source.book, L);
   const ch = source.chapter;
-  const chapter = typeof ch === 'number' ? `${ui('chapter', L)} ${ch}` : ch ? `“${ch}”` : '';
+  // Chapter titles in the reader's language where we have them (books.ts).
+  const title = typeof ch === 'string' ? chapterTitle(ch, L) : undefined;
+  const chapter = typeof ch === 'number' ? `${ui('chapter', L)} ${ch}` : title ? (L === 'es' ? `«${title}»` : `“${title}”`) : '';
   return [book, chapter].filter(Boolean).join(', ');
 }
 
