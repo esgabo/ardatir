@@ -3,6 +3,7 @@
 // and derives the lookups the cross-views need. See docs/DESIGN.md §4 and §8.
 
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import YAML from 'yaml';
 import { dateSpan, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
@@ -10,7 +11,7 @@ import {
   EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
   type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LinkType, type LocalizedText,
-  type NarrationAudio, type NarrationSegment, type Place, type Precision, type Span, type StageKind,
+  type NarrationAudio, type NarrationSegment, type Narrator, type NarratorVoice, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
 import { narrationHash, TEXT_HASH } from '../narration/text.ts';
@@ -25,6 +26,8 @@ export interface BuildResult {
   /** Missing translations, counted per language. */
   missing: Record<string, number>;
   copies: { from: string; to: string }[];
+  /** Every narrator, with the voices that validated (content/narrators/). */
+  narrators: Narrator[];
 }
 
 const REVERSE: Record<LinkType, LinkType> = {
@@ -103,13 +106,52 @@ export function buildContent(contentDir: string): BuildResult {
     return v;
   };
 
+  // ---------- narrators (content/narrators/README.md) ----------
+  const narrators: Narrator[] = [];
+  const narratorIds = new Set<string>();
+  const narratorsDir = path.join(contentDir, 'narrators');
+  for (const f of yamlFiles(narratorsDir)) {
+    const o = readYaml(f);
+    if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
+    keys(f, o, ['id', 'brief', 'voices'], 'narrator');
+    const nid = id(f, o.id, narratorIds, 'narrator');
+    if (!nid) continue;
+    const voices: Narrator['voices'] = {};
+    for (const [lang, v] of Object.entries(isObj(o.voices) ? o.voices : {})) {
+      const what = `voices.${lang}`;
+      if (!(LANGS as readonly string[]).includes(lang)) { R.error(f, `${what}: unknown language`); continue; }
+      if (!isObj(v)) { R.error(f, `${what}: expected a mapping`); continue; }
+      keys(f, v, ['engine', 'engineVersion', 'instruct', 'seed', 'speed', 'params', 'reference', 'referenceHash', 'refText', 'gap', 'version'], 'voice');
+      let ok = true;
+      for (const k of ['engine', 'engineVersion', 'instruct', 'reference', 'referenceHash', 'refText'] as const) {
+        if (typeof v[k] !== 'string' || !(v[k] as string).trim()) { R.error(f, `${what}.${k}: required text`); ok = false; }
+      }
+      if (!Number.isInteger(v.seed)) { R.error(f, `${what}.seed: a whole number`); ok = false; }
+      if (!(typeof v.speed === 'number' && v.speed > 0)) { R.error(f, `${what}.speed: a positive number`); ok = false; }
+      if (!(Number.isInteger(v.version) && (v.version as number) >= 1)) { R.error(f, `${what}.version: a whole number ≥ 1`); ok = false; }
+      if (v.gap !== undefined && !(typeof v.gap === 'number' && v.gap >= 0)) { R.error(f, `${what}.gap: seconds, ≥ 0`); ok = false; }
+      if (v.params !== undefined && !isObj(v.params)) { R.error(f, `${what}.params: a mapping`); ok = false; }
+      if (typeof v.reference === 'string') {
+        const ref = path.join(narratorsDir, v.reference);
+        if (!fs.existsSync(ref)) { R.error(f, `${what}.reference: no file "${v.reference}" next to this file`); ok = false; }
+        else if (typeof v.referenceHash === 'string') {
+          const actual = `sha256:${createHash('sha256').update(fs.readFileSync(ref)).digest('hex')}`;
+          if (actual !== v.referenceHash) { R.error(f, `${what}.referenceHash: does not match ${v.reference} (now ${actual}); a changed voice needs a new version`); ok = false; }
+        }
+      }
+      if (ok) voices[lang as Lang] = v as unknown as NarratorVoice;
+    }
+    narrators.push({ id: nid, brief: text(f, o.brief, 'brief')!, voices });
+  }
+
   // ---------- ages ----------
   const ages: Age[] = [];
   const ageIds = new Set<string>();
+  const ageFile = new Map<string, string>();
   for (const f of yamlFiles(path.join(contentDir, 'ages'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis'], 'age');
+    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis', 'narrator'], 'age');
     const aid = id(f, o.id, ageIds, 'age');
     if (!aid) continue;
     if (typeof o.order !== 'number') R.error(f, 'order: must be a number');
@@ -121,7 +163,13 @@ export function buildContent(contentDir: string): BuildResult {
       if (typeof yl !== 'number' || yl <= 0) R.error(f, 'axis.yearLength: must be a positive number');
       axis = { start: o.axis.start, yearLength: Number(yl) };
     } else R.error(f, 'needs either `timeless: true` or `axis: { start }`');
-    ages.push({ id: aid, order: Number(o.order), name: text(f, o.name, 'name')!, abbr: text(f, o.abbr, 'abbr', false), summary: text(f, o.summary, 'summary')!, ...axis ? { axis } : {} });
+    let narrator: string | undefined;
+    if (o.narrator !== undefined) {
+      if (typeof o.narrator === 'string' && narratorIds.has(o.narrator)) narrator = o.narrator;
+      else R.error(f, `narrator: unknown narrator ${JSON.stringify(o.narrator)}`);
+    }
+    ageFile.set(aid, f);
+    ages.push({ id: aid, order: Number(o.order), name: text(f, o.name, 'name')!, abbr: text(f, o.abbr, 'abbr', false), summary: text(f, o.summary, 'summary')!, ...axis ? { axis } : {}, ...narrator ? { narrator } : {} });
   }
   ages.sort((a, b) => a.order - b.order);
   const ageMap = new Map(ages.map((a) => [a.id, a]));
@@ -544,11 +592,18 @@ export function buildContent(contentDir: string): BuildResult {
     R.warnings.push(`${file}: ${n} text${n > 1 ? 's' : ''} missing "${lang}"`);
   }
 
+  // Every age with something to watch should have someone to tell it.
+  for (const a of ages) {
+    if (a.narrator) continue;
+    const staged = events.filter((e) => e.age === a.id && STATUS_RANK[e.status] >= STATUS_RANK.staged);
+    if (staged.length) R.warn(ageFile.get(a.id)!, `has staged events but no narrator (${staged.map((e) => e.id).join(', ')}); add narrator: <id>`);
+  }
+
   const lanes = characterLanes(characters.map((c) => c.id), events, journeys);
 
   return {
     index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes },
-    details, scripts, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
+    details, scripts, narrators, copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
   };
 }
 

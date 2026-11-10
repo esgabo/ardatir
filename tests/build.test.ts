@@ -46,7 +46,8 @@ describe('the real content', () => {
 
   it('is valid, with no warnings', () => {
     expect(r.errors).toEqual([]);
-    expect(r.warnings).toEqual([]);
+    // Until the Third Age narrator is auditioned (docs/superpowers/plans/2026-11-10-narration-voices.md).
+    expect(r.warnings.filter((w) => !w.startsWith('content/ages/third-age.yaml: has staged events but no narrator'))).toEqual([]);
   });
 
   it('places every best guess inside its honest range', () => {
@@ -338,6 +339,44 @@ describe('broken content', () => {
     ] }, { file: LETTERS, replace: ['year: 2941, day: 1-lithe', 'year: 2941, month: 5, day: 30'] }]);
     expect(r.errors).toEqual([]);
     expect(r.warnings.some((w) => w.includes('is at "rivendell" on journey "the-road" but overlaps none of its waypoints there'))).toBe(true);
+  });
+
+  describe('narrators', () => {
+    const VOICE = 'narrators/the-voice.yaml';
+    const has = (list: string[], s: string) => list.some((e) => e.includes(s));
+
+    it('the fixture\'s narrator loads', () => {
+      const r = buildWith([]);
+      expect(r.narrators.map((n) => n.id)).toEqual(['the-voice']);
+      expect(r.narrators[0].voices.en?.seed).toBe(7);
+      expect(r.index.ages.find((a) => a.id === 'before-time')!.narrator).toBe('the-voice');
+    });
+
+    it('unknown narrator on an age', () => {
+      const r = buildWith([{ file: 'ages/before-time.yaml', replace: ['narrator: the-voice', 'narrator: nobody'] }]);
+      expect(has(r.errors, 'narrator: unknown narrator "nobody"'), r.errors.join('\n')).toBe(true);
+    });
+
+    it('missing reference file', () => {
+      const r = buildWith([{ file: 'narrators/the-voice.en.flac', remove: true }]);
+      expect(has(r.errors, 'reference: no file "the-voice.en.flac"'), r.errors.join('\n')).toBe(true);
+    });
+
+    it('reference hash mismatch', () => {
+      const r = buildWith([{ file: 'narrators/the-voice.en.flac', write: 'a different voice\n' }]);
+      expect(has(r.errors, 'referenceHash: does not match'), r.errors.join('\n')).toBe(true);
+    });
+
+    it('voice without refText', () => {
+      const r = buildWith([{ file: VOICE, replace: ['    refText: A calm voice that tells the history.\n', ''] }]);
+      expect(has(r.errors, 'refText'), r.errors.join('\n')).toBe(true);
+    });
+
+    it('staged event in an age with no narrator', () => {
+      const r = buildWith([{ file: 'ages/third-age.yaml', replace: ['narrator: the-voice\n', ''] }]);
+      expect(r.errors).toEqual([]);
+      expect(has(r.warnings, 'has staged events but no narrator'), r.warnings.join('\n')).toBe(true);
+    });
   });
 
   describe('textHash', () => {
