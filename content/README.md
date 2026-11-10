@@ -89,7 +89,7 @@ tracks:
 
 ## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`
 
-Produced outside this project (the Voice Studio). The words must match `narration.yaml` exactly. The timing file says how long the recording is, the second each passage starts, and which text was read; the animation stretches to match.
+Made by `npm run narration:render` and `npm run narration:publish` on the homelab Voice Studio (`docs/LOCAL.md`). The words must match `narration.yaml` exactly. The timing file says how long the recording is, the second each passage starts, and which text was read; the animation stretches to match.
 
 ```yaml
 duration: 31.5
@@ -109,6 +109,33 @@ passages: { fire: sha256:1f0c…, trolls: sha256:9a2b… }        # each passage
 `out/` is generated and gitignored. Options: `--only <event>` (event id, repeatable), `--lang es` (repeatable), `--changed` (only what needs recording: no recording yet, a stale one, or one without a `textHash`). For example: `npm run narration:export -- --changed --lang es`.
 
 **`textHash`** is `sha256:` followed by the first 16 hex digits of SHA-256 over one line per passage, in order: `<id>`, a tab, the passage's text in that language (English where it is missing), a newline; whitespace in the text is collapsed first, so re-wrapping the YAML doesn't change it. Copy it from the exported `.json` into `audio/<lang>.yaml` when the recording comes back. The build then warns **stale recording** when a passage's words, ids or order change after recording, and warns when a recording has no `textHash`. The code is in `scripts/narration/text.ts`.
+
+## Narrators: `narrators/<id>.yaml`
+
+One narrator per age, per audio language; the age points to it with `narrator: <id>`. A voice is designed at audition (`instruct` + `seed`), then every recording clones its **reference**, our own designed sample next to the yaml. It is never a real actor's voice. `narrators/README.md` says where each sample came from.
+
+```yaml
+id: the-elder
+brief: { en: A deep, slow, warm, kind elder…, es: … }
+voices:
+  en:
+    engine: omnivoice
+    engineVersion: 0.5.6          # VoiceStudio version it was made on
+    instruct: "male, elderly, low pitch, british accent"
+    seed: 101                     # the audition take; in production the seed only picks a take
+    speed: 0.9
+    reference: the-elder.en.flac  # next to this file, about 14 s
+    referenceHash: sha256:…       # the build checks the file still matches
+    refText: …                    # the exact words of the reference
+    gap: 0.8                      # optional: seconds between passages
+    version: 1                    # bump when the voice changes: its recordings go stale
+```
+
+A changed reference needs a new `referenceHash` and a new `version`. The build warns when an age with staged events has no narrator.
+
+## Pronunciation: `pronunciation.yaml`
+
+Per language, a name as written and how to say it: `Eä: "AY-ah"`. The pipeline swaps the respelling into the text it sends to the Voice Studio, for whole words only, case-sensitive. Changing an entry re-renders the passages that use it. Add a name when a take says it wrong; common names the voice already says well need none.
 
 ## Journeys
 
