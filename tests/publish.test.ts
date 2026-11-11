@@ -67,6 +67,14 @@ describe('publish', () => {
     expect(fs.existsSync(path.join(content, PARTY, 'audio/en.mp3'))).toBe(true);
   });
 
+  it('leaves no recording behind when encoding fails (a lone mp3 fails the build)', async () => {
+    const { content, cacheDir } = await rendered();
+    const failing: Encoder = async (wav, out) => { fs.writeFileSync(out, wav); throw new Error('encoded 69.888 s, expected 69.830 s'); };
+    await expect(publish(buildContent(content), { lang: ['en'], accept: new Set(), cacheDir }, failing)).rejects.toThrow(/encoded/);
+    expect(fs.readdirSync(path.join(content, PARTY)).includes('audio') ? fs.readdirSync(path.join(content, PARTY, 'audio')) : []).toEqual([]);
+    expect(buildContent(content).errors).toEqual([]);
+  });
+
   it('the content build accepts what publish wrote', async () => {
     const { content, cacheDir } = await rendered();
     await pub(content, cacheDir);

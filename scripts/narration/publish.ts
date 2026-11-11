@@ -56,7 +56,14 @@ export async function publish(
     const duration = Math.round(joined.duration * 1000) / 1000;
     const dir = path.join(j.dir, 'audio');
     fs.mkdirSync(dir, { recursive: true });
-    await encode(encodeWav(joined.pcm), path.join(dir, `${j.lang}.mp3`));
+    // Encode beside the recording and move it in only once it's good: a lone mp3 fails the build.
+    const part = path.join(dir, `.${j.lang}.part.mp3`);
+    try { await encode(encodeWav(joined.pcm), part); } catch (e) {
+      fs.rmSync(part, { force: true });
+      if (!fs.readdirSync(dir).length) fs.rmdirSync(dir);
+      throw e;
+    }
+    fs.renameSync(part, path.join(dir, `${j.lang}.mp3`));
     const meta = {
       duration, starts,
       textHash: narrationHash(j.passages, j.lang),
