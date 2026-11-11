@@ -15,7 +15,7 @@ import { LANGS, type Lang, type Narrator } from '../../src/data/types.ts';
 import { decodeToWav, ffmpeg } from './ffmpeg.ts';
 import { render } from './render.ts';
 import { writeReport } from './report.ts';
-import { gpuIdle, voiceStudio } from './voicestudio.ts';
+import { voiceStudio } from './voicestudio.ts';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const contentDir = path.join(root, 'content');
@@ -38,7 +38,6 @@ for (const l of langs) if (!(LANGS as readonly string[]).includes(l)) fail(`unkn
 const content = buildContent(contentDir);
 if (content.errors.length) { for (const e of content.errors) console.error(`  ERROR  ${e}`); fail('content has errors; run npm run content'); }
 try { ffmpeg(); } catch (e) { fail((e as Error).message); }
-if (!(await gpuIdle())) fail('Ollama has models loaded on the shared GPU; try later');
 
 let vs!: ReturnType<typeof voiceStudio>;
 try { vs = voiceStudio(); } catch (e) { fail((e as Error).message); }

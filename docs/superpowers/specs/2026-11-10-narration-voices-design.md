@@ -102,7 +102,7 @@ Auditions go to `out/auditions/<narrator>/` (gitignored), with a `manifest.json`
 
 ## 5. Production pipeline
 
-All scripts are TypeScript under `scripts/narration/`, run with Node 22 like the rest. The box URL and key come from environment variables (`VOICESTUDIO_URL`, `VOICESTUDIO_API_KEY`), documented in `docs/LOCAL.md`, never committed. Where to find them is in the author's homelab notes. Before each batch, when `OLLAMA_URL` is set, the pipeline checks that Ollama is idle (`$OLLAMA_URL/api/ps`). The box's GPU is shared, and running both at once is untested.
+All scripts are TypeScript under `scripts/narration/`, run with Node 22 like the rest. The box URL and key come from environment variables (`VOICESTUDIO_URL`, `VOICESTUDIO_API_KEY`), documented in `docs/LOCAL.md`, never committed. Where to find them is in the author's homelab notes.
 
 ### 5.1 Commands
 

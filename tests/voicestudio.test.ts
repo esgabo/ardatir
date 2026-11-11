@@ -1,7 +1,7 @@
 // The Voice Studio client, against a fake fetch: no network (scripts/narration/voicestudio.ts).
 
 import { describe, expect, it } from 'vitest';
-import { gpuIdle, voiceStudio } from '../scripts/narration/voicestudio.ts';
+import { voiceStudio } from '../scripts/narration/voicestudio.ts';
 import type { NarratorVoice } from '../src/data/types.ts';
 
 const voice: NarratorVoice = {
@@ -94,25 +94,5 @@ describe('voiceStudio.transcribe and version', () => {
     } finally {
       if (saved === undefined) delete process.env.VOICESTUDIO_URL; else process.env.VOICESTUDIO_URL = saved;
     }
-  });
-});
-
-describe('gpuIdle', () => {
-  const ollama = 'http://ollama:11434/';
-  it('is idle with no models loaded', async () => {
-    const { f, calls } = fakeFetch(() => Response.json({ models: [] }));
-    expect(await gpuIdle(f, ollama)).toBe(true);
-    expect(calls[0].url).toBe('http://ollama:11434/api/ps');
-  });
-  it('is busy with a model loaded', async () => {
-    expect(await gpuIdle(fakeFetch(() => Response.json({ models: [{ name: 'llama' }] })).f, ollama)).toBe(false);
-  });
-  it('is idle when Ollama does not answer (stopped)', async () => {
-    expect(await gpuIdle((async () => { throw new Error('ECONNREFUSED'); }) as typeof fetch, ollama)).toBe(true);
-  });
-  it('checks nothing without an Ollama URL', async () => {
-    const { f, calls } = fakeFetch(() => Response.json({ models: [{ name: 'llama' }] }));
-    expect(await gpuIdle(f, '')).toBe(true);
-    expect(calls).toHaveLength(0);
   });
 });

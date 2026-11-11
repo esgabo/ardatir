@@ -79,7 +79,7 @@ scripts/narration/
   text.ts            a passage's text per language; `textHash` and `passageHash` that mark a recording stale
   render.ts, render-cli.ts   `npm run narration:render`: passages on the Voice Studio, cached, checked, retried
   publish.ts, publish-cli.ts `npm run narration:publish`: checked takes → audio/<lang>.mp3 + .yaml
-  voicestudio.ts     the Voice Studio client (clone a narrator's reference, transcribe) and the shared-GPU check
+  voicestudio.ts     the Voice Studio client (clone a narrator's reference, transcribe)
   checks.ts          the automatic checks on a take: words, names, pace, length, clipping, silence (pure)
   wav.ts             WAV in/out, joining with gaps, audio statistics (pure)
   pronounce.ts       respelling names from content/pronunciation.yaml (pure)

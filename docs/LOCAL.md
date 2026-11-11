@@ -10,7 +10,6 @@ The Voice Studio is a **VoiceStudio** server (OmniVoice engine) on the author's 
 |---|---|
 | `VOICESTUDIO_URL` | The server's base URL, e.g. `http://<host>:<port>`. Required: the scripts stop with an error without it. |
 | `VOICESTUDIO_API_KEY` | Its API key, sent as a bearer token. Never commit, paste or print it. |
-| `OLLAMA_URL` | Optional. The base URL of an Ollama that shares the box's GPU; when set, `narration:render` checks it first. |
 | `FFMPEG` | Optional. The path to `ffmpeg`, if it isn't on `PATH`. |
 
 The box is a **test machine**: no backups, and it may not start on its own. Everything needed to rebuild a narrator is in this repo (`content/narrators/`), so losing the box costs nothing but time.
@@ -20,8 +19,7 @@ The box is a **test machine**: no backups, and it may not start on its own. Ever
 1. **Set `VOICESTUDIO_URL`**, and start the box if it is down (how is in the homelab notes). `curl "$VOICESTUDIO_URL/health"` should answer `{"status":"ok",…}`.
 2. **Install ffmpeg** on the machine that runs the scripts, once: `sudo apt install ffmpeg`. The scripts use it to decode references and encode mp3s; set `FFMPEG` if it lives elsewhere.
 3. **Set `VOICESTUDIO_API_KEY`**, loading it into your shell without printing it; where the key lives is in the homelab notes. Never commit or paste the key.
-4. **Mind the shared GPU.** If an Ollama uses the same GPU, running both at once is untested. Set `OLLAMA_URL` and `narration:render` checks its `/api/ps` first, stopping if a model is loaded.
-5. **Expect a slow start.** The first calls after the container starts take 20–110 s each. After that, a passage takes about as long to make as it lasts.
+4. **Expect a slow start.** The first calls after the container starts take 20–110 s each. After that, a passage takes about as long to make as it lasts.
 
 ### A session
 

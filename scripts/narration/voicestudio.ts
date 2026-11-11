@@ -1,7 +1,7 @@
 // The Voice Studio (VoiceStudio, OmniVoice engine; docs/LOCAL.md): synthesize a
-// passage by cloning a narrator's reference, transcribe a take, and check the shared GPU.
+// passage by cloning a narrator's reference, and transcribe a take.
 // URL and key come from VOICESTUDIO_URL (required) and VOICESTUDIO_API_KEY; the key is
-// never logged. The GPU check reads OLLAMA_URL, and is skipped when it isn't set.
+// never logged.
 
 import type { Lang, NarratorVoice } from '../../src/data/types.ts';
 
@@ -63,20 +63,4 @@ export function voiceStudio(opts: { url?: string; key?: string; fetch?: typeof f
       return String(j.version ?? 'unknown');
     },
   };
-}
-
-/**
- * Is the Voice Studio's GPU free? When an Ollama shares it (OLLAMA_URL set), running both
- * at once is untested. A stopped Ollama doesn't answer, which counts as idle; with no
- * OLLAMA_URL there is nothing to check.
- */
-export async function gpuIdle(fetchImpl: typeof fetch = fetch, ollamaUrl = process.env.OLLAMA_URL): Promise<boolean> {
-  if (!ollamaUrl) return true;
-  try {
-    const res = await fetchImpl(`${ollamaUrl.replace(/\/$/, '')}/api/ps`, { signal: AbortSignal.timeout(5000) });
-    const j = (await res.json()) as { models?: unknown[] };
-    return !j.models?.length;
-  } catch {
-    return true;
-  }
 }
