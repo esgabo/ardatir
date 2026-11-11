@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "ask": ["mcp__blender"],
+    "deny": [
+      "mcp__blender__generate_3d",
+      "mcp__blender__search_assets",
+      "mcp__blender__import_asset",
+      "mcp__blender__record_trajectory_feedback"
+    ]
+  }
+}

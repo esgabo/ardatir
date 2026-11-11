@@ -31,7 +31,22 @@ blender --background scene.blend --python export.py
 
 **Check it works:** render a small test scene (a few primitives, a sun, a camera) with Cycles and EEVEE, and export it as `.glb`. Then run the export through `npm run model:pack` (or `pack` in `scripts/models/pack.ts`, writing outside `assets/` for a test). Export settings and conventions are in [`MODELS.md`](MODELS.md).
 
-*Optional, not set up yet:* an add-on that lets an agent drive the open Blender and see viewport screenshots.
+### Letting an agent drive the open Blender (optional)
+
+[MCP for Blender](https://github.com/ahujasid/mcp-for-blender) (MIT) lets an agent inspect the open scene, run Python in it and see the viewport, while you keep working in the same window. It has two parts: an add-on inside Blender that listens on `localhost:9876`, and an MCP server that Claude Code starts. The repo registers the server in `.mcp.json` (Claude Code asks you once to trust it) and limits it in `.claude/settings.json`:
+
+- **Every Blender call asks first** (`ask: mcp__blender`).
+- **Outside assets are denied** (`generate_3d`, `search_assets`, `import_asset`): models here are original (IP rules in `CLAUDE.md`). So is `record_trajectory_feedback`, which sends your reactions to the project's dataset.
+- **Telemetry off** (`DISABLE_TELEMETRY`) and **safe mode on** (`BLENDER_MCP_SAFE_MODE`): code the agent sends must pass an allowlist (no `os`, `open`, `subprocess`, sockets) before it reaches Blender.
+
+Install it so only this project's Blender has the add-on:
+
+1. **The server**, pinned: `pipx install mcp-for-blender==<version>` (puts `mcp-for-blender` on PATH).
+2. **A Blender profile for this project**, so your everyday Blender stays without the add-on. A small launcher, e.g. `blender-ardatir`, runs `BLENDER_USER_RESOURCES=<profile dir> blender "$@"`.
+3. **The add-on in that profile**: copy the add-on shipped with the server (`blender_mcp/bundled/addon.py` in its package) to `<profile dir>/scripts/addons/blender_mcp.py`, enable it and save preferences.
+4. **No auto-start**: the add-on starts its server whenever Blender opens unless *Auto-Start Server* is off. Turn it off and save the startup file (*File → Defaults → Save Startup File*), so new files start without it. Files saved elsewhere may still have it on.
+
+**Using it:** open Blender with the launcher, press `N` in the viewport, open the **MCP for Blender** tab and click **Start MCP Server**; stop it when you're done. Nothing listens until you do, and headless runs (`--background`) never start it. Upgrading means a new pinned server version *and* its bundled add-on, read before installing.
 
 ## Voice Studio
 
