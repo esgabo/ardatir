@@ -73,16 +73,46 @@ describe('voiceStudio.transcribe and version', () => {
     const { f } = fakeFetch(() => Response.json({ status: 'ok', version: '0.5.6' }));
     expect(await voiceStudio({ url: 'http://vs', fetch: f }).version()).toBe('0.5.6');
   });
+
+  it('needs a URL: there is no default address', () => {
+    const saved = process.env.VOICESTUDIO_URL;
+    delete process.env.VOICESTUDIO_URL;
+    try {
+      expect(() => voiceStudio({ fetch: fakeFetch().f })).toThrow(/VOICESTUDIO_URL is not set/);
+    } finally {
+      if (saved !== undefined) process.env.VOICESTUDIO_URL = saved;
+    }
+  });
+
+  it('reads the URL from VOICESTUDIO_URL', async () => {
+    const saved = process.env.VOICESTUDIO_URL;
+    process.env.VOICESTUDIO_URL = 'http://from-env:1234/';
+    try {
+      const { f, calls } = fakeFetch(() => Response.json({ version: '0.5.6' }));
+      await voiceStudio({ fetch: f }).version();
+      expect(calls[0].url).toBe('http://from-env:1234/health');
+    } finally {
+      if (saved === undefined) delete process.env.VOICESTUDIO_URL; else process.env.VOICESTUDIO_URL = saved;
+    }
+  });
 });
 
 describe('gpuIdle', () => {
+  const ollama = 'http://ollama:11434/';
   it('is idle with no models loaded', async () => {
-    expect(await gpuIdle(fakeFetch(() => Response.json({ models: [] })).f)).toBe(true);
+    const { f, calls } = fakeFetch(() => Response.json({ models: [] }));
+    expect(await gpuIdle(f, ollama)).toBe(true);
+    expect(calls[0].url).toBe('http://ollama:11434/api/ps');
   });
   it('is busy with a model loaded', async () => {
-    expect(await gpuIdle(fakeFetch(() => Response.json({ models: [{ name: 'llama' }] })).f)).toBe(false);
+    expect(await gpuIdle(fakeFetch(() => Response.json({ models: [{ name: 'llama' }] })).f, ollama)).toBe(false);
   });
   it('is idle when Ollama does not answer (stopped)', async () => {
-    expect(await gpuIdle((async () => { throw new Error('ECONNREFUSED'); }) as typeof fetch)).toBe(true);
+    expect(await gpuIdle((async () => { throw new Error('ECONNREFUSED'); }) as typeof fetch, ollama)).toBe(true);
+  });
+  it('checks nothing without an Ollama URL', async () => {
+    const { f, calls } = fakeFetch(() => Response.json({ models: [{ name: 'llama' }] }));
+    expect(await gpuIdle(f, '')).toBe(true);
+    expect(calls).toHaveLength(0);
   });
 });

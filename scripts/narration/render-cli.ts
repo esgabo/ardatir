@@ -38,10 +38,11 @@ for (const l of langs) if (!(LANGS as readonly string[]).includes(l)) fail(`unkn
 const content = buildContent(contentDir);
 if (content.errors.length) { for (const e of content.errors) console.error(`  ERROR  ${e}`); fail('content has errors; run npm run content'); }
 try { ffmpeg(); } catch (e) { fail((e as Error).message); }
-if (!(await gpuIdle())) fail('Ollama has models loaded on the shared GPU; try later (homelab #347)');
+if (!(await gpuIdle())) fail('Ollama has models loaded on the shared GPU; try later');
 
-const vs = voiceStudio();
-const version = await vs.version().catch((e: Error) => fail(`Voice Studio not reachable: ${e.message} (is LXC 116 started? docs/LOCAL.md)`));
+let vs!: ReturnType<typeof voiceStudio>;
+try { vs = voiceStudio(); } catch (e) { fail((e as Error).message); }
+const version = await vs.version().catch((e: Error) => fail(`Voice Studio not reachable: ${e.message} (is it started, and is VOICESTUDIO_URL right? docs/LOCAL.md)`));
 for (const n of content.narrators) for (const [lang, v] of Object.entries(n.voices)) {
   if (v.engineVersion !== version) console.warn(`  warning  ${n.id}/${lang} was made on VoiceStudio ${v.engineVersion}; the box runs ${version}. Listen closely.`);
 }
