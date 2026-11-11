@@ -29,9 +29,10 @@ export class EventClock {
   /** Start second of each segment in this language. */
   private readonly segStarts: number[];
 
-  constructor(event: EventDetail, lang: Lang) {
+  /** `lang`: the recording that plays, or null for none (the staging's own duration). */
+  constructor(event: EventDetail, lang: Lang | null) {
     this.segments = event.narration ?? [];
-    const audio = event.audioFiles[lang];
+    const audio = lang ? event.audioFiles[lang] : undefined;
     this.duration = audio?.duration ?? event.durationSeconds;
 
     const knots: Knot[] = [{ t: 0, s: 0 }];

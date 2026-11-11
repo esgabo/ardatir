@@ -7,6 +7,7 @@ Issues labelled `runs:local` need a machine of the author's: interactive Blender
 - **Node 22** and the repo cloned (`npm install`, then `npm run dev` at http://localhost:5173).
 - **Claude Code** running in the repo, so agents have a shell and Blender.
 - **Blender 4.2 or later**, callable as `blender` from the command line (below).
+- **ffmpeg**, for recording narration (below).
 - A GPU helps the interactive viewport but isn't needed: Blender renders headless on the CPU with both Cycles and EEVEE, which is enough for low-poly work and scripted exports.
 
 ## Blender
@@ -48,9 +49,53 @@ Install it so only this project's Blender has the add-on:
 
 **Using it:** open Blender with the launcher, press `N` in the viewport, open the **MCP for Blender** tab and click **Start MCP Server**; stop it when you're done. Nothing listens until you do, and headless runs (`--background`) never start it. Upgrading means a new pinned server version *and* its bundled add-on, read before installing.
 
-## Voice Studio
+## Recording narration on the Voice Studio
 
-Narration is recorded on the author's Voice Studio. How a local machine calls it will be added here.
+The Voice Studio is **VoiceStudio** (OmniVoice engine) on LXC 116 `voicestudio` on `prox.lan`, at `http://192.168.1.212:3900`. It is LAN only, plain HTTP, and its GPU is the host's AMD 780M iGPU. The homelab notes are in `homelab/docs/nodes/voicestudio-lxc116.md`.
+
+The box is a **test machine**: no backups, and it does not start on boot (`onboot=0`). Everything needed to rebuild a narrator is in this repo (`content/narrators/`), so losing the box costs nothing but time.
+
+### Before a session
+
+1. **Start the box** if prox rebooted: `pct start 116` on prox. `curl http://192.168.1.212:3900/health` should answer `{"status":"ok",…}`.
+2. **Install ffmpeg** on the machine that runs the scripts, once: `sudo apt install ffmpeg`. The scripts use it to decode references and encode mp3s; set `FFMPEG` if it lives elsewhere.
+3. **The API key** is only in `/opt/voicestudio/.env` on the box (`OMNIVOICE_API_KEY`), not in Vaultwarden yet. Load it into your shell without printing it:
+
+   ```sh
+   export VOICESTUDIO_API_KEY=$(ssh -i ~/.ssh/id_ed25519_homelab root@192.168.1.212 "grep -E '^OMNIVOICE_API_KEY=' /opt/voicestudio/.env | cut -d= -f2-")
+   ```
+
+   `VOICESTUDIO_URL` defaults to `http://192.168.1.212:3900`. Never commit or paste the key.
+4. **Mind the shared GPU.** Ollama (CT 107) uses the same iGPU, and running both at once is untested (homelab #347). `narration:render` checks `ollama.lan:11434/api/ps` first and stops if a model is loaded.
+5. **Expect a slow start.** The first calls after the container starts take 20–110 s each. After that, a passage takes about as long to make as it lasts.
+
+### A session
+
+```sh
+npm run narration:render -- --only ainulindale --lang en   # render, check, write out/narration/report.html
+# listen: every flagged take, plus a random sample (10 per narrator for its first events, then 5)
+# reject a take: add "ainulindale/ea" to out/narration/rejects.txt, render again (next seed)
+npm run narration:publish -- --only ainulindale --lang en  # audio/en.mp3 + audio/en.yaml in the event folder
+npm run content                                            # validate; then look at it with npm run preview
+```
+
+Takes are cached in `out/narration-cache/`, so a run that fails halfway resumes where it stopped, and an edited passage re-renders alone. `--changed` limits a run to events whose recording is missing or stale. A flagged take you listened to and like is published with `--accept <event>/<passage>`.
+
+### Narrators
+
+| Age | Narrator | Voice (English) |
+|---|---|---|
+| Before Time | `the-elder` | audition candidate A: male, elderly, low pitch, British accent; seed 101, speed 0.9; chosen 2026-11-10 |
+| Third Age | not chosen yet | needs an audition |
+
+**Auditioning a new narrator** (design §4.3):
+1. Write the brief in words, as a character, never as an actor.
+2. Render 4–6 candidates on the box. Use `POST /generate` with `instruct` (the engine's attribute vocabulary: gender, age, pitch, accent) and a fixed `seed`, and have each read the same 2–3 real passages from that age. Put them in `out/auditions/<narrator>/` with a `manifest.json` of the exact parameters.
+3. The author picks one, or steers ("older", "less British").
+4. Join two of the winner's lossless passages, about 14 s, into `content/narrators/<id>.<lang>.flac`. Write `<id>.yaml` with its parameters, `refText` and `referenceHash`, and note the sample's origin in `content/narrators/README.md`.
+5. Point the age at it with `narrator: <id>`.
+
+Never use a reference clip of a real person.
 
 ## Not set up yet
 

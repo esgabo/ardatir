@@ -1,0 +1,13 @@
+id: the-voice
+brief: { en: A calm voice that tells the history., es: Una voz serena que cuenta la historia. }
+voices:
+  en:
+    engine: omnivoice
+    engineVersion: 0.5.6
+    instruct: "male, elderly, low pitch"
+    seed: 7
+    speed: 0.9
+    reference: the-voice.en.flac
+    referenceHash: sha256:4ed9d25bce6e536ffb84e85b79aa0958a570b2729c148b1b318b939009d0a718
+    refText: A calm voice that tells the history.
+    version: 1

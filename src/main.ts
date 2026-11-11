@@ -18,6 +18,7 @@ import { eventHref, livesHref, parseRoute, startHref, timeHref, type Route } fro
 import { DEFAULT_MOMENT, momentOfEvent, momentPath, parseMoment } from './moment';
 import { fitZoom, ZOOMS, type Zoom } from './timeAxis';
 import { momentHref, renderTime, resolveMoment, type TimeState } from './timeCursor';
+import { pickAudio } from './audioChoice';
 import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
@@ -52,7 +53,7 @@ function writeRoute(): void {
   if (page) { history.replaceState(null, '', pageHref(page)); return; }
   if (!state.event) return;
   history.replaceState(null, '', eventHref(state.event.id, state.lang, {
-    t: state.t > 0 ? state.t.toFixed(3) : undefined, follow: state.selected ?? undefined,
+    t: state.t > 0 ? state.t.toFixed(3) : undefined, follow: state.selected ?? undefined, audio: state.audio,
   }));
 }
 
@@ -84,8 +85,17 @@ const state = {
   t: 0, // set from the route when its stage loads
   playing: false,
   lang: initialLang(route.lang ?? null) as Lang,
+  /** What ?audio= asks to hear: a language, 'off', or undefined (as the reading language). */
+  audio: asAudio(route.kind === 'event' ? route.audio : undefined),
   selected: null as string | null,
 };
+
+function asAudio(a: string | undefined): Lang | 'off' | undefined {
+  return a === 'off' ? 'off' : isLang(a) ? (a as Lang) : undefined;
+}
+
+/** The recording that plays now (null: none), from what is recorded, read and asked for. */
+const audioLang = (event: EventDetail) => pickAudio(event.audio, state.lang, state.audio);
 
 // ---------- Renderer ----------
 const viewport = $('viewport');
@@ -186,8 +196,8 @@ async function loadStage(load?: StageLoad): Promise<void> {
     controls.minZoom = 0.5;
     controls.maxZoom = 4;
   }
-  clock = new EventClock(event, state.lang);
-  narration = new Narration(event, state.lang, clock);
+  clock = new EventClock(event, audioLang(event));
+  narration = new Narration(event, audioLang(event), clock);
   playhead = clock.secondsAt(state.t);
   stage.select?.(state.selected);
   resize();
@@ -223,6 +233,7 @@ addEventListener('vite:preloadError', () => {
 // ---------- UI ----------
 const playBtn = $<HTMLButtonElement>('play');
 const muteBtn = $<HTMLButtonElement>('mute');
+const audioBtn = $<HTMLButtonElement>('audio-lang');
 const scrubber = $<HTMLInputElement>('scrubber');
 const caption = $('caption');
 const spoken = document.createElement('span');
@@ -280,6 +291,8 @@ function applyRoute(r: Route): void {
   if (target && !target.stage) { showPage({ kind: 'event', id: target.id }); return; }
   const id = target?.id ?? homeId();
   if (!id) return;
+  const audioChanged = r.kind === 'event' && r.audio !== undefined && asAudio(r.audio) !== state.audio;
+  if (audioChanged) state.audio = asAudio(r.audio);
   if (state.event && !pending && id === state.event.id) {
     // Already on screen (or under a page): come back to it, at the moment and with the
     // character the URL names, when it names them.
@@ -287,6 +300,7 @@ function applyRoute(r: Route): void {
     if (target && r.t !== undefined) { state.playing = false; state.t = r.t; }
     if (target && r.follow !== undefined) state.selected = r.follow;
     if (stageStale) { void loadStage(); return; } // the language changed: rebuild (it seeks to state.t)
+    if (audioChanged) { rebuildAudio(); return; }
     playhead = clock.secondsAt(state.t);
     stage.select?.(state.selected);
     renderStatic();
@@ -394,6 +408,29 @@ const sidebar = new Sidebar($('sidebar'), {
   layoutChanged: () => { if (stage) resize(); },
 });
 
+/**
+ * Hear another recording (or none) without leaving the moment: a new clock for that
+ * recording, the playhead moved to the same t. Text and animation stay as they are.
+ */
+function rebuildAudio(): void {
+  const t = state.t;
+  narration?.dispose();
+  clock = new EventClock(state.event, audioLang(state.event));
+  narration = new Narration(state.event, audioLang(state.event), clock);
+  playhead = clock.secondsAt(t);
+  state.t = t;
+  renderStatic();
+  writeRoute();
+}
+
+/** Asked for: the next recorded language after the one playing (or the first one). */
+function nextAudio(): void {
+  const recs = state.event.audio;
+  const now = audioLang(state.event);
+  state.audio = recs[(recs.indexOf(now as Lang) + 1) % recs.length];
+  rebuildAudio();
+}
+
 function setLang(lang: Lang): void {
   state.lang = lang;
   rememberLang(lang);
@@ -488,7 +525,16 @@ function renderStatic(): void {
 
   buildBeats();
 
-  muteBtn.hidden = !state.event.audioFiles[L];
+  // Sound: shown when the event has any recording. The language button only when there is a
+  // choice to make, or the voice speaks another language than the page.
+  const playing = audioLang(state.event);
+  muteBtn.hidden = !state.event.audio.length;
+  audioBtn.hidden = !state.event.audio.length || (state.event.audio.length < 2 && (!playing || playing === L));
+  const shown = playing ?? (state.event.audio.includes(L) ? L : state.event.audio[0]);
+  if (shown) {
+    audioBtn.textContent = shown.toUpperCase();
+    audioBtn.title = audioBtn.ariaLabel = `${ui('audioLanguage', L)}: ${ui(`audio_${shown}` as UiKey, L)}`;
+  }
   updateDynamic();
 }
 
@@ -551,15 +597,27 @@ function layoutBeats(): void {
 
 new ResizeObserver(() => layoutBeats()).observe(beatsEl);
 
+/**
+ * Set a button's icon and label only when they change. updateDynamic runs every UI tick;
+ * rewriting innerHTML each time swaps the <svg> out from under a press, and the click is lost (#61).
+ */
+const iconShown = new WeakMap<HTMLElement, string>();
+function setIconButton(btn: HTMLElement, icon: string, label: string): void {
+  const key = `${icon}\u0000${label}`;
+  if (iconShown.get(btn) === key) return;
+  iconShown.set(btn, key);
+  btn.innerHTML = icon;
+  btn.setAttribute('aria-label', label);
+}
+
 let selSayKey = '';
 function updateDynamic(): void {
   const L = state.lang;
   if (beatEls.length && currentBeat((state.event.beats ?? []).map((b) => b.t), state.t) !== beatCurrent) layoutBeats();
   scrubber.value = String(Math.round(state.t * 1000));
-  playBtn.innerHTML = state.playing ? ICONS.pause : ICONS.play;
-  playBtn.setAttribute('aria-label', ui(state.playing ? 'pause' : 'play', L));
-  muteBtn.innerHTML = narration?.muted ? ICONS.muted : ICONS.sound;
-  muteBtn.setAttribute('aria-label', ui(narration?.muted ? 'unmute' : 'mute', L));
+  setIconButton(playBtn, state.playing ? ICONS.pause : ICONS.play, ui(state.playing ? 'pause' : 'play', L));
+  const off = state.audio === 'off';
+  setIconButton(muteBtn, off ? ICONS.muted : ICONS.sound, ui(off ? 'unmute' : 'mute', L));
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
   $('time-label').textContent = `${fmt(playhead)} / ${fmt(clock.duration)}`;
@@ -625,7 +683,9 @@ function setPlaying(on: boolean): void {
 }
 
 playBtn.addEventListener('click', () => setPlaying(!state.playing));
-muteBtn.addEventListener('click', () => { narration.muted = !narration.muted; updateDynamic(); });
+// Muting is "no voice": ?audio=off, the event keeps its own pace (no recording to follow).
+muteBtn.addEventListener('click', () => { state.audio = state.audio === 'off' ? undefined : 'off'; rebuildAudio(); updateDynamic(); });
+audioBtn.addEventListener('click', () => { nextAudio(); updateDynamic(); });
 scrubber.addEventListener('input', () => { seekTo(Number(scrubber.value) / 1000); });
 scrubber.addEventListener('change', writeRoute);
 prevBtn.addEventListener('click', () => step(-1));

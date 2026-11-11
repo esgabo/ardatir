@@ -256,7 +256,7 @@ body.foretold-stage .caption {
 }
 .icon-btn { width: 36px; height: 36px; flex: none; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 8px; background: transparent; color: var(--muted); }
 .icon-btn:not(:disabled):hover { color: var(--ink); }
-.icon-btn .icon { width: 18px; height: 18px; }
+.icon-btn .icon { width: 18px; height: 18px; pointer-events: none; }
 .play-btn {
   width: 44px; height: 44px; flex: none; display: flex; align-items: center; justify-content: center;
   border: 1px solid var(--gold); border-radius: 50%; background: rgba(232, 199, 122, 0.14); color: var(--gold);
@@ -268,6 +268,7 @@ body.foretold-stage .caption {
 }
 .text-btn .icon { width: 16px; height: 16px; }
 .text-btn:hover, .text-btn[aria-expanded='true'] { border-color: var(--gold); color: var(--gold); }
+.text-btn.audio-lang { min-width: 36px; justify-content: center; padding: 0 8px; font-size: 12px; letter-spacing: 0.06em; }
 .track { position: relative; flex: 1; min-width: 120px; height: 40px; display: flex; align-items: flex-end; padding-bottom: 6px; margin: 0 8px; }
 #scrubber { width: 100%; accent-color: var(--gold); cursor: pointer; margin: 0; }
 .beats { position: absolute; inset: 0; pointer-events: none; }
