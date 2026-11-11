@@ -8,7 +8,7 @@ characters: [ turin, brandir ]
 arcs: [ the-children-of-hurin ]
 journeys: [ turins-wanderings ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Túrin Turambar" }
 title: { en: "Túrin comes to Brethil", es: "Túrin llega a Brethil" }
 summary:

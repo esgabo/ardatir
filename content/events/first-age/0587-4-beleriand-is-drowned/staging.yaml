@@ -1,0 +1,11 @@
+stage: cosmos
+duration: 50
+narration:
+  war: 0
+  broken: 0.28
+  sea: 0.49
+  lindon: 0.73
+beats:
+  war: 0.02
+  sea: 0.49
+  lindon: 0.73

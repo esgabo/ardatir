@@ -4,3 +4,4 @@ kind: hobbit
 summary: { en: A hobbit., es: Un hobbit. }
 color: "#6a8a3a"
 scale: 1
+home: bag-end   # stays here between journeys (characters who don't travel: the time cursor shows them at home)

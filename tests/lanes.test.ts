@@ -72,3 +72,16 @@ describe('laneInitials', () => {
     expect(laneInitials(['Gollum', 'Gimli', 'Aragorn'])).toEqual(['Go', 'Gi', 'A']);
   });
 });
+
+describe('lanes built from the real content', () => {
+  it("Sam's Parth Galen leg comes before the Emyn Muil event, not after it", async () => {
+    const { default: path } = await import('node:path');
+    const { buildContent } = await import('../scripts/content/build.ts');
+    const lane = buildContent(path.resolve(import.meta.dirname, '..', 'content')).index.lanes.sam;
+    const leg = lane.findIndex((x) => 'journey' in x && x.journey === 'the-fellowship-after-moria' && x.waypoint === 4);
+    const emyn = lane.findIndex((x) => 'event' in x && x.event === 'frodo-and-sam-in-the-emyn-muil');
+    expect(leg).toBeGreaterThanOrEqual(0);
+    expect(emyn).toBeGreaterThanOrEqual(0);
+    expect(leg).toBeLessThan(emyn);
+  });
+});

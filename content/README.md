@@ -8,7 +8,7 @@ characters/    one file per character
 places/        one file per place
 arcs/          named periods that group events (The War of the Ring)
 journeys/      dated paths of characters between places
-factions/      (later) sides in battles
+factions/      one file per side in battles (the Elves of Mirkwood)
 events/<age>/<sort-key>-<id>/
   event.yaml       facts (every event)
   narration.yaml   the script (from status: scripted)
@@ -34,6 +34,9 @@ place: pelennor-fields
 characters: [ theoden, eowyn, merry, witch-king ]
 arcs: [ the-war-of-the-ring ]
 journeys: []              # journeys this event is a stop on
+sides:                    # battles only: groups of allied factions, each against the others
+  - [ riders-of-rohan, men-of-gondor ]
+  - [ host-of-mordor, haradrim ]
 tags: [ lord-of-the-rings, battle ]
 status: outline           # outline | scripted | staged | animated
 source: { book: the-return-of-the-king, chapter: The Battle of the Pelennor Fields }
@@ -58,6 +61,28 @@ beats:                    # named turning points; their times go in staging.yaml
 - `precision` must match: `day` needs a day, `month` a month, `season` a season.
 - Unsure? Claim less (`year`) and leave a `#` comment saying why.
 - Events in a timeless age (before the world) have no `when`.
+
+### What is foretold
+
+Prophecy, not history (the Last Battle, the Second Music), goes in `events/foretold/`: the age `foretold` is timeless, comes after the Fourth Age, and has `foretold: true`, so the site marks every event in it as foretold (docs/DESIGN.md §4.8). Such an event has no `when`, **must have a `source`** (its page says where the prophecy comes from), and may say who foretells it:
+
+```yaml
+age: foretold
+source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
+foretoldBy: mandos        # a character id; only in a foretold age; leave it out when the source names no one
+```
+
+Add a comment saying which version you tell and where the others differ. Links to history work as usual (`caused-by` the curse on Húrin's house).
+
+### A note for readers: `note`
+
+When the sources disagree or say nothing, and a scene had to choose, say so where visitors will see it, in our own words. Any event may have a `note`; it appears first in *About this scene* and under the summary on the event's page. Keep the details for the YAML comment.
+
+```yaml
+note:
+  en: Tolkien never said what shape the world takes after the end, so this scene shows ...
+  es: Tolkien nunca dijo qué forma tiene el mundo después del fin, así que esta escena muestra ...
+```
 
 ## Writing the script: `narration.yaml`
 
@@ -86,6 +111,10 @@ tracks:
     keyframes:
       - { t: 0, x: -4, z: 3, action: walk, thought: { en: ..., es: ... } }
 ```
+
+A track may give the character this event's own model, `model: characters/bilbo/bilbo-barrel.glb` (next to `characterId`), instead of their usual one (`docs/MODELS.md`).
+
+The tile runs about -7 to 7 on both axes. A figure whose position is off the tile (say `x: 11, z: 11`) is not drawn: off the tile = offstage. Use it to wait out the scenes before an entrance. A figure moving between two `hide` keyframes stays hidden (it is not shown walking).
 
 ## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`
 
@@ -175,4 +204,58 @@ color: "#3a6a8a"                     # placeholder for staging
 scale: 1.85                          # height relative to a hobbit
 kin:
   - { id: turin, as: cousin }
+home: old-forest                     # optional: a place they stay in (see below)
+model: characters/tuor/tuor.glb      # optional: their glTF model, a path under assets/ (docs/MODELS.md)
 ```
+
+`model` points to an export in `assets/characters/`; the build checks that it exists and fits the budget (300 kB), and copies it into the site. Without one, the diorama draws the placeholder figure in `color`, `scale` tall.
+### How to say a name: `pronounce`
+
+Characters, places and ages with a hard name (and events whose title is one, like the Ainulindalë) may say how to pronounce it, for readers of each language:
+
+```yaml
+pronounce: { en: ee-LOO-va-tar, es: i-LÚ-va-tar }
+```
+
+Write it in the *AR-da* style: syllables joined by hyphens, the **stressed syllable in capitals**, exactly one per word, words separated by spaces (`KIR-ith OON-gol`); letters only. Each language respells for its own readers: Spanish writes *th* as *z* (`ZIN-gol`), *h* as *j* (`JÚ-rin`), a hard *g* before *e*/*i* as *gu* (`e-RE-gui-on`), *w* as *u* (`MAN-ue`). Stress follows Tolkien's rules for the Elvish tongues (*The Return of the King*, Appendix E: the second-last syllable when it is long, else the one before it). The site shows it as a small hint after the name; the build refuses a respelling without exactly one stressed syllable per word.
+
+`home` is for characters who don't travel: Tom Bombadil stays in his own country (save his trip to Maggot's in a hobbit rhyme). Between their first and last events (honest ranges), when no journey of theirs covers the moment, the time cursor shows them *in their own country* at that place, in a quiet "At home" group. It must be a known place id. Travellers don't need it: their journeys say where they are.
+
+## Factions: sides in battles
+
+One file per side, `factions/<id>.yaml`, reused across battles (the Dwarves of the Iron Hills fight at Azanulbizar and at the Five Armies):
+
+```yaml
+id: elves-of-mirkwood
+name: { en: Elves of Mirkwood, es: Elfos del Bosque Negro }   # plural, as a host is named
+color: "#2f7a5c"           # banner colour: chips on pages, the army and its banner on a diorama
+kind: elf                  # a character kind (elf, man, dwarf, goblin, orc, wolf, eagle...): shapes the army's figures
+summary: { en: ..., es: ... }
+leaders: [ thranduil ]     # optional, character ids, in any battle
+```
+
+**What is a faction?** A host that fights as one body under its own banner. One being who comes alone, like Beorn at the Five Armies, is a character with his own track, not a faction. A small named band whose members all have tracks (Thorin's company) can still be a faction, so the sides are said in full, but needs no army in staging.
+
+**A battle lists its sides** in `event.yaml`: a list of at least two groups of allied faction ids, each group against the others. List who fought together in the end: at the Five Armies, dwarves, elves and men are on one side, though they nearly fought each other first.
+
+```yaml
+sides:
+  - [ thorins-company, dwarves-of-the-iron-hills, elves-of-mirkwood, men-of-lake-town, eagles-of-the-misty-mountains ]
+  - [ goblins-of-the-misty-mountains, wargs ]
+```
+
+The build checks every id, that no faction is on two sides, and that leaders are known characters; it warns about a faction in no battle. Pages and the time cursor say the sides in words (*Men of Dale and Dwarves of Erebor against Easterlings*), and the sidebar's search finds a faction's battles (`index.byFaction`).
+
+**Armies** in `staging.yaml` place each faction's host on the diorama as a block of small figures in its colour, with a banner; named characters keep their own tracks and lead them:
+
+```yaml
+armies:
+  - faction: goblins-of-the-misty-mountains   # must be on one of the event's sides
+    size: large                               # small | medium | large: how many figures
+    keyframes:
+      - { t: 0, x: -13, z: -13 }              # off the tile = offstage
+      - { t: 0.2, x: -5.4, z: -5.6, action: run }
+      - { t: 0.62, x: -2.9, z: -3.6, action: fight }
+```
+
+An army's keyframes give its centre. **Its `action` says what it does on the way to that keyframe**: `walk` or `run` there, or wait (`idle`, the default) or `fight` where it stands, so `{ t: 0.62, action: fight }` after an arrival means it fights from the moment it arrives. The block faces the way it last marched (before it first moves, the way it will), and wheels round when it turns. Figures past the tile's edge are not drawn, so a host marches on and off. Wolves run in packs and eagles fly over the field, by `kind`.

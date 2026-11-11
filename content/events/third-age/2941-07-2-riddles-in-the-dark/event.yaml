@@ -8,9 +8,15 @@ characters: [ bilbo, gollum ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again ]
 tags: [ hobbit, the-ring ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 5 }
 title: { en: Riddles in the Dark, es: Acertijos en las tinieblas }
 summary:
   en: "Alone in the tunnels, Bilbo picks up a ring from the floor. At an underground lake he meets Gollum, wins a game of riddles, and escapes invisible, sparing Gollum's life when he could have taken it."
   es: "Solo en los túneles, Bilbo recoge un anillo del suelo. En un lago subterráneo se encuentra con Gollum, gana un juego de acertijos y escapa invisible, perdonándole la vida a Gollum cuando podría habérsela quitado."
+beats:
+  - { id: ring, label: { en: "The ring in the dark", es: "El anillo en la oscuridad" } }
+  - { id: lake, label: { en: "The black lake", es: "El lago negro" } }
+  - { id: game, label: { en: "The riddle game", es: "El juego de acertijos" } }
+  - { id: vanish, label: { en: "Bilbo vanishes", es: "Bilbo desaparece" } }
+  - { id: mercy, label: { en: "Mercy at the exit", es: "Piedad en la salida" } }

@@ -1,0 +1,45 @@
+id: beleriand-is-drowned
+age: first-age
+when:
+  # The land was broken in the last battles of the War of Wrath and the sea came in as it
+  # ended, with Morgoth's overthrow; the sources give no exact year, so the same year as
+  # the other closing events of the war, approximately.
+  start: { age: first-age, year: 587 }
+  precision: approximate
+place: beleriand
+characters: []
+arcs: [ the-war-of-wrath, the-shape-of-arda ]
+journeys: []
+tags: [ cosmology, silmarillion ]
+status: staged
+source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
+title:
+  en: Beleriand is drowned
+  es: Beleriand se hunde bajo el mar
+summary:
+  en: "The War of Wrath shatters the north and west of Middle-earth. When it ends, the sea pours in and Beleriand goes under the waves; only a strip of it, Lindon, remains west of the Blue Mountains."
+  es: "La Guerra de la Cólera destroza el norte y el oeste de la Tierra Media. Cuando termina, el mar irrumpe y Beleriand se hunde bajo las olas; solo queda una franja, Lindon, al oeste de las Montañas Azules."
+links:
+  - to: the-war-of-wrath
+    type: caused-by
+    note:
+      en: "The fighting of the Valar against Morgoth broke the land."
+      es: "La lucha de los Valar contra Morgoth quebró la tierra."
+  - to: gil-galad-and-cirdan-settle-lindon
+    type: enables
+    note:
+      en: "Lindon is what is left of Beleriand above the sea."
+      es: "Lindon es lo que queda de Beleriand sobre el mar."
+beats:
+  - id: war
+    label:
+      en: The breaking of the north
+      es: La ruptura del norte
+  - id: sea
+    label:
+      en: The sea comes in
+      es: Entra el mar
+  - id: lindon
+    label:
+      en: Lindon remains
+      es: Queda Lindon

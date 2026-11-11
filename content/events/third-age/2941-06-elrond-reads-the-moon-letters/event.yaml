@@ -11,7 +11,7 @@ characters: [ elrond, thorin, bilbo, gandalf ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 3 }
 title: { en: Elrond Reads the Moon-letters, es: Elrond lee las letras lunares }
 summary:
@@ -23,3 +23,8 @@ links:
     note:
       en: The map Elrond reads is the one Thráin gave Gandalf in Dol Guldur.
       es: El mapa que lee Elrond es el que Thráin entregó a Gandalf en Dol Guldur.
+beats:
+  - { id: swords, label: { en: "Swords of Gondolin", es: "Espadas de Gondolin" } }
+  - { id: map, label: { en: "Thrór's map", es: "El mapa de Thrór" } }
+  - { id: letters, label: { en: "The moon-letters", es: "Las letras lunares" } }
+  - { id: durin, label: { en: "Durin's Day", es: "El Día de Durin" } }

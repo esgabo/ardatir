@@ -4,8 +4,8 @@
 // the guess was placed between.
 
 import { characterMap, eventById } from './chronicle';
-import { likelyWindow, vaguer } from './data/calendar';
-import type { EventSummary, Lang } from './data/types';
+import { likelyWindow, vaguer, within } from './data/calendar';
+import type { EventSummary, Lang, Span } from './data/types';
 import { h } from './dom';
 import { honestDate } from './format';
 import { t as ui, tr, type UiKey } from './i18n';
@@ -88,6 +88,20 @@ export function likelyParts(a: EventSummary, b: EventSummary, L: Lang): Part[] {
   const p = vaguer(a.when?.precision, b.when?.precision);
   const w = likelyWindow(p);
   const lead = w === undefined ? [] : fill('likelyWithin', L, { w: ui(`within_${p}` as UiKey, L) });
+  const placed = placementParts(b, L);
+  return placed.length ? [...lead, ' ', ...placed] : lead;
+}
+
+/**
+ * Why `b` is "likely" at a moment of the time cursor: its best guess falls inside the moment,
+ * or within its own window of it; then how `b` is placed. `label` is the moment in words.
+ */
+export function likelyAtParts(label: string, span: Span, b: EventSummary, L: Lang): Part[] {
+  const p = b.when?.precision;
+  const inside = b.at !== undefined && within(b.at, span);
+  const m = inSentence(label, L);
+  const lead = inside ? fill('likelyDuring', L, { m })
+    : likelyWindow(p) !== undefined ? fill('likelyNear', L, { m, w: ui(`within_${p}` as UiKey, L) }) : [];
   const placed = placementParts(b, L);
   return placed.length ? [...lead, ' ', ...placed] : lead;
 }

@@ -5,11 +5,15 @@ when:
   start: { age: third-age, year: 2941 }
   precision: year
 place: dol-guldur
-characters: [ gandalf, saruman ]
+# Appendix B (2941) and The Silmarillion name only "the White Council" as driving Sauron out, with
+# Saruman's devices; no list of who marched. Elrond, Galadriel and Círdan are named as members of the
+# Council in The Silmarillion ("Of the Rings of Power and the Third Age") and Appendix B (2463, 2953),
+# so they are added as the Council. Radagast is left out: he was never a member of the Council.
+characters: [ gandalf, saruman, elrond, galadriel, cirdan ]
 arcs: []
 journeys: [ gandalfs-road-2941 ]
 tags: [ hobbit, lord-of-the-rings ]
-status: scripted
+status: staged
 source: { book: the-lord-of-the-rings, chapter: Appendix B }
 title:
   en: The White Council Drives Out Sauron
@@ -17,3 +21,8 @@ title:
 summary:
   en: "While the dwarves journey east, the White Council at last moves against Dol Guldur. Sauron, having prepared, abandons it and flees, to rise again in Mordor."
   es: "Mientras los enanos viajan hacia el este, el Concilio Blanco actúa por fin contra Dol Guldur. Sauron, que ya lo tenía previsto, la abandona y huye, para resurgir en Mordor."
+beats:
+  - { id: meanwhile, label: { en: "The Council gathers", es: "Se reúne el Concilio" } }
+  - { id: saruman, label: { en: "Saruman agrees", es: "Saruman accede" } }
+  - { id: attack, label: { en: "The attack on Dol Guldur", es: "El ataque a Dol Guldur" } }
+  - { id: flight, label: { en: "Sauron slips away", es: "Sauron se escabulle" } }

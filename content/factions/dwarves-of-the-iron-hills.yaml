@@ -1,0 +1,8 @@
+id: dwarves-of-the-iron-hills
+name: { en: Dwarves of the Iron Hills, es: Enanos de las Colinas de Hierro }
+color: "#b0452e"
+kind: dwarf
+summary:
+  en: "Dwarves of Durin's line from the Iron Hills, east of the Lonely Mountain: warriors in mail with heavy mattocks, led by Náin and then by his son Dáin."
+  es: "Enanos del linaje de Durin de las Colinas de Hierro, al este de la Montaña Solitaria: guerreros con cota de malla y pesados azadones, guiados por Náin y después por su hijo Dáin."
+leaders: [ nain, dain ]

@@ -7,19 +7,21 @@ import { index, loadScript } from './chronicle';
 import { overlaps } from './data/calendar';
 import type { EventSummary, Lang } from './data/types';
 import { h } from './dom';
-import { honestDate, shortDate } from './format';
+import { honestDate, placeInSentence, shortDate } from './format';
 import { ICONS } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
 import { linkedEvents, sameTime } from './related';
 import { likelyParts, placementParts, renderParts, whyToggle } from './placement';
 import { hasLane, MAX_LANES } from './lanes';
-import { eventHref, livesHref } from './routes';
+import { eventHref, livesHref, timeHref } from './routes';
+import { momentOfEvent, momentPath } from './moment';
+import { foretoldBadge, foretoldLine, isForetold, sourceLabel } from './foretold';
+import { factionById, factionChip, listNodes, sidesLine } from './sides';
+import { bookPointer, infoToggle, sayHint } from './learn';
 
 export interface ReaderHost {
   lang(): Lang;
 }
-
-const BOOK = (book: string, L: Lang) => ui(`book_${book}` as UiKey, L) || book;
 
 /** A section heading in the sidebar's style: label, rule, diamond. */
 function heading(text: string): HTMLElement {
@@ -29,7 +31,7 @@ function heading(text: string): HTMLElement {
 /** A link to another event: filled diamond when it can be watched, hollow when it is read. */
 function eventLink(e: EventSummary, L: Lang, cls = 'r-ev'): HTMLAnchorElement {
   return h('a', { class: `${cls}${e.stage ? ' staged' : ''}`, href: eventHref(e.id, L), title: ui(e.stage ? 'playable' : 'readable', L) },
-    h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'r-ev-name' }, tr(e.title, L)));
+    h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'r-ev-name' }, tr(e.title, L)), foretoldBadge(e, L));
 }
 
 function placeName(id: string | undefined, L: Lang): string {
@@ -45,26 +47,43 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
   const art = h('article', { class: 'reader', lang: L });
 
   // ---- Title block ----
+  const foretold = isForetold(ev);
   art.append(
     h('p', { class: 'r-over' }, [tr(age?.name, L), ...arcs.map((a) => tr(a.title, L))].filter(Boolean).join('  ·  ')),
     h('h1', { class: 'r-title' }, tr(ev.title, L)),
   );
+  // How to say the title, when it is a hard name (the Ainulindalë).
+  const titleSay = sayHint(ev.pronounce, L);
+  if (titleSay) art.append(h('p', { class: 'r-say' }, titleSay));
+  // Prophecy, not history: said before anything else, with who foretold it and where it comes from.
+  if (foretold) art.append(h('p', { class: 'r-foretold' }, foretoldBadge(ev, L), h('span', {}, foretoldLine(ev, L))));
   const meta = h('ul', { class: 'r-meta' });
   meta.append(h('li', {}, h('span', { html: ICONS.clock }), h('span', {}, honestDate(ev, L))));
-  if (ev.place) meta.append(h('li', {}, h('span', { html: ICONS.places }), h('span', {}, placeName(ev.place, L))));
-  if (ev.source) {
-    const ch = ev.source.chapter;
-    const chapter = typeof ch === 'number' ? `${S('chapter')} ${ch}` : ch ? `“${ch}”` : '';
-    meta.append(h('li', {}, h('span', { html: ICONS.books }), h('span', {}, [BOOK(ev.source.book, L), chapter].filter(Boolean).join(', '))));
+  // Where is this? The place, how to say it, and on demand what it is.
+  const place = index.places.find((p) => p.id === ev.place);
+  let placeNote: HTMLElement | undefined;
+  if (place) {
+    const [btn, note] = infoToggle(`${S('aboutPlace')}: ${tr(place.name, L)}`, [
+      h('span', { class: 'info-name' }, tr(place.name, L)), document.createTextNode(' '), h('span', {}, tr(place.summary, L))]);
+    placeNote = note;
+    meta.append(h('li', {}, h('span', { html: ICONS.places }), h('span', {}, tr(place.name, L)), sayHint(place.pronounce, L), btn));
   }
+  const sides = sidesLine(ev, L);
+  if (sides) meta.append(h('li', { class: 'r-sides' }, h('span', { html: ICONS.sides }), sides));
+  if (ev.source) meta.append(h('li', {}, h('span', { html: ICONS.books }), h('span', {}, sourceLabel(ev.source, L))));
   art.append(meta);
+  if (placeNote) art.append(placeNote);
   // How the event sits on the timeline when its date isn't exact: words, never the guess as a date.
   if (ev.atReason && ev.atReason.kind !== 'exact') {
     const parts = placementParts(ev, L);
     if (parts.length) art.append(h('p', { class: 'r-placed' }, h('span', { class: 'r-placed-label' }, `${S('placedLabel')}: `), ...renderParts(parts, L)));
   }
+  // Everything else at this moment, everywhere: the time cursor, with the way back here.
+  art.append(h('a', { class: 'r-more r-timeline', href: timeHref(momentPath(momentOfEvent(ev, index.ages)), L, { from: ev.id }) },
+    h('span', { html: ICONS.time }), `${S('seeOnTimeline')} →`));
   art.append(h('p', { class: 'r-status' }, h('span', { class: 'r-status-mark', 'aria-hidden': 'true' }), S(ev.status === 'outline' ? 'status_outline' : 'status_scripted')));
   art.append(h('p', { class: 'r-summary' }, tr(ev.summary, L)));
+  if (ev.note) art.append(h('aside', { class: 'r-note' }, h('span', { class: 'r-label' }, S('sceneNote')), h('p', {}, tr(ev.note, L))));
 
   // ---- The telling: the narration, read as text ----
   if (ev.status !== 'outline') {
@@ -87,12 +106,39 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     for (const c of people) {
       const kind = ui(`kind_${c.kind}` as UiKey, L) || c.kind;
       ul.append(h('li', {}, h('a', { class: 'r-person', href: livesHref([c.id], L), title: S('followLife') },
-        h('span', { class: 'r-person-name' }, tr(c.name, L)), h('span', { class: 'r-person-kind' }, kind),
+        h('span', { class: 'r-person-name' }, tr(c.name, L), sayHint(c.pronounce, L)), h('span', { class: 'r-person-kind' }, kind),
         h('span', { class: 'r-person-sum' }, tr(c.summary, L)))));
     }
     const lanes = people.filter((c) => hasLane(c.id)).slice(0, MAX_LANES).map((c) => c.id);
     art.append(h('section', { class: 'r-section' }, heading(S('whoWasThere')), ul,
       lanes.length > 1 && h('a', { class: 'r-more', href: livesHref(lanes, L) }, `${S('seeSideBySide')} →`)));
+  }
+
+  // ---- The sides: each faction, who leads it; the sides divided by "against" ----
+  if (ev.sides?.length) {
+    const box = h('section', { class: 'r-section' }, heading(S('sidesTitle')));
+    ev.sides.forEach((side, i) => {
+      if (i) box.append(h('p', { class: 'r-against' }, S('against')));
+      const ul = h('ul', { class: 'r-who r-factions' });
+      for (const f of side.map(factionById)) {
+        if (!f) continue;
+        const leaders = f.leaders.map((id) => index.characters.find((c) => c.id === id)).filter((c) => !!c);
+        const led = h('span', { class: 'r-person-sum' });
+        if (leaders.length) {
+          const [before, after] = S('ledBy').split('{a}');
+          led.append(before);
+          const names = leaders.map((c) => placeInSentence(tr(c.name, L), L));
+          led.append(...listNodes(leaders.map((c, k) => h('a', { href: livesHref([c.id], L), title: S('followLife') }, names[k])), names, L));
+          led.append(after);
+        }
+        ul.append(h('li', { class: 'r-person r-faction', style: `--fx:${f.color}` },
+          h('span', { class: 'r-person-name' }, factionChip(f, L)),
+          h('span', { class: 'r-person-sum' }, tr(f.summary, L)),
+          leaders.length ? led : null));
+      }
+      box.append(ul);
+    });
+    art.append(box);
   }
 
   // ---- Connections: links in both directions, with their notes ----
@@ -161,6 +207,10 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
     art.append(box);
   }
 
+  // ---- In the books: where to read it, gently ----
+  const ptr = bookPointer(ev, L, 'book-ptr r-book');
+  if (ptr) art.append(h('section', { class: 'r-section' }, heading(S('inTheBooks')), ptr));
+
   // ---- Before and after, in story order ----
   const i = index.events.findIndex((e) => e.id === ev.id);
   const prev = index.events[i - 1], next = index.events[i + 1];
@@ -168,7 +218,7 @@ export function renderReader(root: HTMLElement, ev: EventSummary, host: ReaderHo
   const navCard = (e: EventSummary | undefined, label: string, cls: string) => e
     ? h('a', { class: `r-nav-card ${cls}`, href: eventHref(e.id, L) },
       h('span', { class: 'r-label' }, label),
-      h('span', { class: 'r-nav-title' }, tr(e.title, L)),
+      h('span', { class: 'r-nav-title' }, tr(e.title, L), foretoldBadge(e, L)),
       h('span', { class: 'r-when' }, honestDate(e, L)))
     : h('span', { class: `r-nav-card ${cls} empty` });
   nav.append(navCard(prev, `← ${S('before')}`, 'prev'), navCard(next, `${S('after')} →`, 'next'));

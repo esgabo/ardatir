@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  APPROXIMATE_YEARS, axisToDate, dateSpan, daySlot, hasOverlithe, LIKELY_DAY, LIKELY_MONTH, LIKELY_SEASON, likelyWindow, nearness, nearnessAt,
-  ONE_DAY, overlaps, vaguer, whenSpan, yearsBetween, type Timed,
+  ageYearCount, APPROXIMATE_YEARS, axisToDate, dateSpan, daySlot, dayWindowSlots, hasOverlithe, LIKELY_DAY, LIKELY_MONTH, LIKELY_SEASON,
+  likelyWindow, nearness, nearnessAt, nearnessDuring, ONE_DAY, overlaps, slotDay, stepDate, vaguer, whenSpan, within, yearsBetween, type Timed,
 } from '../src/data/calendar.ts';
 import { EXTRA_DAYS, type Age, type Precision, type StoryDate } from '../src/data/types.ts';
 
@@ -174,6 +174,31 @@ describe('whenSpan and overlaps', () => {
     expect(overlaps({ from: 0, to: 1 }, { from: 1, to: 2 })).toBe(false);
     expect(overlaps({ from: 0, to: 1.01 }, { from: 1, to: 2 })).toBe(true);
   });
+
+  it('adjacent days do not overlap, despite float rounding (26 and 27 September 3018)', () => {
+    const day = (year: number, month: number, dd: number) => dateSpan(d({ year, month, day: dd }), 'day', ta)!;
+    const a = day(3018, 9, 26), b = day(3018, 9, 27);
+    expect(overlaps(a, b)).toBe(false);
+    expect(overlaps(b, a)).toBe(false);
+    expect(overlaps(a, a)).toBe(true);
+    // Every pair of neighbouring days in the busiest years.
+    for (const year of [2941, 3018, 3019]) for (let s = 0; s < 365; s++) {
+      const x = dateSpan({ age: 'third-age', year, ...slotDay(s) }, 'day', ta)!, y = dateSpan({ age: 'third-age', year, ...slotDay(s + 1) }, 'day', ta)!;
+      expect(overlaps(x, y), `${year} slot ${s}`).toBe(false);
+    }
+  });
+
+  it('adjacent Valian years do not overlap', () => {
+    const vy = (year: number) => dateSpan({ age: 'years-of-the-trees', year }, 'year', { id: 'years-of-the-trees', axis: { start: -14372, yearLength: 9.582 } })!;
+    for (let year = 1; year < 1500; year += 37) expect(overlaps(vy(year), vy(year + 1)), `Y.T. ${year}`).toBe(false);
+  });
+
+  it('within: the end of a span is outside it, its start inside, after float rounding', () => {
+    const a = dateSpan(d({ year: 3018, month: 9, day: 26 }), 'day', ta)!, b = dateSpan(d({ year: 3018, month: 9, day: 27 }), 'day', ta)!;
+    expect(within(b.from, a)).toBe(false);
+    expect(within(a.to, b)).toBe(true);
+    expect(within(a.from, a)).toBe(true);
+  });
 });
 
 describe('yearsBetween', () => {
@@ -272,5 +297,82 @@ describe('likely or possibly at the same time (nearness, docs/DESIGN.md §4.4)',
     expect(nearnessAt(at, e('b', 'season', 40))?.kind).toBe('likely');
     expect(nearnessAt(at, e('b', 'year', 0))).toEqual({ kind: 'possibly', why: 'vague' });
     expect(nearnessAt(at + 2, e('b', 'day', 0))).toBeUndefined(); // outside its honest range
+  });
+});
+
+// ---------- Moments on the time cursor (docs/DESIGN.md §3.1) ----------
+
+describe('moments: ages, windows and steps', () => {
+  const fa: Age = { id: 'first-age', order: 4, name: { en: 'First Age' }, summary: { en: '' }, axis: { start: 1, yearLength: 1 } };
+  const sa: Age = { id: 'second-age', order: 5, name: { en: 'Second Age' }, summary: { en: '' }, axis: { start: 591, yearLength: 1 } };
+  const yt: Age = { id: 'years-of-the-trees', order: 3, name: { en: 'Trees' }, summary: { en: '' }, axis: { start: -14372, yearLength: 9.582 } };
+  const list = [yt, fa, sa];
+  const at = (year: number, x: Partial<StoryDate>): StoryDate => ({ age: 'first-age', year, ...x });
+
+  it("counts an age's own years up to the next age; the last one is open", () => {
+    expect(ageYearCount(fa, list)).toBe(590);
+    expect(ageYearCount(yt, list)).toBe(1500);
+    expect(ageYearCount(sa, list)).toBeUndefined();
+  });
+
+  it('slotDay is the inverse of daySlot', () => {
+    for (let s = 0; s < 366; s++) { const x = slotDay(s); expect(daySlot(x.month, x.day)).toBe(s); }
+  });
+
+  it('day windows: a month with the days outside the months beside it', () => {
+    expect(dayWindowSlots(4, 26)).toEqual({ month: 4, from: daySlot(4, 1), to: daySlot(4, 30) + 1 });
+    expect(dayWindowSlots(6, 1)).toEqual({ month: 6, from: daySlot(6, 1), to: daySlot(7, 1) }); // with the Lithe days
+    expect(dayWindowSlots(7, 3).from).toBe(daySlot(undefined, '1-lithe'));
+    expect(dayWindowSlots(undefined, 'midyear').month).toBe(6);
+    expect(dayWindowSlots(1, 1).from).toBe(0); // 2 Yule opens Afteryule
+    expect(dayWindowSlots(undefined, '1-yule')).toEqual({ month: 12, from: daySlot(12, 1), to: 366 });
+  });
+
+  it('steps days through the Lithe days, skipping an Overlithe that does not exist', () => {
+    expect(stepDate(at(495, { month: 6, day: 30 }), 'day', 1, list)).toEqual(at(495, { day: '1-lithe' }));
+    expect(stepDate(at(495, { day: 'midyear' }), 'day', 1, list)).toEqual(at(495, { day: '2-lithe' })); // 495: no Overlithe
+    expect(stepDate(at(496, { day: 'midyear' }), 'day', 1, list)).toEqual(at(496, { day: 'overlithe' }));
+    expect(stepDate(at(495, { day: '1-yule' }), 'day', 1, list)).toEqual(at(496, { day: '2-yule' }));
+    expect(stepDate(at(495, { day: '2-yule' }), 'day', -1, list)).toEqual(at(494, { day: '1-yule' }));
+  });
+
+  it('steps months, leaving a day outside the months for the month beside it', () => {
+    expect(stepDate(at(495, { month: 12 }), 'month', 1, list)).toEqual(at(496, { month: 1 }));
+    expect(stepDate(at(495, { month: 1 }), 'month', -1, list)).toEqual(at(494, { month: 12 }));
+    expect(stepDate(at(495, { day: '1-lithe' }), 'month', 1, list)).toEqual(at(495, { month: 7, day: 1 }));
+    expect(stepDate(at(495, { day: '1-lithe' }), 'month', -1, list)).toEqual(at(495, { month: 6, day: 1 }));
+    expect(stepDate(at(495, { month: 3, day: 15 }), 'month', 1, list)).toEqual(at(495, { month: 4, day: 15 }));
+  });
+
+  it('runs on into the next age and back, and stops at the first year on the axis', () => {
+    expect(stepDate({ age: 'first-age', year: 590 }, 'year', 1, list)).toEqual({ age: 'second-age', year: 1 });
+    expect(stepDate({ age: 'second-age', year: 1 }, 'year', -1, list)).toEqual({ age: 'first-age', year: 590 });
+    expect(stepDate({ age: 'first-age', year: 1 }, 'year', -1, list)).toEqual({ age: 'years-of-the-trees', year: 1500 });
+    expect(stepDate({ age: 'years-of-the-trees', year: 3 }, 'year', -10, list)).toEqual({ age: 'years-of-the-trees', year: 1 });
+    expect(stepDate(at(590, { day: '1-yule' }), 'day', 1, list)).toEqual({ age: 'second-age', year: 1, day: '2-yule' });
+  });
+});
+
+describe('nearnessDuring: the time cursor over a whole moment', () => {
+  const year = dateSpan(d({}), 'year', ta)!;
+  const day = dateSpan(d({ month: 4, day: 26 }), 'day', ta)!;
+  const ev = (precision: Precision, span: { from: number; to: number }, at: number): Timed => ({ id: 'x', span, at, when: { precision } });
+
+  it('an empty moment is the bare cursor', () => {
+    const e = ev('day', day, (day.from + day.to) / 2);
+    expect(nearnessDuring({ from: day.from, to: day.from }, e)).toEqual(nearnessAt(day.from, e));
+  });
+
+  it('a whole year: exact events inside it are likely; year-dated ones only possibly', () => {
+    expect(nearnessDuring(year, ev('day', day, (day.from + day.to) / 2))?.kind).toBe('likely');
+    expect(nearnessDuring(year, ev('year', year, (year.from + year.to) / 2))).toEqual({ kind: 'possibly', why: 'vague' });
+  });
+
+  it("a day: a guess within the event's own window of it is likely, further only possibly, outside its range nothing", () => {
+    const summer = dateSpan(d({ season: 'summer' }), 'season', ta)!;
+    const s = dateSpan(d({ month: 7, day: 10 }), 'day', ta)!;
+    expect(nearnessDuring(s, ev('season', summer, s.from + 40 * ONE_DAY))?.kind).toBe('likely');
+    expect(nearnessDuring(s, ev('season', summer, s.from + 50 * ONE_DAY))).toEqual({ kind: 'possibly', why: 'too-far' });
+    expect(nearnessDuring(day, ev('season', summer, summer.from))).toBeUndefined();
   });
 });

@@ -23,6 +23,7 @@ function setup(write: Record<string, string> = {}) {
   const dir = path.join(tmp, `case-${n++}`);
   const content = path.join(dir, 'content');
   fs.cpSync(FIXTURE, content, { recursive: true });
+  fs.cpSync(path.join(FIXTURE, '../assets'), path.join(content, '../assets'), { recursive: true });
   for (const [f, s] of Object.entries(write)) fs.writeFileSync(path.join(content, f), s);
   return { content, cacheDir: path.join(dir, 'cache') };
 }

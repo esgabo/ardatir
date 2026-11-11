@@ -1,0 +1,11 @@
+stage: cosmos
+duration: 60
+narration:
+  levelled: 0
+  light: 0.24
+  young: 0.5
+  men: 0.76
+beats:
+  levelled: 0.04
+  light: 0.26
+  young: 0.52

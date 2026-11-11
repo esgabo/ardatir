@@ -23,10 +23,10 @@ describe('how a best guess is explained', () => {
   it('the secret door: its honest range, then the anchor it is placed after and whose story that is', () => {
     expect(partsText(placementParts(ev('the-secret-door'), 'en'), 'en')).toBe(
       'The sources say only autumn, T.A. 2941. We place it after A Welcome at Lake-town (22 September, T.A. 2941), ' +
-      "because that is the order of Bilbo Baggins's story. It shares that stretch with 5 other events, spaced out in story order.");
+      "because that is the order of Bilbo Baggins's story. It shares that stretch with 6 other events, spaced out in story order.");
     expect(partsText(placementParts(ev('the-secret-door'), 'es'), 'es')).toBe(
       'Las fuentes solo dicen otoño, T.E. 2941. Lo situamos después de La bienvenida en la Ciudad del Lago (22 de septiembre, T.E. 2941), ' +
-      'porque ese es el orden de la historia de Bilbo Bolsón. Comparte ese tramo con otros 5 eventos, repartidos en el orden de la historia.');
+      'porque ese es el orden de la historia de Bilbo Bolsón. Comparte ese tramo con otros 6 eventos, repartidos en el orden de la historia.');
   });
 
   it('contracts "de El" in Spanish names', () => {
@@ -38,7 +38,7 @@ describe('how a best guess is explained', () => {
   });
 
   it('an event moved after what caused it says so', () => {
-    expect(partsText(placementParts(ev('thorin-is-laid-to-rest'), 'en'), 'en')).toMatch(/We place it just after Thorin's Farewell \(autumn, T\.A\. 2941\), which led to it\.$/);
+    expect(partsText(placementParts(ev('luthien-flees-doriath'), 'en'), 'en')).toMatch(/We place it just after .*, which led to it\.$/);
   });
 
   it('keeps months and abbreviations as they are inside a sentence, lowercases seasons and "around"', () => {

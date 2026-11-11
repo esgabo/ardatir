@@ -1,0 +1,21 @@
+id: isildur-saves-the-fruit-of-nimloth
+age: second-age
+when:
+  start: { age: second-age, year: 3280 }   # no year; the King fells the Tree soon after (Akallabêth); same best guess as the felling
+  precision: approximate
+place: armenelos
+characters: [ isildur ]
+arcs: [ the-downfall-of-numenor ]
+tags: [ silmarillion ]
+status: scripted
+source: { book: the-silmarillion, chapter: "Akallabêth" }
+title: { en: "Isildur saves the fruit of Nimloth", es: "Isildur salva el fruto de Nimloth" }
+summary:
+  en: "Hearing Amandil warn that the King means to fell Nimloth, his grandson Isildur goes by night, in disguise, into the forbidden courts of Armenelos. He takes a fruit from the guarded Tree and fights his way out, badly wounded, and the fruit reaches Amandil."
+  es: "Al oír a Amandil advertir que el Rey piensa talar a Nimloth, su nieto Isildur entra de noche y disfrazado en los patios prohibidos de Armenelos. Toma un fruto del Árbol vigilado y escapa luchando, malherido, y el fruto llega a Amandil."
+links:
+  - to: sauron-builds-the-temple-of-melkor
+    type: caused-by
+    note:
+      en: "The felling is decreed for the Temple."
+      es: "La tala se decreta para el Templo."

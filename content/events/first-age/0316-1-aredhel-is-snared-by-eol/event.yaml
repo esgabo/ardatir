@@ -7,7 +7,7 @@ place: nan-elmoth
 characters: [ aredhel, eol ]
 arcs: [ the-fall-of-gondolin ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Maeglin" }
 title: { en: "Aredhel is snared by Eöl", es: "Eöl atrapa a Aredhel" }
 summary:

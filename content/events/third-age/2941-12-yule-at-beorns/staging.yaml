@@ -1,0 +1,37 @@
+stage: diorama
+duration: 26
+narration:
+  road: 0
+  winter: 0.2
+  yule: 0.4
+  peace: 0.62
+  chief: 0.8
+beats:
+  road: 0
+  winter: 0.2
+  yule: 0.4
+  chief: 0.8
+tracks:
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: -5.9, z: 4.4, action: walk, thought: { en: "Two small chests and a head full of memories. Home, at last.", es: "Dos cofrecillos y la cabeza llena de recuerdos. A casa, por fin." } }
+      - { t: 0.2, x: -1.4, z: -1, action: idle, thought: { en: "Snow is coming. A warm hall will suit me very well.", es: "Viene la nieve. Un salón caldeado me vendrá de maravilla." } }
+      - { t: 0.4, x: -1.2, z: 1.2, action: talk, thought: { en: "Songs, bread and honey. This is better than any dragon.", es: "Canciones, pan y miel. Esto es mejor que cualquier dragón." } }
+      - { t: 0.62, x: -1.2, z: 1.2, action: hide, thought: { en: "Warm and well fed, and nothing to fear.", es: "Caliente, bien comido y sin nada que temer." } }
+      - { t: 0.8, x: -1.2, z: 1.2, action: idle, thought: { en: "Spring. Time to go.", es: "Primavera. Hora de marcharse." } }
+      - { t: 0.92, x: -5.4, z: 3.6, action: walk }
+  - characterId: gandalf
+    keyframes:
+      - { t: 0, x: -5.4, z: 5.2, action: walk }
+      - { t: 0.2, x: -0.2, z: -1.2, action: idle }
+      - { t: 0.4, x: 0, z: -0.2, action: talk, thought: { en: "Guests from every side of the mountains. What a Yule.", es: "Invitados de todas partes de las montañas. Vaya Yule." } }
+      - { t: 0.62, x: 0.2, z: -0.2, action: idle, thought: { en: "The goblins are few and frightened now. The lands breathe easier.", es: "Los trasgos son pocos y viven asustados. Las tierras respiran mejor." } }
+      - { t: 0.8, x: 0.2, z: -0.2, action: idle }
+      - { t: 0.92, x: -6, z: 2.8, action: walk }
+  - characterId: beorn
+    keyframes:
+      - { t: 0, x: -6.2, z: 5.8, action: walk, thought: { en: "I will ride with them as far as my own door.", es: "Los acompañaré hasta mi propia puerta." } }
+      - { t: 0.2, x: 1.4, z: -1.8, action: idle, thought: { en: "Stay the winter. My house is wide.", es: "Quedaos el invierno. Mi casa es grande." } }
+      - { t: 0.4, x: 1.8, z: 0.8, action: talk, thought: { en: "Eat, drink, sing. It is Yule!", es: "¡Comed, bebed, cantad! ¡Es Yule!" } }
+      - { t: 0.62, x: 2, z: -2.5, action: idle, thought: { en: "No goblin dares come near my land now.", es: "Ningún trasgo se atreve ya a acercarse a mis tierras." } }
+      - { t: 0.8, x: 4.2, z: -4.5, action: idle, thought: { en: "My lands run from the mountains to the forest.", es: "Mis tierras van desde las montañas hasta el bosque." } }

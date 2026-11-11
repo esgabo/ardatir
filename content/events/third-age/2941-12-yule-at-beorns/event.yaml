@@ -9,9 +9,14 @@ characters: [ bilbo, gandalf, beorn ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 18 }
 title: { en: Yule at Beorn's, es: Yule en casa de Beorn }
 summary:
   en: "On the road home, Bilbo and Gandalf spend the winter in Beorn's house, where the Yule feast draws guests from all the lands around."
   es: "De camino a casa, Bilbo y Gandalf pasan el invierno en casa de Beorn, donde el banquete de Yule atrae invitados de todas las tierras vecinas."
+beats:
+  - { id: road, label: { en: "The road home", es: "El camino a casa" } }
+  - { id: winter, label: { en: "Snow at Beorn's door", es: "Nieve a la puerta de Beorn" } }
+  - { id: yule, label: { en: "The Yule feast", es: "El banquete de Yule" } }
+  - { id: chief, label: { en: "Beorn the chief", es: "Beorn, el caudillo" } }

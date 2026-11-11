@@ -1,0 +1,17 @@
+stage: cosmos
+duration: 56
+narration:
+  # During `said` the first Music sounds again only as a faint echo, its red discord flickering,
+  # and the round world comes out of it, small in the mist: our staging, a memory of the
+  # Ainulindalë shown as one, not something the prophecy tells.
+  said: 0
+  # "After the end of days": the world pales into a point of light and is gone. Ilúvatar is shown
+  # as a great still light over the choirs, the Elves in silver and Men in warm gold: our staging.
+  choirs: 0.22
+  men: 0.47
+  # The themes settle into one even harmony, sparks of light take being as they are sung, and all
+  # ends in light: our staging of the themes played aright and taking being as they are sung.
+  aright: 0.67
+beats:
+  choirs: 0.27
+  aright: 0.69

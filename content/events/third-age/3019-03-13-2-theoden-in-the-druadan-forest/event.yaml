@@ -8,7 +8,7 @@ characters: [ theoden, eomer, merry, ghan-buri-ghan ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [ merrys-ride-with-theoden ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Ride of the Rohirrim" }
 title: { en: "Théoden Meets the Wild Men", es: "Théoden se encuentra con los Hombres Salvajes" }
 summary:

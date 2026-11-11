@@ -8,7 +8,7 @@ characters: [ frodo, sam, pippin ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ the-road-to-crickhollow ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "Three is Company" }
 title: { en: "Frodo Leaves Bag End", es: "Frodo deja Bolsón Cerrado" }
 summary:

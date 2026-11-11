@@ -8,9 +8,15 @@ characters: [ bilbo, bard, thranduil, gandalf ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 16 }
 title: { en: A Thief in the Night, es: Un ladrón en la noche }
 summary:
   en: "With Thorin besieged in the Mountain and refusing any share of the treasure, Bilbo slips out at night and gives the Arkenstone to Bard and the Elvenking, to bargain for peace."
   es: "Con Thorin sitiado en la Montaña y negándose a compartir el tesoro, Bilbo sale a escondidas de noche y entrega la Piedra del Arca a Bardo y al Rey Elfo, para negociar la paz."
+beats:
+  - { id: siege, label: { en: "Bard asks for a share", es: "Bardo pide una parte" } }
+  - { id: night, label: { en: "Down the rope", es: "Por la cuerda" } }
+  - { id: gift, label: { en: "The Arkenstone is given", es: "La Piedra del Arca se entrega" } }
+  - { id: gandalf, label: { en: "Gandalf returns", es: "Regresa Gandalf" } }
+  - { id: back, label: { en: "Back to the Mountain", es: "De vuelta a la Montaña" } }

@@ -1,0 +1,41 @@
+id: the-two-trees-are-rekindled
+age: foretold
+place: valinor
+characters: [ feanor, yavanna ]
+arcs: [ the-end-of-days ]
+tags: [ silmarillion, prophecy ]
+status: staged
+# The Second Prophecy of Mandos (1937 Quenta Silmarillion, The Lost Road, as in the 1930 Quenta,
+# The Shaping of Middle-earth): Fëanor takes the three jewels to Yavanna, who breaks them and with
+# their fire kindles the Two Trees again. In the 1926 Sketch it is Maidros who breaks them, and
+# Belaurin (Yavanna) who rekindles the Trees. The published Silmarillion keeps only the other side of
+# it: after the Darkening, Yavanna says only the light of the Silmarils could heal the Trees, Manwë
+# asks Fëanor for them on behalf of the Valar, and Fëanor refuses ("Of the Darkening of Valinor").
+source: { book: the-lost-road, chapter: "Quenta Silmarillion" }
+foretoldBy: mandos
+title: { en: "The Two Trees are rekindled", es: "Los Dos Árboles se encienden de nuevo" }
+summary:
+  en: "Fëanor takes the three Silmarils to Yavanna. She breaks them, and with the fire inside them she brings the Two Trees back to life, and a great light shines out again."
+  es: "Fëanor lleva los tres Silmarils a Yavanna. Ella los rompe, y con el fuego que guardan devuelve la vida a los Dos Árboles, y una gran luz vuelve a brillar."
+# The world's shape after the end (#59): the prophecy says the Earth is broken and made again, but
+# not what shape it takes, and Tolkien never reconciled it with the round world after Númenor. We
+# show it remade round here (cosmosJewels.ts, ROUND_WORLD), then the Trees and the Pelóri on the
+# flat map of the Elder Days (cosmosRekindled.ts, cosmosLevelled.ts, ELDER), and say so in `note`.
+note:
+  en: "Why is the world flat again? The prophecy brings back the Trees and the mountains of Valinor, places of the Elder Days, so this scene and the next show the world of that time, with Valinor in the far West. The scene before shows the remade Earth round. Tolkien never said what shape the world takes after the end, and never fitted the two together."
+  es: "¿Por qué el mundo vuelve a ser plano? La profecía trae de vuelta los Árboles y las montañas de Valinor, lugares de los Días Antiguos, así que esta escena y la siguiente muestran el mundo de entonces, con Valinor en el lejano Oeste. La escena anterior muestra la Tierra rehecha y redonda. Tolkien nunca dijo qué forma tiene el mundo después del fin, ni encajó las dos ideas."
+links:
+  - to: the-trees-are-darkened
+    type: caused-by
+    note:
+      en: "The Trees Melkor and Ungoliant killed are healed, with the jewels Fëanor once refused to give up for them."
+      es: "Se sanan los Árboles que mataron Melkor y Ungoliant, con las joyas que Fëanor se negó una vez a entregar por ellos."
+  - to: the-making-of-the-silmarils
+    type: enabled-by
+    note:
+      en: "The light of the Trees lives on in the jewels Fëanor made."
+      es: "La luz de los Árboles sigue viva en las joyas que hizo Fëanor."
+beats:
+  - { id: the-gift, label: { en: Fëanor's gift, es: El regalo de Fëanor } }
+  - { id: broken, label: { en: The jewels broken, es: Las joyas rotas } }
+  - { id: rekindled, label: { en: The Trees rekindled, es: Los Árboles encendidos } }

@@ -10,9 +10,9 @@ characters: [ frodo, sam, merry, pippin, gandalf, butterbur ]
 arcs: [ the-war-of-the-ring, after-the-war ]
 journeys: [ the-road-home ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "Homeward Bound" }
 title: { en: "Homeward at Bree", es: "De vuelta en Bree" }
 summary:
-  en: "Bree is quieter and warier than they left it. Butterbur tells of ruffians on the roads, and Gandalf warns the hobbits that they must now deal with their own trouble."
-  es: "Bree está más callada y recelosa que cuando la dejaron. Cebadilla cuenta de rufianes por los caminos, y Gandalf avisa a los hobbits de que deberán arreglar solos sus propios problemas."
+  en: "Bree is quieter and warier than they left it. Butterbur tells of ruffians on the roads and strange rumours from the Shire, and the hobbits grow anxious to be home."
+  es: "Bree está más callada y recelosa que cuando la dejaron. Cebadilla cuenta de rufianes por los caminos y de extraños rumores de la Comarca, y los hobbits ansían llegar a casa."

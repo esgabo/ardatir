@@ -7,7 +7,7 @@ place: beleriand
 characters: [ finrod, beor ]
 arcs: [  ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Men" }
 title: { en: "Finrod meets Bëor", es: "Finrod conoce a Bëor" }
 summary:

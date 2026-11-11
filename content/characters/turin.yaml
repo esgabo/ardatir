@@ -9,3 +9,4 @@ scale: 1.85
 kin:
   - { id: tuor, as: cousin }
   - { id: nienor, as: sister }
+pronounce: { en: TOO-rin too-RAM-bar, es: TÚ-rin tu-RAM-bar }   # how to say it: syllables, the stressed one in capitals

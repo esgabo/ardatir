@@ -41,6 +41,7 @@ async function rendered(opts: { garble?: (t: string) => boolean; edit?: (content
   const dir = path.join(tmp, `case-${n++}`);
   const content = path.join(dir, 'content'), cacheDir = path.join(dir, 'cache');
   fs.cpSync(FIXTURE, content, { recursive: true });
+  fs.cpSync(path.join(FIXTURE, '../assets'), path.join(content, '../assets'), { recursive: true });
   opts.edit?.(content);
   await render(buildContent(content), studio(opts.garble), () => Buffer.from('ref'), { lang: ['en'], changed: false, cacheDir, rejects: new Set() });
   return { content, cacheDir };

@@ -1,9 +1,10 @@
 id: tom-bombadil
 name: { en: "Tom Bombadil", es: "Tom Bombadil" }
 kind: other
+home: old-forest
 summary:
-  en: "A merry, ancient master of the Old Forest, on whom the Ring has no hold."
-  es: "Un alegre y antiguo señor del Bosque Viejo, sobre quien el Anillo no tiene poder."
+  en: "The merry, ancient master of the woods and waters between the Old Forest and the Barrow-downs, who calls himself Eldest, older than any river or tree he knows. The Elves name him Iarwain Ben-adar, the eldest, with no father; the Dwarves call him Forn, and the Men of the North Orald. The Ring has no hold on him, and he has no wish for it."
+  es: "El alegre y antiquísimo señor de los bosques y las aguas entre el Bosque Viejo y las Quebradas de los Túmulos, que se llama a sí mismo el Más Viejo, más antiguo que cualquier río o árbol que conozca. Los Elfos lo llaman Iarwain Ben-adar, el más viejo, sin padre; los Enanos, Forn, y los Hombres del Norte, Orald. El Anillo no tiene poder sobre él, ni él lo desea."
 color: "#c0a030"
 scale: 1.2
 kin:

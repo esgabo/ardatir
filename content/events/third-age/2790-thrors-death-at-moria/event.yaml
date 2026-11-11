@@ -9,15 +9,19 @@ characters: [ thror, azog ]
 arcs: [ durins-folk-in-exile ]
 journeys: [  ]
 tags: [ lord-of-the-rings, hobbit ]
-status: outline
+status: staged
 source: { book: the-lord-of-the-rings, chapter: "Appendix A (Durin's Folk)" }
 title: { en: "Thrór Dies at Moria", es: "Muerte de Thrór en Moria" }
 summary:
-  en: "Old Thrór, wandering from the Mountain he lost, walks into Moria. The orc-chief Azog kills him at the gate and flings his body out in contempt."
-  es: "El viejo Thrór, errante lejos de la Montaña perdida, entra en Moria. El jefe orco Azog lo mata en la puerta y arroja su cuerpo con desprecio."
+  en: "Old Thrór, wandering from the Mountain he lost, walks into Moria. The orc-chief Azog kills him inside and flings his body out in contempt."
+  es: "El viejo Thrór, errante lejos de la Montaña perdida, entra en Moria. El jefe orco Azog lo mata dentro y arroja su cuerpo con desprecio."
 links:
   - to: battle-of-azanulbizar
     type: causes
     note:
       en: "Thrór's murder is the insult the Dwarves of every house rise to avenge."
       es: "El asesinato de Thrór es la afrenta que los enanos de todas las casas se alzan a vengar."
+beats:
+  - { id: arrival, label: { en: "Thrór reaches the gate", es: "Thrór llega a la puerta" } }
+  - { id: slain, label: { en: "Azog kills him", es: "Azog lo mata" } }
+  - { id: insult, label: { en: "The insult", es: "La afrenta" } }

@@ -7,14 +7,21 @@ import { ICONS, type IconName } from './icons';
 import { t as ui, tr, type UiKey } from './i18n';
 import { fold, h } from './dom';
 import { shortDate } from './format';
+import { foretoldBadge } from './foretold';
 import { hasLane, laneColor, MAX_LANES } from './lanes';
-import { eventHref, livesHref } from './routes';
+import { eventHref, livesHref, startHref, timeHref } from './routes';
+import { sayHint } from './learn';
+import { momentLabel } from './format';
+import { momentOfEvent, parseMoment } from './moment';
+import { MOMENTS } from './moments';
+import { factionChip } from './sides';
+import { shortcutLabel, type TimeState } from './timeCursor';
 
-export const VIEWS = ['ages', 'stories', 'lives', 'books', 'places'] as const;
+export const VIEWS = ['ages', 'time', 'stories', 'lives', 'books', 'places'] as const;
 export type View = (typeof VIEWS)[number];
 
-const VIEW_ICON: Record<View, IconName> = { ages: 'ages', stories: 'stories', lives: 'lives', books: 'books', places: 'places' };
-const BOOK_ORDER = ['the-hobbit', 'the-fellowship-of-the-ring', 'the-two-towers', 'the-return-of-the-king', 'the-lord-of-the-rings', 'the-silmarillion', 'unfinished-tales'];
+const VIEW_ICON: Record<View, IconName> = { ages: 'ages', time: 'time', stories: 'stories', lives: 'lives', books: 'books', places: 'places' };
+const BOOK_ORDER = ['the-hobbit', 'the-fellowship-of-the-ring', 'the-two-towers', 'the-return-of-the-king', 'the-lord-of-the-rings', 'the-silmarillion', 'unfinished-tales', 'the-adventures-of-tom-bombadil'];
 const STORAGE_KEY = 'ardatir.sidebar';
 
 export interface SidebarHost {
@@ -29,6 +36,10 @@ export interface SidebarHost {
   lanes(): string[];
   lanesOpen(): boolean;
   setLanes(ids: string[]): void;
+  /** The time cursor's state when its page is open. */
+  timeOpen(): TimeState | undefined;
+  /** The time cursor at an event's moment. */
+  timeHrefFor(e: EventSummary): string;
 }
 
 export class Sidebar {
@@ -138,12 +149,16 @@ export class Sidebar {
     const panel = h('div', { class: 'sb-panel' });
     const close = h('button', { type: 'button', class: 'sb-close', 'data-fk': 'close', 'aria-label': this.L('closeMenu'), html: ICONS.close });
     close.addEventListener('click', () => this.setDrawer(false));
+    // The opening again (opening.ts): the welcome a first visit sees, for anyone who wants it.
+    const start = h('a', { class: 'sb-start', href: startHref(L), 'data-fk': 'start', title: this.L('startHereHint') },
+      h('span', { html: ICONS.star }), this.L('startHere'));
+    start.addEventListener('click', () => { this.drawer = false; });
     const input = h('input', { type: 'search', 'data-fk': 'search', placeholder: this.L('search'), 'aria-label': this.L('search'), value: this.query }) as HTMLInputElement;
     input.value = this.query;
     input.addEventListener('input', () => { this.query = input.value; this.renderBody(); });
     panel.append(
       h('header', { class: 'sb-head' },
-        h('div', { class: 'sb-brand' }, h('div', { class: 'wordmark' }, 'Ardatir'), h('div', { class: 'tagline' }, this.L('tagline'))),
+        h('div', { class: 'sb-brand' }, h('div', { class: 'wordmark' }, 'Ardatir'), h('div', { class: 'tagline' }, this.L('tagline')), start),
         close),
       h('label', { class: 'sb-search', html: ICONS.search }, input),
       h('div', { class: 'sb-title' }, h('span', {}, this.L(`title_${this.view}` as UiKey)), h('span', { class: 'rule' }), h('span', { class: 'diamond' })),
@@ -170,7 +185,7 @@ export class Sidebar {
     body.innerHTML = '';
     body.parentElement?.querySelector('.sb-title')?.toggleAttribute('hidden', !!this.query.trim());
     if (this.query.trim()) { body.append(this.searchResults(this.query.trim())); return; }
-    const build = { ages: () => this.agesView(), stories: () => this.storiesView(), lives: () => this.livesView(), books: () => this.booksView(), places: () => this.placesView() }[this.view];
+    const build = { ages: () => this.agesView(), time: () => this.timeView(), stories: () => this.storiesView(), lives: () => this.livesView(), books: () => this.booksView(), places: () => this.placesView() }[this.view];
     body.append(build());
   }
 
@@ -180,23 +195,24 @@ export class Sidebar {
    * Every event is a link: staged ones open their stage (filled diamond), the others their
    * page (hollow diamond, a little dimmer), so the whole story can be followed.
    */
-  private eventRow(e: EventSummary): HTMLElement {
+  private eventRow(e: EventSummary, mark = true): HTMLElement {
     const L = this.host.lang();
     const current = e.id === this.host.currentId();
     const a = h('a', {
       class: e.stage ? 'ev' : 'ev dim', href: eventHref(e.id, L), 'data-fk': `ev:${e.id}`, 'aria-current': current ? 'page' : undefined,
       title: this.L(e.stage ? 'playable' : 'readable'),
-    }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, tr(e.title, L)), h('span', { class: 'ev-when' }, shortDate(e, L)));
+    }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, tr(e.title, L)), (mark && foretoldBadge(e, L)) || h('span', { class: 'ev-when' }, shortDate(e, L)));
     a.addEventListener('click', (ev) => { ev.preventDefault(); this.drawer = false; this.host.openEvent(e.id); });
     return h('li', {}, a);
   }
 
-  private eventList(ids: string[] | EventSummary[]): HTMLElement {
+  /** `mark: false` leaves out the Foretold badges, where the list sits under the foretold age itself. */
+  private eventList(ids: string[] | EventSummary[], mark = true): HTMLElement {
     const evs = (ids as (string | EventSummary)[])
       .map((x) => (typeof x === 'string' ? index.events.find((e) => e.id === x) : x))
       .filter((e): e is EventSummary => !!e);
     if (!evs.length) return h('p', { class: 'sb-empty' }, this.L('noEvents'));
-    return h('ul', { class: 'ev-list' }, ...evs.map((e) => this.eventRow(e)));
+    return h('ul', { class: 'ev-list' }, ...evs.map((e) => this.eventRow(e, mark)));
   }
 
   /** An expandable group: a header button and children built only when open. */
@@ -227,8 +243,9 @@ export class Sidebar {
       const evs = index.events.filter((e) => e.age === age.id);
       const lit = current?.age === age.id;
       const key = `age:${age.id}`;
+      // What is foretold: a hollow, dashed node at the end of the thread, past history.
       const head = [
-        h('span', { class: `node${lit ? ' lit' : ''}`, 'aria-hidden': 'true' }),
+        h('span', { class: `node${lit ? ' lit' : ''}${age.foretold ? ' foretold' : ''}`, 'aria-hidden': 'true' }),
         h('span', { class: 'age-text' }, h('span', { class: 'age-name' }, tr(age.name, L)), h('span', { class: 'age-sub' }, tr(age.summary, L))),
       ];
       ol.append(this.group(key, head, () => {
@@ -237,15 +254,50 @@ export class Sidebar {
         const list = h('ul', { class: 'sub' });
         for (const arc of arcs) {
           const inAge = arc.events.filter((id) => evs.some((e) => e.id === id));
-          list.append(this.group(`${key}/arc:${arc.id}`, [h('span', { class: 'grp-name' }, tr(arc.title, L))], () => this.eventList(inAge)));
+          list.append(this.group(`${key}/arc:${arc.id}`, [h('span', { class: 'grp-name' }, tr(arc.title, L))], () => this.eventList(inAge, !age.foretold)));
         }
         const loose = evs.filter((e) => !e.arcs.length);
-        if (loose.length && arcs.length) list.append(this.group(`${key}/other`, [h('span', { class: 'grp-name' }, this.L('otherEvents'))], () => this.eventList(loose)));
-        else if (loose.length) list.append(h('li', {}, this.eventList(loose)));
+        if (loose.length && arcs.length) list.append(this.group(`${key}/other`, [h('span', { class: 'grp-name' }, this.L('otherEvents'))], () => this.eventList(loose, !age.foretold)));
+        else if (loose.length) list.append(h('li', {}, this.eventList(loose, !age.foretold)));
         return list;
       }, 'age'));
     }
     return ol;
+  }
+
+  /** The time cursor: where it stands, this event's moment, and moments to visit (docs/DESIGN.md §3.1). */
+  private timeView(): HTMLElement {
+    const L = this.host.lang();
+    const box = h('div', { class: 'sb-time' });
+    const open = this.host.timeOpen();
+    const card = h('div', { class: 'sb-lanes' }, h('p', {}, this.L('timeIntro')));
+    if (open) card.append(h('p', { class: 'sb-time-now' }, momentLabel(open.moment, L)));
+    else {
+      const go = h('a', { class: 'sb-lanes-go', href: timeHref(undefined, L) }, `${this.L('openTimeline')} →`);
+      go.addEventListener('click', () => this.setDrawer(false));
+      card.append(go);
+    }
+    box.append(card);
+    const current = index.events.find((e) => e.id === this.host.currentId());
+    const link = (href: string, name: string, when: string, here = false, badge: HTMLElement | null = null) => {
+      const a = h('a', { class: 'ev', href, 'aria-current': here ? 'page' : undefined },
+        h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), h('span', { class: 'ev-name' }, name), badge, h('span', { class: 'ev-when' }, when));
+      a.addEventListener('click', () => this.setDrawer(false));
+      return h('li', {}, a);
+    };
+    if (current && !open) {
+      box.append(h('div', { class: 'sb-section' }, this.L('thisEventsMoment')),
+        h('ul', { class: 'ev-list' }, link(this.host.timeHrefFor(current), tr(current.title, L), momentLabel(momentOfEvent(current, index.ages), L), false, foretoldBadge(current, L))));
+    }
+    box.append(h('div', { class: 'sb-section' }, this.L('momentsToVisit')));
+    const ul = h('ul', { class: 'ev-list' });
+    for (const mo of MOMENTS) {
+      const m = parseMoment(mo.path, index.ages);
+      const here = !!open && !!m && momentLabel(m, L) === momentLabel(open.moment, L) && m.age === open.moment.age;
+      ul.append(link(timeHref(mo.path, L), shortcutLabel(mo.path, mo.event, L), m ? momentLabel(m, L) : '', here));
+    }
+    box.append(ul);
+    return box;
   }
 
   private storiesView(): HTMLElement {
@@ -273,7 +325,8 @@ export class Sidebar {
     return this.group(`char:${c.id}`, [
       h('span', { class: 'who' }, h('span', { class: 'who-name' }, tr(c.name, L)), h('span', { class: 'who-kind' }, kind)),
     ], () => {
-      const box = h('div', { class: 'who-body' }, h('p', {}, tr(c.summary, L)));
+      const say = sayHint(c.pronounce, L);
+      const box = h('div', { class: 'who-body' }, say && h('p', { class: 'who-say' }, say), h('p', {}, tr(c.summary, L)));
       if (c.kin?.length) {
         const kin = h('p', { class: 'kin' }, `${this.L('kinOf')}: `);
         c.kin.forEach((k, i) => {
@@ -381,7 +434,7 @@ export class Sidebar {
     for (const p of places) {
       ul.append(this.group(`place:${p.id}`, [
         h('span', { class: 'who' }, h('span', { class: 'who-name' }, tr(p.name, L)), h('span', { class: 'who-kind' }, String(index.byPlace[p.id].length))),
-      ], () => h('div', { class: 'who-body' }, h('p', {}, tr(p.summary, L)), this.eventList(index.byPlace[p.id]))));
+      ], () => { const say = sayHint(p.pronounce, L); return h('div', { class: 'who-body' }, say && h('p', { class: 'who-say' }, say), h('p', {}, tr(p.summary, L)), this.eventList(index.byPlace[p.id])); }));
     }
     return ul;
   }
@@ -393,8 +446,9 @@ export class Sidebar {
     const events = index.events.filter((e) => hit(tr(e.title, L))).slice(0, 20);
     const chars = index.characters.filter((c) => hit(tr(c.name, L))).slice(0, 12);
     const places = index.places.filter((p) => hit(tr(p.name, L))).slice(0, 12);
+    const factions = (index.factions ?? []).filter((x) => hit(tr(x.name, L))).slice(0, 8);
     const box = h('div', { class: 'results' });
-    if (!events.length && !chars.length && !places.length) { box.append(h('p', { class: 'sb-empty' }, this.L('noResults'))); return box; }
+    if (!events.length && !chars.length && !places.length && !factions.length) { box.append(h('p', { class: 'sb-empty' }, this.L('noResults'))); return box; }
     if (events.length) box.append(h('div', { class: 'sb-section' }, this.L('resultsEvents')), this.eventList(events));
     const jump = (title: string, items: { id: string; name: string }[], view: View, prefix: string) => {
       if (!items.length) return;
@@ -409,6 +463,9 @@ export class Sidebar {
     };
     jump(this.L('resultsLives'), chars.map((c) => ({ id: c.id, name: tr(c.name, L) })), 'lives', 'char');
     jump(this.L('resultsPlaces'), places.map((p) => ({ id: p.id, name: tr(p.name, L) })), 'places', 'place');
+    // Sides in battles: each faction with the battles it fought in.
+    if (factions.length) box.append(h('div', { class: 'sb-section' }, this.L('resultsFactions')));
+    for (const x of factions) box.append(h('div', { class: 'sb-faction' }, factionChip(x, L)), this.eventList(index.byFaction?.[x.id] ?? []));
     return box;
   }
 }

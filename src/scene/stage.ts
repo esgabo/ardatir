@@ -18,12 +18,15 @@ export interface Stage {
   camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
   /** Point the orbit controls circle around. */
   target: THREE.Vector3;
-  update(t: number, ambient: number): void;
+  /** `eventSeconds`: the event clock's length (the recording's, when there is one), for motion keyed to seconds. */
+  update(t: number, ambient: number, eventSeconds?: number): void;
   resize(width: number, height: number): void;
   /** Return a selectable id under the ray, if any. */
   pick?(ray: THREE.Raycaster): string | null;
   select?(id: string | null): void;
   info?(id: string, t: number): SelectionInfo | null;
+  /** Where a selected thing stands now (world space), so the camera can keep it framed; null when it is offstage. */
+  focus?(id: string): THREE.Vector3 | null;
   /** Full-screen flash strength 0 → 1 (e.g. the moment of Eä). */
   flash?(t: number): number;
   dispose(): void;

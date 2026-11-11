@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import YAML from 'yaml';
-import { dateSpan, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
+import { dateSpan, EPS, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
   EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
@@ -16,6 +16,9 @@ import {
 } from '../../src/data/types.ts';
 import { narrationHash, passageHash, TEXT_HASH } from '../narration/text.ts';
 import type { Lexicon } from '../narration/pronounce.ts';
+import { pronounceProblem } from '../../src/data/pronounce.ts';
+import { battlesByFaction, readArmies, readFactions, readSides } from './factions.ts';
+import { checkSources, readModel } from './models.ts';
 
 export interface BuildResult {
   index: ContentIndex;
@@ -63,6 +66,10 @@ class Report {
 
 export function buildContent(contentDir: string): BuildResult {
   const R = new Report(path.dirname(contentDir));
+  // Models live beside content/, in assets/ (docs/MODELS.md); the build copies the ones in use.
+  const assetsDir = path.join(path.dirname(contentDir), 'assets');
+  const copies: BuildResult['copies'] = [];
+  checkSources(R, assetsDir);
 
   // ---------- generic readers ----------
   const readYaml = (file: string): unknown => {
@@ -97,6 +104,18 @@ export function buildContent(contentDir: string): BuildResult {
     }
     return v as LocalizedText;
   };
+  /** How to say a hard name: `{ en, es }` respellings, each well formed (src/data/pronounce.ts). */
+  const pronounce = (file: string, v: unknown): LocalizedText | undefined => {
+    if (v === undefined) return undefined;
+    const p = text(file, v, 'pronounce');
+    if (!p) return undefined;
+    for (const [k, s] of Object.entries(p)) {
+      const why = typeof s === 'string' ? pronounceProblem(s) : undefined;
+      if (why) R.error(file, `pronounce.${k}: ${why} (write it like AR-da: syllables joined by hyphens, the stressed one in CAPITALS)`);
+    }
+    return p;
+  };
+  const say = (p: LocalizedText | undefined) => (p ? { pronounce: p } : {});
   const strList = (file: string, v: unknown, what: string): string[] => {
     if (v === undefined) return [];
     if (!Array.isArray(v) || v.some((x) => typeof x !== 'string')) { R.error(file, `${what}: must be a list of ids`); return []; }
@@ -174,7 +193,7 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'ages'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis', 'narrator'], 'age');
+    keys(f, o, ['id', 'order', 'name', 'abbr', 'summary', 'timeless', 'axis', 'foretold', 'pronounce', 'narrator'], 'age');
     const aid = id(f, o.id, ageIds, 'age');
     if (!aid) continue;
     if (typeof o.order !== 'number') R.error(f, 'order: must be a number');
@@ -191,11 +210,21 @@ export function buildContent(contentDir: string): BuildResult {
       if (typeof o.narrator === 'string' && narratorIds.has(o.narrator)) narrator = o.narrator;
       else R.error(f, `narrator: unknown narrator ${JSON.stringify(o.narrator)}`);
     }
+    // What is foretold (docs/DESIGN.md §4.8): prophecy, not history, so never on the dated axis.
+    if (o.foretold !== undefined && typeof o.foretold !== 'boolean') R.error(f, 'foretold: true or false');
+    const foretold = o.foretold === true;
+    if (foretold && o.timeless !== true) R.error(f, 'a foretold age must be timeless: what is foretold has no dates');
+    ages.push({
+      id: aid, order: Number(o.order), name: text(f, o.name, 'name')!, abbr: text(f, o.abbr, 'abbr', false), summary: text(f, o.summary, 'summary')!,
+      ...axis ? { axis } : {}, ...foretold ? { foretold } : {}, ...say(pronounce(f, o.pronounce)), ...narrator ? { narrator } : {},
+    });
     ageFile.set(aid, f);
-    ages.push({ id: aid, order: Number(o.order), name: text(f, o.name, 'name')!, abbr: text(f, o.abbr, 'abbr', false), summary: text(f, o.summary, 'summary')!, ...axis ? { axis } : {}, ...narrator ? { narrator } : {} });
   }
   ages.sort((a, b) => a.order - b.order);
   const ageMap = new Map(ages.map((a) => [a.id, a]));
+  // A foretold age comes after every dated age: the time cursor shows it past the end of the axis.
+  const lastDated = Math.max(...ages.filter((a) => a.axis).map((a) => a.order));
+  for (const a of ages) if (a.foretold && a.order < lastDated) R.error(ageFile.get(a.id)!, 'order: a foretold age comes after every dated age');
 
   // ---------- dates ----------
   const date = (file: string, v: unknown, what: string): StoryDate | undefined => {
@@ -237,16 +266,19 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'characters'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin'], 'character');
+    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin', 'home', 'model', 'pronounce'], 'character');
     const cid = id(f, o.id, charIds, 'character');
     if (!cid) continue;
     if (typeof o.kind !== 'string') R.error(f, 'kind: required (hobbit, elf, man, ...)');
     if (o.color !== undefined && !/^#[0-9a-f]{6}$/i.test(String(o.color))) R.error(f, 'color: use #rrggbb');
     if (o.scale !== undefined && !(typeof o.scale === 'number' && o.scale > 0)) R.error(f, 'scale: a positive number');
     const kin = Array.isArray(o.kin) ? o.kin.filter(isObj).map((k) => ({ id: String(k.id), as: String(k.as) })) : undefined;
+    if (o.home !== undefined && typeof o.home !== 'string') R.error(f, 'home: a place id');
+    const model = o.model === undefined ? undefined : readModel(R, f, o.model, 'model', assetsDir, copies, 'characters');
     characters.push({
       id: cid, name: text(f, o.name, 'name')!, kind: String(o.kind), summary: text(f, o.summary, 'summary')!,
       ...o.color ? { color: String(o.color) } : {}, ...o.scale ? { scale: Number(o.scale) } : {}, ...kin ? { kin } : {},
+      ...typeof o.home === 'string' ? { home: o.home } : {}, ...model ? { model } : {}, ...say(pronounce(f, o.pronounce)),
     });
     charFile.set(cid, f);
   }
@@ -257,12 +289,19 @@ export function buildContent(contentDir: string): BuildResult {
   for (const f of yamlFiles(path.join(contentDir, 'places'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'summary', 'world'], 'place');
+    keys(f, o, ['id', 'name', 'summary', 'world', 'pronounce'], 'place');
     const pid = id(f, o.id, placeIds, 'place');
     if (!pid) continue;
     const world = isObj(o.world) && typeof o.world.x === 'number' && typeof o.world.z === 'number' ? { x: o.world.x, z: o.world.z } : undefined;
-    places.push({ id: pid, name: text(f, o.name, 'name')!, summary: text(f, o.summary, 'summary')!, ...world ? { world } : {} });
+    places.push({ id: pid, name: text(f, o.name, 'name')!, summary: text(f, o.summary, 'summary')!, ...world ? { world } : {}, ...say(pronounce(f, o.pronounce)) });
   }
+  // A character who stays in one place (Tom Bombadil): the time cursor shows them there between their events.
+  for (const c of characters) if (c.home && !placeIds.has(c.home)) R.error(charFile.get(c.id)!, `home: unknown place "${c.home}"`);
+
+  // Sides in battles (scripts/content/factions.ts).
+  const FC = { error: R.error.bind(R), warn: R.warn.bind(R), readYaml, yamlFiles, keys, text, id };
+  const factions = readFactions(FC, contentDir, charIds);
+  const factionIds = new Set(factions.map((x) => x.id));
 
   const arcs: Arc[] = [];
   const arcIds = new Set<string>();
@@ -312,7 +351,7 @@ export function buildContent(contentDir: string): BuildResult {
     });
     if (waypoints.length < 2) R.error(f, 'a journey needs at least two waypoints');
     // Coarse dates may overlap their neighbours; only a waypoint that ends before the previous one starts is out of order.
-    for (let i = 1; i < waypoints.length; i++) if (waypoints[i].span.to <= waypoints[i - 1].span.from) R.error(f, `waypoints[${i}]: earlier than the waypoint before it`);
+    for (let i = 1; i < waypoints.length; i++) if (waypoints[i].span.to <= waypoints[i - 1].span.from + EPS) R.error(f, `waypoints[${i}]: earlier than the waypoint before it`);
     const span = waypoints.length ? { from: waypoints[0].span.from, to: waypoints.at(-1)!.span.to } : undefined;
     journeys.push({ id: jid, title: text(f, o.title, 'title')!, characters: chars, waypoints, ...span ? { span } : {}, events: [] });
   }
@@ -334,7 +373,7 @@ export function buildContent(contentDir: string): BuildResult {
     const f = path.join(dir, 'event.yaml');
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'title', 'summary', 'links', 'beats'], 'event');
+    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'pronounce', 'summary', 'note', 'links', 'beats', 'sides'], 'event');
     const eid = id(f, o.id, eventIds, 'event');
     if (!eid) continue;
     const folder = path.basename(dir);
@@ -396,7 +435,20 @@ export function buildContent(contentDir: string): BuildResult {
       beatsRaw.push({ id: b.id, label: text(f, b.label, `beats[${i}].label`)! });
     });
 
+    const sides = readSides(FC, f, o.sides, factionIds);
     const source = isObj(o.source) ? { book: String(o.source.book), ...o.source.chapter !== undefined ? { chapter: o.source.chapter as string | number } : {} } : undefined;
+
+    // Prophecy: the page must say where it comes from, and may say who foretells it.
+    let foretoldBy: string | undefined;
+    if (age?.foretold && !source) R.error(f, `source: required for what is foretold ("${age.id}"), so the page can say where the prophecy comes from`);
+    if (o.foretoldBy !== undefined) {
+      if (!age?.foretold) R.error(f, 'foretoldBy: only for events in a foretold age');
+      else if (typeof o.foretoldBy !== 'string' || !charIds.has(o.foretoldBy)) R.error(f, `foretoldBy: unknown character "${o.foretoldBy}"`);
+      else foretoldBy = o.foretoldBy;
+    }
+
+    // A note for readers: where the sources disagree or are silent (About this scene, the event's page).
+    const note = o.note !== undefined ? text(f, o.note, 'note') : undefined;
 
     // narration.yaml
     const nf = path.join(dir, 'narration.yaml');
@@ -432,8 +484,8 @@ export function buildContent(contentDir: string): BuildResult {
       summary: {
         id: eid, age: String(o.age), ...when ? { when } : {}, ...span ? { span } : {}, ...place ? { place } : {},
         characters: chars, arcs: evArcs, journeys: evJourneys, tags: strList(f, o.tags, 'tags'), status,
-        ...source ? { source } : {}, title: text(f, o.title, 'title')!, summary: text(f, o.summary, 'summary')!,
-        links, audio: [],
+        ...source ? { source } : {}, ...foretoldBy ? { foretoldBy } : {}, title: text(f, o.title, 'title')!, ...say(pronounce(f, o.pronounce)), summary: text(f, o.summary, 'summary')!, ...note ? { note } : {},
+        links, ...sides ? { sides } : {}, audio: [],
       },
     });
   }
@@ -463,7 +515,7 @@ export function buildContent(contentDir: string): BuildResult {
   raws.sort((a, b) => a.ageOrder - b.ageOrder || a.folder.localeCompare(b.folder));
   for (let i = 1; i < raws.length; i++) {
     const prev = raws[i - 1].summary.span, cur = raws[i].summary.span;
-    if (prev && cur && cur.to <= prev.from) R.warn(raws[i].file, `sorts after "${raws[i - 1].summary.id}" but its dates are earlier; check the folder sort key`);
+    if (prev && cur && cur.to <= prev.from + EPS) R.warn(raws[i].file, `sorts after "${raws[i - 1].summary.id}" but its dates are earlier; check the folder sort key`);
   }
 
   // ---------- best-guess positions ----------
@@ -478,12 +530,11 @@ export function buildContent(contentDir: string): BuildResult {
 
   // ---------- staging, audio → details ----------
   const details: EventDetail[] = [];
-  const copies: BuildResult['copies'] = [];
   for (const r of raws) {
     const s = r.staging;
     if (!s) continue;
     const sf = path.join(r.dir, 'staging.yaml');
-    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks'], 'staging');
+    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies'], 'staging');
     const stage = String(s.stage) as StageKind;
     if (!STAGES.includes(stage)) R.error(sf, `stage: one of ${STAGES.join(', ')}`);
     if (!(typeof s.duration === 'number' && s.duration > 0)) R.error(sf, 'duration: seconds, a positive number');
@@ -515,6 +566,9 @@ export function buildContent(contentDir: string): BuildResult {
     (Array.isArray(s.tracks) ? s.tracks : []).forEach((tr, i) => {
       if (!isObj(tr) || typeof tr.characterId !== 'string' || !Array.isArray(tr.keyframes)) { R.error(sf, `tracks[${i}]: expected { characterId, keyframes }`); return; }
       if (!r.summary.characters.includes(tr.characterId)) R.error(sf, `tracks[${i}]: "${tr.characterId}" is not in the event's characters`);
+      keys(sf, tr, ['characterId', 'keyframes', 'model'], `tracks[${i}]`);
+      // This event's own model for the character (Bilbo in a barrel), instead of their usual one.
+      const model = tr.model === undefined ? undefined : readModel(R, sf, tr.model, `tracks[${i}].model`, assetsDir, copies, 'characters');
       const kfs: Keyframe[] = [];
       let lt = -1;
       tr.keyframes.forEach((k, j) => {
@@ -524,8 +578,10 @@ export function buildContent(contentDir: string): BuildResult {
         lt = k.t;
         kfs.push({ t: k.t, x: k.x, z: k.z, ...k.action ? { action: k.action as Keyframe['action'] } : {}, ...k.thought ? { thought: text(sf, k.thought, `${what}.thought`) } : {} });
       });
-      tracks.push({ characterId: tr.characterId, keyframes: kfs });
+      tracks.push({ characterId: tr.characterId, keyframes: kfs, ...model ? { model } : {} });
     });
+
+    const armies = readArmies(FC, sf, s.armies, r.summary);
 
     // Recordings: audio/<lang>.yaml + audio/<lang>.<ext>
     const audioFiles: EventDetail['audioFiles'] = {};
@@ -597,7 +653,7 @@ export function buildContent(contentDir: string): BuildResult {
     }
 
     r.summary.stage = stage;
-    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, audioFiles });
+    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, audioFiles });
   }
 
   // Scripts: every narration as text, so a scripted event can be read before it is staged.
@@ -618,7 +674,7 @@ export function buildContent(contentDir: string): BuildResult {
       const jr = journeyMap.get(j);
       if (!jr) continue;
       jr.events.push(e.id);
-      for (const c of e.characters) if (jr.characters.includes(c) && e.span && jr.span && (e.span.to < jr.span.from || e.span.from > jr.span.to)) {
+      for (const c of e.characters) if (jr.characters.includes(c) && e.span && jr.span && (e.span.to < jr.span.from - EPS || e.span.from > jr.span.to + EPS)) {
         R.warn(byId.get(e.id)!.file, `is part of journey "${j}" but falls outside its dates`);
         break;
       }
@@ -636,6 +692,9 @@ export function buildContent(contentDir: string): BuildResult {
   }
   for (const c of characters) if (!byCharacter[c.id].length && !journeys.some((j) => j.characters.includes(c.id))) R.warn(charFile.get(c.id)!, 'appears in no event or journey');
 
+  const byFaction = battlesByFaction(factions, events);
+  for (const x of factions) if (!byFaction[x.id].length) R.warn(path.join(contentDir, 'factions', `${x.id}.yaml`), 'fights in no battle yet (no event lists it in `sides`)');
+
   for (const [k, n] of R.missingByFile) {
     const [file, lang] = k.split('|');
     R.warnings.push(`${file}: ${n} text${n > 1 ? 's' : ''} missing "${lang}"`);
@@ -648,10 +707,10 @@ export function buildContent(contentDir: string): BuildResult {
     if (staged.length) R.warn(ageFile.get(a.id)!, `has staged events but no narrator (${staged.map((e) => e.id).join(', ')}); add narrator: <id>`);
   }
 
-  const lanes = characterLanes(characters.map((c) => c.id), events, journeys);
+  const lanes = characterLanes(characters.map((c) => c.id), events, journeys, new Set(ages.filter((a) => a.foretold).map((a) => a.id)));
 
   return {
-    index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes },
+    index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes, factions, byFaction },
     details, scripts, narrators, pronunciation, eventDirs: Object.fromEntries(raws.map((r) => [r.summary.id, r.dir])), copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
   };
 }
@@ -759,8 +818,8 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
       // A matching event says more than the middle of a short range (a month-long stay in
       // Rivendell takes the moon-letters' 1 Lithe, not mid-June), so it comes first.
       const e = events.find((x) => x.journeys.includes(j.id) && x.place === w.place && x.span && x.at !== undefined
-        && x.span.from < w.span.to && w.span.from < x.span.to && x.at >= last
-        && x.at >= w.span.from && x.at <= w.span.to);
+        && overlaps(x.span, w.span) && x.at >= last
+        && x.at >= w.span.from - EPS && x.at <= w.span.to + EPS);
       let at = e?.at;
       if (e) w.event = e.id;
       if (at === undefined && w.span.to - w.span.from <= ANCHOR_WIDTH) at = (w.span.from + w.span.to) / 2;
@@ -794,25 +853,32 @@ export function estimateWaypoints(journeys: Journey[], events: EventSummary[]): 
  * event they are in is that event). Waypoints are placed by best guess: before the first of
  * the character's events whose guess comes later, so the lane keeps story order. `events`
  * arrive in story order, with `at` and the waypoints' `at` and `event` already estimated.
+ * Events in a foretold age (`foretoldAges`) come after every leg: prophecy follows history.
  */
-export function characterLanes(characterIds: string[], events: EventSummary[], journeys: Journey[]): Record<string, LaneEntry[]> {
+export function characterLanes(characterIds: string[], events: EventSummary[], journeys: Journey[], foretoldAges = new Set<string>()): Record<string, LaneEntry[]> {
   const chars = new Map(events.map((e) => [e.id, e.characters]));
+  const story = new Map(events.map((e, i) => [e.id, i]));
   const lanes: Record<string, LaneEntry[]> = {};
   for (const c of characterIds) {
     const mine = events.filter((e) => e.characters.includes(c));
-    const legs: { at: number; entry: LaneEntry }[] = [];
+    const legs: { at: number; entry: LaneEntry; after?: number }[] = [];
     for (const j of journeys) {
       if (!j.characters.includes(c)) continue;
       j.waypoints.forEach((w, i) => {
         if (w.event && chars.get(w.event)?.includes(c)) return; // that event is in the lane already
-        legs.push({ at: w.at, entry: { journey: j.id, waypoint: i } });
+        legs.push({ at: w.at, entry: { journey: j.id, waypoint: i }, after: w.event ? story.get(w.event) : undefined });
       });
     }
     legs.sort((a, b) => a.at - b.at); // stable: a journey's own order breaks ties
     const lane: LaneEntry[] = [];
     let k = 0;
     for (const e of mine) {
-      while (k < legs.length && e.at !== undefined && legs[k].at < e.at) lane.push(legs[k++].entry);
+      // What is foretold comes after every journey: the lane's history ends before its prophecy.
+      if (foretoldAges.has(e.age)) while (k < legs.length) lane.push(legs[k++].entry);
+      // A leg guessed at the same moment as the event comes first when the event it is tied to
+      // (the waypoint's `event`, one this character is not in) comes earlier in story order.
+      const si = story.get(e.id)!;
+      while (k < legs.length && e.at !== undefined && (legs[k].at < e.at || (legs[k].at === e.at && (legs[k].after ?? Infinity) < si))) lane.push(legs[k++].entry);
       lane.push({ event: e.id });
     }
     while (k < legs.length) lane.push(legs[k++].entry);
@@ -843,7 +909,7 @@ export function describe(result: BuildResult): string {
   const by = (s: Status) => ev.filter((e) => e.status === s).length;
   const lines = [
     `content: ${ev.length} events (${by('outline')} outline, ${by('scripted')} scripted, ${by('staged')} staged, ${by('animated')} animated), ` +
-    `${result.index.characters.length} characters, ${result.index.places.length} places, ${result.index.arcs.length} arcs, ${result.index.journeys.length} journeys`,
+    `${result.index.characters.length} characters, ${result.index.places.length} places, ${result.index.arcs.length} arcs, ${result.index.journeys.length} journeys, ${result.index.factions.length} factions`,
   ];
   for (const [l, n] of Object.entries(result.missing)) lines.push(`translations: ${n} texts missing "${l}"`);
   for (const w of result.warnings) lines.push(`  warning  ${w}`);

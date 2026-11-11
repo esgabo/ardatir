@@ -1,17 +1,17 @@
 id: in-tom-bombadils-house
 age: third-age
 when:
+  # Appendix B: the Old Forest and Bombadil on the 26th; Tom brings them home that evening.
   start: { age: third-age, year: 3018, month: 9, day: 26 }
-  end: { age: third-age, year: 3018, month: 9, day: 27 }
   precision: day
 place: old-forest
 characters: [ frodo, sam, merry, pippin, tom-bombadil, goldberry ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ the-road-to-bree ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "In the House of Tom Bombadil" }
-title: { en: "Two Nights with Tom Bombadil", es: "Dos noches con Tom Bombadil" }
+title: { en: "In the House of Tom Bombadil", es: "En casa de Tom Bombadil" }
 summary:
-  en: "Tom and Goldberry take the hobbits in, feed them, tell old tales, and Tom puts the Ring on without turning invisible, to Frodo's astonishment."
-  es: "Tom y Baya de Oro acogen a los hobbits, los alimentan y cuentan viejos cuentos, y Tom se pone el Anillo sin desaparecer, para asombro de Frodo."
+  en: "At dusk Tom leads the weary hobbits to his house under the hill, where Goldberry welcomes them among lamps and water-lilies. After a merry supper they go to bed, and the night brings each of them strange dreams, which Tom has told them not to fear."
+  es: "Al anochecer, Tom lleva a los cansados hobbits a su casa al pie de la colina, donde Baya de Oro los recibe entre lámparas y nenúfares. Tras una cena alegre se acuestan, y la noche les trae a cada uno sueños extraños, que Tom les ha dicho que no teman."

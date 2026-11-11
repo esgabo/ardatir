@@ -8,7 +8,7 @@ characters: [ finrod, beren, celegorm, curufin, orodreth ]
 arcs: [ beren-and-luthien ]
 journeys: [ berens-quest ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }
 title: { en: "Finrod leaves Nargothrond with Beren", es: "Finrod parte de Nargothrond con Beren" }
 summary:

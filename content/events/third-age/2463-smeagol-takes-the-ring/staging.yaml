@@ -1,0 +1,38 @@
+stage: diorama
+duration: 36
+narration:
+  river: 0
+  find: 0.17
+  murder: 0.34
+  secrets: 0.56
+  gollum: 0.72
+  mountains: 0.87
+beats:
+  found: 0.17
+  murder: 0.34
+  exile: 0.72
+  dark: 0.87
+tracks:
+  - characterId: deagol
+    keyframes:
+      - { t: 0, x: -3.5, z: 1.5, action: idle, thought: { en: "A quiet morning and a fine boat. The fish will come.", es: "Una mañana tranquila y una buena barca. Los peces vendrán." } }
+      - { t: 0.12, x: -2.5, z: 0.5, action: walk }
+      - { t: 0.17, x: -1.5, z: -0.5, action: run, thought: { en: "Something bright is in my hand!", es: "¡Tengo algo brillante en la mano!" } }
+      - { t: 0.25, x: -0.5, z: -1.5, action: idle }
+      - { t: 0.34, x: -0.5, z: -1.5, action: talk, thought: { en: "It is mine, I found it. Not even for a friend.", es: "Es mío, lo encontré yo. Ni siquiera para un amigo." } }
+      - { t: 0.4, x: -0.5, z: -1.5, action: fight }
+      - { t: 0.45, x: 0.2, z: -2.0, action: hide }
+      - { t: 1, x: 0.2, z: -2.0, action: hide }
+  - characterId: gollum
+    keyframes:
+      - { t: 0, x: -4.5, z: 3, action: idle, thought: { en: "Good company, good water. What more could I want?", es: "Buena compañía, buen río. ¿Qué más podría querer?" } }
+      - { t: 0.12, x: -3.5, z: 1.5, action: walk }
+      - { t: 0.17, x: -2.5, z: 0.8, action: walk }
+      - { t: 0.3, x: -1.3, z: -0.9, action: talk, thought: { en: "Give it to me. It would be a lovely birthday present.", es: "Dámelo. Sería un precioso regalo de cumpleaños." } }
+      - { t: 0.4, x: -0.9, z: -1.6, action: fight }
+      - { t: 0.47, x: 1.5, z: 0.5, action: run, thought: { en: "Nobody saw. Nobody will ever know.", es: "Nadie vio nada. Nadie lo sabrá nunca." } }
+      - { t: 0.56, x: 3, z: 2, action: hide, thought: { en: "Mine. Only mine. I can vanish with it!", es: "Mío. Solo mío. ¡Con él puedo desaparecer!" } }
+      - { t: 0.72, x: 4.5, z: 0.5, action: talk, thought: { en: "They do not like me. I do not like them.", es: "No me quieren. Yo tampoco los quiero." } }
+      - { t: 0.8, x: 5, z: -1.5, action: walk }
+      - { t: 0.87, x: 5, z: -3, action: walk, thought: { en: "Away from the sun. Away from everyone.", es: "Lejos del sol. Lejos de todos." } }
+      - { t: 1, x: 5.5, z: -5.5, action: walk }

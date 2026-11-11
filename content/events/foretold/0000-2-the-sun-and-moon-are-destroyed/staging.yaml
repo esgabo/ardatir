@@ -1,0 +1,10 @@
+stage: cosmos
+duration: 52
+narration:
+  lights-out: 0
+  dark: 0.3
+  earendil: 0.46
+  driven-out: 0.72
+beats:
+  lights-out: 0.13
+  earendil: 0.47

@@ -4,12 +4,20 @@ when:
   # late autumn, with winter close
   start: { age: third-age, year: 2941, season: autumn }
   precision: season
-place: erebor
+# Hobbit ch. 17: the fighting is in the valley between the Mountain's southern spurs, before the Front
+# Gate and by Ravenhill, around the ruins of Dale; not inside the Mountain
+place: dale
 characters: [ thorin, dain, bard, thranduil, gandalf, bilbo, bolg, beorn, lord-of-the-eagles, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, gandalfs-road-2941 ]
 tags: [ hobbit, battle ]
-status: scripted
+# Hobbit ch. 17: the five armies are the goblins and the wolves against elves, men and dwarves.
+# Thorin's company sallies from the gate; the eagles come late as a host of their own. Beorn comes
+# alone, so he is a character (his own track), not a faction.
+sides:
+  - [ thorins-company, dwarves-of-the-iron-hills, elves-of-mirkwood, men-of-lake-town, eagles-of-the-misty-mountains ]
+  - [ goblins-of-the-misty-mountains, wargs ]
+status: staged
 source: { book: the-hobbit, chapter: 17 }
 title: { en: The Battle of Five Armies, es: La Batalla de los Cinco Ejércitos }
 summary:
@@ -26,3 +34,10 @@ links:
     note:
       en: "Bolg, who leads the goblins, is the son of the Azog whom Dáin slew at Azanulbizar."
       es: "Bolg, que guía a los trasgos, es hijo del Azog al que Dáin mató en Azanulbizar."
+beats:
+  - { id: brink, label: { en: "Armies face each other", es: "Los ejércitos frente a frente" } }
+  - { id: alliance, label: { en: "Old quarrels forgotten", es: "Se olvidan las viejas disputas" } }
+  - { id: charge, label: { en: "Thorin charges from the gate", es: "Thorin carga desde la puerta" } }
+  - { id: eagles, label: { en: "The eagles come", es: "Llegan las águilas" } }
+  - { id: beorn, label: { en: "Beorn arrives", es: "Llega Beorn" } }
+  - { id: cost, label: { en: "The cost of victory", es: "El precio de la victoria" } }

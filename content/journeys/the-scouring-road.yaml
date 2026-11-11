@@ -1,9 +1,9 @@
 id: the-scouring-road
 title: { en: "Home to the Shire", es: "De vuelta a la Comarca" }
 characters: [ frodo, sam, merry, pippin ]
-# The four hobbits alone from Bree to the barred Brandywine Bridge, across the Shire to Bywater, and home to Bag End.
+# The four hobbits alone from where Gandalf leaves them on the East Road beyond Bree (30 Oct) to the barred Brandywine Bridge, across the Shire to Bywater, and home to Bag End.
 waypoints:
-  - { place: prancing-pony, date: { age: third-age, year: 3019, month: 10, day: 30 }, precision: day }
+  - { place: barrow-downs, date: { age: third-age, year: 3019, month: 10, day: 30 }, precision: day }
   - { place: the-shire, date: { age: third-age, year: 3019, month: 10, day: 30 }, end: { age: third-age, year: 3019, month: 11, day: 2 }, precision: day }
   - { place: bywater, date: { age: third-age, year: 3019, month: 11, day: 2 }, end: { age: third-age, year: 3019, month: 11, day: 3 }, precision: day }
   - { place: bag-end, date: { age: third-age, year: 3019, month: 11, day: 3 }, precision: day }

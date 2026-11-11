@@ -1,0 +1,25 @@
+id: the-second-music-of-the-ainur
+age: foretold
+characters: [ iluvatar ]
+arcs: [ the-end-of-days ]
+tags: [ silmarillion, prophecy, cosmology ]
+status: staged
+# The one part of the end the published Silmarillion tells: in the "Ainulindalë", a greater music
+# is to be made before Ilúvatar by the Ainur and the Children of Ilúvatar after the end of days,
+# when his themes will be played aright. "Of the Beginning of Days" adds that the Valar told the
+# Elves that Men will join in it, while what Ilúvatar purposes for the Elves after the world's end
+# is not revealed. It is "said", by no named prophet, so no `foretoldBy`.
+source: { book: the-silmarillion, chapter: "Ainulindalë" }
+title: { en: "The Second Music of the Ainur", es: "La Segunda Música de los Ainur" }
+summary:
+  en: "After the end of days the Ainur and the Children of Ilúvatar will sing before him a music greater than the first. Then his themes will be played as he meant them, and Men, the Valar said, will sing too."
+  es: "Después del fin de los días, los Ainur y los Hijos de Ilúvatar cantarán ante él una música mayor que la primera. Entonces sus temas se tocarán tal como él los pensó, y los Hombres, dijeron los Valar, cantarán también."
+links:
+  - to: ainulindale
+    type: enabled-by
+    note:
+      en: "The first Music, with Melkor's discord in it, is sung again, and this time aright."
+      es: "La primera Música, con la discordia de Melkor dentro, vuelve a cantarse, y esta vez como debe ser."
+beats:
+  - { id: choirs, label: { en: The choirs, es: Los coros } }
+  - { id: aright, label: { en: Played aright, es: Tocada como debe ser } }

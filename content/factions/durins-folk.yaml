@@ -1,0 +1,10 @@
+id: durins-folk
+name: { en: "Durin's Folk", es: El pueblo de Durin }
+color: "#c08a3e"
+kind: dwarf
+# The War of the Dwarves and Orcs (The Lord of the Rings, Appendix A): Thráin's host, with the forces
+# the other houses sent. Náin's Dwarves of the Iron Hills are their own faction: they came late, and fresh.
+summary:
+  en: "Thrór's people, exiled from Erebor, with the hosts the other houses of the dwarves sent to avenge him."
+  es: "El pueblo de Thrór, exiliado de Erebor, con las huestes que las demás casas de los enanos enviaron para vengarlo."
+leaders: [ thrain, thorin ]

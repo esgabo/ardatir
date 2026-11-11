@@ -5,11 +5,11 @@ when:
   start: { age: third-age, year: 3019, month: 3, day: 6 }
   precision: day
 place: helms-deep
-characters: [ merry, theoden, eowyn ]
+characters: [ merry, theoden ]
 arcs: [ the-war-of-the-ring, the-siege-of-gondor ]
 journeys: [ merrys-ride-with-theoden ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "The Passing of the Grey Company" }
 title: { en: "Merry Offers His Sword to Théoden", es: "Merry ofrece su espada a Théoden" }
 summary:

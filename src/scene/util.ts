@@ -50,6 +50,8 @@ export function disposeTree(root: THREE.Object3D): void {
   root.traverse((o) => {
     const m = o as THREE.Mesh;
     m.geometry?.dispose();
+    // Instanced meshes hold their own buffers (instance matrices and colours).
+    if ((o as THREE.InstancedMesh).isInstancedMesh) (o as THREE.InstancedMesh).dispose();
     const mat = m.material as THREE.Material | THREE.Material[] | undefined;
     if (Array.isArray(mat)) mat.forEach((x) => x.dispose());
     else mat?.dispose();

@@ -1,0 +1,18 @@
+id: tom-sees-them-to-the-road
+age: third-age
+when:
+  # The morning after the rescue (the 29th, see the-barrow-wight); they reach the Road near sunset
+  # and Bree that same night (Appendix B).
+  start: { age: third-age, year: 3018, month: 9, day: 29 }
+  precision: day
+place: barrow-downs
+characters: [ frodo, sam, merry, pippin, tom-bombadil ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ the-road-to-bree ]
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-fellowship-of-the-ring, chapter: "Fog on the Barrow-downs" }
+title: { en: "Tom Sees Them to the Road", es: "Tom los acompaña hasta el Camino" }
+summary:
+  en: "Tom calls back the runaway ponies and gives each hobbit a blade from the barrow, made long ago by Men of Westernesse in their war against Angmar. On his own stout pony he leads them north over the Downs to the East Road, tells them of Bree and Butterbur's inn, and in the dusk rides home: his country ends there."
+  es: "Tom hace volver a los poneys huidos y da a cada hobbit una hoja del túmulo, forjada hace mucho por Hombres de Oesternesse en su guerra contra Angmar. En su robusto poney los guía hacia el norte por las Quebradas hasta el Camino del Este, les habla de Bree y de la posada de Cebadilla, y al anochecer vuelve a casa: allí termina su tierra."

@@ -8,6 +8,7 @@ characters: [ bilbo, gandalf ]
 arcs: [ the-quest ]
 journeys: [ the-road ]
 status: staged
+sides: [ [ bagginses ], [ sackville-bagginses ] ]
 title: { en: The Party, es: La Fiesta }
 summary: { en: Guests arrive., es: Llegan invitados. }
 beats:

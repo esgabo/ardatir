@@ -4,11 +4,13 @@ when:
   start: { age: third-age, year: 2941, season: autumn }
   precision: season
 place: erebor
-characters: [ bard, thranduil, dain ]
+# Hobbit ch. 18: Thorin is the one laid in the tomb
+# Hobbit ch. 18: Thorin is the one laid in the tomb; Bilbo is among those present
+characters: [ thorin, bilbo, bard, thranduil, dain ]
 arcs: [ the-quest-of-erebor ]
 journeys: []
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 18 }
 title: { en: Thorin Is Laid to Rest, es: Thorin recibe sepultura }
 summary:
@@ -18,3 +20,8 @@ links:
   - to: thorins-farewell
     type: caused-by
     note: { en: Thorin's death after the battle., es: La muerte de Thorin tras la batalla. }
+beats:
+  - { id: tomb, label: { en: "Into the Mountain", es: "Dentro de la Montaña" } }
+  - { id: stone, label: { en: "The Arkenstone", es: "La Piedra del Arca" } }
+  - { id: sword, label: { en: "Orcrist on the tomb", es: "Orcrist sobre la tumba" } }
+  - { id: dain, label: { en: "Dáin is king", es: "Dáin es rey" } }

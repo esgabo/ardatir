@@ -7,12 +7,12 @@ place: aman
 characters: [ manwe ]   # Eärendil joins only at the last battle
 arcs: [ the-war-of-wrath ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }
 title: { en: "The host of the Valar sets sail", es: "La hueste de los Valar se hace a la mar" }
 summary:
-  en: "Manwë hears Eärendil and sends a host of Valar, Maiar and Vanyar and Noldor Elves against Morgoth."
-  es: "Manwë escucha a Eärendil y envía una hueste de Valar, Maiar y Elfos vanyar y noldor contra Morgoth."
+  en: "Manwë hears Eärendil and sends a host against Morgoth: the Maiar under Eönwë, the Vanyar, and the Noldor who stayed in Aman under Finarfin, carried in Teleri ships."
+  es: "Manwë escucha a Eärendil y envía una hueste contra Morgoth: los Maiar al mando de Eönwë, los Vanyar y los Noldor que se quedaron en Aman al mando de Finarfin, en naves de los Teleri."
 links:
   - to: earendil-reaches-valinor
     type: caused-by

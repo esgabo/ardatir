@@ -1,0 +1,14 @@
+stage: cosmos
+duration: 60
+narration:
+  the-gift: 0
+  # During `refused` Fëanor pauses and holds the jewels close while Valinor dims a little
+  # (cosmosRekindled.ts, T.clutch): that is our staging, a memory of the old refusal shown as
+  # one, not something the prophecy tells.
+  refused: 0.22
+  broken: 0.46
+  rekindled: 0.68
+beats:
+  the-gift: 0.03
+  broken: 0.49
+  rekindled: 0.7

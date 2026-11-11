@@ -8,7 +8,7 @@ characters: [ sauron, nazgul ]
 arcs: [ the-war-of-the-ring ]
 journeys: [  ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: "Mount Doom" }
 title: { en: "The Fall of Barad-dûr", es: "La caída de Barad-dûr" }
 summary:

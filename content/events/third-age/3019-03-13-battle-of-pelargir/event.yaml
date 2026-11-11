@@ -7,7 +7,7 @@ place: pelargir
 characters: [ aragorn, legolas, gimli ]
 arcs: [ the-war-of-the-ring ]
 tags: [ lord-of-the-rings, battle ]
-status: outline
+status: scripted
 source: { book: the-return-of-the-king, chapter: The Last Debate }
 title: { en: The Capture of the Ships at Pelargir, es: La captura de las naves en Pelargir }
 summary:

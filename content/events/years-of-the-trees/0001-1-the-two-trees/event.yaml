@@ -1,0 +1,47 @@
+id: the-two-trees
+age: years-of-the-trees
+when:
+  # The Annals of Aman begin the count of the Years of the Trees with their first flowering,
+  # so year 1 by definition; the conversion to Sun-years is the axis's concern.
+  start: { age: years-of-the-trees, year: 1 }
+  precision: year
+place: valinor
+characters: [ yavanna, nienna ]
+arcs: [ the-shape-of-arda ]
+journeys: []
+tags: [ cosmology, silmarillion ]
+status: staged
+source: { book: the-silmarillion, chapter: "Of the Beginning of Days" }
+title:
+  en: The Two Trees of Valinor
+  es: Los Dos Árboles de Valinor
+summary:
+  en: "In Valinor, on a green mound by the gates of the city of the Valar, Yavanna sings and Nienna waters the earth with her tears. Two Trees grow there: silver Telperion and golden Laurelin, whose light waxes and wanes in turn, and from them the days of Valinor are counted."
+  es: "En Valinor, sobre un montículo verde junto a las puertas de la ciudad de los Valar, Yavanna canta y Nienna riega la tierra con sus lágrimas. Allí crecen dos Árboles: Telperion, de plata, y Laurelin, de oro, cuya luz crece y mengua por turnos, y por ellos se cuentan los días de Valinor."
+links:
+  - to: the-spring-of-arda
+    type: caused-by
+    note:
+      en: "With the Lamps destroyed, the Valar make a new light in the West."
+      es: "Destruidas las Lámparas, los Valar crean una nueva luz en el Oeste."
+beats:
+  - id: aman
+    label:
+      en: Valinor
+      es: Valinor
+  - id: song
+    label:
+      en: Yavanna's song
+      es: El canto de Yavanna
+  - id: telperion
+    label:
+      en: Telperion
+      es: Telperion
+  - id: laurelin
+    label:
+      en: Laurelin
+      es: Laurelin
+  - id: mingling
+    label:
+      en: The mingling of the lights
+      es: La mezcla de las luces

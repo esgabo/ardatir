@@ -1,22 +1,30 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+import { collidingShown, currentBeat, layoutBeatLabels, type BeatLabelLayout } from './beatLabels';
 import { characterMap, eventById, index, loadEvent, loadIndex, playable } from './chronicle';
 import { LANGS, type EventDetail, type EventSummary, type Lang } from './data/types';
 import { h } from './dom';
 import { honestDate } from './format';
+import { foretoldBadge, foretoldParts, isForetold } from './foretold';
 import { ICONS } from './icons';
 import { initialLang, isLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { renderReader } from './reader';
+import { sidesLine } from './sides';
 import { linkedEvents, sameTime } from './related';
 import { likelyParts, whyToggle } from './placement';
 import { MAX_LANES, PHONE_QUERY, renderLanes } from './lanes';
-import { eventHref, livesHref, parseRoute, type Route } from './routes';
+import { eventHref, livesHref, parseRoute, startHref, timeHref, type Route } from './routes';
+import { DEFAULT_MOMENT, momentOfEvent, momentPath, parseMoment } from './moment';
+import { fitZoom, ZOOMS, type Zoom } from './timeAxis';
+import { momentHref, renderTime, resolveMoment, type TimeState } from './timeCursor';
 import { pickAudio } from './audioChoice';
 import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
 import type { Stage } from './scene/stage';
+import { Opening, openingSeen } from './opening';
+import { renderLearn, sayHint } from './learn';
 import './style.css';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -28,15 +36,20 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
  * lives side by side (character lanes). While a page is open the stage stays loaded
  * underneath but neither renders nor plays.
  */
-type Page = { kind: 'event'; id: string } | { kind: 'lives'; ids: string[] };
+type Page = { kind: 'event'; id: string } | { kind: 'lives'; ids: string[] } | ({ kind: 'time' } & TimeState);
 let page: Page | null = null;
 /** The lives last shown side by side, so the sidebar can offer them again. */
 let laneIds: string[] = [];
 
-const pageHref = (p: Page) => (p.kind === 'event' ? eventHref(p.id, state.lang) : livesHref(p.ids, state.lang));
+const pageHref = (p: Page) => (p.kind === 'event' ? eventHref(p.id, state.lang)
+  : p.kind === 'lives' ? livesHref(p.ids, state.lang) : momentHref(p, state.lang));
+
+/** The time cursor at an event's moment, with the way back to it. */
+const timeHrefFor = (e: EventSummary) => timeHref(momentPath(momentOfEvent(e, index.ages)), state.lang, { from: e.id });
 
 /** Update the URL in place (no history entry) to what is on screen. */
 function writeRoute(): void {
+  if (opening.open) { history.replaceState(null, '', startHref(state.lang)); return; } // the opening is #/start
   if (page) { history.replaceState(null, '', pageHref(page)); return; }
   if (!state.event) return;
   history.replaceState(null, '', eventHref(state.event.id, state.lang, {
@@ -96,6 +109,7 @@ const labelRenderer = new CSS2DRenderer();
 labelRenderer.domElement.style.position = 'absolute';
 labelRenderer.domElement.style.inset = '0';
 labelRenderer.domElement.style.pointerEvents = 'none';
+labelRenderer.domElement.classList.add('stage-labels');
 viewport.appendChild(labelRenderer.domElement);
 
 let stage: Stage;
@@ -113,13 +127,15 @@ async function buildStage(event: EventDetail): Promise<Stage> {
   if (event.stage === 'cosmos') {
     const { createCosmosStage } = await import('./scene/cosmos');
     const L = (k: Parameters<typeof ui>[0]) => ui(k, state.lang);
-    return createCosmosStage({
+    return createCosmosStage(event.id, {
       ambar: L('ambar'), vista: L('vista'), ilmen: L('ilmen'),
       vaiya: L('vaiya'), walls: L('walls'), kuma: L('kuma'),
+      moon: L('moon'), sun: L('sun'), straightRoad: L('straightRoad'),
+      elves: L('elves'), men: L('men'),
     });
   }
   const { createDioramaStage } = await import('./scene/dioramaStage');
-  return createDioramaStage(event, characterMap, state.lang);
+  return createDioramaStage(event, characterMap, state.lang, new Map((index.factions ?? []).map((f) => [f.id, f])));
 }
 
 /** Bumped on every loadStage (and when a page opens), so a slower load can't replace a newer view. */
@@ -255,9 +271,20 @@ function applyRoute(r: Route): void {
     rememberLang(state.lang);
     if (state.event) stageStale = true; // labels and names are baked into the stage
   }
+  // The opening over the cosmos (a first visit, or "Start here"); any other route takes it down.
+  if (r.kind === 'start') { startOpening(); return; }
+  if (opening.open) opening.hide();
   if (r.kind === 'lives') {
     laneIds = r.with.filter((id) => index.characters.some((c) => c.id === id)).slice(0, MAX_LANES);
     showPage({ kind: 'lives', ids: laneIds });
+    return;
+  }
+  if (r.kind === 'time') {
+    // An unreadable moment opens the default one (the URL is then rewritten to it).
+    const moment = resolveMoment(r.where) ?? parseMoment(DEFAULT_MOMENT, index.ages)!;
+    const zoom = fitZoom((ZOOMS as readonly string[]).includes(r.zoom ?? '') ? r.zoom as Zoom : undefined, moment, index.ages);
+    const from = r.from && eventById(r.from) ? r.from : undefined;
+    showPage({ kind: 'time', moment, zoom, from });
     return;
   }
   const target = r.eventId ? eventById(r.eventId) : undefined;
@@ -290,17 +317,18 @@ function applyRoute(r: Route): void {
   void loadStage({
     id,
     view: () => ({ t: target ? r.t ?? 0 : 0, selected: target ? r.follow ?? null : null }),
-    onSwitch: () => { state.playing = false; closeMeanwhile(); },
+    onSwitch: () => { state.playing = false; closeMeanwhile(); closeLearn(); },
   });
 }
 
 function showPage(p: Page): void {
   stageGeneration++; // a stage still loading must not replace the page
   pending = undefined;
-  const same = !!page && page.kind === p.kind && (p.kind === 'lives' || (page.kind === 'event' && page.id === p.id));
+  const same = !!page && page.kind === p.kind && (p.kind !== 'event' || (page.kind === 'event' && page.id === p.id));
   page = p;
   state.playing = false;
   closeMeanwhile();
+  closeLearn();
   document.body.classList.add('page-open');
   renderPage();
   if (!same) pageEl.scrollTop = 0;
@@ -328,6 +356,16 @@ function renderPage(): void {
     renderCrumbs(undefined, [], ui('title_lives', L));
     renderZoom(null);
     sidebar.setView('lives'); // the rail shows where we are, without opening the drawer
+  } else if (page.kind === 'time') {
+    const tp = page;
+    renderTime(pageEl, tp, {
+      lang: () => state.lang,
+      // Stepping, dragging, zooming: the URL follows in place (no history entry), like scrubbing.
+      changed: (s) => { Object.assign(tp, s); writeRoute(); renderCrumbs(s.moment.age, [], ui('title_time', state.lang)); sidebar.render(); },
+    });
+    renderCrumbs(tp.moment.age, [], ui('title_time', L));
+    renderZoom(null);
+    sidebar.setView('time');
   } else {
     const ev = eventById(page.id)!;
     renderReader(pageEl, ev, { lang: () => state.lang });
@@ -359,6 +397,8 @@ matchMedia(PHONE_QUERY).addEventListener('change', () => { if (page?.kind === 'l
 const sidebar = new Sidebar($('sidebar'), {
   lang: () => state.lang,
   currentId: () => (page ? (page.kind === 'event' ? page.id : '') : state.event?.id ?? ''),
+  timeOpen: () => (page?.kind === 'time' ? page : undefined),
+  timeHrefFor,
   lanes: () => laneIds,
   lanesOpen: () => page?.kind === 'lives',
   setLanes,
@@ -394,6 +434,7 @@ function nextAudio(): void {
 function setLang(lang: Lang): void {
   state.lang = lang;
   rememberLang(lang);
+  opening.refresh();
   if (page) {
     // The page redraws now; the stage underneath (labels and names baked in) when it is next shown.
     renderPage();
@@ -421,6 +462,8 @@ function renderCrumbs(ageId: string | undefined, arcIds: string[], here: string)
   if (age) crumb(tr(age.name, L), () => sidebar.show('ages', `age:${age.id}`));
   if (arc) crumb(tr(arc.title, L), () => sidebar.show('stories', `arc:${arc.id}`));
   crumbs.append(h('span', { class: 'here' }, here));
+  // What is foretold is marked even here: the crumbs name an age that is prophecy, not history.
+  if (age?.foretold) crumbs.append(h('span', { class: 'foretold-badge', title: ui('foretoldHint', L) }, ui('foretold', L)));
 }
 
 /** Zoom switch: the cosmos, the world (not built yet) and events. */
@@ -456,25 +499,31 @@ function renderStatic(): void {
   prevBtn.disabled = i <= 0;
   nextBtn.disabled = i < 0 || i >= list.length - 1;
   meanwhileBtn.innerHTML = `${ICONS.clock}<span>${L_('meanwhile')}</span>`;
+  learnBtn.innerHTML = `${ICONS.info}<span>${L_('aboutScene')}</span>`; learnBtn.setAttribute('aria-label', L_('aboutScene'));
+  if (!learnPanel.hidden) openLearn(); // redrawn in the new language, or for the new event
   renderCrumbs(state.event.age, state.event.arcs, tr(state.event.title, L));
   renderZoom(state.event.stage === 'cosmos' ? 'cosmos' : 'event');
   if (state.event.stage !== 'cosmos') lastDiorama = state.event.id;
   sidebar.render();
 
+  paintFold();
   $('event-title').textContent = tr(state.event.title, L);
-  $('event-date').textContent = honestDate(state.event, L);
+  const say = sayHint(state.event.pronounce, L);
+  $('event-say').replaceChildren(...say ? [say] : []);
+  $('event-say').hidden = !say;
+  // What is foretold says so on the card, and the stage takes on its dream register (style.css).
+  const foretold = isForetold(state.event);
+  document.body.classList.toggle('foretold-stage', foretold);
+  if (foretold) {
+    const { by, source } = foretoldParts(state.event, L);
+    $('event-date').replaceChildren(foretoldBadge(state.event, L) ?? '', h('span', { class: 'fl-by' }, ` ${by}`), h('span', { class: 'fl-src' }, source && ` ${source}`));
+  } else $('event-date').textContent = honestDate(state.event, L);
   $('event-summary').textContent = tr(state.event.summary, L);
+  const sides = sidesLine(state.event, L);
+  $('event-sides').replaceChildren(...sides ? [sides] : []);
+  $('event-sides').hidden = !sides;
 
-  const beats = $('beats');
-  beats.innerHTML = '';
-  for (const b of state.event.beats ?? []) {
-    const el = document.createElement('div');
-    el.className = 'beat';
-    el.style.left = `${b.t * 100}%`;
-    el.innerHTML = '<span></span>';
-    el.querySelector('span')!.textContent = tr(b.label, L);
-    beats.append(el);
-  }
+  buildBeats();
 
   // Sound: shown when the event has any recording. The language button only when there is a
   // choice to make, or the voice speaks another language than the page.
@@ -489,14 +538,86 @@ function renderStatic(): void {
   updateDynamic();
 }
 
+const beatsEl = $('beats');
+let beatEls: HTMLButtonElement[] = [];
+let beatCurrent = -2;
+let beatLayout: BeatLabelLayout = { show: [], x: [] };
+let beatWidths: number[] = [];
+
+/** One focusable marker per beat; which labels show is decided by layoutBeats. */
+function buildBeats(): void {
+  const L = state.lang;
+  beatsEl.innerHTML = '';
+  beatEls = (state.event.beats ?? []).map((b, k) => {
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'beat';
+    el.style.left = `${b.t * 100}%`;
+    const label = tr(b.label, L);
+    el.setAttribute('aria-label', label);
+    const span = document.createElement('span');
+    span.textContent = label;
+    span.setAttribute('aria-hidden', 'true');
+    el.append(span);
+    el.addEventListener('click', () => { seekTo(b.t); writeRoute(); });
+    // A revealed hidden label covers its neighbours: fade those out while it shows.
+    const reveal = (on: boolean): void => {
+      for (const j of collidingShown(k, beatLayout, beatWidths, 10)) beatEls[j]?.classList.toggle('yield', on);
+    };
+    el.addEventListener('mouseenter', () => reveal(true));
+    el.addEventListener('mouseleave', () => reveal(false));
+    el.addEventListener('focus', () => reveal(true));
+    el.addEventListener('blur', () => reveal(false));
+    beatsEl.append(el);
+    return el;
+  });
+  beatCurrent = -2;
+  layoutBeats();
+}
+
+/** Recomputed only on resize, language or event change, and when the current beat changes. */
+function layoutBeats(): void {
+  if (!state.event) return; // the bar is observed before the first event has loaded
+  const beats = state.event.beats ?? [];
+  const positions = beats.map((b) => b.t);
+  beatCurrent = currentBeat(positions, state.t);
+  const barWidth = beatsEl.clientWidth;
+  if (!barWidth) return;
+  const widths = beatEls.map((el) => (el.firstElementChild as HTMLElement).offsetWidth);
+  const { show, x } = layoutBeatLabels({ positions, widths, barWidth, gap: 10, current: beatCurrent, focus: state.t });
+  beatLayout = { show, x }; beatWidths = widths;
+  beatEls.forEach((el) => el.classList.remove('yield'));
+  beatEls.forEach((el, k) => {
+    const span = el.firstElementChild as HTMLElement;
+    span.style.left = `calc(50% + ${x[k] - positions[k] * barWidth}px)`;
+    el.classList.toggle('shown', show[k]);
+    el.classList.toggle('current', k === beatCurrent);
+  });
+}
+
+new ResizeObserver(() => layoutBeats()).observe(beatsEl);
+
+/**
+ * Set a button's icon and label only when they change. updateDynamic runs every UI tick;
+ * rewriting innerHTML each time swaps the <svg> out from under a press, and the click is lost (#61).
+ */
+const iconShown = new WeakMap<HTMLElement, string>();
+function setIconButton(btn: HTMLElement, icon: string, label: string): void {
+  const key = `${icon}\u0000${label}`;
+  if (iconShown.get(btn) === key) return;
+  iconShown.set(btn, key);
+  btn.innerHTML = icon;
+  btn.setAttribute('aria-label', label);
+}
+
+let selSayKey = '';
 function updateDynamic(): void {
   const L = state.lang;
+  if (beatEls.length && currentBeat((state.event.beats ?? []).map((b) => b.t), state.t) !== beatCurrent) layoutBeats();
   scrubber.value = String(Math.round(state.t * 1000));
-  playBtn.innerHTML = state.playing ? ICONS.pause : ICONS.play;
-  playBtn.setAttribute('aria-label', ui(state.playing ? 'pause' : 'play', L));
+  setIconButton(playBtn, state.playing ? ICONS.pause : ICONS.play, ui(state.playing ? 'pause' : 'play', L));
   const off = state.audio === 'off';
-  muteBtn.innerHTML = off ? ICONS.muted : ICONS.sound;
-  muteBtn.setAttribute('aria-label', ui(off ? 'unmute' : 'mute', L));
+  setIconButton(muteBtn, off ? ICONS.muted : ICONS.sound, ui(off ? 'unmute' : 'mute', L));
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
   $('time-label').textContent = `${fmt(playhead)} / ${fmt(clock.duration)}`;
@@ -505,8 +626,19 @@ function updateDynamic(): void {
   const panel = $('selection-panel');
   const info = state.selected ? stage.info?.(state.selected, state.t) : null;
   panel.hidden = !info;
+  // The panels on the right never cover the selection card: they shrink to the space below it.
+  const below = info ? panel.getBoundingClientRect().bottom + 8 : 68;
+  for (const el of [learnPanel, meanwhilePanel]) el.style.maxHeight = info ? `${Math.max(120, innerHeight - 96 - below)}px` : '';
   if (info) {
     $('sel-title').textContent = info.title;
+    // How to say their name: rebuilt only when the selection or the language changes.
+    const sayKey = `${state.selected}|${L}`;
+    if (selSayKey !== sayKey) {
+      selSayKey = sayKey;
+      const say = sayHint(characterMap.get(state.selected!)?.pronounce, L);
+      $('sel-say').replaceChildren(...say ? [say] : []);
+      $('sel-say').hidden = !say;
+    }
     $('sel-subtitle').textContent = info.subtitle ?? '';
     $('sel-body').textContent = info.body;
     $('sel-thought').textContent = info.thought ?? '';
@@ -587,7 +719,7 @@ function renderMeanwhile(): void {
   // Every event is a link: staged ones open their stage, the others their page.
   const row = (e: EventSummary, note?: string) => h('li', {},
     h('a', { class: e.stage ? 'mw-item' : 'mw-item dim', href: eventHref(e.id, L), title: ui(e.stage ? 'playable' : 'readable', L) },
-      h('span', { class: 'mw-name' }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), tr(e.title, L)),
+      h('span', { class: 'mw-name' }, h('span', { class: 'ev-dot', 'aria-hidden': 'true' }), tr(e.title, L), foretoldBadge(e, L)),
       h('span', { class: 'mw-note' }, note ?? '')));
   const section = (title: string | HTMLElement, items: HTMLElement[], note?: string) => {
     if (!items.length) return;
@@ -608,6 +740,8 @@ function renderMeanwhile(): void {
   }));
   section(ui('possiblySameTime', L), same.possibly.map(({ event: e }) => row(e, placeOf(e))), ui('possiblyWhy', L));
   if (!meanwhilePanel.childElementCount) meanwhilePanel.append(h('p', { class: 'muted' }, ui('nothingMeanwhile', L)));
+  // Everything else at this moment, everywhere: the time cursor, with the way back here.
+  meanwhilePanel.append(h('a', { class: 'mw-timeline', href: timeHrefFor(ev) }, h('span', { html: ICONS.time }), `${ui('seeOnTimeline', L)} →`));
 }
 meanwhileBtn.addEventListener('click', () => {
   const open = meanwhilePanel.hidden;
@@ -616,10 +750,92 @@ meanwhileBtn.addEventListener('click', () => {
   meanwhileBtn.setAttribute('aria-expanded', String(open));
 });
 
+// ---------- About this scene: who, where, before and after, the books (learn.ts) ----------
+const learnBtn = $<HTMLButtonElement>('learn');
+const learnPanel = $('learn-panel');
+function closeLearn(): void {
+  learnPanel.hidden = true;
+  learnBtn.setAttribute('aria-expanded', 'false');
+}
+function openLearn(): void {
+  renderLearn(learnPanel, state.event, {
+    lang: () => state.lang,
+    // A name selects that character on the stage, when the stage has them; else their life opens.
+    select: (id) => {
+      if (!stage.info?.(id, state.t)) return false;
+      if (matchMedia(PHONE_QUERY).matches) closeLearn(); // on a phone the panel would cover the card
+      state.selected = id;
+      stage.select?.(id);
+      writeRoute();
+      updateDynamic();
+      return true;
+    },
+  });
+  learnPanel.hidden = false;
+  learnBtn.setAttribute('aria-expanded', 'true');
+}
+learnBtn.addEventListener('click', () => {
+  if (learnPanel.hidden) { closeMeanwhile(); openLearn(); } else closeLearn();
+});
+meanwhileBtn.addEventListener('click', closeLearn); // one panel at a time
+
+// ---------- The opening (opening.ts): a first visit's welcome, or #/start ----------
+/** Where "Follow a story" begins: The Hobbit's first scene. */
+const storyStart = () => eventById('unexpected-party')?.id ?? index.events.find((e) => e.source?.book === 'the-hobbit')?.id ?? homeId() ?? '';
+const opening = new Opening($('opening'), {
+  lang: () => state.lang,
+  seek: (t) => { if (!state.event) return; seekTo(t); if (!state.playing) setPlaying(true); },
+  toggleLang: () => setLang(LANGS[(LANGS.indexOf(state.lang) + 1) % LANGS.length]),
+  storyHref: () => eventHref(storyStart(), state.lang),
+  timeHref: () => timeHref(undefined, state.lang),
+  lifeHref: () => livesHref(['bilbo'], state.lang),
+  lifeName: () => tr(characterMap.get('bilbo')?.name, state.lang),
+  closed: () => {
+    writeRoute(); // back to the cosmos' own route
+    if (!state.event) return;
+    renderStatic();
+    resize();
+    const h1 = $('event-title');
+    h1.tabIndex = -1;
+    h1.focus({ preventScroll: true });
+  },
+});
+
+/** Open the opening over the cosmos, with the Ainulindalë playing from its first moment. */
+function startOpening(): void {
+  const id = homeId();
+  if (!id) return;
+  focusHeading = false; // the opening takes focus itself
+  closeMeanwhile();
+  closeLearn();
+  sidebar.setDrawer(false);
+  opening.show();
+  if (state.event?.id === id && !pending) {
+    if (page) hidePage();
+    state.selected = null;
+    state.t = 0;
+    state.playing = true;
+    if (stageStale) { void loadStage(); return; } // the language changed under a page: rebuild (it seeks to state.t)
+    playhead = 0;
+    stage.select?.(null);
+    renderStatic();
+    resize();
+    writeRoute();
+    return;
+  }
+  if (pending?.id === id) return;
+  void loadStage({ id, view: () => ({ t: 0, selected: null }), onSwitch: () => { closeMeanwhile(); closeLearn(); state.playing = true; } });
+}
+
 addEventListener('keydown', (e) => {
   const tgt = e.target as HTMLElement;
-  if (e.code === 'Escape') { closeMeanwhile(); sidebar.setDrawer(false); }
-  if (e.code === 'Space' && !page && stage && !tgt.closest('input, textarea, select, button, a')) { e.preventDefault(); setPlaying(!state.playing); }
+  if (e.code === 'Escape') {
+    // Closing a panel that holds focus would drop it to the page: hand it back to the button.
+    const inLearn = learnPanel.contains(tgt), inMeanwhile = meanwhilePanel.contains(tgt);
+    closeMeanwhile(); closeLearn(); sidebar.setDrawer(false);
+    if (inLearn) learnBtn.focus(); else if (inMeanwhile) meanwhileBtn.focus();
+  }
+  if (e.code === 'Space' && !page && stage && !opening.open && !tgt.closest('input, textarea, select, button, a, #opening')) { e.preventDefault(); setPlaying(!state.playing); }
 });
 addEventListener('hashchange', () => { focusHeading = true; applyRoute(parseRoute()); });
 
@@ -648,6 +864,42 @@ function resize(): void {
 addEventListener('resize', () => { if (stage) resize(); });
 new ResizeObserver(() => { if (stage) resize(); }).observe(viewport);
 
+// The event card folds down to its title and date (desktop); remembered per visitor.
+const eventCard = $('event-panel');
+const eventFold = $('event-fold');
+function paintFold(): void {
+  const folded = eventCard.classList.contains('folded');
+  eventFold.setAttribute('aria-expanded', String(!folded));
+  eventFold.setAttribute('aria-label', ui(folded ? 'expandCard' : 'collapseCard', state.lang));
+  eventFold.innerHTML = ICONS.chevron;
+}
+try { if (localStorage.getItem('ardatir.cardFolded') === '1') eventCard.classList.add('folded'); } catch { /* storage unavailable */ }
+eventFold.addEventListener('click', () => {
+  const folded = eventCard.classList.toggle('folded');
+  try { localStorage.setItem('ardatir.cardFolded', folded ? '1' : '0'); } catch { /* storage unavailable */ }
+  paintFold();
+});
+
+// The followed character stays framed: when they walk out toward the edge of the view, the
+// camera glides after them (target and camera move together, so the user's orbit and zoom are
+// kept). A dead zone in the middle leaves the view alone while they stay comfortably in it.
+// This moves the viewpoint only, never what happens in the scene.
+const FRAME_DEAD_ZONE = 0.45;
+const followNdc = new THREE.Vector3();
+const followStep = new THREE.Vector3();
+function keepFramed(dt: number): void {
+  const p = state.selected ? stage.focus?.(state.selected) : null;
+  if (!p) return;
+  followNdc.copy(p).project(stage.camera);
+  const out = Math.max(Math.abs(followNdc.x), Math.abs(followNdc.y));
+  if (out <= FRAME_DEAD_ZONE) return;
+  // Faster the further out they are; past the edge it catches up within about a second.
+  const k = 1 - Math.exp(-dt * (out > 1 ? 4 : 2.5 * (out - FRAME_DEAD_ZONE) / (1 - FRAME_DEAD_ZONE)));
+  followStep.copy(p).sub(controls.target).multiplyScalar(k).setY(0); // pan over the ground, never up or down
+  controls.target.add(followStep);
+  stage.camera.position.add(followStep);
+}
+
 const flash = $('flash');
 const frameClock = new THREE.Clock();
 let ambient = 0;
@@ -665,7 +917,9 @@ function frame(): void {
   }
   narration.sync(playhead, state.playing);
   renderNarration();
-  stage.update(state.t, ambient);
+  stage.update(state.t, ambient, clock.duration);
+  keepFramed(dt);
+  opening.sync(state.t);
   flash.style.opacity = String(stage.flash?.(state.t) ?? 0);
   controls.update();
   renderer.render(stage.scene, stage.camera);
@@ -676,8 +930,10 @@ function frame(): void {
 async function start(): Promise<void> {
   await loadIndex();
   // A staged event (or the cosmos) loads its stage, which starts the frame loop; any other
-  // event opens its page, and no stage loads until one is needed.
-  applyRoute(route);
+  // event opens its page, and no stage loads until one is needed. A first visit to the front
+  // door opens with the opening (docs/DESIGN.md §3.5); deep links are never interrupted.
+  const frontDoor = route.kind === 'event' && !route.eventId;
+  applyRoute(frontDoor && !openingSeen() ? { kind: 'start', lang: route.lang } : route);
 }
 start().catch(showLoadError);
 

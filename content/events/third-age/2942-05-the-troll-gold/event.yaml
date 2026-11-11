@@ -4,11 +4,12 @@ when:
   start: { age: third-age, year: 2942, month: 5 }
   precision: month
 place: trollshaws
-characters: [ bilbo, gandalf ]
+# Hobbit ch. 19: the three trolls still stand there, turned to stone
+characters: [ bilbo, gandalf, bert, tom, william ]
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 19 }
 title: { en: The Troll Gold, es: El oro de los trolls }
 summary:
@@ -20,3 +21,8 @@ links:
     note:
       en: "The trolls' hoard, buried after they were turned to stone."
       es: "El tesoro de los trolls, enterrado después de que se convirtieran en piedra."
+beats:
+  - { id: trolls, label: { en: "The stone trolls", es: "Los trolls de piedra" } }
+  - { id: dig, label: { en: "Digging up the gold", es: "Desenterrando el oro" } }
+  - { id: share, label: { en: "Half for Gandalf", es: "La mitad para Gandalf" } }
+  - { id: on, label: { en: "On toward the Shire", es: "Rumbo a la Comarca" } }

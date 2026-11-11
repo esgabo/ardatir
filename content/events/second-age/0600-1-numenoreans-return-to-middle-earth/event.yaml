@@ -7,7 +7,7 @@ place: grey-havens
 characters: [ gil-galad, cirdan ]
 arcs: [  ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }
 title: { en: "The Númenóreans return to Middle-earth", es: "Los númenóreanos regresan a la Tierra Media" }
 summary:

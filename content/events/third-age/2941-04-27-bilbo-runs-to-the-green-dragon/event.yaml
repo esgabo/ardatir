@@ -10,9 +10,14 @@ characters: [ bilbo, gandalf, thorin, balin, dwalin, fili, kili, dori, nori, ori
 arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
 tags: [ hobbit ]
-status: scripted
+status: staged
 source: { book: the-hobbit, chapter: 2 }
 title: { en: Bilbo Runs to the Green Dragon, es: Bilbo corre hacia el Dragón Verde }
 summary:
   en: "Bilbo wakes to an empty, untidy house and thinks it was all a dream, until Gandalf points him to Thorin's note. He runs to Bywater without hat or pocket-handkerchief, and the adventure begins."
   es: "Bilbo despierta en una casa vacía y desordenada y cree que todo fue un sueño, hasta que Gandalf le señala la nota de Thorin. Corre hasta Delagua sin sombrero ni pañuelo, y la aventura comienza."
+beats:
+  - { id: quiet, label: { en: "An empty house", es: "Una casa vacía" } }
+  - { id: note, label: { en: "The note", es: "La nota" } }
+  - { id: dash, label: { en: "The dash to Bywater", es: "La carrera a Delagua" } }
+  - { id: off, label: { en: "They ride out", es: "Parten juntos" } }

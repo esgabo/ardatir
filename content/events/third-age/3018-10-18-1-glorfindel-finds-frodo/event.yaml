@@ -9,9 +9,9 @@ characters: [ glorfindel, frodo, sam, merry, pippin, aragorn ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ with-strider-to-rivendell ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "Flight to the Ford" }
 title: { en: "Glorfindel Finds the Hobbits", es: "Glorfindel encuentra a los hobbits" }
 summary:
-  en: "Frodo, ill and fading, is hoisted onto Glorfindel's white horse. He is told to ride for the Ford and not to stop for anything."
-  es: "Frodo, enfermo y debilitado, es subido al caballo blanco de Glorfindel. Le dicen que galope hacia el Vado y que no se detenga por nada."
+  en: "Frodo, ill and fading, is set on Glorfindel's white horse, and the Elf-lord hurries them on toward the Ford: Riders are behind them, and may be waiting ahead."
+  es: "Frodo, enfermo y debilitado, es subido al caballo blanco de Glorfindel, y el señor élfico los apremia hacia el Vado: hay Jinetes detrás de ellos, y quizá también esperándolos delante."

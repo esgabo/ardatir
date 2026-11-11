@@ -8,7 +8,7 @@ characters: [ frodo, sam, merry, pippin, aragorn, witch-king, nazgul ]
 arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
 journeys: [ with-strider-to-rivendell ]
 tags: [ lord-of-the-rings ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "A Knife in the Dark" }
 title: { en: "The Attack on Weathertop", es: "El ataque en la Cima de los Vientos" }
 summary:

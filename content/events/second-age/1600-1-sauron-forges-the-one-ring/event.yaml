@@ -7,7 +7,7 @@ place: orodruin
 characters: [ sauron ]
 arcs: [ the-forging-of-the-rings ]
 tags: [ silmarillion ]
-status: outline
+status: scripted
 source: { book: the-silmarillion, chapter: "Of the Rings of Power and the Third Age" }
 title: { en: "Sauron forges the One Ring", es: "Sauron forja el Anillo Único" }
 summary:

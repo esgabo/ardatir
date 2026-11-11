@@ -1,0 +1,9 @@
+id: yavanna
+name: { en: "Yavanna", es: "Yavanna" }
+kind: ainu
+summary:
+  en: "The Giver of Fruits among the Valar, who loves all things that grow."
+  es: "La Dadora de Frutos entre los Valar, que ama todo lo que crece."
+color: "#7f9d5c"
+scale: 2.4
+pronounce: { en: ya-VAN-na, es: ya-VAN-na }   # how to say it: syllables, the stressed one in capitals

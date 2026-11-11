@@ -8,7 +8,7 @@ characters: [ bilbo, frodo, gandalf ]
 arcs: [  ]
 journeys: [  ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "A Long-expected Party" }
 title: { en: "Bilbo's Farewell Party", es: "La fiesta de despedida de Bilbo" }
 summary:

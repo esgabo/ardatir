@@ -2,7 +2,7 @@ id: gollum
 name: { en: Gollum, es: Gollum }
 kind: creature
 summary:
-  en: Once a hobbit-like river-folk named Sméagol, consumed by his long possession of the Ring.
-  es: Antes uno de los Fuertes, de la familia de los hobbits, llamado Sméagol, consumido por su larga posesión del Anillo.
+  en: "One character in two forms. Sméagol was a river-hobbit of the Stoor kind, living by the Gladden Fields, who killed his friend Déagol for the Ring. Long possession twisted him into Gollum, the pale, hungry creature who lurks in the dark under the Misty Mountains."
+  es: "Un solo personaje en dos formas. Sméagol era un hobbit de río de la raza de los Fuertes, que vivía junto a los Campos Gladios y mató a su amigo Déagol por el Anillo. Poseerlo tanto tiempo lo retorció hasta volverlo Gollum, la criatura pálida y hambrienta que acecha en la oscuridad bajo las Montañas Nubladas."
 color: "#9a9a7a"
 scale: 0.95

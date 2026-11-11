@@ -8,7 +8,7 @@ characters: [ frodo, sam, gollum, witch-king ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
 journeys: [ the-ring-to-mordor ]
 tags: [ lord-of-the-rings, the-ring ]
-status: outline
+status: scripted
 source: { book: the-two-towers, chapter: "The Stairs of Cirith Ungol" }
 title: { en: "The Host of Minas Morgul Sets Out", es: "La hueste de Minas Morgul se pone en marcha" }
 summary:
