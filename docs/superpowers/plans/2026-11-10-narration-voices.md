@@ -11,7 +11,7 @@
 
 The pure modules carry the logic and the tests. The network client and `ffmpeg` sit behind small interfaces that tests replace with fakes.
 
-**Tech Stack:** Node 22 (TypeScript run directly by `node`, as `scripts/content/cli.ts` is), vitest, `yaml`, plain DOM + TypeScript on the site. `ffmpeg` must be on PATH for publishing: it isn't installed on `vdi`, so install it with `apt install ffmpeg`. VoiceStudio 0.5.6 with the OmniVoice engine, at `VOICESTUDIO_URL`.
+**Tech Stack:** Node 22 (TypeScript run directly by `node`, as `scripts/content/cli.ts` is), vitest, `yaml`, plain DOM + TypeScript on the site. `ffmpeg` must be on PATH for publishing: install it with `apt install ffmpeg` if it's missing. VoiceStudio 0.5.6 with the OmniVoice engine, at `VOICESTUDIO_URL`.
 
 **Spec:** `docs/superpowers/specs/2026-11-10-narration-voices-design.md`. Read it first. Section numbers below (§) refer to it.
 
@@ -21,8 +21,7 @@ The pure modules carry the logic and the tests. The network client and `ffmpeg` 
 - Narrators are designed voices, cloned only from our own reference sample in `content/narrators/<id>.<lang>.flac`. Never a real actor's voice, and no reference clips of anyone (CLAUDE.md IP rules).
 - In production, every call clones the reference (`ref_audio` + `ref_text`). The seed only picks the take; a retry changes the seed, never the voice (§4.2).
 - Pronunciation is applied by rewriting the text sent, with `pronounce=false`. The box's shared `/pronunciation` lexicon is never used (§4.4).
-- Box access comes from env `VOICESTUDIO_URL` (default `http://192.168.1.212:3900`) and `VOICESTUDIO_API_KEY`. Never commit or log the key.
-- Before each batch: `GET http://ollama.lan:11434/api/ps`. If it reports loaded models, wait or abort with a clear message. A connection failure counts as idle (Ollama stopped).
+- Box access comes from env `VOICESTUDIO_URL` (required, no default) and `VOICESTUDIO_API_KEY`; where to find them is in the author's homelab notes. Never commit or log the key.
 - Gap between passages defaults to 0.8 s and can be overridden per narrator voice (`gap`). Output is mono mp3 at 128 kbps, loudness normalised to −16 LUFS for every narrator (my call within §5.2).
 - Checks (§5.3) start at: word error rate > 0.10 flags; pace outside ±25% of the narrator's median words/s; internal silence > 1.5 s; peak ≥ −0.1 dBFS (clipping); duration/char ratio outside 0.04–0.12 s per char. Up to 3 retries with a new seed.
 - Listening sample: 5 random passed passages per narrator per batch; 10 while a narrator has fewer than 3 published events (§5.4).
@@ -33,7 +32,7 @@ The pure modules carry the logic and the tests. The network client and `ffmpeg` 
 
 ## Review Focus
 
-1. **Box down or slow mid-batch.** The first calls after a restart take 20–75 s, and the LXC doesn't restart on boot. Expect a timeout per call of at least 120 s, and a re-run of `render` that resumes from the cache without redoing finished passages. Test: Task 7, `resumes after a failed call`.
+1. **Box down or slow mid-batch.** The first calls after a restart take 20–75 s, and the box may not start on its own. Expect a timeout per call of at least 120 s, and a re-run of `render` that resumes from the cache without redoing finished passages. Test: Task 7, `resumes after a failed call`.
 2. **Reading language without a recording, or `?audio=` naming a language the event lacks.** This must fall back to English audio, then to silence. It must never break playback, and never show a picker listing a missing language. Test: Task 10, `pickAudio` cases.
 3. **A passage edited after publishing.** The build must name *that* passage as stale, and `render --changed` must redo only it. Test: Task 3 `per-passage stale warning`, and Task 7 `re-renders only the changed passage`.
 4. **A name in the pronunciation list inside a longer word or with different case** ("Eärendil" vs "Eä"). Only whole-word, case-sensitive matches should be respelled. Test: Task 2, `does not respell inside a longer word`.
@@ -227,7 +226,6 @@ The pure modules carry the logic and the tests. The network client and `ffmpeg` 
     version(): Promise<string>;                     // GET /health → .version
   }
   export function voiceStudio(opts?: { url?: string; key?: string; fetch?: typeof fetch; timeoutMs?: number }): VoiceStudio;
-  export function gpuIdle(fetchImpl?: typeof fetch): Promise<boolean>;   // ollama.lan:11434/api/ps
   ```
   - `synthesize` sends `POST /generate` as multipart with these fields: `text`, `language`, `ref_audio` (the reference as a file part), `ref_text`, `seed`, `speed`, `pronounce=false`, plus every entry of `voice.params`.
   - `transcribe` sends `POST /v1/audio/transcriptions` as multipart (`file`, `language`).
@@ -238,8 +236,7 @@ The pure modules carry the logic and the tests. The network client and `ffmpeg` 
   - `synthesize` posts to `<url>/generate` with `pronounce=false`, `seed`, `speed: 0.9`, `ref_text`, and a file part;
   - it sends the bearer header when given a key, and omits it otherwise;
   - an error message never contains the key (fake a 500 response);
-  - a non-200 throws with the status and the first 200 characters of the body;
-  - `gpuIdle` is true for `{ models: [] }`, false for one model, and true when fetch rejects.
+  - a non-200 throws with the status and the first 200 characters of the body.
 - [ ] **Step 2: Run** `npx vitest run tests/voicestudio.test.ts`. Expected: FAIL.
 - [ ] **Step 3: Implement** with global `fetch`, `FormData` and `Blob`, using `AbortSignal.timeout`.
 - [ ] **Step 4: Run.** Expected: PASS.
@@ -280,7 +277,7 @@ The pure modules carry the logic and the tests. The network client and `ffmpeg` 
   - `reject re-renders a passed take`: `rejects` holds the passage → 1 call with a new seed.
   - `skips ages without a narrator voice in that language`: `lang: ['es']` → 0 calls.
 - [ ] **Step 2: Run** `npx vitest run tests/render.test.ts`. Expected: FAIL.
-- [ ] **Step 3: Implement `render`** to pass the tests. Process passages one after another; the box's GPU is shared, so no parallel calls.
+- [ ] **Step 3: Implement `render`** to pass the tests. Process passages one after another; the box has one GPU, so no parallel calls.
 - [ ] **Step 4: Implement `report.ts`**: `writeReport(takes: Take[], outFile: string, sample: (narratorId: string) => number)`.
   - A static page in the style of `out/auditions/before-time/index.html`: an `<audio>` per take, with relative paths into the cache.
   - First every flagged take, with its flags and what was heard; then the random sample per narrator, using the sizes from Global Constraints.
@@ -288,7 +285,6 @@ The pure modules carry the logic and the tests. The network client and `ffmpeg` 
   - Footer: how to reject, by adding `event/passage` lines to `out/narration/rejects.txt` and running render again.
 - [ ] **Step 5: Implement `render-cli.ts`.**
   - Flags: `--only`, `--age`, `--lang`, `--changed`, as `export.ts` parses them.
-  - Before starting, check `gpuIdle()`. If the GPU is busy, abort with `Ollama has models loaded on the shared GPU; try later (homelab #347)`.
   - Check that `version()` equals each narrator voice's `engineVersion`; if not, warn.
   - Decode references with `ffmpeg`.
   - Read `out/narration/rejects.txt`, then write the report and print its path.
@@ -401,8 +397,8 @@ No new code. This is the first real batch, and it tunes the thresholds.
   - Architecture: the new `scripts/narration/*` files and `src/audioChoice.ts`
 - Modify: `content/README.md` (a "Narrators" section and a "Pronunciation" section)
 - Create: `docs/LOCAL.md`, the Voice Studio part of #31:
-  - URL, how to get the key from `/opt/voicestudio/.env` on LXC 116, and the env vars
-  - the Ollama check, the slow warm-up, and `onboot=0` (start the LXC first)
+  - the env vars (`VOICESTUDIO_URL`, `VOICESTUDIO_API_KEY`); where to find them is in the author's homelab notes
+  - the slow warm-up, and starting the box first
   - installing `ffmpeg`
   - the narrator chosen for Before Time, and how to audition a new one (§4.3)
 

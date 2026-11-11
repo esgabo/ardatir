@@ -1,6 +1,7 @@
-// The homelab Voice Studio (VoiceStudio, OmniVoice engine; docs/LOCAL.md): synthesize a
-// passage by cloning a narrator's reference, transcribe a take, and check the shared GPU.
-// URL and key come from VOICESTUDIO_URL and VOICESTUDIO_API_KEY; the key is never logged.
+// The Voice Studio (VoiceStudio, OmniVoice engine; docs/LOCAL.md): synthesize a
+// passage by cloning a narrator's reference, and transcribe a take.
+// URL and key come from VOICESTUDIO_URL (required) and VOICESTUDIO_API_KEY; the key is
+// never logged.
 
 import type { Lang, NarratorVoice } from '../../src/data/types.ts';
 
@@ -14,10 +15,10 @@ export interface VoiceStudio {
   version(): Promise<string>;
 }
 
-export const DEFAULT_URL = 'http://192.168.1.212:3900';
-
 export function voiceStudio(opts: { url?: string; key?: string; fetch?: typeof fetch; timeoutMs?: number } = {}): VoiceStudio {
-  const base = (opts.url ?? process.env.VOICESTUDIO_URL ?? DEFAULT_URL).replace(/\/$/, '');
+  const url = opts.url ?? process.env.VOICESTUDIO_URL;
+  if (!url) throw new Error('VOICESTUDIO_URL is not set: export the Voice Studio\'s address, e.g. http://<host>:<port> (docs/LOCAL.md)');
+  const base = url.replace(/\/$/, '');
   const key = opts.key ?? process.env.VOICESTUDIO_API_KEY;
   const f = opts.fetch ?? fetch;
   const timeoutMs = opts.timeoutMs ?? 300_000; // a cold first call took 110 s in the smoke test
@@ -62,18 +63,4 @@ export function voiceStudio(opts: { url?: string; key?: string; fetch?: typeof f
       return String(j.version ?? 'unknown');
     },
   };
-}
-
-/**
- * Is the homelab iGPU free? Ollama shares it, and running both at once is untested
- * (homelab #347). A stopped Ollama doesn't answer, which counts as idle.
- */
-export async function gpuIdle(fetchImpl: typeof fetch = fetch, url = 'http://ollama.lan:11434/api/ps'): Promise<boolean> {
-  try {
-    const res = await fetchImpl(url, { signal: AbortSignal.timeout(5000) });
-    const j = (await res.json()) as { models?: unknown[] };
-    return !j.models?.length;
-  } catch {
-    return true;
-  }
 }

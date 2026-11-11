@@ -1,7 +1,7 @@
 // The Voice Studio client, against a fake fetch: no network (scripts/narration/voicestudio.ts).
 
 import { describe, expect, it } from 'vitest';
-import { gpuIdle, voiceStudio } from '../scripts/narration/voicestudio.ts';
+import { voiceStudio } from '../scripts/narration/voicestudio.ts';
 import type { NarratorVoice } from '../src/data/types.ts';
 
 const voice: NarratorVoice = {
@@ -73,16 +73,26 @@ describe('voiceStudio.transcribe and version', () => {
     const { f } = fakeFetch(() => Response.json({ status: 'ok', version: '0.5.6' }));
     expect(await voiceStudio({ url: 'http://vs', fetch: f }).version()).toBe('0.5.6');
   });
-});
 
-describe('gpuIdle', () => {
-  it('is idle with no models loaded', async () => {
-    expect(await gpuIdle(fakeFetch(() => Response.json({ models: [] })).f)).toBe(true);
+  it('needs a URL: there is no default address', () => {
+    const saved = process.env.VOICESTUDIO_URL;
+    delete process.env.VOICESTUDIO_URL;
+    try {
+      expect(() => voiceStudio({ fetch: fakeFetch().f })).toThrow(/VOICESTUDIO_URL is not set/);
+    } finally {
+      if (saved !== undefined) process.env.VOICESTUDIO_URL = saved;
+    }
   });
-  it('is busy with a model loaded', async () => {
-    expect(await gpuIdle(fakeFetch(() => Response.json({ models: [{ name: 'llama' }] })).f)).toBe(false);
-  });
-  it('is idle when Ollama does not answer (stopped)', async () => {
-    expect(await gpuIdle((async () => { throw new Error('ECONNREFUSED'); }) as typeof fetch)).toBe(true);
+
+  it('reads the URL from VOICESTUDIO_URL', async () => {
+    const saved = process.env.VOICESTUDIO_URL;
+    process.env.VOICESTUDIO_URL = 'http://from-env:1234/';
+    try {
+      const { f, calls } = fakeFetch(() => Response.json({ version: '0.5.6' }));
+      await voiceStudio({ fetch: f }).version();
+      expect(calls[0].url).toBe('http://from-env:1234/health');
+    } finally {
+      if (saved === undefined) delete process.env.VOICESTUDIO_URL; else process.env.VOICESTUDIO_URL = saved;
+    }
   });
 });

@@ -6,7 +6,7 @@ Status: draft for the author's approval · 2026-11-10 · issues #14, #31, #33, #
 
 Every staged event should be heard as well as read, in a voice that fits its moment in the history of the world. The voice should come from a repeatable pipeline: editing a passage should mean one command and a little listening, not an afternoon of manual work. The audience goal is the project's: people are amazed, and feel good learning these stories.
 
-Recordings are produced on the homelab **Voice Studio** (VoiceStudio v0.5.6, OmniVoice engine, LXC 116 at `http://192.168.1.212:3900`). Today the project has the script export (`npm run narration:export`) and stale-recording warnings, but no voices, no generation, no timings and no recordings.
+Recordings are produced on the homelab **Voice Studio** (VoiceStudio v0.5.6, OmniVoice engine, at `VOICESTUDIO_URL`). Today the project has the script export (`npm run narration:export`) and stale-recording warnings, but no voices, no generation, no timings and no recordings.
 
 ## 2. Decisions made with the author
 
@@ -102,7 +102,7 @@ Auditions go to `out/auditions/<narrator>/` (gitignored), with a `manifest.json`
 
 ## 5. Production pipeline
 
-All scripts are TypeScript under `scripts/narration/`, run with Node 22 like the rest. The box URL and key come from environment variables (`VOICESTUDIO_URL`, `VOICESTUDIO_API_KEY`), documented in `docs/LOCAL.md`, never committed. *(My call: read them from the environment and leave a pointer to fetch the key from Vaultwarden once it's stored there.)* Before each batch the pipeline checks that Ollama is idle (`ollama.lan:11434/api/ps`). The box's iGPU is shared, and running both at once is untested (homelab #347).
+All scripts are TypeScript under `scripts/narration/`, run with Node 22 like the rest. The box URL and key come from environment variables (`VOICESTUDIO_URL`, `VOICESTUDIO_API_KEY`), documented in `docs/LOCAL.md`, never committed. Where to find them is in the author's homelab notes.
 
 ### 5.1 Commands
 
