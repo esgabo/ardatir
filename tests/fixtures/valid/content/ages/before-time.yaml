@@ -3,3 +3,4 @@ order: 0
 name: { en: Before Time, es: Antes del Tiempo }
 summary: { en: Before the world., es: Antes del mundo. }
 timeless: true
+narrator: the-voice

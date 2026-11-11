@@ -2,7 +2,7 @@ import type { EventDetail, Lang } from './data/types';
 import type { EventClock } from './eventClock';
 
 /**
- * Plays an event's narration recording for the current language, if there is one.
+ * Plays an event's narration recording in the audio language (audioChoice.ts), if any.
  * The event clock is the master: the audio follows it on play, pause and seek,
  * so voice, text and animation stay together.
  */
@@ -13,9 +13,9 @@ export class Narration {
 
   private readonly clock: EventClock;
 
-  constructor(event: EventDetail, lang: Lang, clock: EventClock) {
+  constructor(event: EventDetail, lang: Lang | null, clock: EventClock) {
     this.clock = clock;
-    const rec = event.audioFiles[lang];
+    const rec = lang ? event.audioFiles[lang] : undefined;
     if (!rec) return;
     const a = new Audio(import.meta.env.BASE_URL + rec.src);
     a.preload = 'auto';

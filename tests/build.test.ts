@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { buildContent, type BuildResult } from '../scripts/content/build.ts';
-import { narrationHash } from '../scripts/narration/text.ts';
+import { narrationHash, passageHash } from '../scripts/narration/text.ts';
 import { nearness } from '../src/data/calendar.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -72,7 +72,9 @@ describe('the real content', () => {
 
   it('is valid, with no warnings', () => {
     expect(r.errors).toEqual([]);
-    expect(r.warnings).toEqual([]);
+    // Until the Third Age narrator is auditioned (docs/superpowers/plans/2026-11-10-narration-voices.md).
+    // Only Before Time has a narrator so far; the other ages get theirs at audition.
+    expect(r.warnings.filter((w) => !/^content\/ages\/[\w-]+\.yaml: has staged events but no narrator/.test(w))).toEqual([]);
   });
 
   it('places every best guess inside its honest range', () => {
@@ -454,6 +456,62 @@ describe('broken content', () => {
     expect(r.warnings.some((w) => w.includes('is at "rivendell" on journey "the-road" but overlaps none of its waypoints there'))).toBe(true);
   });
 
+  describe('narrators', () => {
+    const VOICE = 'narrators/the-voice.yaml';
+    const has = (list: string[], s: string) => list.some((e) => e.includes(s));
+
+    it('the fixture\'s narrator loads', () => {
+      const r = buildWith([]);
+      expect(r.narrators.map((n) => n.id)).toEqual(['the-voice']);
+      expect(r.narrators[0].voices.en?.seed).toBe(7);
+      expect(r.index.ages.find((a) => a.id === 'before-time')!.narrator).toBe('the-voice');
+    });
+
+    it('unknown narrator on an age', () => {
+      const r = buildWith([{ file: 'ages/before-time.yaml', replace: ['narrator: the-voice', 'narrator: nobody'] }]);
+      expect(has(r.errors, 'narrator: unknown narrator "nobody"'), r.errors.join('\n')).toBe(true);
+    });
+
+    it('missing reference file', () => {
+      const r = buildWith([{ file: 'narrators/the-voice.en.flac', remove: true }]);
+      expect(has(r.errors, 'reference: no file "the-voice.en.flac"'), r.errors.join('\n')).toBe(true);
+    });
+
+    it('reference hash mismatch', () => {
+      const r = buildWith([{ file: 'narrators/the-voice.en.flac', write: 'a different voice\n' }]);
+      expect(has(r.errors, 'referenceHash: does not match'), r.errors.join('\n')).toBe(true);
+    });
+
+    it('voice without refText', () => {
+      const r = buildWith([{ file: VOICE, replace: ['    refText: A calm voice that tells the history.\n', ''] }]);
+      expect(has(r.errors, 'refText'), r.errors.join('\n')).toBe(true);
+    });
+
+    it('staged event in an age with no narrator', () => {
+      const r = buildWith([{ file: 'ages/third-age.yaml', replace: ['narrator: the-voice\n', ''] }]);
+      expect(r.errors).toEqual([]);
+      expect(has(r.warnings, 'has staged events but no narrator'), r.warnings.join('\n')).toBe(true);
+    });
+  });
+
+  describe('pronunciation', () => {
+    it('loads the list', () => {
+      const r = buildWith([{ file: 'pronunciation.yaml', write: 'en: { "Eä": "EH-ah" }\n' }]);
+      expect(r.errors).toEqual([]);
+      expect(r.pronunciation).toEqual({ en: { 'Eä': 'EH-ah' } });
+    });
+
+    it('respellings must be text', () => {
+      const r = buildWith([{ file: 'pronunciation.yaml', write: 'en: { Eä: 5 }\n' }]);
+      expect(r.errors.some((e) => e.includes('pronunciation.en.Eä: must be text')), r.errors.join('\n')).toBe(true);
+    });
+
+    it('only known languages', () => {
+      const r = buildWith([{ file: 'pronunciation.yaml', write: 'fr: { Eä: "E-a" }\n' }]);
+      expect(r.errors.some((e) => e.includes('pronunciation: unknown language "fr"')), r.errors.join('\n')).toBe(true);
+    });
+  });
+
   describe('textHash', () => {
     // The fixture's English script, as narration.yaml has it.
     const hash = narrationHash([
@@ -469,6 +527,55 @@ describe('broken content', () => {
       const r = buildWith(recording(hash));
       expect(r.errors).toEqual([]);
       expect(r.warnings).toEqual([]);
+    });
+
+    const door = passageHash({ id: 'door', text: { en: 'Someone knocks at the green door.' } }, 'en');
+    const tea = passageHash({ id: 'tea', text: { en: 'Tea is poured for far too many guests.' } }, 'en');
+    const recorded = (extra: string): Change[] => [
+      { file: `${PARTY}/audio/en.yaml`, write: `duration: 20\ntextHash: ${hash}\n${extra}` },
+      { file: `${PARTY}/audio/en.mp3`, write: '' },
+    ];
+
+    it('gives no warning when the passages and narrator match', () => {
+      const r = buildWith(recorded(`narrator: { id: the-voice, version: 1 }\npassages: { door: ${door}, tea: ${tea} }\n`));
+      expect(r.errors).toEqual([]);
+      expect(r.warnings).toEqual([]);
+    });
+
+    it('per-passage stale warning', () => {
+      const r = buildWith(recorded(`passages: { door: ${door}, tea: sha256:0000000000000000 }\n`));
+      expect(r.warnings.filter((w) => w.includes('stale passage'))).toEqual([expect.stringContaining('stale passage "tea"')]);
+    });
+
+    it('narrator version stale', () => {
+      const r = buildWith(recorded('narrator: { id: the-voice, version: 0 }\n'));
+      expect(r.warnings.some((w) => w.includes('recorded with the-voice v0, now v1')), r.warnings.join('\n')).toBe(true);
+    });
+
+    it('narrator of another age', () => {
+      const r = buildWith([...recorded('narrator: { id: someone-else, version: 1 }\n')]);
+      expect(r.warnings.some((w) => w.includes("the age's narrator is the-voice")), r.warnings.join('\n')).toBe(true);
+    });
+
+    it('a passage added after recording warns and drops the starts, instead of failing the build', () => {
+      const r = buildWith([
+        { file: `${PARTY}/audio/en.yaml`, write: `duration: 20\ntextHash: ${hash}\nstarts: { door: 0.8, tea: 9 }\n` },
+        { file: `${PARTY}/audio/en.mp3`, write: '' },
+        { file: `${PARTY}/narration.yaml`, replace: ['- id: tea', '- id: cake\n  en: Cake runs out.\n  es: Se acaba el pastel.\n- id: tea'] },
+        { file: `${PARTY}/staging.yaml`, replace: ['narration: { door: 0, tea: 0.5 }', 'narration: { door: 0, cake: 0.3, tea: 0.5 }'] },
+      ]);
+      expect(r.errors).toEqual([]);
+      expect(r.warnings.some((w) => w.includes('en.yaml: stale recording') && w.includes('passages were added or removed')), r.warnings.join('\n')).toBe(true);
+      expect(r.details.find((d) => d.id === 'the-party')!.audioFiles.en?.starts).toBeUndefined();
+    });
+
+    it('a passage removed after recording warns too', () => {
+      const r = buildWith([
+        { file: `${PARTY}/audio/en.yaml`, write: `duration: 20\ntextHash: ${hash}\nstarts: { door: 0.8, tea: 9, gone: 12 }\n` },
+        { file: `${PARTY}/audio/en.mp3`, write: '' },
+      ]);
+      expect(r.errors).toEqual([]);
+      expect(r.warnings.some((w) => w.includes('passages were added or removed')), r.warnings.join('\n')).toBe(true);
     });
 
     it('warns "stale recording" when a recorded passage changes', () => {

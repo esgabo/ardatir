@@ -1,0 +1,16 @@
+# The Before Time narrator: audition candidate A, chosen 2026-11-10. See README.md here.
+id: the-elder
+brief:
+  en: A deep, slow, warm, kind elder who was there before anything began. Tells events as history, with weight, never as a children's story.
+  es: Un anciano de voz grave, lenta, cálida y amable, que estuvo allí antes de que nada comenzara. Cuenta los hechos como historia, con peso, nunca como un cuento infantil.
+voices:
+  en:
+    engine: omnivoice
+    engineVersion: 0.5.6
+    instruct: "male, elderly, low pitch, british accent"
+    seed: 101
+    speed: 0.9
+    reference: the-elder.en.flac
+    referenceHash: sha256:196acd99b54d29007d96a73ec553e0563e03a30a0bf8ddcfcbf2daca4bceca54
+    refText: Before there was a world, there was only Ilúvatar, the One, and the Ainur he had made from his thought. But Melkor, the mightiest of them, wanted more than his part. He wove his own thoughts into the music, and discord spread around him.
+    version: 1

@@ -21,6 +21,12 @@ function play(clock: EventClock, step = 0.05): number[] {
 }
 
 describe('EventClock', () => {
+  it('without audio (null) lasts the staging duration, even when a recording exists', () => {
+    const e = event([0, 0.5], { src: 'x', duration: 40 }, 24);
+    expect(new EventClock(e, null).duration).toBe(24);
+    expect(new EventClock(e, 'en').duration).toBe(40);
+  });
+
   const ts = [0, 0.2, 0.7, 0.85];
   const uneven = event(ts, { src: 'x', duration: 40, starts: [0, 3, 25, 26.5] });
 

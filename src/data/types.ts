@@ -68,6 +68,36 @@ export interface Age {
   foretold?: boolean;
   /** How to say a hard name (`ee-LOO-va-tar`), per language: data/pronounce.ts, docs/DESIGN.md §3.5. */
   pronounce?: LocalizedText;
+  /** The narrator who tells this age's events (content/narrators/<id>.yaml). */
+  narrator?: string;
+}
+
+/** How one narrator sounds in one language, on the Voice Studio (content/narrators/README.md). */
+export interface NarratorVoice {
+  engine: string;
+  engineVersion: string;
+  /** Voice-design attributes the voice was made from at audition. */
+  instruct: string;
+  /** Seed of the chosen audition take; in production the seed only picks a take. */
+  seed: number;
+  speed: number;
+  params?: Record<string, number | string | boolean>;
+  /** Our own designed sample every recording is cloned from, next to the yaml. */
+  reference: string;
+  /** `sha256:` + 64 hex digits of the reference file. */
+  referenceHash: string;
+  /** The exact words the reference says. */
+  refText: string;
+  /** Seconds between passages in a recording (default 0.8). */
+  gap?: number;
+  /** Bumped when the voice changes; older recordings are then stale. */
+  version: number;
+}
+
+export interface Narrator {
+  id: string;
+  brief: LocalizedText;
+  voices: Partial<Record<Lang, NarratorVoice>>;
 }
 
 export interface Kin {

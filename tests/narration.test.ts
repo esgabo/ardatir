@@ -1,7 +1,7 @@
 // The textHash that ties a recording to the words it reads (scripts/narration/text.ts).
 
 import { describe, expect, it } from 'vitest';
-import { narrationHash, TEXT_HASH, type Passage } from '../scripts/narration/text.ts';
+import { narrationHash, passageHash, TEXT_HASH, type Passage } from '../scripts/narration/text.ts';
 
 const script: Passage[] = [
   { id: 'fire', text: { en: 'Cold and lost, the company spotted a light among the trees.', es: 'Vieron una luz entre los árboles.' } },
@@ -38,5 +38,19 @@ describe('narrationHash', () => {
     const es = narrationHash(script, 'es');
     expect(es).not.toBe(hash);
     expect(es).toBe(narrationHash([script[0], { id: 'trolls', text: { en: 'Three trolls sat around the fire.', es: 'Three trolls sat around the fire.' } }], 'es'));
+  });
+});
+
+describe('passageHash', () => {
+  const p = script[0];
+  it('is sha256: and 16 hex digits', () => {
+    expect(passageHash(p, 'en')).toMatch(TEXT_HASH);
+  });
+  it('ignores whitespace', () => {
+    expect(passageHash({ id: 'fire', text: { en: '  Cold and lost, the company\n spotted a light among the trees. ' } }, 'en')).toBe(passageHash(p, 'en'));
+  });
+  it('changes with the words or the id', () => {
+    expect(passageHash({ id: 'fire', text: { en: 'Warm and found.' } }, 'en')).not.toBe(passageHash(p, 'en'));
+    expect(passageHash({ ...p, id: 'flame' }, 'en')).not.toBe(passageHash(p, 'en'));
   });
 });

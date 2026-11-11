@@ -19,10 +19,12 @@ npm run preview    # serve dist/ at http://localhost:4173
 npm run content    # validate content/ and write public/data/ (dev and build also do this)
 npm test           # vitest: calendar, best guesses, event clock, armies, content validation (tests/)
 npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event>, --lang es, --changed)
+npm run narration:render   # render passages on the Voice Studio, check them, write out/narration/report.html (--only, --age, --lang, --changed)
+npm run narration:publish  # join checked takes into audio/<lang>.mp3 + .yaml (--accept <event>/<passage> for a flagged take you listened to)
 npm run model:pack -- <export.glb> characters/<id>/<id>.glb   # meshopt-compress a Blender export into assets/ (docs/MODELS.md)
 ```
 
-Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
+Requires Node 22. Recording narration also needs `ffmpeg` and the homelab Voice Studio (`docs/LOCAL.md`). Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
 
 ## Decisions (and why)
 
@@ -37,7 +39,10 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 | **Models in `assets/`, meshopt-compressed `.glb`, within a size budget; no Git LFS** (`assets/characters/<id>/<id>.glb`, `.blend` beside it, never deployed; `model:` on characters, per-event on tracks) | GitHub Pages doesn't serve LFS, so models live in git and must stay small (characters ≤ 300 kB, kits ≤ 800 kB, props ≤ 100 kB: `MODEL_BUDGETS` in `scripts/content/models.ts`). Meshopt over Draco: a smaller decoder. The placeholder figure stays while loading or without a model. Export settings and conventions in [`docs/MODELS.md`](docs/MODELS.md). Decided 2026-11-09 (#20). |
 | **Start with *The Hobbit*** for event dioramas | First book to cover end to end. |
 | **English default, Spanish second** | Every content text is `LocalizedText` (`{ en, es? }`); `en` is required. |
-| **Narration = our own script**, shown on screen in sync with the animation and optional audio | Audio files are provided per event and language; how they are produced is outside this project (the author uses a Voice Studio in a homelab). |
+| **Narration = our own script**, shown on screen in sync with the animation and optional audio | Every event works muted; a recording is a layer on top. |
+| **One narrator per age** (and per audio language), not per book or character; events read as history | We tell the history of the whole world, not each book's intent: *The Hobbit* and *The Lord of the Rings* share the Third Age narrator. A voice is designed once at audition, then cloned from our own reference sample, committed in `content/narrators/` so any checkout can re-record (published recordings are public anyway). See `docs/DESIGN.md` §5. Decided 2026-11-10. |
+| **Recordings come from the pipeline**: rendered passage by passage on the homelab Voice Studio, checked automatically, spot-listened, published with exact starts | Hearing every second of every event can't scale; statistics plus a sample can. Passage by passage gives exact timings and re-renders only what changed. Decided 2026-11-10. |
+| **The audio language is apart from the reading language** (`?audio=`) | Text and voices ship on their own schedules: read Spanish, hear English until the Spanish narrator exists. Decided 2026-11-10. |
 | **Non-commercial fan project** | No ads, merchandise or paywalls. See IP rules below. |
 | **Content in `content/` as YAML, one file per thing, linked by id** | Clean diffs, no conflicts, scales to hundreds of events. Lists like "a character's events" are derived by the build, never written by hand. |
 | **Translations inline** (`en:` and `es:` side by side) | Gaps are obvious and the build counts them. |
@@ -57,7 +62,7 @@ Requires Node 22. Deployed to GitHub Pages by `.github/workflows/deploy.yml` on 
 
 ```
 content/             THE SOURCE OF TRUTH (YAML); see content/README.md
-  ages/ characters/ places/ arcs/ journeys/ factions/   (factions: sides in battles)
+  ages/ characters/ places/ arcs/ journeys/ factions/ narrators/   pronunciation.yaml   (factions: sides in battles)
   events/<age>/<sort-key>-<id>/  event.yaml, narration.yaml, staging.yaml, audio/<lang>.{mp3,yaml}
 assets/              models: characters/<id>/<id>.glb (+ .blend source), kits/<kit>/, props/<id>/; see docs/MODELS.md
 scripts/content/
@@ -71,7 +76,14 @@ scripts/models/
 tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
 scripts/narration/
   export.ts          `npm run narration:export`: scripts per event and language for the Voice Studio
-  text.ts            a passage's text per language and the `textHash` that marks a recording stale
+  text.ts            a passage's text per language; `textHash` and `passageHash` that mark a recording stale
+  render.ts, render-cli.ts   `npm run narration:render`: passages on the Voice Studio, cached, checked, retried
+  publish.ts, publish-cli.ts `npm run narration:publish`: checked takes → audio/<lang>.mp3 + .yaml
+  voicestudio.ts     the Voice Studio client (clone a narrator's reference, transcribe) and the shared-GPU check
+  checks.ts          the automatic checks on a take: words, names, pace, length, clipping, silence (pure)
+  wav.ts             WAV in/out, joining with gaps, audio statistics (pure)
+  pronounce.ts       respelling names from content/pronunciation.yaml (pure)
+  report.ts, ffmpeg.ts       the listening page; ffmpeg for the CLIs only
 vite.config.ts       runs the content build on start (fails `npm run build` on errors) and on change in dev
 public/data/         GENERATED (gitignored): index.json, events/<id>.json, scripts/<id>.json, audio/<id>/<lang>.mp3, models/<path>.glb
 src/
@@ -80,6 +92,7 @@ src/
   chronicle.ts       loads index.json at startup and each event's detail when opened
   eventClock.ts      ONE clock for animation, narration text and audio
   narration.ts       plays the optional recording, following the clock
+  audioChoice.ts     which recording plays: asked for (?audio=), else the reading language, else English
   i18n.ts            languages, fallbacks, interface strings
   timeline.ts        samples character tracks (pose, thought) at time t; cross-fades, heading and gait pace between poses: pure, tested
   scene/stage.ts     the Stage interface every zoom level implements
@@ -123,7 +136,7 @@ src/
 - **The playhead runs in seconds of narration; `t` is derived** via `EventClock.tAt`. Seeking converts back with `secondsAt`. Never advance `t` directly.
 - **Narration timing:** `staging.yaml` gives each passage's `t` (where it belongs in the animation); `audio/<lang>.yaml` gives the second it starts in that recording, keyed by passage id. The build turns both into ordered arrays, and the clock stretches the animation between those points.
 - **Recordings carry a `textHash`** of the words they read (`audio/<lang>.yaml`); the build warns when `narration.yaml` no longer matches. Editing a recorded passage means re-recording it.
-- **The URL is the state**: `#/event/<id>?t=&follow=&lang=` (a staged event's stage, any other event's page), `#/lives?with=a,b` (character lanes), `#/time/<age>/<date>?zoom=&from=` (the time cursor; `<date>` is `3019`, `3019-03`, `3019-03-15`, `3019-midyear`, `2941-summer`, or an axis position). New view state that matters should be added to the route (`src/routes.ts`); in-site links are plain hrefs from there.
+- **The URL is the state**: `#/event/<id>?t=&follow=&lang=&audio=` (a staged event's stage, any other event's page; `audio` is the recording heard, apart from `lang`, the text read), `#/lives?with=a,b` (character lanes), `#/time/<age>/<date>?zoom=&from=` (the time cursor; `<date>` is `3019`, `3019-03`, `3019-03-15`, `3019-midyear`, `2941-summer`, or an axis position). New view state that matters should be added to the route (`src/routes.ts`); in-site links are plain hrefs from there.
 - **Models play from `t` too.** A glTF's clips are driven by an `AnimationMixer` whose clip weights and times are *set* from `t` (`clipLayers` in `scene/modelClips.ts`; cross-fades from `actionMix`, gait pace from `strideSeconds`, in `timeline.ts`) and applied with `update(0)`; never let a mixer run free on the wall clock. A figure's heading is `headingAt(track, t)`, never the last frame's rotation. `scene/models.ts` is loaded with a dynamic `import()` only when an event has a model.
 - **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.

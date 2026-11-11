@@ -28,4 +28,13 @@ export function narrationHash(passages: Passage[], lang: Lang): string {
   return `sha256:${h.digest('hex').slice(0, 16)}`;
 }
 
+/**
+ * One passage's hash, the same line format as `narrationHash`: recordings keep one per
+ * passage (`passages:` in audio/<lang>.yaml), so the build can say exactly which passage
+ * changed and the pipeline re-records only that one.
+ */
+export function passageHash(p: Passage, lang: Lang): string {
+  return `sha256:${createHash('sha256').update(`${p.id}\t${passageText(p, lang)}\n`).digest('hex').slice(0, 16)}`;
+}
+
 export const TEXT_HASH = /^sha256:[0-9a-f]{16}$/;

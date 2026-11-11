@@ -1,6 +1,7 @@
 // The URL is the state (docs/DESIGN.md §7). Every view has a route:
 //
 //   #/event/<id>?t=0.42&follow=bilbo&lang=es   a staged event's stage; any other event's page
+//   #/event/<id>?audio=en&lang=es              hear English, read Spanish (audio=off: no voice)
 //   #/lives?with=tuor,turin&lang=es             character lanes, side by side
 //   #/time/third-age/3019-03-15?zoom=year       the time cursor at a moment (moment.ts), at a scale
 //   #/time/first-age/495   #/time/before-time   a whole year; a timeless age
@@ -13,7 +14,7 @@
 import type { Lang } from './data/types';
 
 export type Route =
-  | { kind: 'event'; eventId?: string; t?: number; follow?: string; lang?: string }
+  | { kind: 'event'; eventId?: string; t?: number; follow?: string; lang?: string; audio?: string }
   | { kind: 'lives'; with: string[]; lang?: string }
   /** `where` is the moment's path as written (parsed by moment.ts); absent: the default moment. */
   | { kind: 'time'; where?: string; zoom?: string; from?: string; lang?: string }
@@ -39,6 +40,7 @@ export function parseRoute(hash = location.hash): Route {
     t: Number.isFinite(tv) ? Math.min(Math.max(tv, 0), 1) : undefined,
     follow: q.get('follow') ?? undefined,
     lang,
+    audio: q.get('audio') ?? undefined,
   };
 }
 
@@ -51,7 +53,7 @@ function query(params: Record<string, string | undefined>, lang: Lang): string {
   return s ? `?${s}` : '';
 }
 
-export function eventHref(id: string, lang: Lang, params: { t?: string; follow?: string } = {}): string {
+export function eventHref(id: string, lang: Lang, params: { t?: string; follow?: string; audio?: string } = {}): string {
   return `#/event/${id}${query(params, lang)}`;
 }
 
