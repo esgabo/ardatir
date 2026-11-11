@@ -5,8 +5,8 @@
 #
 # Common names the voice already says well (Bilbo, Gandalf, Thorin, Shire) need no entry.
 en:
-  Ilúvatar: "ee-LOO-vah-tar"   # unheard; candidate A said it well as written
+  # Ilúvatar: as written. The respelling "ee-LOO-vah-tar" made the voice stumble (heard 2026-11-10).
   Ainur: "EYE-noor"            # unheard; candidate A said it well as written
   Melkor: "MEL-kor"            # unheard; candidate A said it well as written
-  Eä: "AY-ah"                  # unheard; as written, candidate A said a single "E"
+  Eä: "Ay-yah"                 # heard 2026-11-10 in its sentence (the-elder v1, seed 1101); "AY-ah" sometimes came out "I R", as written a single "E"
   Arda: "AR-dah"               # unheard

@@ -34,6 +34,8 @@ export interface Take {
   /** The cached WAV. */
   file: string;
   seed: number; tries: number; flags: Flag[]; transcript: string; stats: AudioStats;
+  /** The last seed tried, when it isn't `seed` (a better earlier take was kept): a reject goes on from it. */
+  lastSeed?: number;
   /** Words in the passage as written (for pace). */
   words: number;
   /** True when this run reused the cached take (not stored). */
@@ -165,21 +167,28 @@ export async function render(
 
       const written = p.text[j.lang] || p.text.en;
       const names = used.map((name) => ({ name, said: lex[j.lang]![name] }));
-      let k = cached ? Math.round((cached.seed - voice.seed) / SEED_STEP) + 1 : 0;
-      let take: Take | undefined, wav: Buffer | undefined;
+      let k = cached ? Math.round(((cached.lastSeed ?? cached.seed) - voice.seed) / SEED_STEP) + 1 : 0;
+      // Every try is kept until a clean one; if none is clean, the one with the fewest flags.
+      let take: Take | undefined, wav: Buffer | undefined, lastSeed = 0;
       for (let tries = 1; tries <= RETRIES + 1; tries++, k++) {
         const seed = voice.seed + SEED_STEP * k;
         ref ??= referenceWav(j.narrator, j.lang);
         log(`  render  ${j.event}/${j.lang}/${p.id}  seed ${seed}`);
-        wav = await vs.synthesize({ text, lang: j.lang, voice, referenceWav: ref, seed });
-        const stats = audioStats(parseWav(wav));
-        const transcript = (await vs.transcribe(wav, j.lang)).text;
+        const got = await vs.synthesize({ text, lang: j.lang, voice, referenceWav: ref, seed });
+        const stats = audioStats(parseWav(got));
+        const transcript = (await vs.transcribe(got, j.lang)).text;
         const medianWps = passed.length >= PACE_AFTER ? median(passed.map(wpsOf)) : undefined;
         const flags = checkPassage({ text: written, transcript, names, stats, medianWps });
-        take = { event: j.event, lang: j.lang, passage: p.id, narrator: j.narrator.id, file, seed, tries, flags, transcript, stats, words: normalizeWords(written).length };
+        lastSeed = seed;
+        if (!take || flags.length < take.flags.length) {
+          take = { event: j.event, lang: j.lang, passage: p.id, narrator: j.narrator.id, file, seed, tries, flags, transcript, stats, words: normalizeWords(written).length };
+          wav = got;
+        }
+        take.tries = tries;
         if (!flags.length) break;
         log(`    flagged: ${flags.map((f) => f.kind).join(', ')}`);
       }
+      if (lastSeed !== take!.seed) take!.lastSeed = lastSeed;
       writeTake(take!, wav!);
       if (rejected) o.onReject?.(`${j.event}/${p.id}`);
       if (!take!.flags.length) passed.push(take!);

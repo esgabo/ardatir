@@ -37,25 +37,54 @@ export function wordErrorRate(ref: string[], hyp: string[]): number {
   return prev[hyp.length] / ref.length;
 }
 
-/** Does `seq` appear as consecutive words in `words`? */
-const contains = (words: string[], seq: string[]) =>
-  seq.length > 0 && words.some((_, i) => seq.every((w, k) => words[i + k] === w));
+/** A name squashed to its sound: letters only, doubled letters once, no "h" after a vowel. */
+const sound = (words: string[]) => words.join('').replace(/(\p{L})\1+/gu, '$1').replace(/([aeiouy])h/g, '$1');
+
+function editDistance(a: string, b: string): number {
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    prev = cur;
+  }
+  return prev[b.length];
+}
+
+/**
+ * Where a name was heard: the run of 1–3 heard words that sounds like it (speech
+ * recognition spells names by ear: "Ay-yah" comes back "Aya", "Ilúvatar" "Illovatar").
+ * Returns the indexes of those words, or undefined if none is close enough.
+ */
+export const NAME_SLACK = 0.2;
+function findName(heard: string[], forms: string[][]): number[] | undefined {
+  for (const form of forms) {
+    const target = sound(form);
+    if (!target) continue;
+    for (let i = 0; i < heard.length; i++) for (let n = 1; n <= 3 && i + n <= heard.length; n++) {
+      const got = sound(heard.slice(i, i + n));
+      if (editDistance(got, target) <= NAME_SLACK * Math.max(got.length, target.length)) return Array.from({ length: n }, (_, k) => i + k);
+    }
+  }
+  return undefined;
+}
 
 export function checkPassage(c: CheckInput): Flag[] {
   const flags: Flag[] = [];
   const heard = normalizeWords(c.transcript);
 
-  // Names first: each must be heard as written or as its respelling.
-  const nameWords = new Set<string>();
+  // Names first: each must sound like it was said as written or as its respelling.
+  const nameWords = new Set<string>(), heardAsName = new Set<number>();
   for (const n of c.names) {
     const asWritten = normalizeWords(n.name), asSaid = normalizeWords(n.said);
     for (const w of [...asWritten, ...asSaid]) nameWords.add(w);
-    if (!contains(heard, asWritten) && !contains(heard, asSaid)) flags.push({ kind: 'name', detail: `"${n.name}" not heard` });
+    const at = findName(heard, [asWritten, asSaid]);
+    if (at) for (const i of at) heardAsName.add(i);
+    else flags.push({ kind: 'name', detail: `"${n.name}" not heard` });
   }
 
-  // Words, with the names set aside (speech recognition spells respellings unpredictably).
+  // Words, with the names set aside on both sides (they are judged above).
   const ref = normalizeWords(c.text).filter((w) => !nameWords.has(w));
-  const hyp = heard.filter((w) => !nameWords.has(w));
+  const hyp = heard.filter((w, i) => !heardAsName.has(i) && !nameWords.has(w));
   const wer = wordErrorRate(ref, hyp);
   if (wer > LIMITS.wer) flags.push({ kind: 'words', detail: `word error rate ${wer.toFixed(2)}; heard "${c.transcript}"` });
   if (ref.length && (hyp[0] !== ref[0] || hyp[hyp.length - 1] !== ref[ref.length - 1])) flags.push({ kind: 'edges', detail: 'first or last word missing' });

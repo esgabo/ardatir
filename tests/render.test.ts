@@ -121,6 +121,18 @@ describe('render', () => {
     expect(takes[0].flags.map((f) => f.kind)).toContain('edges');
   });
 
+  it('keeps the best of the flagged takes, not the last, and a reject goes on from the last seed', async () => {
+    const { content, cacheDir } = setup();
+    // Call 1 misses one word in the middle (one flag); the others miss the ending (two).
+    const hear = (t: string, call: number) => (call === 1 ? t.replace('green', 'grain') : call < 4 ? dropLast(t) : t);
+    const takes = await render(buildContent(content), fakeStudio({ hear }).vs, ref, opts(cacheDir));
+    expect(takes[0]).toMatchObject({ seed: 1007, tries: 4 });
+    expect(takes[0].flags.map((f) => f.kind)).toEqual(['words']);
+    const again = fakeStudio();
+    await render(buildContent(content), again.vs, ref, opts(cacheDir, { rejects: new Set(['the-party/door']) }));
+    expect(again.sent[0].seed).toBe(4007);
+  });
+
   it('resumes after a failed call', async () => {
     const { content, cacheDir } = setup();
     await expect(render(buildContent(content), fakeStudio({ fail: (c) => c === 1 }).vs, ref, opts(cacheDir))).rejects.toThrow(/502/);

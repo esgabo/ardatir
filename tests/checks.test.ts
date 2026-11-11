@@ -39,6 +39,24 @@ describe('checkPassage', () => {
     expect(checkPassage(c)).toEqual([]);
   });
 
+  // The first real batch (2026-11-10): Whisper spells names by ear, and good takes were flagged.
+  it('accepts a respelled name heard by sound ("Ay-yah" heard as "Aya" or "Ayah")', () => {
+    for (const heard of ['Aya', 'Ayah']) {
+      const c = input({ transcript: `And then he spoke one word, ${heard}, let it be, and the world was real.`, names: [{ name: 'Eä', said: 'Ay-yah' }] });
+      expect(checkPassage(c)).toEqual([]);
+    }
+  });
+
+  it('accepts a written name heard a letter off ("Ilúvatar" heard as "Illovatar")', () => {
+    const c = input({ text: 'Then, with a single chord, Ilúvatar ended the music.', transcript: 'Then, with a single chord, Illovatar ended the music.', names: [{ name: 'Ilúvatar', said: 'Ilúvatar' }], stats: stats({ duration: 3.6 }) });
+    expect(checkPassage(c)).toEqual([]);
+  });
+
+  it('still flags a name heard as something else ("Ay-yah" heard as "I R")', () => {
+    const c = input({ transcript: 'And then he spoke one word, I R, let it be, and the world was real.', names: [{ name: 'Eä', said: 'Ay-yah' }] });
+    expect(kinds(c)).toContain('name');
+  });
+
   it('flags pace against the narrator\'s median', () => {
     // 15 words in 4.2 s of voice ≈ 3.6 wps: within 25% of 3.2, but in 2.9 s (5.2 wps) it is not.
     expect(kinds(input({ medianWps: 3.2 }))).toEqual([]);
