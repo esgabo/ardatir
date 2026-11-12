@@ -154,7 +154,19 @@ export async function render(
   const lex = content.pronunciation;
   const takes: Take[] = [];
   const passedBy = new Map<string, Take[]>();
-  for (const j of jobs(content, o)) {
+  const todo = jobs(content, o);
+  // One engine per run: the Voice Studio keeps one in memory, and loading a second into the same
+  // process (VoxCPM2 after OmniVoice) has run the Voice Studio out of memory. Split the run by --lang.
+  const needs = new Map<string, Set<Lang>>();
+  for (const j of todo) {
+    const pending = passageKeys(j, lex).some(({ passage: p, key }) => !readTake(takePath(o.cacheDir, j, p.id, key)) || o.rejects.has(`${j.event}/${p.id}`));
+    if (pending) { const e = j.narrator.voices[j.lang]!.engine; if (!needs.has(e)) needs.set(e, new Set()); needs.get(e)!.add(j.lang); }
+  }
+  if (needs.size > 1) {
+    const list = [...needs].map(([e, ls]) => `${e} (${[...ls].join(', ')})`).join(' and ');
+    throw new Error(`one engine per run: this needs ${list}; render each with --lang, restarting the Voice Studio between (docs/LOCAL.md)`);
+  }
+  for (const j of todo) {
     const voice = j.narrator.voices[j.lang]!;
     // Pace is judged per language: a Spanish reading runs at its own speed.
     const paceKey = `${j.narrator.id}/${j.lang}`;

@@ -4,7 +4,7 @@ Some work needs the author's machine and homelab, not the cloud workspace (issue
 
 ## Recording narration on the Voice Studio
 
-The Voice Studio is a **VoiceStudio** server (OmniVoice engine) on the author's private network. This repo never names its host, address or logins: the scripts read them from environment variables, and where to find the values is in the author's homelab notes.
+The Voice Studio is a **VoiceStudio** server (OmniVoice engine, plus VoxCPM2 for voices OmniVoice can't design, such as Latin American Spanish) on the author's private network. This repo never names its host, address or logins: the scripts read them from environment variables, and where to find the values is in the author's homelab notes.
 
 | Variable | What it is |
 |---|---|
@@ -19,7 +19,8 @@ The box is a **test machine**: no backups, and it may not start on its own. Ever
 1. **Set `VOICESTUDIO_URL`**, and start the box if it is down (how is in the homelab notes). `curl "$VOICESTUDIO_URL/health"` should answer `{"status":"ok",…}`.
 2. **Install ffmpeg** on the machine that runs the scripts, once: `sudo apt install ffmpeg`. The scripts use it to decode references and encode mp3s; set `FFMPEG` if it lives elsewhere.
 3. **Set `VOICESTUDIO_API_KEY`**, loading it into your shell without printing it; where the key lives is in the homelab notes. Never commit or paste the key.
-4. **Expect a slow start.** The first calls after the container starts take 20–110 s each. After that, a passage takes about as long to make as it lasts.
+4. **Expect a slow start.** The first calls after the container starts take 20–110 s each. After that, an OmniVoice passage takes about as long to make as it lasts.
+5. **One engine per run.** A narrator voice names its engine (`engine:` in its yaml). The server holds one engine at a time, and loading VoxCPM2 into a process that already ran OmniVoice has run the box out of memory and frozen it. So `narration:render` refuses a run that needs both: render each language with `--lang`, and **restart the Voice Studio before a VoxCPM2 run** (how is in the homelab notes). VoxCPM2's first call then takes about 5 minutes (loading and warming up), and each passage after that 1–3 minutes. It speaks at 48 kHz; publish encodes every recording at 24 kHz.
 
 ### A session
 
@@ -35,10 +36,10 @@ Takes are cached in `out/narration-cache/`, so a run that fails halfway resumes 
 
 ### Narrators
 
-| Age | Narrator | Voice (English) |
-|---|---|---|
-| Before Time | `the-elder` | audition candidate A: male, elderly, low pitch, British accent; seed 101, speed 0.9; chosen 2026-11-10 |
-| Third Age | not chosen yet | needs an audition |
+| Age | Narrator | Voice (English) | Voice (Spanish) |
+|---|---|---|---|
+| Before Time | `the-elder` | audition candidate A (OmniVoice): male, elderly, low pitch, British accent; seed 101, speed 0.9; chosen 2026-11-10 | audition candidate K (VoxCPM2): very deep, warm bass, neutral Latin American accent; seed 101, cloned at `guidance_scale: 3`; chosen 2026-11-12 |
+| Third Age | not chosen yet | needs an audition | needs an audition |
 
 **Auditioning a new narrator** (design §4.3):
 1. Write the brief in words, as a character, never as an actor.

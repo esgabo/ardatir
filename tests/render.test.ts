@@ -147,6 +147,20 @@ describe('render', () => {
     expect(takes.map((t) => [t.lang, t.flags.map((f) => f.kind)])).toEqual([['es', []], ['es', []]]);
   });
 
+  it('renders one engine per run: loading a second one beside the first exhausts the box', async () => {
+    const yaml = fs.readFileSync(path.join(FIXTURE, 'narrators/the-voice.yaml'), 'utf8');
+    const es = yaml.slice(yaml.indexOf('  en:')).replace('  en:', '  es:').replace('engine: omnivoice', 'engine: voxcpm2');
+    const { content, cacheDir } = setup({ 'narrators/the-voice.yaml': yaml + es });
+    const both = fakeStudio();
+    await expect(render(buildContent(content), both.vs, ref, opts(cacheDir, { lang: ['en', 'es'] }))).rejects.toThrow(/one engine per run.*omnivoice \(en\).*voxcpm2 \(es\)/);
+    expect(both.sent).toEqual([]);
+    // Once English is rendered, the same run only needs VoxCPM2.
+    await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir, { lang: ['en'] }));
+    const es2 = fakeStudio();
+    await render(buildContent(content), es2.vs, ref, opts(cacheDir, { lang: ['en', 'es'] }));
+    expect(es2.sent.map((r) => [r.lang, r.voice.engine])).toEqual([['es', 'voxcpm2'], ['es', 'voxcpm2']]);
+  });
+
   it('resumes after a failed call', async () => {
     const { content, cacheDir } = setup();
     await expect(render(buildContent(content), fakeStudio({ fail: (c) => c === 1 }).vs, ref, opts(cacheDir))).rejects.toThrow(/502/);
