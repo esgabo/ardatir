@@ -16,6 +16,7 @@ from mathutils import Matrix, Vector
 def reset_scene():
     """An empty scene in metres, 30 frames per second."""
     bpy.ops.wm.read_factory_settings(use_empty=True)
+    _materials.clear()  # the reset deleted them; several characters may be built in one run
     scene = bpy.context.scene
     scene.unit_settings.system = 'METRIC'
     scene.render.fps = 30

@@ -15,3 +15,4 @@ kin:
   - { id: kili, as: nephew }
   - { id: frerin, as: brother }
   - { id: dain, as: cousin }
+model: characters/thorin/thorin.glb

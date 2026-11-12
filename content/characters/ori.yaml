@@ -7,3 +7,4 @@ scale: 1.26
 kin:
   - { id: dori, as: kin }
   - { id: nori, as: kin }
+model: characters/ori/ori.glb

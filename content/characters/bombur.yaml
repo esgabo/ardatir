@@ -9,3 +9,4 @@ scale: 1.24
 kin:
   - { id: bofur, as: brother }
   - { id: bifur, as: cousin }
+model: characters/bombur/bombur.glb

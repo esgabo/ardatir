@@ -8,3 +8,4 @@ color: "#6a5a4a"
 scale: 1.28
 kin:
   - { id: gloin, as: brother }
+model: characters/oin/oin.glb

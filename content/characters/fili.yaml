@@ -9,3 +9,4 @@ scale: 1.25
 kin:
   - { id: kili, as: brother }
   - { id: thorin, as: uncle }
+model: characters/fili/fili.glb

@@ -8,3 +8,4 @@ color: "#5a6a3a"
 scale: 1.32
 kin:
   - { id: balin, as: brother }
+model: characters/dwalin/dwalin.glb
