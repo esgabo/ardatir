@@ -23,10 +23,10 @@ describe('how a best guess is explained', () => {
   it('the secret door: its honest range, then the anchor it is placed after and whose story that is', () => {
     expect(partsText(placementParts(ev('the-secret-door'), 'en'), 'en')).toBe(
       'The sources say only autumn, T.A. 2941. We place it after A Welcome at Lake-town (22 September, T.A. 2941), ' +
-      "because that is the order of Bilbo Baggins's story. It shares that stretch with 6 other events, spaced out in story order.");
+      "because that is the order of Bilbo Baggins's story. It shares that stretch with 9 other events, spaced out in story order.");
     expect(partsText(placementParts(ev('the-secret-door'), 'es'), 'es')).toBe(
       'Las fuentes solo dicen otoño, T.E. 2941. Lo situamos después de La bienvenida en la Ciudad del Lago (22 de septiembre, T.E. 2941), ' +
-      'porque ese es el orden de la historia de Bilbo Bolsón. Comparte ese tramo con otros 6 eventos, repartidos en el orden de la historia.');
+      'porque ese es el orden de la historia de Bilbo Bolsón. Comparte ese tramo con otros 9 eventos, repartidos en el orden de la historia.');
   });
 
   it('contracts "de El" in Spanish names', () => {
