@@ -13,9 +13,10 @@ Each narrator gets a `<id>.yaml` definition (format in [`content/README.md`](../
 - **Contents:** the *void* passage, then 0.4 s of silence, then the *discord* passage. Its words (`refText`):
   > Before there was a world, there was only Ilúvatar, the One, and the Ainur he had made from his thought. But Melkor, the mightiest of them, wanted more than his part. He wove his own thoughts into the music, and discord spread around him.
 
-`the-elder.es.flac` is 13.39 s long, 24 kHz mono, sha256 `2c7931920e331bf72fde13c84be366f5767afa66ea5b65ca3230f3a52f7186c6`.
+`the-elder.es.flac` is 8.00 s long, 48 kHz mono, sha256 `83f24491116dc4df14a3d83f9ea93bb46cc9aa3b9e50011cbfcb0521e0b88e67`.
 
-- **Source:** Spanish audition candidate E, chosen by the author on 2026-11-11 for its Latin American accent. It was designed on VoiceStudio 0.5.6 with OmniVoice, `language: es`.
-- **Settings:** `instruct: "male, elderly, low pitch, american accent"`, `seed: 101`, `speed: 0.9`, server defaults otherwise. OmniVoice has no Spanish accent tags, only English accents and Chinese dialects. With `language: es`, this English tag gave the accent we wanted. Every recording clones the sample, so the tag doesn't matter after this.
-- **Contents:** the *void* passage, then 0.4 s of silence, then the *theme* passage, which ends on "su propia voz" and carries the seseo. Its words (`refText`):
-  > Antes de que hubiera un mundo, solo existía Ilúvatar, el Único, y los Ainur que había creado de su pensamiento. Les dio un gran tema, y comenzaron a cantarlo juntos, cada uno sumando su propia voz.
+- **Source:** Spanish audition candidate K, chosen by the author on 2026-11-12 for its very low pitch and neutral Latin American accent. It was designed on VoiceStudio 0.5.6 with VoxCPM2, from a description alone, `language: es`. It replaces candidate E (OmniVoice, 2026-11-11), which turned out Castilian.
+- **Settings:** `seed: 101`, and this description as `instruct`: "An elderly man with a very deep, warm bass voice, very low pitch: a Latin American Spanish narrator with a neutral accent, speaking slowly, solemn and full of quiet wonder, like someone telling a very old legend."
+- **Contents:** the *void* passage alone. K's other audition takes changed tone, so only this one is the voice. Its words (`refText`):
+  > Antes de que hubiera un mundo, solo existía Ilúvatar, el Único, y los Ainur que había creado de su pensamiento.
+- **Recording:** VoxCPM2 clones the sample from its audio and words, with no description, at `guidance_scale: 3` (the default 2.0 let it drift further from the sample). VoxCPM2 runs one engine per run; see `docs/LOCAL.md`.
