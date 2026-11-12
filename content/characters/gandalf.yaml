@@ -8,3 +8,4 @@ summary:
   es: Un mago errante que elige a Bilbo como saqueador de la compañía.
 color: "#8d8f94"
 scale: 1.7
+model: characters/gandalf/gandalf.glb

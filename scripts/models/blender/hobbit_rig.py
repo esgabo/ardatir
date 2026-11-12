@@ -61,15 +61,16 @@ for _s in ('L', 'R'):
     })
 
 
-def build_armature(name, joints):
-    """The armature object, in edit mode only while bones are placed."""
+def build_armature(name, joints, bones=None):
+    """The armature object, from `bones` (default: the hobbit's BONES) at `joints`."""
+    bones = BONES if bones is None else bones
     data = bpy.data.armatures.new(name + '-rig')
     arm = bpy.data.objects.new(name + '-rig', data)
     bpy.context.collection.objects.link(arm)
     bpy.context.view_layer.objects.active = arm
     arm.select_set(True)
     bpy.ops.object.mode_set(mode='EDIT')
-    for bone, (h, t, parent) in BONES.items():
+    for bone, (h, t, parent) in bones.items():
         eb = data.edit_bones.new(bone)
         eb.head = joints[h]
         eb.tail = joints[t]
@@ -238,7 +239,7 @@ def pose_fight(p, j):
     return pose
 
 
-def gait_seconds(height, pace, amp_deg, joints):
+def gait_seconds(height, pace, amp_deg, joints):  # used by every body type
     """How long one cycle (two steps) takes for the feet to keep up at `pace` heights per second."""
     stride = 2 * leg_length(joints) * math.sin(math.radians(amp_deg))  # one step, front foot to back
     return 2 * stride / (pace * height)
@@ -256,11 +257,11 @@ def clips(height, joints):
     }
 
 
-def make_clips(arm, height, joints):
-    """One action per clip, keyed on every frame from its pose function, looping exactly."""
+def make_clips(arm, table, joints):
+    """One action per clip in `table` (name -> (seconds, pose function)), keyed on every frame, looping exactly."""
     arm.animation_data_create()
     made = []
-    for name, (seconds, fn) in clips(height, joints).items():
+    for name, (seconds, fn) in table.items():
         frames = max(2, round(seconds * FPS))
         action = bpy.data.actions.new(name)
         action.use_fake_user = True

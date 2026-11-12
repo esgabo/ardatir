@@ -108,6 +108,37 @@ def loft(rings, sides=8, cap_start=True, cap_end=True, u=Vector((1, 0, 0)), v=Ve
     return bm
 
 
+def limb(a, b, radii, sides=7):
+    """A tube from point a to point b, with radii along it (one per ring)."""
+    a, b = Vector(a), Vector(b)
+    axis = (b - a).normalized()
+    u = Vector((1, 0, 0)) if abs(axis.x) < 0.9 else Vector((0, 1, 0))
+    u = (u - axis * u.dot(axis)).normalized()
+    v = axis.cross(u)
+    n = len(radii)
+    rings = [(a + (b - a) * (i / (n - 1)), r, r) for i, r in enumerate(radii)]
+    return loft(rings, sides=sides, u=u, v=v)
+
+
+def profile_at(profile, z):
+    """Interpolate a list of (z, *values) sections at height z (clamped at the ends)."""
+    if z <= profile[0][0]:
+        return tuple(profile[0][1:])
+    for a, b in zip(profile, profile[1:]):
+        if z <= b[0]:
+            f = (z - a[0]) / (b[0] - a[0])
+            return tuple(x + (y - x) * f for x, y in zip(a[1:], b[1:]))
+    return tuple(profile[-1][1:])
+
+
+def jitter(bm, amount, seed):
+    """Nudge every vertex a little, for rough natural forms (beards, rock)."""
+    rnd = random.Random(seed)
+    for v in bm.verts:
+        v.co += Vector((rnd.uniform(-1, 1), rnd.uniform(-1, 1), rnd.uniform(-1, 1))) * amount
+    return bm
+
+
 def blob(center, radii, subdiv=1, rotation=None):
     """A faceted ellipsoid (an icosphere, squashed)."""
     bm = bmesh.new()
