@@ -13,3 +13,6 @@ out/
 *.blend1
 *.blend2
 *.blend@
+
+# Python bytecode from the Blender scripts (scripts/models/blender/)
+__pycache__/
