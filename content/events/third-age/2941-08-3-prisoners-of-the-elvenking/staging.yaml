@@ -25,6 +25,7 @@ tracks:
       - { t: 0.66, x: 5, z: 0.2, action: idle }
       - { t: 0.9, x: 5, z: 0.2, action: talk, thought: { en: "The burglar! Tell the others: keep quiet, and trust him.", es: "¡El saqueador! Decidles a los demás: callad y confiad en él." } }
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: -6.2, z: 5.8, action: hide, thought: { en: "Everyone is too tired to notice me, and the ring does the rest.", es: "Están demasiado cansados para fijarse en mí, y el anillo hace el resto." } }
       - { t: 0.17, x: -5.4, z: 2.8, action: hide }

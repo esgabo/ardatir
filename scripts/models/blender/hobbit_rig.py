@@ -257,6 +257,51 @@ def clips(height, joints):
     }
 
 
+# --- a cloak (Bilbo travelling): two bones down the back, its swing baked into every clip ----
+
+def cloak_joints(joints, length=1.0):
+    """`joints` plus the cloak's: from between the shoulders down the back to the hem."""
+    j = dict(joints)
+    top, hips = joints['neck'], joints['hips']
+    j['cloak'] = Vector((0, 0.09, top.z - 0.03))
+    j['cloak_mid'] = Vector((0, 0.12, hips.z - 0.02))
+    j['cloak_hem'] = Vector((0, 0.15, 0.1 * length))
+    return j
+
+
+CLOAK_BONES = dict(BONES)
+CLOAK_BONES.update({
+    'cloak': ('cloak', 'cloak_mid', 'chest'),
+    'cloak_low': ('cloak_mid', 'cloak_hem', 'cloak'),
+})
+
+# per clip: (lean back, sway, flaps per cycle, plumb); rx > 0 swings the hanging bones back
+# (billow); `plumb` is how much of the body's forward lean the cloak undoes to hang straight down
+# (none in a crouch: there it lies over his back like a blanket)
+_CLOAK_MOTION = {
+    'idle': (0, 0.8, 1, 0.6), 'walk': (8, 3, 2, 0.6), 'run': (26, 6, 2, 0.3), 'talk': (0, 1.2, 1, 0.6),
+    'hide': (0, 0.5, 1, 0.0), 'fight': (6, 2, 1, 0.6),
+}
+
+
+def with_cloak(table):
+    """The clip table with the cloak's swing added: billowing behind a run, lagging the body."""
+    out = {}
+    for name, (seconds, fn) in table.items():
+        back, sway, flaps, plumb = _CLOAK_MOTION.get(name, (0, 1, 1, 0.6))
+
+        def pose(p, j, fn=fn, back=back, sway=sway, flaps=flaps, plumb=plumb):
+            pose = fn(p, j)
+            # the cloak hangs from the chest: undo the body's lean so it falls plumb
+            lean = sum(pose.get(b, (0, 0, 0))[0] for b in ('hips', 'spine', 'chest'))
+            s = math.sin(_tau(flaps * p) + 0.4)
+            pose['cloak'] = (back - lean * plumb + sway * s, 0, 0)
+            pose['cloak_low'] = (back * 0.5 + sway * 1.4 * math.sin(_tau(flaps * p) - 0.3), 0, 0)
+            return pose
+        out[name] = (seconds, pose)
+    return out
+
+
 def make_clips(arm, table, joints):
     """One action per clip in `table` (name -> (seconds, pose function)), keyed on every frame, looping exactly."""
     arm.animation_data_create()

@@ -8,6 +8,7 @@ narration:
   dawn: 0.85
 tracks:
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: -4, z: 3, action: walk, thought: { en: A burglar should be able to do this quietly., es: Un saqueador debería poder hacer esto en silencio. } }
       - { t: 0.3, x: -1, z: 1, action: hide, thought: { en: That purse is right there..., es: Esa bolsa está justo ahí... } }

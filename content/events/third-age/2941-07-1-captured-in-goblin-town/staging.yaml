@@ -170,6 +170,7 @@ tracks:
       - { t: 0.9, x: 3.0, z: 4.12, action: run }
       - { t: 1, x: 5.2, z: 6.33, action: run }
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 4.6, z: 3.8, action: idle, thought: { en: "Thunder and stone-giants. I want my own bed.", es: "Truenos y gigantes de piedra. Quiero mi cama." } }
       - { t: 0.15, x: 4.6, z: 3.8, action: hide }

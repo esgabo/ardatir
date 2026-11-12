@@ -13,6 +13,7 @@ beats:
   on: 0.85
 tracks:
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 6, z: 2.5, action: walk, thought: { en: "The road is dry this time. What a difference a year makes.", es: "El camino está seco esta vez. Cómo cambia todo en un año." } }
       - { t: 0.2, x: 3.2, z: 0.2, action: idle, thought: { en: "There they are, still stone. And a nest behind Tom's ear.", es: "Ahí están, todavía de piedra. Y un nido tras la oreja de Tom." } }

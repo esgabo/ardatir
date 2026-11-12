@@ -16,6 +16,7 @@ beats:
   mercy: 0.86
 tracks:
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 5, z: -4.5, action: hide, thought: { en: "My head... and nothing but dark.", es: "Mi cabeza... y solo oscuridad." } }
       - { t: 0.07, x: 4.8, z: -4.2, action: walk, thought: { en: "This little ring is cold. I will keep it.", es: "Este anillito está frío. Me lo quedaré." } }
