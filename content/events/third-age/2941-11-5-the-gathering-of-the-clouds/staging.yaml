@@ -1,0 +1,117 @@
+stage: diorama
+duration: 36
+narration:
+  thrush: 0
+  roac: 0.14
+  warning: 0.3
+  wall: 0.46
+  parley: 0.62
+  arrow: 0.8
+beats:
+  roac: 0.14
+  wall: 0.46
+  parley: 0.62
+  arrow: 0.8
+tracks:
+  - characterId: roac
+    keyframes:
+      - { t: 0, x: 11, z: -11, action: walk }
+      - { t: 0.1, x: 11, z: -11, action: walk }
+      - { t: 0.14, x: 2.6, z: -2.2, action: talk, thought: { en: "Thorin, son of Thráin: the dragon is dead.", es: "Thorin, hijo de Thráin: el dragón ha muerto." } }
+      - { t: 0.3, x: 2.6, z: -2.2, action: talk, thought: { en: Trust the Bowman. Gold is not worth a war., es: Confía en el Arquero. El oro no vale una guerra. } }
+      - { t: 0.46, x: 2.6, z: -2.2, action: idle }
+      - { t: 0.5, x: 11, z: -11, action: walk }
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 3.4, z: -3.2, action: idle, thought: { en: "A bird, chattering. If only we knew its speech.", es: Un pájaro que parlotea. Si entendiéramos su lengua... } }
+      - { t: 0.14, x: 3.4, z: -3.2, action: idle, thought: { en: Dead! The Mountain is ours., es: ¡Muerto! La Montaña es nuestra. } }
+      - { t: 0.3, x: 3.4, z: -3.2, action: idle, thought: { en: Peace? With those who come to rob us?, es: ¿Paz? ¿Con quienes vienen a robarnos? } }
+      - { t: 0.46, x: 4, z: -4, action: talk, thought: { en: Send for Dáin. Build the wall., es: Que venga Dáin. Levantad el muro. } }
+      - { t: 0.62, x: 3.6, z: -3.4, action: talk, thought: { en: Not one coin while you stand armed at my gate., es: Ni una moneda mientras estéis armados ante mi puerta. } }
+      - { t: 0.8, x: 3.6, z: -3.4, action: fight, thought: { en: There is my answer., es: Ahí tenéis mi respuesta. } }
+      - { t: 1, x: 3.6, z: -3.4, action: idle }
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 2.4, z: -4.2, action: idle, thought: { en: That thrush again., es: Otra vez ese zorzal. } }
+      - { t: 0.46, x: 2.4, z: -4.2, action: idle, thought: { en: "A wall, and an army coming. This will not end well.", es: "Un muro, y un ejército en camino. Esto no acabará bien." } }
+      - { t: 0.8, x: 2.6, z: -4, action: idle, thought: { en: Oh no. Not war over gold., es: "Oh, no. No una guerra por oro." } }
+  - characterId: bard
+    keyframes:
+      - { t: 0, x: -11, z: 11, action: walk }
+      - { t: 0.56, x: -11, z: 11, action: walk }
+      - { t: 0.62, x: 1.2, z: -0.8, action: talk, thought: { en: "We ask a fair share, to rebuild what the dragon burned.", es: "Pedimos una parte justa, para reconstruir lo que quemó el dragón." } }
+      - { t: 0.76, x: 1.2, z: -0.8, action: idle }
+      - { t: 0.86, x: -0.4, z: 0.8, action: walk, thought: { en: Then we will wait. Hunger may speak where words could not., es: Entonces esperaremos. El hambre quizá hable donde no pudieron las palabras. } }
+      - { t: 1, x: -2.4, z: 2.8, action: walk }
+  - characterId: balin
+    keyframes:
+      - { t: 0, x: 3.8, z: -2.7, action: idle }
+      - { t: 0.46, x: 3.8, z: -2.7, action: walk }
+      - { t: 0.56, x: 2.6, z: -2.1, action: idle, thought: { en: Will he really fight them all for gold?, es: ¿De verdad luchará contra todos por oro? } }
+      - { t: 1, x: 2.6, z: -2.1, action: idle }
+  - characterId: dwalin
+    keyframes:
+      - { t: 0, x: 4.5, z: -2.7, action: idle }
+      - { t: 0.46, x: 4.5, z: -2.7, action: walk, thought: { en: Stone on stone. Nobody passes., es: Piedra sobre piedra. Nadie pasa. } }
+      - { t: 0.56, x: 3.3, z: -2.1, action: idle }
+      - { t: 1, x: 3.3, z: -2.1, action: idle }
+  - characterId: fili
+    keyframes:
+      - { t: 0, x: 5.1, z: -2.7, action: idle }
+      - { t: 0.46, x: 5.1, z: -2.7, action: walk }
+      - { t: 0.56, x: 4, z: -2.1, action: idle }
+      - { t: 1, x: 4, z: -2.1, action: idle }
+  - characterId: kili
+    keyframes:
+      - { t: 0, x: 5.9, z: -2.7, action: idle }
+      - { t: 0.46, x: 5.9, z: -2.7, action: walk }
+      - { t: 0.56, x: 4.7, z: -2.1, action: idle }
+      - { t: 1, x: 4.7, z: -2.1, action: idle }
+  - characterId: dori
+    keyframes:
+      - { t: 0, x: 3.8, z: -2, action: idle }
+      - { t: 0.46, x: 3.8, z: -2, action: walk }
+      - { t: 0.56, x: 2.6, z: -1.4, action: idle }
+      - { t: 1, x: 2.6, z: -1.4, action: idle }
+  - characterId: nori
+    keyframes:
+      - { t: 0, x: 4.5, z: -2, action: idle }
+      - { t: 0.46, x: 4.5, z: -2, action: walk }
+      - { t: 0.56, x: 3.3, z: -1.4, action: idle }
+      - { t: 1, x: 3.3, z: -1.4, action: idle }
+  - characterId: ori
+    keyframes:
+      - { t: 0, x: 5.1, z: -2, action: idle }
+      - { t: 0.46, x: 5.1, z: -2, action: walk }
+      - { t: 0.56, x: 4, z: -1.4, action: idle }
+      - { t: 1, x: 4, z: -1.4, action: idle }
+  - characterId: oin
+    keyframes:
+      - { t: 0, x: 5.9, z: -2, action: idle }
+      - { t: 0.46, x: 5.9, z: -2, action: walk }
+      - { t: 0.56, x: 4.7, z: -1.4, action: idle }
+      - { t: 1, x: 4.7, z: -1.4, action: idle }
+  - characterId: gloin
+    keyframes:
+      - { t: 0, x: 3.8, z: -1.3, action: idle }
+      - { t: 0.46, x: 3.8, z: -1.3, action: walk }
+      - { t: 0.56, x: 2.6, z: -0.7, action: idle }
+      - { t: 1, x: 2.6, z: -0.7, action: idle }
+  - characterId: bifur
+    keyframes:
+      - { t: 0, x: 4.5, z: -1.3, action: idle }
+      - { t: 0.46, x: 4.5, z: -1.3, action: walk }
+      - { t: 0.56, x: 3.3, z: -0.7, action: idle }
+      - { t: 1, x: 3.3, z: -0.7, action: idle }
+  - characterId: bofur
+    keyframes:
+      - { t: 0, x: 5.1, z: -1.3, action: idle }
+      - { t: 0.46, x: 5.1, z: -1.3, action: walk }
+      - { t: 0.56, x: 4, z: -0.7, action: idle }
+      - { t: 1, x: 4, z: -0.7, action: idle }
+  - characterId: bombur
+    keyframes:
+      - { t: 0, x: 5.9, z: -1.3, action: idle }
+      - { t: 0.46, x: 5.9, z: -1.3, action: walk }
+      - { t: 0.56, x: 4.7, z: -0.7, action: idle }
+      - { t: 1, x: 4.7, z: -0.7, action: idle }

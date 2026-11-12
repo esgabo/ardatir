@@ -1,0 +1,131 @@
+stage: diorama
+duration: 34
+narration:
+  shut: 0
+  silence: 0.17
+  stone: 0.34
+  hoard: 0.52
+  mithril: 0.7
+  gate: 0.85
+beats:
+  shut: 0
+  silence: 0.17
+  stone: 0.34
+  mithril: 0.7
+  gate: 0.85
+tracks:
+  - characterId: bilbo
+    keyframes:
+      - { t: 0, x: 5.2, z: -5.2, action: hide, thought: { en: "Inside, all of you! Quick!", es: "¡Adentro, todos! ¡Rápido!" } }
+      - { t: 0.17, x: 5.2, z: -5.2, action: idle, thought: { en: Not a sound from below. No way out but down., es: Ni un ruido abajo. No hay más salida que bajar. } }
+      - { t: 0.24, x: 3, z: -3, action: walk }
+      - { t: 0.34, x: 0.6, z: 0.2, action: idle, thought: { en: "That light... the Heart of the Mountain. Into my pocket, before I think.", es: "Esa luz... el Corazón de la Montaña. Al bolsillo, antes de pensarlo." } }
+      - { t: 0.52, x: 0.2, z: 0.9, action: idle, thought: { en: I will say nothing. Not yet., es: No diré nada. Todavía no. } }
+      - { t: 0.7, x: -0.6, z: 1.4, action: idle, thought: { en: Mithril! It weighs nothing at all., es: ¡Mithril! No pesa nada. } }
+      - { t: 0.85, x: -2.6, z: 3, action: walk }
+      - { t: 1, x: -5.4, z: 5.2, action: walk, thought: { en: Daylight. But where is the dragon?, es: La luz del día. Pero ¿dónde está el dragón? } }
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: 5.8, z: -4.4, action: hide, thought: { en: "Shut in, and the dragon raging outside.", es: "Encerrados, y el dragón rugiendo fuera." } }
+      - { t: 0.4, x: 5.8, z: -4.4, action: idle }
+      - { t: 0.5, x: 1.6, z: -0.6, action: walk, thought: { en: The gold of my fathers. All of it ours again., es: El oro de mis padres. Todo nuestro otra vez. } }
+      - { t: 0.66, x: 0, z: 1.2, action: walk }
+      - { t: 0.7, x: -0.1, z: 1.5, action: talk, thought: { en: "Take this coat, burglar. The first payment of your share.", es: "Toma esta cota, saqueador. El primer pago de tu parte." } }
+      - { t: 0.85, x: -2, z: 2.6, action: walk, thought: { en: I know the way to the Front Gate., es: Conozco el camino hasta la Puerta Principal. } }
+      - { t: 1, x: -4.8, z: 5.6, action: walk }
+  - characterId: balin
+    keyframes:
+      - { t: 0, x: 4.6, z: -6.3, action: hide, thought: { en: Hush. Let it pass., es: Silencio. Dejad que pase. } }
+      - { t: 0.4, x: 4.6, z: -6.3, action: idle }
+      - { t: 0.5, x: 1.6, z: -1.5, action: walk }
+      - { t: 0.6, x: 1.4, z: -1.1, action: idle }
+      - { t: 0.85, x: -1, z: 1.3, action: walk }
+      - { t: 1, x: -4.6, z: 4.3, action: walk }
+  - characterId: dwalin
+    keyframes:
+      - { t: 0, x: 5.3, z: -6.3, action: hide }
+      - { t: 0.4, x: 5.3, z: -6.3, action: idle }
+      - { t: 0.5, x: 2.3, z: -1.5, action: walk }
+      - { t: 0.6, x: 2.1, z: -1.1, action: idle }
+      - { t: 0.85, x: -0.3, z: 1.3, action: walk }
+      - { t: 1, x: -3.9, z: 4.3, action: walk }
+  - characterId: fili
+    keyframes:
+      - { t: 0, x: 5.9, z: -6.3, action: hide }
+      - { t: 0.4, x: 5.9, z: -6.3, action: idle }
+      - { t: 0.5, x: 3, z: -1.5, action: walk }
+      - { t: 0.6, x: 2.8, z: -1.1, action: idle }
+      - { t: 0.85, x: 0.4, z: 1.3, action: walk }
+      - { t: 1, x: -3.2, z: 4.3, action: walk }
+  - characterId: kili
+    keyframes:
+      - { t: 0, x: 6.7, z: -6.3, action: hide }
+      - { t: 0.4, x: 6.7, z: -6.3, action: idle }
+      - { t: 0.5, x: 3.7, z: -1.5, action: walk }
+      - { t: 0.6, x: 3.5, z: -1.1, action: idle }
+      - { t: 0.85, x: 1, z: 1.3, action: walk }
+      - { t: 1, x: -2.6, z: 4.3, action: walk }
+  - characterId: dori
+    keyframes:
+      - { t: 0, x: 4.6, z: -5.6, action: hide }
+      - { t: 0.4, x: 4.6, z: -5.6, action: idle }
+      - { t: 0.5, x: 1.6, z: -0.8, action: walk }
+      - { t: 0.6, x: 1.4, z: -0.4, action: idle }
+      - { t: 0.85, x: -1, z: 2, action: walk }
+      - { t: 1, x: -4.6, z: 5, action: walk }
+  - characterId: nori
+    keyframes:
+      - { t: 0, x: 5.3, z: -5.6, action: hide }
+      - { t: 0.4, x: 5.3, z: -5.6, action: idle }
+      - { t: 0.5, x: 2.3, z: -0.8, action: walk }
+      - { t: 0.6, x: 2.1, z: -0.4, action: idle }
+      - { t: 0.85, x: -0.3, z: 2, action: walk }
+      - { t: 1, x: -3.9, z: 5, action: walk }
+  - characterId: ori
+    keyframes:
+      - { t: 0, x: 5.9, z: -5.6, action: hide }
+      - { t: 0.4, x: 5.9, z: -5.6, action: idle }
+      - { t: 0.5, x: 3, z: -0.8, action: walk }
+      - { t: 0.6, x: 2.8, z: -0.4, action: idle }
+      - { t: 0.85, x: 0.4, z: 2, action: walk }
+      - { t: 1, x: -3.2, z: 5, action: walk }
+  - characterId: oin
+    keyframes:
+      - { t: 0, x: 6.7, z: -5.6, action: hide }
+      - { t: 0.4, x: 6.7, z: -5.6, action: idle }
+      - { t: 0.5, x: 3.7, z: -0.8, action: walk }
+      - { t: 0.6, x: 3.5, z: -0.4, action: idle }
+      - { t: 0.85, x: 1, z: 2, action: walk }
+      - { t: 1, x: -2.6, z: 5, action: walk }
+  - characterId: gloin
+    keyframes:
+      - { t: 0, x: 4.6, z: -4.9, action: hide }
+      - { t: 0.4, x: 4.6, z: -4.9, action: idle }
+      - { t: 0.5, x: 1.6, z: -0.1, action: walk }
+      - { t: 0.6, x: 1.4, z: 0.3, action: idle }
+      - { t: 0.85, x: -1, z: 2.7, action: walk }
+      - { t: 1, x: -4.6, z: 5.7, action: walk }
+  - characterId: bifur
+    keyframes:
+      - { t: 0, x: 5.3, z: -4.9, action: hide }
+      - { t: 0.4, x: 5.3, z: -4.9, action: idle }
+      - { t: 0.5, x: 2.3, z: -0.1, action: walk }
+      - { t: 0.6, x: 2.1, z: 0.3, action: idle }
+      - { t: 0.85, x: -0.3, z: 2.7, action: walk }
+      - { t: 1, x: -3.9, z: 5.7, action: walk }
+  - characterId: bofur
+    keyframes:
+      - { t: 0, x: 5.9, z: -4.9, action: hide }
+      - { t: 0.4, x: 5.9, z: -4.9, action: idle }
+      - { t: 0.5, x: 3, z: -0.1, action: walk }
+      - { t: 0.6, x: 2.8, z: 0.3, action: idle }
+      - { t: 0.85, x: 0.4, z: 2.7, action: walk }
+      - { t: 1, x: -3.2, z: 5.7, action: walk }
+  - characterId: bombur
+    keyframes:
+      - { t: 0, x: 6.7, z: -4.9, action: hide }
+      - { t: 0.4, x: 6.7, z: -4.9, action: idle }
+      - { t: 0.5, x: 3.7, z: -0.1, action: walk }
+      - { t: 0.6, x: 3.5, z: 0.3, action: idle, thought: { en: So much gold I could sleep on it., es: Tanto oro que podría dormir encima. } }
+      - { t: 0.85, x: 1, z: 2.7, action: walk }
+      - { t: 1, x: -2.6, z: 5.7, action: walk }
