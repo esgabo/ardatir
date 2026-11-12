@@ -1,7 +1,7 @@
 // WAV parsing, joining with gaps, and audio statistics (scripts/narration/wav.ts).
 
 import { describe, expect, it } from 'vitest';
-import { audioStats, encodeWav, joinWithGaps, parseWav, type Pcm } from '../scripts/narration/wav.ts';
+import { audioStats, encodeWav, joinWithGaps, parseWav, wavSeconds, type Pcm } from '../scripts/narration/wav.ts';
 
 const RATE = 24000;
 const tone = (seconds: number, amp = 0.5): Int16Array =>
@@ -16,6 +16,11 @@ describe('wav', () => {
     const y = parseWav(encodeWav(x));
     expect(y.sampleRate).toBe(RATE);
     expect(Array.from(y.samples)).toEqual(Array.from(x.samples));
+  });
+
+  it('measures seconds at the file\'s own rate (VoxCPM2 speaks at 48 kHz)', () => {
+    expect(wavSeconds(encodeWav({ sampleRate: 48000, samples: new Int16Array(72000) }))).toBe(1.5);
+    expect(wavSeconds(encodeWav(pcm(zeros(2))))).toBe(2);
   });
 
   it('finds the data chunk after other chunks', () => {
