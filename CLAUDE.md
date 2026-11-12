@@ -72,7 +72,7 @@ scripts/content/
 scripts/models/
   pack.ts            `npm run model:pack`: gltfpack (meshopt) a Blender export into assets/, with the budget
   make-test-model.ts writes the fixture's test model (tests/fixtures/valid/assets/): tests only, never real content
-  blender/           models built by script in headless Blender: lowpoly.py (parts), hobbit_rig.py, wizard_rig.py, dwarf_rig.py (rigs and clips per body type), bilbo.py, gandalf.py, dwarves.py (the thirteen), turnaround.py and lineup.py (review renders)
+  blender/           models built by script in headless Blender: lowpoly.py (parts), hobbit_rig.py, wizard_rig.py, dwarf_rig.py, troll_rig.py (rigs and clips per body type), bilbo.py, gandalf.py, dwarves.py (the thirteen), trolls.py (living and stone), turnaround.py and lineup.py (review renders)
   cli.ts             `npm run content`
 tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
 scripts/narration/

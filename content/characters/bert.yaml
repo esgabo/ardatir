@@ -6,3 +6,4 @@ summary:
   es: Uno de los tres trolls de piedra del Bosque de los Trolls.
 color: "#6a7556"
 scale: 2.7
+model: characters/bert/bert.glb
