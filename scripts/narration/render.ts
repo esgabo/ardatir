@@ -134,14 +134,14 @@ function writeTake(t: Take, wav: Buffer): void {
 const wpsOf = (t: Take) => t.words / Math.max(0.1, t.stats.duration - t.stats.leadSilence);
 const median = (xs: number[]) => { const s = [...xs].sort((a, b) => a - b); return s.length ? (s[(s.length - 1) >> 1] + s[s.length >> 1]) / 2 : undefined; };
 
-/** Every passed take of this narrator already in the cache (for its median pace). */
-function cachedPassed(cacheDir: string, narrator: string): Take[] {
+/** Every passed take of this narrator in this language already in the cache (for its median pace). */
+function cachedPassed(cacheDir: string, narrator: string, lang: Lang): Take[] {
   if (!fs.existsSync(cacheDir)) return [];
   const out: Take[] = [];
   for (const f of fs.readdirSync(cacheDir, { recursive: true }) as string[]) {
     if (!f.endsWith('.json')) continue;
     const t = JSON.parse(fs.readFileSync(path.join(cacheDir, f), 'utf8')) as Take;
-    if (t.narrator === narrator && !t.flags.length) out.push(t);
+    if (t.narrator === narrator && t.lang === lang && !t.flags.length) out.push(t);
   }
   return out;
 }
@@ -154,10 +154,24 @@ export async function render(
   const lex = content.pronunciation;
   const takes: Take[] = [];
   const passedBy = new Map<string, Take[]>();
-  for (const j of jobs(content, o)) {
+  const todo = jobs(content, o);
+  // One engine per run: the Voice Studio keeps one in memory, and loading a second into the same
+  // process (VoxCPM2 after OmniVoice) has run the Voice Studio out of memory. Split the run by --lang.
+  const needs = new Map<string, Set<Lang>>();
+  for (const j of todo) {
+    const pending = passageKeys(j, lex).some(({ passage: p, key }) => !readTake(takePath(o.cacheDir, j, p.id, key)) || o.rejects.has(`${j.event}/${p.id}`));
+    if (pending) { const e = j.narrator.voices[j.lang]!.engine; if (!needs.has(e)) needs.set(e, new Set()); needs.get(e)!.add(j.lang); }
+  }
+  if (needs.size > 1) {
+    const list = [...needs].map(([e, ls]) => `${e} (${[...ls].join(', ')})`).join(' and ');
+    throw new Error(`one engine per run: this needs ${list}; render each with --lang, restarting the Voice Studio between (docs/LOCAL.md)`);
+  }
+  for (const j of todo) {
     const voice = j.narrator.voices[j.lang]!;
-    if (!passedBy.has(j.narrator.id)) passedBy.set(j.narrator.id, cachedPassed(o.cacheDir, j.narrator.id));
-    const passed = passedBy.get(j.narrator.id)!;
+    // Pace is judged per language: a Spanish reading runs at its own speed.
+    const paceKey = `${j.narrator.id}/${j.lang}`;
+    if (!passedBy.has(paceKey)) passedBy.set(paceKey, cachedPassed(o.cacheDir, j.narrator.id, j.lang));
+    const passed = passedBy.get(paceKey)!;
     let ref: Buffer | undefined;
     for (const { passage: p, key, text, used } of passageKeys(j, lex)) {
       const file = takePath(o.cacheDir, j, p.id, key);

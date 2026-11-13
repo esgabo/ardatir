@@ -1,5 +1,6 @@
 // The Voice Studio client, against a fake fetch: no network (scripts/narration/voicestudio.ts).
 
+import http from 'node:http';
 import { describe, expect, it } from 'vitest';
 import { voiceStudio } from '../scripts/narration/voicestudio.ts';
 import type { NarratorVoice } from '../src/data/types.ts';
@@ -17,6 +18,28 @@ function fakeFetch(respond: (c: Call) => Response = () => new Response(Buffer.fr
 }
 const form = (c: Call) => c.init.body as FormData;
 const header = (c: Call, h: string) => new Headers(c.init.headers).get(h);
+
+describe('voiceStudio over real HTTP', () => {
+  it('sends the form as multipart with the reference attached, and waits as long as it is told', async () => {
+    let got = { type: '', body: '' };
+    const server = http.createServer((req, res) => {
+      const parts: Buffer[] = [];
+      req.on('data', (d) => parts.push(d));
+      req.on('end', () => { got = { type: String(req.headers['content-type']), body: Buffer.concat(parts).toString() }; setTimeout(() => res.end('RIFF'), 300); });
+    });
+    await new Promise<void>((r) => server.listen(0, '127.0.0.1', r));
+    const url = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+    try {
+      const out = await voiceStudio({ url, key: 'k' }).synthesize({ text: 'Que sea.', lang: 'es', voice: { ...voice, engine: 'voxcpm2' }, referenceWav: Buffer.from('REFWAV'), seed: 7 });
+      expect(out.toString()).toBe('RIFF');
+      expect(got.type).toMatch(/^multipart\/form-data; boundary=/);
+      expect(got.body).toContain('Que sea.');
+      expect(got.body).toContain('voxcpm2');
+      expect(got.body).toMatch(/filename="reference.wav"[\s\S]*REFWAV/);
+      await expect(voiceStudio({ url, timeoutMs: 100 }).version()).rejects.toThrow();
+    } finally { server.close(); }
+  });
+});
 
 describe('voiceStudio.synthesize', () => {
   const req = { text: 'Let it be.', lang: 'en' as const, voice, referenceWav: Buffer.from('wav'), seed: 1101 };
