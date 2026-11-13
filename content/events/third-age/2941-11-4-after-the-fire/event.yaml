@@ -1,0 +1,29 @@
+id: after-the-fire
+age: third-age
+when:
+  # The morning after Smaug's fall, then the days until the hosts set out (Hobbit ch. 14); only the season is claimed.
+  start: { age: third-age, year: 2941, season: autumn }
+  precision: season
+place: lake-town
+characters: [ bard, the-master, thranduil ]
+arcs: [ the-quest-of-erebor ]
+journeys: []
+tags: [ hobbit ]
+status: staged
+source: { book: the-hobbit, chapter: 14 }
+title: { en: After the Fire, es: Después del fuego }
+summary:
+  en: "On the shore, the homeless people of Lake-town want Bard for their king, while the Master turns their anger on the dwarves. The Elvenking, marching for the Mountain, turns aside to help them, and elves and men set out together for the dragon's treasure."
+  es: "En la orilla, la gente sin hogar de la Ciudad del Lago quiere a Bardo por rey, mientras el Gobernador vuelve su enfado contra los enanos. El Rey Elfo, que marchaba hacia la Montaña, se desvía para ayudarlos, y elfos y hombres parten juntos hacia el tesoro del dragón."
+beats:
+  - { id: shore, label: { en: "The ruined town", es: "La ciudad en ruinas" } }
+  - { id: king, label: { en: "Bard for king", es: "Bardo, rey" } }
+  - { id: master, label: { en: "The Master's words", es: "Las palabras del Gobernador" } }
+  - { id: elves, label: { en: "The elves come", es: "Llegan los elfos" } }
+  - { id: march, label: { en: "North to the Mountain", es: "Al norte, a la Montaña" } }
+links:
+  - to: death-of-smaug
+    type: caused-by
+    note:
+      en: The dragon's fall leaves the town in ashes and the treasure unguarded.
+      es: La caída del dragón deja la ciudad en cenizas y el tesoro sin guardián.

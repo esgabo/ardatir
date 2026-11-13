@@ -63,6 +63,7 @@ const UI = {
   kind_orc: { en: 'Orc', es: 'Orco' },
   kind_goblin: { en: 'Goblin', es: 'Trasgo' },
   kind_eagle: { en: 'Eagle', es: 'Águila' },
+  kind_raven: { en: 'Raven', es: 'Cuervo' },
   'kind_skin-changer': { en: 'Skin-changer', es: 'Cambiapieles' },
   'kind_the-one': { en: 'The One', es: 'El Único' },
   kind_maia: { en: 'Maia', es: 'Maia' },

@@ -65,7 +65,7 @@ const reference = (n: Narrator, lang: Lang) => {
 
 const takes = await render(content, vs, reference, {
   only: args!.only, age: args!.age, lang: langs, changed: args!.changed, cacheDir, rejects, onReject, log: (l) => console.log(l),
-});
+}).catch((e: Error) => fail(e.message));
 
 // A narrator still earning trust gets a bigger sample: fewer than 3 published events.
 const published = (narrator: string) => content.index.events.filter((e) => {
