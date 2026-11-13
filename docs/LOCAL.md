@@ -39,7 +39,7 @@ Takes are cached in `out/narration-cache/`, so a run that fails halfway resumes 
 | Age | Narrator | Voice (English) | Voice (Spanish) |
 |---|---|---|---|
 | Before Time | `the-elder` | audition candidate A (OmniVoice): male, elderly, low pitch, British accent; seed 101, speed 0.9; chosen 2026-11-10 | audition candidate K (VoxCPM2): very deep, warm bass, neutral Latin American accent; seed 101, cloned at `guidance_scale: 3`; chosen 2026-11-12 |
-| Third Age | not chosen yet | needs an audition | needs an audition |
+| Third Age | `the-lady` | audition candidate B (OmniVoice): female, middle-aged, moderate pitch, British accent; seed 101, speed 0.9; chosen 2026-11-12 | audition candidate M (VoxCPM2): calm, low, warm woman, neutral Latin American accent; seed 101, cloned from its *pity* take at `guidance_scale: 3`; chosen 2026-11-13 |
 
 **Auditioning a new narrator** (design §4.3):
 1. Write the brief in words, as a character, never as an actor.
