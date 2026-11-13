@@ -134,6 +134,33 @@ describe('render', () => {
     expect(again.sent[0].seed).toBe(4007);
   });
 
+  it('judges pace against the narrator\'s median in the same language only', async () => {
+    const yaml = fs.readFileSync(path.join(FIXTURE, 'narrators/the-voice.yaml'), 'utf8');
+    const es = yaml.slice(yaml.indexOf('  en:')).replace('  en:', '  es:');
+    const { content, cacheDir } = setup({ 'narrators/the-voice.yaml': yaml + es });
+    // Five passed English takes, far faster than any reading (100 words a second).
+    for (let i = 0; i < 5; i++) {
+      const dir = path.join(cacheDir, 'the-party', 'en'); fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, `p${i}.k.json`), JSON.stringify({ narrator: 'the-voice', lang: 'en', flags: [], words: 100, stats: { duration: 1, leadSilence: 0 } }));
+    }
+    const takes = await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir, { lang: ['es'] }));
+    expect(takes.map((t) => [t.lang, t.flags.map((f) => f.kind)])).toEqual([['es', []], ['es', []]]);
+  });
+
+  it('renders one engine per run: loading a second one beside the first exhausts the box', async () => {
+    const yaml = fs.readFileSync(path.join(FIXTURE, 'narrators/the-voice.yaml'), 'utf8');
+    const es = yaml.slice(yaml.indexOf('  en:')).replace('  en:', '  es:').replace('engine: omnivoice', 'engine: voxcpm2');
+    const { content, cacheDir } = setup({ 'narrators/the-voice.yaml': yaml + es });
+    const both = fakeStudio();
+    await expect(render(buildContent(content), both.vs, ref, opts(cacheDir, { lang: ['en', 'es'] }))).rejects.toThrow(/one engine per run.*omnivoice \(en\).*voxcpm2 \(es\)/);
+    expect(both.sent).toEqual([]);
+    // Once English is rendered, the same run only needs VoxCPM2.
+    await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir, { lang: ['en'] }));
+    const es2 = fakeStudio();
+    await render(buildContent(content), es2.vs, ref, opts(cacheDir, { lang: ['en', 'es'] }));
+    expect(es2.sent.map((r) => [r.lang, r.voice.engine])).toEqual([['es', 'voxcpm2'], ['es', 'voxcpm2']]);
+  });
+
   it('resumes after a failed call', async () => {
     const { content, cacheDir } = setup();
     await expect(render(buildContent(content), fakeStudio({ fail: (c) => c === 1 }).vs, ref, opts(cacheDir))).rejects.toThrow(/502/);

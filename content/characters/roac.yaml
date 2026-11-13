@@ -1,0 +1,9 @@
+id: roac
+name: { en: Roäc, es: Roäc }
+kind: raven
+pronounce: { en: ROH-ak, es: RO-ak }   # how to say it: syllables, the stressed one in capitals
+summary:
+  en: "Son of Carc, an ancient raven of Ravenhill and chief of the ravens of the Mountain, long a friend of Thorin's people."
+  es: "Hijo de Carc, un cuervo anciano de la Colina del Cuervo y jefe de los cuervos de la Montaña, amigo de antiguo del pueblo de Thorin."
+color: "#3a3a42"
+scale: 0.5
