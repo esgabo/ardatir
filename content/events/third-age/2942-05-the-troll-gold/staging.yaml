@@ -27,11 +27,14 @@ tracks:
       - { t: 0.62, x: 5, z: -1.6, action: talk, thought: { en: "Half for me, half for you. A hobbit coming home may be glad of it.", es: "La mitad para mí y la mitad para ti. Un hobbit que vuelve a casa lo agradecerá." } }
       - { t: 0.85, x: -5.8, z: 2.8, action: walk }
   - characterId: bert
+    model: characters/bert/bert-stone.glb   # turned to stone at the dawn in roast-mutton
     keyframes:
       - { t: 0, x: 0.4, z: -3.4, action: idle }
   - characterId: tom
+    model: characters/tom/tom-stone.glb   # turned to stone at the dawn in roast-mutton
     keyframes:
       - { t: 0, x: 2, z: -3, action: idle, thought: { en: "A bird has built her nest behind my ear. I do not mind.", es: "Un pájaro ha hecho el nido tras mi oreja. No me importa." } }
   - characterId: william
+    model: characters/william/william-stone.glb   # turned to stone at the dawn in roast-mutton
     keyframes:
       - { t: 0, x: -1.2, z: -3, action: idle, thought: { en: "Stone. Quite comfortable, really.", es: "Piedra. Bastante cómodo, la verdad." } }

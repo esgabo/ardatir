@@ -41,7 +41,8 @@ A character can also be built entirely in code, in headless Blender: low-poly pa
 - `wizard_rig.py`: the wizard rig (#21): the hobbit's bones at a man's proportions, plus two for the cloak and two for the beard, whose swing is baked into the clips. The staff hand's rest pose is bent forward with the staff upright; its clips turn the hand so the staff keeps the lean they ask for.
 - `dwarf_rig.py`: the dwarf rig (#21): the hobbit's bones at a dwarf's build (`width` broadens it), plus two beard bones, with a short heavy stride and an overhand blow for `fight`.
 - `dwarves.py`: Thorin and the twelve from one dwarf body, a table of variants (hood, tunic, belt, beard colour and style, width, belly); `--only thorin,balin` builds some of them.
-- `lineup.py`: exports side by side in their rest pose, for comparing a set of variants.
+- `troll_rig.py`, `trolls.py`: Bert, Tom and William on one hunched troll body, each also in stone (`<id>-stone.glb`: one held pose as a two-frame `idle`), which an event's staging picks per track.
+- `lineup.py`: exports side by side in their rest pose (`--pose` keeps each model's first frame; `--spacing=` for big ones), for comparing a set of variants.
 - `bilbo.py`, `gandalf.py`: one character each. Each writes `assets/characters/<id>/<id>.blend` and the raw export `out/models/<id>.glb`.
 - `turnaround.py`: review renders of a `.blend` (front, three-quarter, side, back, the diorama's angle, and any `clip:frame`).
 
