@@ -31,7 +31,7 @@ Recordings are produced on the homelab **Voice Studio** (VoiceStudio v0.5.6, Omn
 - First deliverable: the Before Time and Third Age English narrators. They cover the three staged events (Ainulindalë, Unexpected Party, Roast Mutton).
 
 **Non-goals (for now)**
-- Spanish voices. The Castilian vs Latin American choice in #34 stays open.
+- Spanish voices. The Castilian vs Latin American choice in #34 stays open. (Decided 2026-11-11: Latin American; `the-elder` has an `es` voice.)
 - Character voices, dialogue casting, emotion engines.
 - Turning the Voice Studio box into a dependable node.
 - Music, ambience and effects (#27).

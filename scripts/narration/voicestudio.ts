@@ -3,6 +3,8 @@
 // URL and key come from VOICESTUDIO_URL (required) and VOICESTUDIO_API_KEY; the key is
 // never logged.
 
+// undici's fetch only knows its own FormData, not the global one.
+import { Agent, FormData, fetch as undiciFetch } from 'undici';
 import type { Lang, NarratorVoice } from '../../src/data/types.ts';
 
 export interface SynthRequest { text: string; lang: Lang; voice: NarratorVoice; referenceWav: Buffer; seed: number }
@@ -20,8 +22,12 @@ export function voiceStudio(opts: { url?: string; key?: string; fetch?: typeof f
   if (!url) throw new Error('VOICESTUDIO_URL is not set: export the Voice Studio\'s address, e.g. http://<host>:<port> (docs/LOCAL.md)');
   const base = url.replace(/\/$/, '');
   const key = opts.key ?? process.env.VOICESTUDIO_API_KEY;
-  const f = opts.fetch ?? fetch;
-  const timeoutMs = opts.timeoutMs ?? 300_000; // a cold first call took 110 s in the smoke test
+  // A cold first call loads the engine: 110 s for OmniVoice, 320 s for VoxCPM2 (2026-11-11).
+  const timeoutMs = opts.timeoutMs ?? 900_000;
+  // Node's own fetch stops waiting for a response after 300 s whatever the signal says, so the
+  // real client brings its own connection pool with our timeout.
+  const pool = new Agent({ headersTimeout: timeoutMs, bodyTimeout: timeoutMs });
+  const f = opts.fetch ?? (((url: string, init: RequestInit) => undiciFetch(url, { ...init, dispatcher: pool } as never)) as unknown as typeof fetch);
 
   async function call(path: string, init: RequestInit = {}): Promise<Response> {
     const headers = new Headers(init.headers);
@@ -47,14 +53,14 @@ export function voiceStudio(opts: { url?: string; key?: string; fetch?: typeof f
       b.set('speed', String(r.voice.speed));
       b.set('pronounce', 'false'); // respellings are already in the text (pronounce.ts)
       for (const [k, v] of Object.entries(r.voice.params ?? {})) b.set(k, String(v));
-      const res = await call('/generate', { method: 'POST', body: b });
+      const res = await call('/generate', { method: 'POST', body: b as unknown as BodyInit });
       return Buffer.from(await res.arrayBuffer());
     },
     async transcribe(wav, lang) {
       const b = new FormData();
       b.set('file', new Blob([wav], { type: 'audio/wav' }), 'take.wav');
       b.set('language', lang);
-      const res = await call('/v1/audio/transcriptions', { method: 'POST', body: b });
+      const res = await call('/v1/audio/transcriptions', { method: 'POST', body: b as unknown as BodyInit });
       const j = (await res.json()) as { text?: string };
       return { text: (j.text ?? '').trim() };
     },

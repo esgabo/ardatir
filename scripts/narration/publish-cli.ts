@@ -12,7 +12,7 @@ import { buildContent } from '../content/build.ts';
 import { LANGS, type Lang } from '../../src/data/types.ts';
 import { ffmpeg, probeDuration } from './ffmpeg.ts';
 import { publish, type Encoder } from './publish.ts';
-import { parseWav } from './wav.ts';
+import { wavSeconds } from './wav.ts';
 
 const root = path.resolve(import.meta.dirname, '../..');
 const fail = (msg: string): never => { console.error(`narration:publish: ${msg}`); process.exit(1); };
@@ -33,14 +33,15 @@ let bin = '';
 try { bin = ffmpeg(); } catch (e) { fail((e as Error).message); }
 
 /**
- * Mono 128 kbps mp3, every narrator normalised to the same loudness; the length must not change.
+ * Mono 128 kbps mp3 at 24 kHz (VoxCPM2's 48 kHz takes too), every narrator normalised to the same
+ * loudness; the length must not change.
  * An mp3 runs a little long (at 24 kHz a frame is 24 ms, plus the encoder's delay and padding,
  * which players trim from the LAME header): 69.83 s came out 69.888 s. More than this is drift.
  */
 const SLACK = 0.1;
 const encode: Encoder = async (wav, out) => {
   execFileSync(bin, ['-v', 'error', '-y', '-f', 'wav', '-i', '-', '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', '-ac', '1', '-ar', '24000', '-b:a', '128k', out], { input: wav });
-  const want = parseWav(wav).samples.length / 24000, got = probeDuration(out);
+  const want = wavSeconds(wav), got = probeDuration(out);
   if (Math.abs(got - want) > SLACK) throw new Error(`${path.relative(root, out)}: encoded ${got.toFixed(3)} s, expected ${want.toFixed(3)} s; starts would drift`);
 };
 

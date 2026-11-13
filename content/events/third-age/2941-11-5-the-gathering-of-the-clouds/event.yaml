@@ -1,0 +1,34 @@
+id: the-gathering-of-the-clouds
+age: third-age
+when:
+  # Hobbit ch. 15: the days after the dwarves come out by the Front Gate; only the season is claimed.
+  start: { age: third-age, year: 2941, season: autumn }
+  precision: season
+# Hobbit ch. 15: the dwarves hold the Front Gate; the hosts camp before it
+place: erebor
+characters: [ thorin, roac, bilbo, bard, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor ]
+tags: [ hobbit ]
+status: staged
+source: { book: the-hobbit, chapter: 15 }
+title: { en: The Gathering of the Clouds, es: Se juntan las nubes }
+summary:
+  en: "The old raven Roäc tells Thorin the dragon is dead and that men and elves are coming. Thorin sends for Dáin and walls up the Front Gate; when Bard asks for a share of the treasure he refuses, and shoots an arrow into the herald's shield. The siege begins."
+  es: "El viejo cuervo Roäc le cuenta a Thorin que el dragón ha muerto y que vienen hombres y elfos. Thorin manda llamar a Dáin y tapia la Puerta Principal; cuando Bardo pide una parte del tesoro, se niega, y dispara una flecha contra el escudo del heraldo. Comienza el asedio."
+beats:
+  - { id: roac, label: { en: "Roäc's news", es: "Las noticias de Roäc" } }
+  - { id: wall, label: { en: "The wall at the gate", es: "El muro en la puerta" } }
+  - { id: parley, label: { en: "Bard asks", es: "Bardo pide" } }
+  - { id: arrow, label: { en: "An arrow in the shield", es: "Una flecha en el escudo" } }
+links:
+  - to: not-at-home
+    type: caused-by
+    note:
+      en: Out by the Front Gate, the dwarves wait for news of the dragon.
+      es: Fuera de la Puerta Principal, los enanos esperan noticias del dragón.
+  - to: after-the-fire
+    type: caused-by
+    note:
+      en: The hosts of men and elves that set out from the lake.
+      es: Las huestes de hombres y elfos que partieron del lago.
