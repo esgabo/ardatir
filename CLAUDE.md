@@ -24,7 +24,7 @@ npm run narration:publish  # join checked takes into audio/<lang>.mp3 + .yaml (-
 npm run model:pack -- <export.glb> characters/<id>/<id>.glb   # meshopt-compress a Blender export into assets/ (docs/MODELS.md)
 ```
 
-Requires Node 22. Recording narration also needs `ffmpeg` and the homelab Voice Studio (`docs/LOCAL.md`). Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
+Requires Node 22. Recording narration also needs `ffmpeg` and the homelab Voice Studio. What a machine needs for `runs:local` issues (Blender, the Voice Studio, devices) is in [`docs/LOCAL.md`](docs/LOCAL.md). Deployed to GitHub Pages by `.github/workflows/deploy.yml` on pushes to `main`.
 
 ## Decisions (and why)
 
