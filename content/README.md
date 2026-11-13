@@ -112,6 +112,15 @@ tracks:
       - { t: 0, x: -4, z: 3, action: walk, thought: { en: ..., es: ... } }
 ```
 
+An event may be staged in a place built for it, and say how its light changes:
+
+```yaml
+set: kits/shire/bag-end.glb   # a kit under assets/kits/ (docs/MODELS.md), instead of the generic tile
+light:                        # the look at each t, blended between; without it, a plain day
+  - { t: 0, preset: morning }   # dawn | morning | day | evening | dusk | night
+  - { t: 0.75, preset: dusk }   # lamps, windows and fires light up, fireflies come out
+```
+
 A track may give the character this event's own model, `model: characters/bilbo/bilbo-barrel.glb` (next to `characterId`), instead of their usual one (`docs/MODELS.md`).
 
 The tile runs about -7 to 7 on both axes. A figure whose position is off the tile (say `x: 11, z: 11`) is not drawn: off the tile = offstage. Use it to wait out the scenes before an entrance. A figure moving between two `hide` keyframes stays hidden (it is not shown walking).

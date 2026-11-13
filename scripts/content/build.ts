@@ -8,9 +8,9 @@ import path from 'node:path';
 import YAML from 'yaml';
 import { dateSpan, EPS, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
-  EXTRA_DAYS, LANGS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
+  EXTRA_DAYS, LANGS, LIGHT_PRESETS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
-  type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LinkType, type LocalizedText,
+  type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText,
   type NarrationAudio, type NarrationSegment, type Narrator, type NarratorVoice, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
@@ -534,7 +534,7 @@ export function buildContent(contentDir: string): BuildResult {
     const s = r.staging;
     if (!s) continue;
     const sf = path.join(r.dir, 'staging.yaml');
-    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies'], 'staging');
+    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies', 'set', 'light'], 'staging');
     const stage = String(s.stage) as StageKind;
     if (!STAGES.includes(stage)) R.error(sf, `stage: one of ${STAGES.join(', ')}`);
     if (!(typeof s.duration === 'number' && s.duration > 0)) R.error(sf, 'duration: seconds, a positive number');
@@ -582,6 +582,24 @@ export function buildContent(contentDir: string): BuildResult {
     });
 
     const armies = readArmies(FC, sf, s.armies, r.summary);
+
+    // The place built for this event (a kit), and how its light changes from t = 0 to 1.
+    const set = s.set === undefined ? undefined : readModel(R, sf, s.set, 'set', assetsDir, copies, 'kits');
+    let light: LightKey[] | undefined;
+    if (s.light !== undefined) {
+      light = [];
+      if (!Array.isArray(s.light) || !s.light.length) R.error(sf, 'light: a list of { t, preset }');
+      else {
+        let lt = -1;
+        s.light.forEach((k, i) => {
+          if (!isObj(k) || typeof k.t !== 'number' || k.t < 0 || k.t > 1) { R.error(sf, `light[${i}]: needs a time t, 0–1`); return; }
+          if (!(LIGHT_PRESETS as readonly string[]).includes(String(k.preset))) { R.error(sf, `light[${i}].preset: one of ${LIGHT_PRESETS.join(', ')}`); return; }
+          if (k.t < lt) R.error(sf, `light[${i}]: t must rise`);
+          lt = k.t;
+          light!.push({ t: k.t, preset: k.preset as LightPreset });
+        });
+      }
+    }
 
     // Recordings: audio/<lang>.yaml + audio/<lang>.<ext>
     const audioFiles: EventDetail['audioFiles'] = {};
@@ -653,7 +671,7 @@ export function buildContent(contentDir: string): BuildResult {
     }
 
     r.summary.stage = stage;
-    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, audioFiles });
+    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, ...set ? { set } : {}, ...light?.length ? { light } : {}, audioFiles });
   }
 
   // Scripts: every narration as text, so a scripted event can be read before it is staged.

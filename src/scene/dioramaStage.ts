@@ -5,8 +5,10 @@ import { t as ui, tr, type UiKey } from '../i18n';
 import { actionMix, headingAt, onTile, samplePose, strideSeconds } from '../timeline';
 import { clipLayers, GAIT_PACE } from './modelClips';
 import { createDiorama, groundHeight } from './diorama';
+import { lightAt } from './lighting';
 import { createFigure, FIGURE_HEIGHT, setSelected, useModel } from './figure';
 import type { ModelInstance } from './models';
+import type { SetInstance } from './sets';
 import type { Stage } from './stage';
 import { disposeTree } from './util';
 
@@ -27,7 +29,9 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
   camera.zoom = 1.1;
   const target = new THREE.Vector3(0, 0, 0);
 
-  scene.add(new THREE.HemisphereLight('#fff4e0', '#3a3040', 1.1));
+  // The light follows t (staging.yaml `light`; a fixed day without it): set each frame in update.
+  const hemi = new THREE.HemisphereLight('#fff4e0', '#3a3040', 1.1);
+  scene.add(hemi);
   const sun = new THREE.DirectionalLight('#fff0d0', 2.2);
   sun.position.set(8, 14, 5);
   sun.castShadow = true;
@@ -36,8 +40,12 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
   scene.add(sun);
 
   const seed = [...event.id].reduce((a, ch) => a + ch.charCodeAt(0), 0) % 97;
-  const diorama = createDiorama({ seed });
+  // The place: its own set when the event has one (built for it, docs/MODELS.md), else the
+  // generic tile. Characters stand on whichever `terrain` the ground group holds.
+  const diorama = event.set ? new THREE.Group() : createDiorama({ seed });
+  if (event.set) { target.y = 0.9; camera.position.y += 0.9; camera.zoom = 1.0; }
   scene.add(diorama);
+  let set: SetInstance | undefined;
 
   // A battle's armies: blocks of small figures in their factions' colours (named characters keep their tracks).
   const armies = event.armies?.length ? createArmies(event.armies, factions, diorama, seed) : undefined;
@@ -59,6 +67,17 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
   const wanted = event.tracks
     .map((tr) => ({ ch: characters.get(tr.characterId), url: tr.model ?? characters.get(tr.characterId)?.model }))
     .filter((w): w is { ch: Character; url: string } => !!w.ch && !!w.url);
+  if (event.set) {
+    const url = import.meta.env.BASE_URL + event.set;
+    void import('./sets').then((S) => S.loadSet(url)).then((inst) => {
+      if (disposed) { inst.dispose(); return; }
+      set = inst;
+      diorama.add(inst.object);
+    }).catch((e) => {
+      console.warn(`set ${url} did not load; using the generic tile`, e);
+      if (!disposed) diorama.add(createDiorama({ seed }));
+    });
+  }
   if (wanted.length) {
     void import('./models').then((M) => Promise.all(wanted.map(async ({ ch, url }) => {
       try {
@@ -78,6 +97,14 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
     scene, camera, target,
 
     update(t, ambient, eventSeconds = event.durationSeconds) {
+      const light = lightAt(event.light, t);
+      sun.color.set(light.sun);
+      sun.intensity = light.sunIntensity;
+      sun.position.set(...light.sunFrom);
+      hemi.color.set(light.sky);
+      hemi.groundColor.set(light.ground);
+      hemi.intensity = light.hemiIntensity;
+      (scene.background as THREE.Color).set(light.background);
       armies?.update(t, ambient);
       for (const track of event.tracks) {
         const fig = figures.get(track.characterId);
@@ -98,6 +125,7 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
         fig.rotation.y = headingAt(track, t, eventSeconds);
         fig.scale.y = pose.action === 'hide' && clip !== 'hide' ? 0.75 : 1;
       }
+      set?.update(light, ambient, [...figures.values()].filter((f) => f.visible).map((f) => f.position));
     },
 
     pick(ray) {
@@ -136,6 +164,7 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
 
     dispose() {
       disposed = true;
+      set?.dispose(); // shares geometry with the loader's cache: out before the scene is freed
       // Models share geometry with the loader's cache: take them out so the next visit reuses it.
       for (const m of models.values()) { m.dispose(); m.object.removeFromParent(); }
       disposeTree(scene);

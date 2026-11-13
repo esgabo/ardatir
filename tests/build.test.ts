@@ -37,6 +37,9 @@ const FORETOLD: Change[] = [
 ];
 
 const GANDALF = 'characters/gandalf.yaml';
+const TEST_KIT = 'kits/test-place/test-place.glb';
+const SET_AND_LIGHT = `set: ${TEST_KIT}\nlight:\n  - { t: 0, preset: morning }\n  - { t: 0.6, preset: dusk }\n`;
+const withSet = (yaml: string) => ({ file: `${PARTY}/staging.yaml`, replace: ['duration: 12\n', `duration: 12\n${yaml}`] as [string, string] });
 const TEST_MODEL = 'characters/test-figure/test-figure.glb';
 /** A minimal .glb around a glTF JSON (no buffers): enough for the build's checks, which read only the JSON. */
 function glb(json: object): Uint8Array {
@@ -320,6 +323,17 @@ describe('the valid fixture', () => {
     expect(over.copies.filter((c) => c.to === url)).toHaveLength(1);
   });
 
+  it('reads an event\'s set (a kit) and how its light changes', () => {
+    const kit = { file: `../assets/${TEST_KIT}`, write: glb({ scenes: [{}], extensionsUsed: ['EXT_meshopt_compression'] }) };
+    const ok = buildWith([kit, { file: `${PARTY}/staging.yaml`, replace: ['duration: 12\n', `duration: 12\n${SET_AND_LIGHT}`] }]);
+    expect(ok.errors).toEqual([]);
+    const d = ok.details.find((x) => x.id === 'the-party')!;
+    expect(d.set).toBe(`data/models/${TEST_KIT}`);
+    expect(d.light).toEqual([{ t: 0, preset: 'morning' }, { t: 0.6, preset: 'dusk' }]);
+    expect(ok.copies.some((c) => c.to === `data/models/${TEST_KIT}`)).toBe(true);
+    expect(r.details.find((x) => x.id === 'the-party')!.set).toBeUndefined();
+  });
+
   it('reads a recording with uneven starts', () => {
     const ok = buildWith([
       { file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 1.5, tea: 14 }\n' },
@@ -430,6 +444,11 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'model that is not glTF', changes: [{ file: `../assets/${TEST_MODEL}`, write: 'not a model' }], error: 'not a binary glTF (.glb)' },
   { name: 'model with Draco', changes: [{ file: `../assets/${TEST_MODEL}`, write: glb({ scenes: [{}], extensionsUsed: ['KHR_draco_mesh_compression'] }) }], error: 'uses KHR_draco_mesh_compression' },
   { name: 'missing per-event model', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['characterId: bilbo\n', 'characterId: bilbo\n    model: characters/bilbo/barrel.glb\n'] }], error: 'tracks[0].model: assets/characters/bilbo/barrel.glb not found' },
+  { name: 'set that is not a kit', changes: [withSet(`set: ${TEST_MODEL}\n`)], error: 'set: expected a model under kits/' },
+  { name: 'missing set', changes: [withSet('set: kits/shire/nowhere.glb\n')], error: 'set: assets/kits/shire/nowhere.glb not found' },
+  { name: 'light of an unknown preset', changes: [withSet('light:\n  - { t: 0, preset: twilight }\n')], error: 'light[0].preset: one of dawn, morning, day, evening, dusk, night' },
+  { name: 'light keys out of order', changes: [withSet('light:\n  - { t: 0.5, preset: day }\n  - { t: 0.2, preset: dusk }\n')], error: 'light[1]: t must rise' },
+  { name: 'light without a time', changes: [withSet('light:\n  - { preset: day }\n')], error: 'light[0]: needs a time t, 0–1' },
   { name: 'recording start past its end', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 0, tea: 25 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: needs a second within the recording' },
 ];
 

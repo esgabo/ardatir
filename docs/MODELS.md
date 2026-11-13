@@ -44,6 +44,7 @@ A character can also be built entirely in code, in headless Blender: low-poly pa
 - `troll_rig.py`, `trolls.py`: Bert, Tom and William on one hunched troll body, each also in stone (`<id>-stone.glb`: one held pose as a two-frame `idle`), which an event's staging picks per track.
 - `lineup.py`: exports side by side in their rest pose (`--pose` keeps each model's first frame; `--spacing=` for big ones), for comparing a set of variants.
 - `bilbo.py`, `gandalf.py`: one character each. Each writes `assets/characters/<id>/<id>.blend` and the raw export `out/models/<id>.glb`. `bilbo.py -- --look travel` builds `bilbo-travel.glb` instead (Dwalin's hood and cloak over shirt sleeves): its source is the script, and `--blend <path>` saves a copy to render.
+- `shire.py`: the Shire kit's Bag End tile (#24): the Hill with the rooms cut away (hall, parlour, pantry), the front bank with the round door and windows, the garden, hedges, lane, stream and waterfall, rocks, trees, the plinth's layered sides. Writes `out/models/bag-end.glb`, packed to `kits/shire/bag-end.glb`; the script is its source.
 - `turnaround.py`: review renders of a `.blend` (front, three-quarter, side, back, the diorama's angle, and any `clip:frame`).
 
 ```sh
@@ -121,6 +122,16 @@ tracks:
 ```
 
 Without either, the character is drawn as the placeholder figure.
+
+An event's place, in its `staging.yaml`: `set: kits/shire/bag-end.glb` puts the whole tile from the kit in place of the generic one (and `light:` keys say how its light changes, `content/README.md`). A set is in the site's own units (a hobbit is 0.82 tall, the tile runs from -7 to 7), Y up, origin at the tile's centre, and names what the site drives (`src/scene/sets.ts`):
+
+| Name | What the site does with it |
+|---|---|
+| `terrain` (a mesh) | the ground characters stand on; nothing else is raycast |
+| `glow-*` (materials) | emissive, lit with the light's `lamps` (windows, lamps); `glow-fire*` always glows a little and flickers |
+| `door*` (objects) | hinged at their origin, the leaf along +x; swing inward while a character is near |
+| `fx-lamp-*`, `fx-fire` (empties) | warm point lights at dusk; the hearth's flickers |
+| `fx-smoke`, `fx-spray`, `fx-fireflies-*` (empties) | chimney smoke, spray at a waterfall's foot, fireflies at dusk |
 
 ## What the build checks
 

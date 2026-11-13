@@ -184,7 +184,7 @@ One kit per issue; the Events column lists the events set in each place. Terrain
 
 | Asset | Name | Body / rig | Events | Priority | Status | Machine | Issue | Notes |
 |---|---|---|---|---|---|---|---|---|
-| `shire-kit` | Shire kit: Bag End hill with cut-away interior, lane, Bywater, the Green Dragon | kit | `unexpected-party`, `bilbo-runs-to-the-green-dragon`, `the-auction-at-bag-end` | P0 | brief | either | [#24](https://github.com/esgabo/ardatir/issues/24) | Bag End is both the party (cut-away hall, pantry, parlour) and the auction (exterior). |
+| `shire-kit` | Shire kit: Bag End hill with cut-away interior, lane, Bywater, the Green Dragon | kit | `unexpected-party`, `bilbo-runs-to-the-green-dragon`, `the-auction-at-bag-end` | P0 | Bag End built | local | [#24](https://github.com/esgabo/ardatir/issues/24) | Bag End is both the party (cut-away hall, pantry, parlour) and the auction (exterior). Bag End's tile built by `scripts/models/blender/shire.py` (`kits/shire/bag-end.glb`) and used by `unexpected-party`; the Green Dragon and Bywater still to do. |
 | `trollshaws` | The Trollshaws: wooded slope, fire, troll hole | kit | `roast-mutton`, `the-troll-gold` | P1 | brief | local | [#46](https://github.com/esgabo/ardatir/issues/46) | Dawn light is [#26](https://github.com/esgabo/ardatir/issues/26). |
 | `rivendell` | Rivendell: Last Homely House, river, bridge, moonlit terrace | kit | `elrond-reads-the-moon-letters`, `return-to-rivendell` | P2 | brief | local | [#46](https://github.com/esgabo/ardatir/issues/46) | Moon-letters needs a crescent moon. |
 | `goblin-town` | Goblin-town caves (cut-away) | kit | `captured-in-goblin-town` | P2 | brief | local | [#47](https://github.com/esgabo/ardatir/issues/47) | Cut-away diorama view of caves. |
