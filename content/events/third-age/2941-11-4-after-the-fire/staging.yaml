@@ -1,0 +1,39 @@
+stage: diorama
+duration: 32
+narration:
+  shore: 0
+  king: 0.16
+  master: 0.32
+  treasure: 0.5
+  elves: 0.64
+  march: 0.82
+beats:
+  shore: 0
+  king: 0.16
+  master: 0.32
+  elves: 0.64
+  march: 0.82
+tracks:
+  - characterId: bard
+    keyframes:
+      - { t: 0, x: 0.4, z: 2, action: idle, thought: { en: So much lost in one night., es: Tanto perdido en una sola noche. } }
+      - { t: 0.16, x: 0.4, z: 2, action: idle, thought: { en: King? I want a roof for these people first., es: ¿Rey? Antes quiero un techo para esta gente. } }
+      - { t: 0.32, x: 0.4, z: 2, action: talk }
+      - { t: 0.5, x: 0.4, z: 2, action: idle, thought: { en: The gold of the Mountain could rebuild all of this., es: El oro de la Montaña podría reconstruir todo esto. } }
+      - { t: 0.64, x: -1.2, z: 2.4, action: walk }
+      - { t: 0.7, x: -1.6, z: 2.4, action: talk, thought: { en: "Help, and in time. We will not forget it.", es: "Ayuda, y a tiempo. No lo olvidaremos." } }
+      - { t: 0.82, x: -1.6, z: 2.4, action: idle }
+      - { t: 1, x: -5.8, z: -4.8, action: walk, thought: { en: "North, then, to the Mountain.", es: "Al norte, pues, a la Montaña." } }
+  - characterId: the-master
+    keyframes:
+      - { t: 0, x: 3.4, z: 3.4, action: idle, thought: { en: My town in ashes. And they want the Bowman for king., es: Mi ciudad en cenizas. Y quieren al Arquero por rey. } }
+      - { t: 0.32, x: 2.2, z: 2.6, action: talk, thought: { en: "Blame the dwarves, not me. They woke the dragon.", es: "Culpad a los enanos, no a mí. Ellos despertaron al dragón." } }
+      - { t: 0.5, x: 2.6, z: 3, action: idle }
+      - { t: 0.82, x: 3.4, z: 3.6, action: idle, thought: { en: Let them go. I will stay and see to the town., es: Que se vayan. Yo me quedaré a cuidar de la ciudad. } }
+  - characterId: thranduil
+    keyframes:
+      - { t: 0, x: -11, z: 4, action: walk }
+      - { t: 0.62, x: -11, z: 4, action: walk }
+      - { t: 0.66, x: -3.4, z: 2.8, action: walk, thought: { en: The lake-men are our friends. The Mountain can wait a few days., es: Los hombres del lago son nuestros amigos. La Montaña puede esperar unos días. } }
+      - { t: 0.82, x: -3, z: 2.6, action: talk }
+      - { t: 1, x: -6.2, z: -4, action: walk, thought: { en: "Now, to the dragon's gold.", es: "Ahora, al oro del dragón." } }

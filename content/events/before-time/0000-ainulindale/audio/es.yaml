@@ -1,0 +1,36 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 81.28
+starts:
+  void: 0.8
+  theme: 9.6
+  harmony: 16.8
+  discord: 23.84
+  struggle: 35.52
+  silence: 46.4
+  vision: 52.16
+  ea: 63.52
+  arda: 70.24
+textHash: sha256:ba7d549fce8fcb06
+narrator:
+  id: the-elder
+  version: 2
+passages:
+  void: sha256:bb3dcca47cd558c3
+  theme: sha256:7740d16dfc131771
+  harmony: sha256:c784dcb7d114972f
+  discord: sha256:44866a71a6d7923d
+  struggle: sha256:6c46adf08a330552
+  silence: sha256:b906c7bf8dc563d3
+  vision: sha256:74ba9805abf7c1b8
+  ea: sha256:9b8218c925173bd6
+  arda: sha256:22cdc3c9fb99dfbe
+takes:
+  void: 37de3a482283@101
+  theme: b2fcf4f10c1e@101
+  harmony: ecc3a564567a@101
+  discord: 581aee5356cb@101
+  struggle: 0600ee4dbbc1@101
+  silence: eed6fe8b3389@101
+  vision: 2f577f5c50db@101
+  ea: f098cda47da0@101
+  arda: 32949733f697@101

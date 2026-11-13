@@ -10,9 +10,10 @@ export function ffmpeg(): string {
   return bin;
 }
 
-/** Any audio file → mono 24 kHz 16-bit WAV bytes. */
-export function decodeToWav(file: string, rate = 24000): Buffer {
-  return execFileSync(ffmpeg(), ['-v', 'error', '-i', file, '-ac', '1', '-ar', String(rate), '-sample_fmt', 's16', '-f', 'wav', '-'], { maxBuffer: 1 << 28 });
+/** Any audio file → mono 16-bit WAV bytes, at its own sample rate unless `rate` is given. */
+export function decodeToWav(file: string, rate?: number): Buffer {
+  const ar = rate ? ['-ar', String(rate)] : [];
+  return execFileSync(ffmpeg(), ['-v', 'error', '-i', file, '-ac', '1', ...ar, '-sample_fmt', 's16', '-f', 'wav', '-'], { maxBuffer: 1 << 28 });
 }
 
 /** Seconds of audio in a file, by ffprobe next to ffmpeg. */

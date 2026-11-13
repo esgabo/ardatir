@@ -1,0 +1,34 @@
+id: not-at-home
+age: third-age
+when:
+  # The same night Smaug burns Lake-town (Hobbit ch. 13 runs alongside ch. 14); only the season is claimed.
+  start: { age: third-age, year: 2941, season: autumn }
+  precision: season
+place: erebor
+characters: [ bilbo, thorin, balin, dwalin, fili, kili, dori, nori, ori, oin, gloin, bifur, bofur, bombur ]
+arcs: [ the-quest-of-erebor ]
+journeys: [ there-and-back-again, the-road-to-erebor ]
+tags: [ hobbit ]
+status: staged
+source: { book: the-hobbit, chapter: 13 }
+title: { en: Not at Home, es: Fuera de casa }
+summary:
+  en: "Smaug's rage shuts the company in the tunnel. When no sound comes from below, Bilbo leads them down to an empty hall, finds the Arkenstone and keeps it secretly; Thorin gives him a coat of mithril, and they come out by the Front Gate."
+  es: "La furia de Smaug deja a la compañía encerrada en el túnel. Como de abajo no llega ningún ruido, Bilbo los guía hasta una sala vacía, encuentra la Piedra del Arca y se la guarda en secreto; Thorin le da una cota de mithril, y salen por la Puerta Principal."
+beats:
+  - { id: shut, label: { en: "Shut in", es: "Encerrados" } }
+  - { id: silence, label: { en: "The empty hall", es: "La sala vacía" } }
+  - { id: stone, label: { en: "The Arkenstone", es: "La Piedra del Arca" } }
+  - { id: mithril, label: { en: "A coat of mithril", es: "Una cota de mithril" } }
+  - { id: gate, label: { en: "Out by the Front Gate", es: "Por la Puerta Principal" } }
+links:
+  - to: bilbo-meets-smaug
+    type: caused-by
+    note:
+      en: Smaug's fury at the thief brings down the cliff over the secret door.
+      es: La furia de Smaug contra el ladrón derrumba el risco sobre la puerta secreta.
+  - to: death-of-smaug
+    type: concurrent
+    note:
+      en: While the dwarves wait in the dark, Smaug is burning Lake-town.
+      es: Mientras los enanos esperan a oscuras, Smaug incendia la Ciudad del Lago.

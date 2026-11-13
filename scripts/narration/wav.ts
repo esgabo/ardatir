@@ -40,6 +40,12 @@ export function encodeWav(pcm: Pcm): Buffer {
   return b;
 }
 
+/** Seconds of audio in WAV bytes, at the file's own sample rate. */
+export function wavSeconds(wav: Buffer): number {
+  const { samples, sampleRate } = parseWav(wav);
+  return samples.length / sampleRate;
+}
+
 /**
  * One recording from its passages: a gap of lead-in, then each clip with a gap between,
  * none after the last. `starts[i]` is the second clip i begins (3 decimals).
