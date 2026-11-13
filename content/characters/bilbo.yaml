@@ -8,3 +8,4 @@ summary:
   es: Un hobbit respetable y amante de la comodidad, con una vena aventurera escondida.
 color: "#c9a46a"
 scale: 1
+model: characters/bilbo/bilbo.glb

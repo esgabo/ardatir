@@ -32,6 +32,21 @@ assets/                          sources and exports, next to content/ (never se
 4. **Link** it from content: `model: characters/bilbo/bilbo.glb` in `content/characters/bilbo.yaml` (see [Linking](#linking-from-content)).
 5. **Check**: `npm run content` (no errors or warnings), then `npm run dev` and open a staged event with the character, e.g. `#/event/unexpected-party`.
 
+## Models built by script
+
+A character can also be built entirely in code, in headless Blender: low-poly parts, the shared rig for its body type, its clips, then the export with the settings below. Changing a colour or a proportion means editing the script and running it again. Scripts live in `scripts/models/blender/`:
+
+- `lowpoly.py`: faceted parts (lofted tubes, ellipsoids, boxes, cones, open shells), flat-colour materials, and joining them into one flat-shaded mesh with each part's bone weights.
+- `hobbit_rig.py`: the hobbit rig (#21): sixteen bones placed from a character's joints, and the base clips (`idle`, `walk`, `run`, `talk`, `hide`, `fight`), each a pose function of the cycle's phase, keyed on every frame so it loops exactly. Walk and run are timed for `GAIT_PACE`.
+- `bilbo.py`: Bilbo at home. It writes `assets/characters/bilbo/bilbo.blend` and the raw export `out/models/bilbo.glb`.
+- `turnaround.py`: review renders of a `.blend` (front, three-quarter, side, back, the diorama's angle, and any `clip:frame`).
+
+```sh
+blender --background --python scripts/models/blender/bilbo.py
+npm run model:pack -- out/models/bilbo.glb characters/bilbo/bilbo.glb
+blender --background assets/characters/bilbo/bilbo.blend --python scripts/models/blender/turnaround.py -- /tmp/bilbo walk:5 hide:15
+```
+
 ## Blender export settings
 
 *File → Export → glTF 2.0 (.glb/.gltf)* (names as in Blender 4.x; older versions group them slightly differently). Save them as an operator preset ("Ardatir") so every export matches.
