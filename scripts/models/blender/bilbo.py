@@ -1,15 +1,21 @@
-"""Bilbo Baggins at home (the Unexpected Party look): built, rigged, animated and exported.
+"""Bilbo Baggins, in two looks: built, rigged, animated and exported.
 
-    blender --background --python scripts/models/blender/bilbo.py -- [--out out/models/bilbo.glb]
+    blender --background --python scripts/models/blender/bilbo.py -- [--look travel] [--out <glb>] [--blend <path>]
 
-Writes the source `assets/characters/bilbo/bilbo.blend` and the raw export (default
-`out/models/bilbo.glb`); `npm run model:pack` then compresses it into assets/ (docs/MODELS.md).
+`home` (the default, the Unexpected Party) writes the source `assets/characters/bilbo/bilbo.blend`
+and the raw export `out/models/bilbo.glb`; `travel` writes `out/models/bilbo-travel.glb` (the
+script is its source). `npm run model:pack` then compresses either into assets/ (docs/MODELS.md).
 
 Design, from The Hobbit, chapter 1 (our own, not the films'): a small, comfortable adult with
 a round middle; brown curly hair; a simple, good-natured face; bright colours (hobbits favour
 green and yellow): a mustard waistcoat with brass buttons, a green coat with short tails, a
 white shirt, brown knee breeches; no shoes, big leathery feet with brown curly hair on top.
 Low-poly and flat-shaded: detail only where it carries character (curls, feet, buttons, tails).
+
+Travelling (chapter 2 on): he ran out of the door without a hat, a stick or a handkerchief, and
+Dwalin lent him a dark-green hood and cloak, both too big for him. So: the same hobbit in shirt
+sleeves and waistcoat (the coat stays at home), under a borrowed cloak that hangs nearly to his
+ankles, the hood pushed back in folds behind his neck, a brass clasp at the throat.
 """
 
 import math
@@ -25,6 +31,9 @@ import hobbit_rig as rig  # noqa: E402
 import lowpoly as lp  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[3]
+ARGS = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
+LOOK = ARGS[ARGS.index('--look') + 1] if '--look' in ARGS else 'home'
+assert LOOK in ('home', 'travel'), LOOK
 HEIGHT = 1.05
 HEAD_SCALE = 0.9
 
@@ -40,8 +49,13 @@ COAT = lp.material('coat', '#3f6b3a')
 BREECHES = lp.material('breeches', '#7a5a3a')
 EYE = lp.material('eye', '#2b2018', roughness=0.4)
 MOUTH = lp.material('mouth', '#a8664f')
+CLOAK = lp.material('cloak', '#2f4b39')
+HOOD_IN = lp.material('hood_lining', '#24392c')
 
 J = rig.joints_for(HEIGHT)
+if LOOK == 'travel':
+    J = rig.cloak_joints(J)
+SLEEVE = SHIRT if LOOK == 'travel' else COAT
 
 # The torso's cross-sections from the hips up: (z, centre y, half-width, half-depth).
 # Centre y goes negative (forward) round the middle: a comfortable belly.
@@ -135,6 +149,74 @@ def buttons():
         cy, rx, ry = torso_at(z)
         out.append(lp.blob((0, cy - ry - 0.002, z), (0.008, 0.005, 0.008), subdiv=1))
     return out
+
+
+# Dwalin's cloak, from the hem up: (z, centre y, half-width, half-depth, front opening).
+# The opening is the angle from the front (radians) where the cloth starts: over the shoulders
+# it nearly meets at the clasp; lower down it falls behind the arms, wide enough to clear them.
+CLOAK_PROFILE = [
+    (0.10, 0.035, 0.205, 0.175, 1.95),
+    (0.25, 0.030, 0.205, 0.165, 1.92),
+    (0.40, 0.022, 0.205, 0.155, 1.88),
+    (0.55, 0.012, 0.222, 0.150, 1.80),
+    (0.66, 0.006, 0.226, 0.142, 1.55),
+    (0.73, 0.006, 0.222, 0.134, 1.05),
+    (0.775, 0.008, 0.214, 0.122, 0.72),
+    (0.80, 0.012, 0.165, 0.098, 0.48),
+    (0.825, 0.014, 0.084, 0.07, 0.3),
+]
+
+
+def _cloak_at(z):
+    if z <= CLOAK_PROFILE[0][0]:
+        return CLOAK_PROFILE[0][1:]
+    for a, b in zip(CLOAK_PROFILE, CLOAK_PROFILE[1:]):
+        if z <= b[0]:
+            f = (z - a[0]) / (b[0] - a[0])
+            return tuple(a[i] + (b[i] - a[i]) * f for i in range(1, 5))
+    return CLOAK_PROFILE[-1][1:]
+
+
+def cloak():
+    """An open shell from the throat down the back and sides, flaring a little to the hem."""
+    bm = bmesh.new()
+    sides, levels = 14, 12
+    z0, z1 = CLOAK_PROFILE[0][0], CLOAK_PROFILE[-1][0]
+    grid = []
+    for i in range(levels):
+        f = i / (levels - 1)
+        z_mid = z0 + (z1 - z0) * f ** 0.9
+        cy, w, d, a0 = _cloak_at(z_mid)
+        row = []
+        for k in range(sides + 1):
+            a = a0 + (2 * math.pi - 2 * a0) * k / sides
+            back = (1 - math.cos(a)) / 2
+            z = z_mid - 0.035 * back * (1 - f)       # the hem dips behind
+            fold = 1 + 0.045 * (1 - f) ** 0.7 * math.cos(7 * a)   # soft folds, deepest at the hem
+            row.append(bm.verts.new(Vector((math.sin(a) * w * fold, cy - math.cos(a) * d * fold, z))))
+        grid.append(row)
+    for r0, r1 in zip(grid, grid[1:]):
+        for k in range(sides):
+            bm.faces.new((r0[k], r0[k + 1], r1[k + 1], r1[k]))
+    return lp.solidify(bm, 0.006)
+
+
+CLOAK_WEIGHTS = lp.blend_weights([(0.3, 'cloak_low'), (0.5, 'cloak'), (0.68, 'cloak'), (0.76, 'chest')])
+
+
+def hood():
+    """The hood pushed back: a heap of folds on his shoulders behind the neck, its point down the back."""
+    c = Vector((0, 0.138, 0.75))
+    parts = [
+        lp.Part('hood', lp.blob(c, (0.105, 0.036, 0.075), subdiv=1), CLOAK, 'chest'),
+        # its opening, turned up behind the neck: the darker lining shows
+        lp.Part('hood_fold', lp.blob(c + Vector((0, -0.006, 0.05)), (0.082, 0.032, 0.024), subdiv=1),
+                HOOD_IN, 'chest'),
+        lp.Part('hood_point', lp.cone(c + Vector((0, 0.0, -0.05)), Vector((0, 0.158, 0.56)), 0.045, sides=5),
+                CLOAK, lp.blend_weights([(0.6, 'cloak'), (0.72, 'chest')])),
+    ]
+    parts.append(lp.Part('clasp', lp.blob((0, -0.064, 0.79), (0.014, 0.008, 0.012), subdiv=1), BRASS, 'chest'))
+    return parts
 
 
 def foot(side):
@@ -256,17 +338,21 @@ def build_mesh():
                          SHIRT, lp.blend_weights([(0.78, 'chest'), (0.81, 'neck')])))
     parts.append(lp.Part('waistcoat', waistcoat(), WAISTCOAT, TORSO_WEIGHTS))
     parts += [lp.Part('button', bm, BRASS, TORSO_WEIGHTS) for bm in buttons()]
-    parts.append(lp.Part('coat', coat_shell(), COAT, lp.blend_weights([(0.5, 'hips'), (0.58, 'spine'), (0.66, 'spine'), (0.73, 'chest')])))
-    parts.append(lp.Part('coat_collar', collar(), COAT, lp.blend_weights([(0.79, 'chest'), (0.83, 'neck')])))
+    if LOOK == 'home':
+        parts.append(lp.Part('coat', coat_shell(), COAT, lp.blend_weights([(0.5, 'hips'), (0.58, 'spine'), (0.66, 'spine'), (0.73, 'chest')])))
+        parts.append(lp.Part('coat_collar', collar(), COAT, lp.blend_weights([(0.79, 'chest'), (0.83, 'neck')])))
+    else:
+        parts.append(lp.Part('cloak', cloak(), CLOAK, CLOAK_WEIGHTS))
+        parts += hood()
     # sleeves, shirt cuffs, hands
     for s in ('L', 'R'):
         sh, el, wr = J[f'shoulder.{s}'], J[f'elbow.{s}'], J[f'wrist.{s}']
         parts.append(lp.Part(f'shoulder.{s}', lp.blob(sh + Vector((0, 0.004, -0.004)), (0.038, 0.042, 0.036), subdiv=2),
-                             COAT, lp.blend_weights([(0.72, f'upper_arm.{s}'), (0.78, 'chest')])))
-        parts.append(lp.Part(f'upper_arm.{s}', limb(sh, el, [0.042, 0.04, 0.036]), COAT, f'upper_arm.{s}'))
-        parts.append(lp.Part(f'elbow.{s}', lp.blob(el, (0.036, 0.036, 0.036), subdiv=1), COAT, f'forearm.{s}'))
+                             SLEEVE, lp.blend_weights([(0.72, f'upper_arm.{s}'), (0.78, 'chest')])))
+        parts.append(lp.Part(f'upper_arm.{s}', limb(sh, el, [0.042, 0.04, 0.036]), SLEEVE, f'upper_arm.{s}'))
+        parts.append(lp.Part(f'elbow.{s}', lp.blob(el, (0.036, 0.036, 0.036), subdiv=1), SLEEVE, f'forearm.{s}'))
         parts.append(lp.Part(f'forearm.{s}', limb(el, wr + (wr - el).normalized() * 0.006, [0.035, 0.034, 0.038]),
-                             COAT, f'forearm.{s}'))
+                             SLEEVE, f'forearm.{s}'))
         parts.append(lp.Part(f'shirt_cuff.{s}', limb(wr - (wr - el).normalized() * 0.002, wr + (wr - el).normalized() * 0.016,
                                                       [0.03, 0.028]), SHIRT, f'forearm.{s}'))
         parts += hand(s)
@@ -278,22 +364,28 @@ def build_mesh():
 
 
 def main():
-    args = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
-    out = Path(args[args.index('--out') + 1]) if '--out' in args else ROOT / 'out' / 'models' / 'bilbo.glb'
-    blend = ROOT / 'assets' / 'characters' / 'bilbo' / 'bilbo.blend'
+    name = 'bilbo' if LOOK == 'home' else 'bilbo-travel'
+    out = Path(ARGS[ARGS.index('--out') + 1]) if '--out' in ARGS else ROOT / 'out' / 'models' / f'{name}.glb'
     out.parent.mkdir(parents=True, exist_ok=True)
-    blend.parent.mkdir(parents=True, exist_ok=True)
 
-    arm = rig.build_armature('bilbo', J)
+    travel = LOOK == 'travel'
+    arm = rig.build_armature('bilbo', J, rig.CLOAK_BONES if travel else None)
     mesh = build_mesh()
     rig.bind(mesh, arm)
-    made = rig.make_clips(arm, rig.clips(HEIGHT, J), J)
+    table = rig.clips(HEIGHT, J)
+    made = rig.make_clips(arm, rig.with_cloak(table) if travel else table, J)
     tris = sum(len(p.vertices) - 2 for p in mesh.data.polygons)
-    print(f'bilbo: {tris} triangles, {len(arm.data.bones)} bones, clips: '
+    print(f'{name}: {tris} triangles, {len(arm.data.bones)} bones, clips: '
           + ', '.join(f'{n} ({f} frames)' for n, f in made))
-    bpy.ops.wm.save_as_mainfile(filepath=str(blend), compress=True)
+    # the travelling look's source is this script; `--blend <path>` saves a copy for review renders
+    blend = Path(ARGS[ARGS.index('--blend') + 1]) if '--blend' in ARGS else None
+    if not travel or blend:
+        blend = blend or ROOT / 'assets' / 'characters' / 'bilbo' / 'bilbo.blend'
+        blend.parent.mkdir(parents=True, exist_ok=True)
+        bpy.ops.wm.save_as_mainfile(filepath=str(blend), compress=True)
+        print(f'wrote {blend}')
     rig.export_glb(out, [arm, mesh])
-    print(f'wrote {blend.relative_to(ROOT)} and {out}')
+    print(f'wrote {out}')
 
 
 if __name__ == '__main__':

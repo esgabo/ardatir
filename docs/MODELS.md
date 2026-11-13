@@ -37,13 +37,13 @@ assets/                          sources and exports, next to content/ (never se
 A character can also be built entirely in code, in headless Blender: low-poly parts, the shared rig for its body type, its clips, then the export with the settings below. Changing a colour or a proportion means editing the script and running it again. Scripts live in `scripts/models/blender/`:
 
 - `lowpoly.py`: faceted parts (lofted tubes, ellipsoids, boxes, cones, open shells), flat-colour materials, and joining them into one flat-shaded mesh with each part's bone weights.
-- `hobbit_rig.py`: the hobbit rig (#21): sixteen bones placed from a character's joints, and the base clips (`idle`, `walk`, `run`, `talk`, `hide`, `fight`), each a pose function of the cycle's phase, keyed on every frame so it loops exactly. Walk and run are timed for `GAIT_PACE`.
+- `hobbit_rig.py`: the hobbit rig (#21): sixteen bones placed from a character's joints, and the base clips (`idle`, `walk`, `run`, `talk`, `hide`, `fight`), each a pose function of the cycle's phase, keyed on every frame so it loops exactly. Walk and run are timed for `GAIT_PACE`. `CLOAK_BONES` and `with_cloak` add two cloak bones down the back and bake the cloak's swing into every clip (Bilbo travelling).
 - `wizard_rig.py`: the wizard rig (#21): the hobbit's bones at a man's proportions, plus two for the cloak and two for the beard, whose swing is baked into the clips. The staff hand's rest pose is bent forward with the staff upright; its clips turn the hand so the staff keeps the lean they ask for.
 - `dwarf_rig.py`: the dwarf rig (#21): the hobbit's bones at a dwarf's build (`width` broadens it), plus two beard bones, with a short heavy stride and an overhand blow for `fight`.
 - `dwarves.py`: Thorin and the twelve from one dwarf body, a table of variants (hood, tunic, belt, beard colour and style, width, belly); `--only thorin,balin` builds some of them.
 - `troll_rig.py`, `trolls.py`: Bert, Tom and William on one hunched troll body, each also in stone (`<id>-stone.glb`: one held pose as a two-frame `idle`), which an event's staging picks per track.
 - `lineup.py`: exports side by side in their rest pose (`--pose` keeps each model's first frame; `--spacing=` for big ones), for comparing a set of variants.
-- `bilbo.py`, `gandalf.py`: one character each. Each writes `assets/characters/<id>/<id>.blend` and the raw export `out/models/<id>.glb`.
+- `bilbo.py`, `gandalf.py`: one character each. Each writes `assets/characters/<id>/<id>.blend` and the raw export `out/models/<id>.glb`. `bilbo.py -- --look travel` builds `bilbo-travel.glb` instead (Dwalin's hood and cloak over shirt sleeves): its source is the script, and `--blend <path>` saves a copy to render.
 - `turnaround.py`: review renders of a `.blend` (front, three-quarter, side, back, the diorama's angle, and any `clip:frame`).
 
 ```sh

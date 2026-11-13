@@ -14,6 +14,7 @@ beats:
   raft: 0.9
 tracks:
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: -4, z: 2.5, action: idle, thought: { en: "Empty barrels go into the river. I have an idea.", es: "Los barriles vacíos van al río. Se me ocurre una idea." } }
       - { t: 0.17, x: -1.5, z: -1.8, action: hide, thought: { en: "Two sleepers and a ring of keys. How kind of them.", es: "Dos dormidos y un manojo de llaves. Qué amables." } }

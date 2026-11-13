@@ -16,6 +16,7 @@ beats:
   patch: 0.8
 tracks:
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 5.8, z: -5.8, action: walk, thought: { en: "Time to earn my keep as a burglar.", es: "Hora de ganarme el puesto de saqueador." } }
       - { t: 0.13, x: 3.6, z: -3.6, action: idle, thought: { en: "My knees are knocking. Keep walking.", es: "Me tiemblan las rodillas. Sigue andando." } }

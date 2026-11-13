@@ -13,6 +13,7 @@ beats:
   chief: 0.8
 tracks:
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: -5.9, z: 4.4, action: walk, thought: { en: "Two small chests and a head full of memories. Home, at last.", es: "Dos cofrecillos y la cabeza llena de recuerdos. A casa, por fin." } }
       - { t: 0.2, x: -1.4, z: -1, action: idle, thought: { en: "Snow is coming. A warm hall will suit me very well.", es: "Viene la nieve. Un salón caldeado me vendrá de maravilla." } }

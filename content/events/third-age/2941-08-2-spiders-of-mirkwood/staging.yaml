@@ -147,6 +147,7 @@ tracks:
       - { t: 0.95, x: 0.29, z: 0.02, action: idle }
       - { t: 1, x: 0.29, z: 0.02, action: talk }
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 5.8, z: 5.6, action: walk, thought: { en: "The path is so dark and so long.", es: "El sendero es oscuro y larguísimo." } }
       - { t: 0.14, x: 2.5, z: 2.5, action: walk, thought: { en: "Wait! Where have they all gone?", es: "¡Esperad! ¿Adónde se han ido?" } }

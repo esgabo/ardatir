@@ -19,6 +19,7 @@ tracks:
       - { t: 0.62, x: 4.5, z: -2.7, action: hide, thought: { en: "The homely ways of your Shire hold more wisdom than all my gold.", es: "Las costumbres sencillas de tu Comarca guardan más sabiduría que todo mi oro." } }
       - { t: 0.8, x: 4.5, z: -2.7, action: hide }
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: -5, z: -2, action: hide, thought: { en: "My head aches. Why is the field so quiet?", es: "Me duele la cabeza. ¿Por qué está el campo tan callado?" } }
       - { t: 0.17, x: -5, z: -2, action: hide }

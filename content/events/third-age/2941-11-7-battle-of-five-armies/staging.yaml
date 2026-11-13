@@ -63,6 +63,7 @@ tracks:
       - { t: 0.75, x: 0.2, z: -2.7, action: fight }
       - { t: 0.88, x: 1.6, z: -3.4, action: idle, thought: { en: "Victory, and so many gone. I did not wish this.", es: "Victoria, y tantos caídos. Yo no quería esto." } }
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 2.6, z: -3, action: idle, thought: { en: "He is furious. I may be thrown from the wall.", es: "Está furioso. Puede que me arrojen de la muralla." } }
       - { t: 0.1, x: 2.6, z: -3, action: idle }

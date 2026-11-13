@@ -15,6 +15,7 @@ beats:
   back: 0.86
 tracks:
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 3.8, z: -5.6, action: idle, thought: { en: "Thorin will give them nothing. And I have a secret in my pocket.", es: "Thorin no les dará nada. Y yo llevo un secreto en el bolsillo." } }
       - { t: 0.16, x: 3.8, z: -5.6, action: idle, thought: { en: "The Heart of the Mountain. It could stop a war.", es: "El Corazón de la Montaña. Podría evitar una guerra." } }

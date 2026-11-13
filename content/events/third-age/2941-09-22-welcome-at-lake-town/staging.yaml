@@ -22,6 +22,7 @@ tracks:
       - { t: 0.56, x: 3.2, z: 0.8, action: talk }
       - { t: 0.76, x: 2.4, z: 2.8, action: idle }
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: -4.2, z: 4.6, action: idle, thought: { en: "Out of the barrels at last. I think it is my birthday, but never mind.", es: "Fuera de los barriles por fin. Creo que es mi cumpleaños, pero da igual." } }
       - { t: 0.16, x: -3.2, z: 2.2, action: idle, thought: { en: "A whole town on stilts, and the Mountain beyond.", es: "Una ciudad entera sobre pilotes, y la Montaña al fondo." } }

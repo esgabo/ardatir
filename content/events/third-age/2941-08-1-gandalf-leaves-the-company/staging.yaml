@@ -130,6 +130,7 @@ tracks:
       - { t: 0.8, x: 1.88, z: 2.25, action: idle }
       - { t: 1, x: -4.12, z: -3.75, action: walk }
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 5.62, z: 5.25, action: walk }
       - { t: 0.17, x: 2.62, z: 2.25, action: walk }

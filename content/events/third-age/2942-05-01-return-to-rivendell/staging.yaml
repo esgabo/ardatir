@@ -13,6 +13,7 @@ beats:
   home: 0.82
 tracks:
   - characterId: bilbo
+    model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 6, z: 5.2, action: walk, thought: { en: "The elves are singing. They are laughing at me, kindly.", es: "Los elfos cantan. Se ríen de mí, pero con cariño." } }
       - { t: 0.15, x: 0.5, z: 1.6, action: idle }
