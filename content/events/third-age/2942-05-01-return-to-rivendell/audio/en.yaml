@@ -1,0 +1,24 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 47.03
+starts:
+  arrive: 0.8
+  tales: 13.18
+  drowsy: 20.7
+  news: 29.55
+  home: 40.94
+textHash: sha256:35560479336cdb1a
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  arrive: sha256:db0d28ba4f5e5e3f
+  tales: sha256:74c49864d7a0f5f9
+  drowsy: sha256:6a380404d06ab8dd
+  news: sha256:3514559844d165bb
+  home: sha256:d688754d795b3489
+takes:
+  arrive: 2c4b717ba47b@101
+  tales: 94b91b57b987@101
+  drowsy: ddf179e3b41c@101
+  news: 73babcdf4b4c@101
+  home: e0f96f152694@2101

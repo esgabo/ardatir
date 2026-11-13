@@ -119,7 +119,7 @@ All scripts are TypeScript under `scripts/narration/`, run with Node 22 like the
 - **Timings:**
   - Publishing joins the passages with a fixed gap between them (default ~0.8 s, adjustable per narrator).
   - It writes `starts` as the exact second each passage's audio begins, and `duration` as the length of the joined file.
-  - The output is a mono 128 kbps mp3 with loudness normalised to one target for every narrator.
+  - The output is a mono 64 kbps mp3 (128 until 2026-11-13: speech in one voice sounds the same at half the size) with loudness normalised to one target for every narrator.
   
   This closes #33 without forced alignment.
 - `audio/<lang>.yaml` gains the data that marks a recording stale:

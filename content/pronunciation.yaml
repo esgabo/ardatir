@@ -10,5 +10,10 @@ en:
   Melkor: "MEL-kor"            # unheard; candidate A said it well as written
   Eä: "Ay-yah"                 # heard 2026-11-10 in its sentence (the-elder v1, seed 1101); "AY-ah" sometimes came out "I R", as written a single "E"
   Arda: "AR-dah"               # unheard
+  # The Hobbit, the-lady (OmniVoice): as written she said "Smag", "Thraar", "Thraen", "Bjorn" (heard by the author 2026-11-13).
+  Smaug: "Smowg"               # heard 2026-11-13 (the-lady); Tolkien's own: the "au" as in "how"
+  Thrór: "Throar"              # heard 2026-11-13 (the-lady); a long o, like "roar"
+  Thráin: "Thryne"             # heard 2026-11-13 (the-lady); the "ai" as in "aisle"
+  Beorn: "Bay-orn"             # heard 2026-11-13 (the-lady); two syllables
 es:
   Eä: "Eá"                     # heard 2026-11-11 (the-elder es v1, seed 101); as written it sometimes came out a single "E"

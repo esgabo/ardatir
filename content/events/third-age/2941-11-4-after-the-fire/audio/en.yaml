@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 73.63
+starts:
+  shore: 0.8
+  king: 12.28
+  master: 23.6
+  treasure: 37.8
+  elves: 48.31
+  march: 61.85
+textHash: sha256:533dae8736671e88
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  shore: sha256:d383d83c3f966590
+  king: sha256:74f1a0861ad67524
+  master: sha256:02f43e651a02e7b7
+  treasure: sha256:ef86c293799f6401
+  elves: sha256:4f68e45155c6187d
+  march: sha256:8cceed7f63f93e5c
+takes:
+  shore: 0ed26426d2a0@101
+  king: 368dd6d77b68@1101
+  master: 439b5fdf85e6@101
+  treasure: be0fd44164db@101
+  elves: 98daa3bf6b6f@101
+  march: 76d500a60890@101

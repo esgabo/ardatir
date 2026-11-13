@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 78.9
+starts:
+  thrush: 0.8
+  roac: 14.02
+  warning: 27.5
+  wall: 40.96
+  parley: 51.95
+  arrow: 64.35
+textHash: sha256:b012a434f635f815
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  thrush: sha256:13a74411140b8e45
+  roac: sha256:ff566670b048e671
+  warning: sha256:969721d97441aaee
+  wall: sha256:e85fd1ad2c462730
+  parley: sha256:9ef0eb5dc895ff9c
+  arrow: sha256:936a65d4cdc7c118
+takes:
+  thrush: b271681df083@101
+  roac: c3ff46dbacb4@101
+  warning: 454ea4fd2b47@101
+  wall: 6ba464909bf4@101
+  parley: c8ce662b1d85@101
+  arrow: 18ae3687efaf@101

@@ -1,0 +1,30 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 80.66
+starts:
+  tunnel: 0.8
+  courage: 12.29
+  hoard: 18.77
+  rage: 31.31
+  talk: 43.43
+  patch: 60.26
+  thrush: 71.1
+textHash: sha256:b226287cd3b9f177
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  tunnel: sha256:55510489e3fb23c1
+  courage: sha256:659340f05e6c3a46
+  hoard: sha256:77702a09afa94656
+  rage: sha256:463cd57bcafe85ff
+  talk: sha256:a6e2c26617068519
+  patch: sha256:db257c3a2dbff5a8
+  thrush: sha256:235f3588e97413bd
+takes:
+  tunnel: a0cc10fa1bd0@101
+  courage: a85a97553f99@101
+  hoard: 89f951b398a0@101
+  rage: e48fc16a7ba3@1101
+  talk: 2010297dbb62@101
+  patch: 468f57c6fcaf@1101
+  thrush: 07c2826feb8b@101

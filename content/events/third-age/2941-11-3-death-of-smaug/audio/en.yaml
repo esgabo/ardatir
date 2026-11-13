@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 78.54
+starts:
+  flight: 0.8
+  warning: 10.75
+  fire: 25.55
+  bard: 38.87
+  arrow: 52.59
+  fall: 66.78
+textHash: sha256:3f2ac21e23c34a5f
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  flight: sha256:0e34afb4b945a95e
+  warning: sha256:537a4defa7bddafe
+  fire: sha256:a042e78d4fdbf08f
+  bard: sha256:a1b356312dac95b8
+  arrow: sha256:9654ecd2648c1831
+  fall: sha256:1059b03c47013961
+takes:
+  flight: 0e8be20d6631@1101
+  warning: 8c8accf7df19@101
+  fire: 48f647f90dd6@101
+  bard: 161863358704@101
+  arrow: f839a26e6020@101
+  fall: 3c2c06a4f112@101
