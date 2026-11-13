@@ -39,6 +39,9 @@ A character can also be built entirely in code, in headless Blender: low-poly pa
 - `lowpoly.py`: faceted parts (lofted tubes, ellipsoids, boxes, cones, open shells), flat-colour materials, and joining them into one flat-shaded mesh with each part's bone weights.
 - `hobbit_rig.py`: the hobbit rig (#21): sixteen bones placed from a character's joints, and the base clips (`idle`, `walk`, `run`, `talk`, `hide`, `fight`), each a pose function of the cycle's phase, keyed on every frame so it loops exactly. Walk and run are timed for `GAIT_PACE`.
 - `wizard_rig.py`: the wizard rig (#21): the hobbit's bones at a man's proportions, plus two for the cloak and two for the beard, whose swing is baked into the clips. The staff hand's rest pose is bent forward with the staff upright; its clips turn the hand so the staff keeps the lean they ask for.
+- `dwarf_rig.py`: the dwarf rig (#21): the hobbit's bones at a dwarf's build (`width` broadens it), plus two beard bones, with a short heavy stride and an overhand blow for `fight`.
+- `dwarves.py`: Thorin and the twelve from one dwarf body, a table of variants (hood, tunic, belt, beard colour and style, width, belly); `--only thorin,balin` builds some of them.
+- `lineup.py`: exports side by side in their rest pose, for comparing a set of variants.
 - `bilbo.py`, `gandalf.py`: one character each. Each writes `assets/characters/<id>/<id>.blend` and the raw export `out/models/<id>.glb`.
 - `turnaround.py`: review renders of a `.blend` (front, three-quarter, side, back, the diorama's angle, and any `clip:frame`).
 
