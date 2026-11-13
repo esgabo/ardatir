@@ -62,11 +62,15 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
 
   // glTF models (docs/MODELS.md): the placeholder stands until a character's model has loaded,
   // and stays if it can't load. The loader is its own chunk, fetched only when a model is used.
+  // Keyed by character, and by `<id>#becomes` for a track's second model (the trolls' stone).
   const models = new Map<string, ModelInstance>();
   let disposed = false;
   const wanted = event.tracks
-    .map((tr) => ({ ch: characters.get(tr.characterId), url: tr.model ?? characters.get(tr.characterId)?.model }))
-    .filter((w): w is { ch: Character; url: string } => !!w.ch && !!w.url);
+    .flatMap((tr) => [
+      { ch: characters.get(tr.characterId), key: tr.characterId, url: tr.model ?? characters.get(tr.characterId)?.model },
+      ...tr.becomes ? [{ ch: characters.get(tr.characterId), key: `${tr.characterId}#becomes`, url: tr.becomes.model }] : [],
+    ])
+    .filter((w): w is { ch: Character; key: string; url: string } => !!w.ch && !!w.url);
   if (event.set) {
     const url = import.meta.env.BASE_URL + event.set;
     void import('./sets').then((S) => S.loadSet(url)).then((inst) => {
@@ -79,14 +83,16 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
     });
   }
   if (wanted.length) {
-    void import('./models').then((M) => Promise.all(wanted.map(async ({ ch, url }) => {
+    void import('./models').then((M) => Promise.all(wanted.map(async ({ ch, key, url }) => {
       try {
         const model = await M.loadModel(import.meta.env.BASE_URL + url);
         const fig = figures.get(ch.id);
-        if (disposed || !fig || models.has(ch.id)) return;
+        if (disposed || !fig || models.has(key)) return;
         const inst = M.instantiate(model, FIGURE_HEIGHT * (ch.scale ?? 1));
+        // Both models hang on the figure; update shows whichever t calls for.
+        if (key.endsWith('#becomes')) inst.object.visible = false;
         useModel(fig, inst.object);
-        models.set(ch.id, inst);
+        models.set(key, inst);
       } catch (e) {
         console.warn(`model for ${ch.id} (${url}) did not load; keeping the placeholder`, e);
       }
@@ -111,9 +117,19 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
         if (!fig) continue;
         const pose = samplePose(track, t);
         fig.visible = onTile(pose);
+        // From `becomes.t` the character stands as their second model (a troll caught by the dawn).
+        const turned = !!track.becomes && t >= track.becomes.t;
+        // If the second model didn't load, the first one stays on rather than nothing showing.
+        const shown = (turned ? models.get(`${track.characterId}#becomes`) : undefined) ?? models.get(track.characterId);
+        if (track.becomes) {
+          for (const key of [track.characterId, `${track.characterId}#becomes`]) {
+            const m = models.get(key);
+            if (m) m.object.visible = m === shown;
+          }
+        }
         // A model with clips plays them from t (cross-faded at changes, feet paced by the ground
         // covered); without, the placeholder's bob and crouch stand in.
-        const model = fig.visible ? models.get(track.characterId) : undefined;
+        const model = fig.visible ? shown : undefined;
         let clip: string | undefined;
         if (model) {
           const height = FIGURE_HEIGHT * (characters.get(track.characterId)?.scale ?? 1);

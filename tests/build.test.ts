@@ -323,6 +323,14 @@ describe('the valid fixture', () => {
     expect(over.copies.filter((c) => c.to === url)).toHaveLength(1);
   });
 
+  it('reads a track\'s second model, the one it becomes partway through', () => {
+    const url = 'data/models/characters/test-figure/test-figure.glb';
+    const ok = buildWith([{ file: `${PARTY}/staging.yaml`, replace: ['characterId: bilbo\n', `characterId: bilbo\n    becomes: { t: 0.8, model: ${TEST_MODEL} }\n`] }]);
+    expect(ok.errors).toEqual([]);
+    expect(ok.details.find((x) => x.id === 'the-party')!.tracks[0].becomes).toEqual({ t: 0.8, model: url });
+    expect(r.details.find((x) => x.id === 'the-party')!.tracks[0].becomes).toBeUndefined();
+  });
+
   it('reads an event\'s set (a kit) and how its light changes', () => {
     const kit = { file: `../assets/${TEST_KIT}`, write: glb({ scenes: [{}], extensionsUsed: ['EXT_meshopt_compression'] }) };
     const ok = buildWith([kit, { file: `${PARTY}/staging.yaml`, replace: ['duration: 12\n', `duration: 12\n${SET_AND_LIGHT}`] }]);
@@ -444,6 +452,8 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'model that is not glTF', changes: [{ file: `../assets/${TEST_MODEL}`, write: 'not a model' }], error: 'not a binary glTF (.glb)' },
   { name: 'model with Draco', changes: [{ file: `../assets/${TEST_MODEL}`, write: glb({ scenes: [{}], extensionsUsed: ['KHR_draco_mesh_compression'] }) }], error: 'uses KHR_draco_mesh_compression' },
   { name: 'missing per-event model', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['characterId: bilbo\n', 'characterId: bilbo\n    model: characters/bilbo/barrel.glb\n'] }], error: 'tracks[0].model: assets/characters/bilbo/barrel.glb not found' },
+  { name: 'becomes without a time', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['characterId: bilbo\n', `characterId: bilbo\n    becomes: { model: ${TEST_MODEL} }\n`] }], error: 'tracks[0].becomes: expected { t: 0–1, model }' },
+  { name: 'becomes a model that is missing', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['characterId: bilbo\n', 'characterId: bilbo\n    becomes: { t: 0.8, model: characters/bilbo/stone.glb }\n'] }], error: 'tracks[0].becomes.model: assets/characters/bilbo/stone.glb not found' },
   { name: 'set that is not a kit', changes: [withSet(`set: ${TEST_MODEL}\n`)], error: 'set: expected a model under kits/' },
   { name: 'missing set', changes: [withSet('set: kits/shire/nowhere.glb\n')], error: 'set: assets/kits/shire/nowhere.glb not found' },
   { name: 'light of an unknown preset', changes: [withSet('light:\n  - { t: 0, preset: twilight }\n')], error: 'light[0].preset: one of dawn, morning, day, evening, dusk, night' },

@@ -41,12 +41,13 @@ A character can also be built entirely in code, in headless Blender: low-poly pa
 - `wizard_rig.py`: the wizard rig (#21): the hobbit's bones at a man's proportions, plus two for the cloak and two for the beard, whose swing is baked into the clips. The staff hand's rest pose is bent forward with the staff upright; its clips turn the hand so the staff keeps the lean they ask for.
 - `dwarf_rig.py`: the dwarf rig (#21): the hobbit's bones at a dwarf's build (`width` broadens it), plus two beard bones, with a short heavy stride and an overhand blow for `fight`.
 - `dwarves.py`: Thorin and the twelve from one dwarf body, a table of variants (hood, tunic, belt, beard colour and style, width, belly); `--only thorin,balin` builds some of them.
-- `troll_rig.py`, `trolls.py`: Bert, Tom and William on one hunched troll body, each also in stone (`<id>-stone.glb`: one held pose as a two-frame `idle`), which an event's staging picks per track.
+- `troll_rig.py`, `trolls.py`: Bert, Tom and William on one hunched troll body, each also in stone (`<id>-stone.glb`: one held pose as a two-frame `idle`). An event's staging picks the stone one per track, either for the whole event (`model:`, as in the-troll-gold) or from the moment the dawn catches them (`becomes:`, as in roast-mutton).
 - `lineup.py`: exports side by side in their rest pose (`--pose` keeps each model's first frame; `--spacing=` for big ones), for comparing a set of variants.
 - `bilbo.py`, `gandalf.py`: one character each. Each writes `assets/characters/<id>/<id>.blend` and the raw export `out/models/<id>.glb`. `bilbo.py -- --look travel` builds `bilbo-travel.glb` instead (Dwalin's hood and cloak over shirt sleeves): its source is the script, and `--blend <path>` saves a copy to render.
 - `kit.py`: what every diorama tile shares — the site's coordinate map (`P`), the palette, the noise, the painted terrain and plinth with their soil-to-rock strata, and the decor helpers (boxes, blobs, round doors, rocks, trees, flowers, hedges, strips for a lane or a stream). A tile sets `kit.ground`, `kit.top`, `kit.HALF` and `kit.DEPTH`, then builds only its own place.
 - `shire.py`: the Shire kit's Bag End tile (#24): the Hill with the rooms cut away (hall, parlour, pantry), the front bank with the round door and windows, the garden, hedges, lane, stream and waterfall, rocks, trees. Writes `out/models/bag-end.glb`, packed to `kits/shire/bag-end.glb`; the script is its source.
 - `bywater.py`: the Shire kit's Bywater tile (#24): Bag End's own round door at the head of the lane, the lane east past a brook and its stone bridge to the Green Dragon (timbered under thatch, a painted sign, a yard of ponies at the rail), the Water spread into Bywater Pool with the mill and its wheel, the village green, the ploughed field. Writes `out/models/green-dragon.glb`, packed to `kits/shire/green-dragon.glb`.
+- `trollshaws.py`: the Trollshaws tile (#46): the road through a wood of oaks and beeches, the trolls' clearing with its great fire, the spit and the cask and the heap of sacks, the stumps they sit on, the fallen trunk Bilbo creeps behind, and the rock face at the back with the heavy door of their cave. Built for the dark: the fire is the only light in it. Writes `out/models/trolls-camp.glb`, packed to `kits/trollshaws/trolls-camp.glb`.
 - `turnaround.py`: review renders of a `.blend` (front, three-quarter, side, back, the diorama's angle, and any `clip:frame`).
 
 ```sh
@@ -123,7 +124,7 @@ tracks:
     keyframes: [...]
 ```
 
-Without either, the character is drawn as the placeholder figure.
+Without either, the character is drawn as the placeholder figure. A track may also name a second model the character turns into partway through the event — `becomes: { t: 0.88, model: characters/william/william-stone.glb }` — and from that `t` the second one stands in the first one's place. Both are loaded up front and hang on the same figure, so the change costs nothing at the moment it happens, and it is a function of `t` like everything else: scrubbing back shows the first model again.
 
 An event's place, in its `staging.yaml`: `set: kits/shire/bag-end.glb` puts the whole tile from the kit in place of the generic one (and `light:` keys say how its light changes, `content/README.md`). A set is in the site's own units (a hobbit is 0.82 tall, the tile runs from -7 to 7), Y up, origin at the tile's centre, and names what the site drives (`src/scene/sets.ts`):
 

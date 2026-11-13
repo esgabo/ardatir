@@ -10,6 +10,9 @@ arcs: [ the-quest-of-erebor ]
 journeys: [ there-and-back-again, the-road-to-erebor, gandalfs-road-2941 ]
 tags: [ hobbit ]
 status: staged
+beats:
+  - { id: caught, label: { en: Bilbo is caught, es: Bilbo es atrapado } }
+  - { id: dawn, label: { en: The sun comes up, es: Sale el sol } }
 source: { book: the-hobbit, chapter: 2 }
 title:
   en: Roast Mutton
