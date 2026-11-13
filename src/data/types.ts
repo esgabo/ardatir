@@ -303,6 +303,11 @@ export interface Track {
   keyframes: Keyframe[];
   /** This event's model for the character, overriding `Character.model` (same URL form). */
   model?: string;
+  /**
+   * A second model the character turns into partway through the event, from `t` onwards: the
+   * trolls caught by the dawn. Pure in `t`, so scrubbing back shows them alive again.
+   */
+  becomes?: { t: number; model: string };
 }
 
 export const ARMY_SIZES = ['small', 'medium', 'large'] as const;

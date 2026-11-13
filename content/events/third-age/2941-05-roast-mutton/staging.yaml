@@ -1,27 +1,181 @@
 stage: diorama
-duration: 24
+duration: 34
+set: kits/trollshaws/trolls-camp.glb
+# A wet night in the hills, and the sun that comes up over the eastern trees at the end of it.
+light:
+  - { t: 0, preset: night }
+  - { t: 0.84, preset: night }
+  - { t: 0.93, preset: dawn }
+  - { t: 1, preset: morning }
 narration:
   fire: 0
-  trolls: 0.25
-  caught: 0.45
-  voices: 0.6
+  trolls: 0.22
+  caught: 0.42
+  voices: 0.62
   dawn: 0.85
+beats:
+  caught: 0.45
+  dawn: 0.88
 tracks:
+  - characterId: william
+    becomes: { t: 0.88, model: characters/william/william-stone.glb }
+    keyframes:
+      - { t: 0, x: -1.75, z: -0.55, action: talk, thought: { en: "Mutton again. Always mutton.", es: "Carnero otra vez. Siempre carnero." } }
+      - { t: 0.3, x: -1.75, z: -0.55, action: idle }
+      - { t: 0.38, x: -2.05, z: -0.30, action: walk }
+      - { t: 0.42, x: -2.05, z: -0.30, action: talk, thought: { en: "What is this little thing? Too small to be worth the trouble.", es: "¿Qué es esta cosita? Demasiado pequeña para tanto lío." } }
+      - { t: 0.78, x: -2.05, z: -0.30, action: fight }
+      - { t: 0.86, x: -2.05, z: -0.30, action: idle }
+      - { t: 1, x: -2.05, z: -0.30, action: idle }
+  - characterId: bert
+    becomes: { t: 0.88, model: characters/bert/bert-stone.glb }
+    keyframes:
+      - { t: 0, x: 1.95, z: -0.85, action: talk }
+      - { t: 0.3, x: 1.95, z: -0.85, action: idle }
+      - { t: 0.38, x: 1.95, z: -0.85, action: idle }
+      - { t: 0.66, x: 1.95, z: -0.85, action: talk, thought: { en: "Roast them. I say roast them, and be done.", es: "Asarlos. Digo que los asemos, y se acabó." } }
+      - { t: 0.78, x: 1.95, z: -0.85, action: fight }
+      - { t: 0.86, x: 1.95, z: -0.85, action: idle }
+      - { t: 1, x: 1.95, z: -0.85, action: idle }
+  - characterId: tom
+    becomes: { t: 0.88, model: characters/tom/tom-stone.glb }
+    keyframes:
+      - { t: 0, x: 0.45, z: 2.30, action: talk }
+      - { t: 0.3, x: 0.45, z: 2.30, action: idle }
+      - { t: 0.38, x: 0.45, z: 2.30, action: idle }
+      - { t: 0.72, x: 0.45, z: 2.30, action: talk, thought: { en: "Who keeps saying that? Was that you, Bert?", es: "¿Quién dice eso? ¿Fuiste tú, Berto?" } }
+      - { t: 0.78, x: 0.45, z: 2.30, action: fight }
+      - { t: 0.86, x: 0.45, z: 2.30, action: idle }
+      - { t: 1, x: 0.45, z: 2.30, action: idle }
   - characterId: bilbo
     model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
-      - { t: 0, x: -4, z: 3, action: walk, thought: { en: A burglar should be able to do this quietly., es: Un saqueador debería poder hacer esto en silencio. } }
-      - { t: 0.3, x: -1, z: 1, action: hide, thought: { en: That purse is right there..., es: Esa bolsa está justo ahí... } }
-      - { t: 0.45, x: 0, z: 0.5, action: run, thought: { en: It talked! The purse talked!, es: ¡Habló! ¡La bolsa habló! } }
-      - { t: 1, x: -2.5, z: 2.5, action: idle, thought: { en: Stone. They are all stone., es: Piedra. Son todos de piedra. } }
-  - characterId: william
-    keyframes:
-      - { t: 0, x: 1, z: -1, action: talk, thought: { en: "Mutton yesterday, mutton today...", es: "Cordero ayer, cordero hoy..." } }
-      - { t: 0.45, x: 0.4, z: 0.2, action: fight, thought: { en: What's this little thing?, es: ¿Qué es esta cosita? } }
-      - { t: 0.8, x: 1.2, z: -0.6, action: talk, thought: { en: Who said that? Bert? Tom?, es: ¿Quién dijo eso? ¿Berto? ¿Tom? } }
-      - { t: 1, x: 1.2, z: -0.6, action: idle }
+      - { t: 0, x: -7.00, z: 4.45, action: walk, thought: { en: "A light, in all this wet. A burglar should go and look.", es: "Una luz, con todo este agua. Un saqueador debería ir a mirar." } }
+      - { t: 0.14, x: -4.30, z: 4.05, action: walk }
+      - { t: 0.22, x: -3.10, z: 2.75, action: walk }
+      - { t: 0.27, x: -2.75, z: 2.35, action: hide, thought: { en: "Three of them. Big as houses, and the fire is theirs.", es: "Tres. Grandes como casas, y la fogata es suya." } }
+      - { t: 0.34, x: -2.20, z: 1.35, action: hide }
+      - { t: 0.4, x: -1.60, z: 0.45, action: hide, thought: { en: "That purse is right there. One quiet hand.", es: "Esa bolsa está justo ahí. Una mano en silencio." } }
+      - { t: 0.45, x: -1.50, z: 0.20, action: run, thought: { en: "It talked! The purse talked!", es: "¡Habló! ¡La bolsa habló!" } }
+      - { t: 0.5, x: -2.20, z: 0.75, action: hide }
+      - { t: 0.62, x: -0.35, z: 2.90, action: hide, thought: { en: "A sack, and the dark, and the three of them arguing.", es: "Un saco, la oscuridad, y los tres discutiendo." } }
+      - { t: 0.88, x: -0.35, z: 2.90, action: hide }
+      - { t: 0.94, x: -1.10, z: 2.25, action: idle, thought: { en: "Stone. They are all stone.", es: "Piedra. Son todos de piedra." } }
+      - { t: 1, x: -1.10, z: 2.25, action: idle }
   - characterId: gandalf
     keyframes:
-      - { t: 0, x: 5, z: -4, action: idle }
-      - { t: 0.55, x: 3, z: -2.5, action: hide, thought: { en: Keep them quarrelling. Dawn is close., es: Que sigan peleando. El amanecer está cerca. } }
-      - { t: 1, x: 0, z: 1.5, action: talk, thought: { en: "There, the first light. Their quarrel has cost them everything.", es: Ahí está la primera luz. Su disputa les ha costado todo. } }
+      - { t: 0, x: -8.60, z: 5.00, action: idle }
+      - { t: 0.46, x: -8.60, z: 5.00, action: idle }
+      - { t: 0.52, x: -4.40, z: 1.60, action: walk }
+      - { t: 0.6, x: -3.70, z: 0.90, action: hide, thought: { en: "Keep them quarrelling. The dawn is doing the rest.", es: "Que sigan discutiendo. El amanecer hace lo demás." } }
+      - { t: 0.78, x: -3.50, z: 0.75, action: hide }
+      - { t: 0.9, x: -2.40, z: 1.50, action: walk }
+      - { t: 0.96, x: -1.90, z: 2.00, action: talk, thought: { en: "The light has them. Their own quarrel held them until it came.", es: "La luz los tiene. Su propia disputa los retuvo hasta que llegó." } }
+      - { t: 1, x: -1.90, z: 2.00, action: talk }
+  - characterId: thorin
+    keyframes:
+      - { t: 0, x: -8.20, z: 4.20, action: idle }
+      - { t: 0.47, x: -6.40, z: 4.30, action: walk }
+      - { t: 0.52, x: -2.45, z: 3.55, action: walk }
+      - { t: 0.57, x: -0.95, z: 2.95, action: hide }
+      - { t: 0.59, x: -0.95, z: 2.95, action: hide, thought: { en: "One by one, into their sacks. I should have come first.", es: "Uno a uno, a sus sacos. Debí haber venido yo primero." } }
+      - { t: 0.93, x: -0.95, z: 2.95, action: hide }
+      - { t: 1, x: -0.95, z: 2.95, action: hide }
+  - characterId: balin
+    keyframes:
+      - { t: 0, x: -8.50, z: 4.50, action: idle }
+      - { t: 0.482, x: -6.40, z: 4.55, action: walk }
+      - { t: 0.532, x: -1.85, z: 3.85, action: walk }
+      - { t: 0.582, x: -0.35, z: 3.25, action: hide }
+      - { t: 0.93, x: -0.35, z: 3.25, action: hide }
+      - { t: 0.95, x: -0.35, z: 3.25, action: hide, thought: { en: "The sun. Look at them — the sun has done it.", es: "El sol. Míralos: lo ha hecho el sol." } }
+      - { t: 1, x: -0.35, z: 3.25, action: hide }
+  - characterId: dwalin
+    keyframes:
+      - { t: 0, x: -8.80, z: 4.80, action: idle }
+      - { t: 0.494, x: -6.40, z: 4.80, action: walk }
+      - { t: 0.544, x: -1.20, z: 4.00, action: walk }
+      - { t: 0.594, x: 0.30, z: 3.40, action: hide }
+      - { t: 0.93, x: 0.30, z: 3.40, action: hide }
+      - { t: 1, x: 0.30, z: 3.40, action: hide }
+  - characterId: fili
+    keyframes:
+      - { t: 0, x: -9.10, z: 4.20, action: idle }
+      - { t: 0.506, x: -6.40, z: 4.30, action: walk }
+      - { t: 0.556, x: -0.55, z: 3.85, action: walk }
+      - { t: 0.606, x: 0.95, z: 3.25, action: hide }
+      - { t: 0.93, x: 0.95, z: 3.25, action: hide }
+      - { t: 1, x: 0.95, z: 3.25, action: hide }
+  - characterId: kili
+    keyframes:
+      - { t: 0, x: -8.20, z: 4.50, action: idle }
+      - { t: 0.518, x: -6.40, z: 4.55, action: walk }
+      - { t: 0.568, x: 0.05, z: 3.60, action: walk }
+      - { t: 0.618, x: 1.55, z: 3.00, action: hide }
+      - { t: 0.93, x: 1.55, z: 3.00, action: hide }
+      - { t: 1, x: 1.55, z: 3.00, action: hide }
+  - characterId: dori
+    keyframes:
+      - { t: 0, x: -8.50, z: 4.80, action: idle }
+      - { t: 0.53, x: -6.40, z: 4.80, action: walk }
+      - { t: 0.58, x: -2.85, z: 3.05, action: walk }
+      - { t: 0.63, x: -1.35, z: 2.45, action: hide }
+      - { t: 0.93, x: -1.35, z: 2.45, action: hide }
+      - { t: 1, x: -1.35, z: 2.45, action: hide }
+  - characterId: nori
+    keyframes:
+      - { t: 0, x: -8.80, z: 4.20, action: idle }
+      - { t: 0.542, x: -6.40, z: 4.30, action: walk }
+      - { t: 0.592, x: -2.20, z: 3.20, action: walk }
+      - { t: 0.642, x: -0.70, z: 2.60, action: hide }
+      - { t: 0.93, x: -0.70, z: 2.60, action: hide }
+      - { t: 1, x: -0.70, z: 2.60, action: hide }
+  - characterId: ori
+    keyframes:
+      - { t: 0, x: -9.10, z: 4.50, action: idle }
+      - { t: 0.554, x: -6.40, z: 4.55, action: walk }
+      - { t: 0.604, x: -0.20, z: 3.10, action: walk }
+      - { t: 0.654, x: 1.30, z: 2.50, action: hide }
+      - { t: 0.93, x: 1.30, z: 2.50, action: hide }
+      - { t: 1, x: 1.30, z: 2.50, action: hide }
+  - characterId: oin
+    keyframes:
+      - { t: 0, x: -8.20, z: 4.80, action: idle }
+      - { t: 0.566, x: -6.40, z: 4.80, action: walk }
+      - { t: 0.616, x: 0.40, z: 3.35, action: walk }
+      - { t: 0.666, x: 1.90, z: 2.75, action: hide }
+      - { t: 0.93, x: 1.90, z: 2.75, action: hide }
+      - { t: 1, x: 1.90, z: 2.75, action: hide }
+  - characterId: gloin
+    keyframes:
+      - { t: 0, x: -8.50, z: 4.20, action: idle }
+      - { t: 0.578, x: -6.40, z: 4.30, action: walk }
+      - { t: 0.628, x: 0.90, z: 3.65, action: walk }
+      - { t: 0.678, x: 2.40, z: 3.05, action: hide }
+      - { t: 0.93, x: 2.40, z: 3.05, action: hide }
+      - { t: 1, x: 2.40, z: 3.05, action: hide }
+  - characterId: bifur
+    keyframes:
+      - { t: 0, x: -8.80, z: 4.50, action: idle }
+      - { t: 0.59, x: -6.40, z: 4.55, action: walk }
+      - { t: 0.64, x: -3.40, z: 3.40, action: walk }
+      - { t: 0.69, x: -1.90, z: 2.80, action: hide }
+      - { t: 0.93, x: -1.90, z: 2.80, action: hide }
+      - { t: 1, x: -1.90, z: 2.80, action: hide }
+  - characterId: bofur
+    keyframes:
+      - { t: 0, x: -9.10, z: 4.80, action: idle }
+      - { t: 0.602, x: -6.40, z: 4.80, action: walk }
+      - { t: 0.652, x: 0.65, z: 2.90, action: walk }
+      - { t: 0.702, x: 2.15, z: 2.30, action: hide }
+      - { t: 0.93, x: 2.15, z: 2.30, action: hide }
+      - { t: 1, x: 2.15, z: 2.30, action: hide }
+  - characterId: bombur
+    keyframes:
+      - { t: 0, x: -8.20, z: 4.20, action: idle }
+      - { t: 0.614, x: -6.40, z: 4.30, action: walk }
+      - { t: 0.664, x: 1.25, z: 3.15, action: walk }
+      - { t: 0.714, x: 2.75, z: 2.55, action: hide }
+      - { t: 0.74, x: 2.75, z: 2.55, action: hide, thought: { en: "They are still arguing. Let them argue all night.", es: "Siguen discutiendo. Que discutan toda la noche." } }
+      - { t: 0.93, x: 2.75, z: 2.55, action: hide }
+      - { t: 1, x: 2.75, z: 2.55, action: hide }

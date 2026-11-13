@@ -121,7 +121,14 @@ light:                        # the look at each t, blended between; without it,
   - { t: 0.75, preset: dusk }   # lamps, windows and fires light up, fireflies come out
 ```
 
-A track may give the character this event's own model, `model: characters/bilbo/bilbo-barrel.glb` (next to `characterId`), instead of their usual one (`docs/MODELS.md`).
+A track may give the character this event's own model, `model: characters/bilbo/bilbo-barrel.glb` (next to `characterId`), instead of their usual one (`docs/MODELS.md`). It may also give a second model the character turns into partway through:
+
+```yaml
+  - characterId: william
+    becomes: { t: 0.88, model: characters/william/william-stone.glb }   # the dawn catches the trolls
+```
+
+From that `t` the second model stands in the first one's place. Like everything else it is a function of `t`, so scrubbing back shows the troll alive again. Keep the track still from a little before the change, since the stone holds one pose.
 
 The tile runs about -7 to 7 on both axes. A figure whose position is off the tile (say `x: 11, z: 11`) is not drawn: off the tile = offstage. Use it to wait out the scenes before an entrance. A figure moving between two `hide` keyframes stays hidden (it is not shown walking).
 

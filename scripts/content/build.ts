@@ -566,9 +566,21 @@ export function buildContent(contentDir: string): BuildResult {
     (Array.isArray(s.tracks) ? s.tracks : []).forEach((tr, i) => {
       if (!isObj(tr) || typeof tr.characterId !== 'string' || !Array.isArray(tr.keyframes)) { R.error(sf, `tracks[${i}]: expected { characterId, keyframes }`); return; }
       if (!r.summary.characters.includes(tr.characterId)) R.error(sf, `tracks[${i}]: "${tr.characterId}" is not in the event's characters`);
-      keys(sf, tr, ['characterId', 'keyframes', 'model'], `tracks[${i}]`);
+      keys(sf, tr, ['characterId', 'keyframes', 'model', 'becomes'], `tracks[${i}]`);
       // This event's own model for the character (Bilbo in a barrel), instead of their usual one.
       const model = tr.model === undefined ? undefined : readModel(R, sf, tr.model, `tracks[${i}].model`, assetsDir, copies, 'characters');
+      // A second model from a moment onwards: the trolls caught by the dawn.
+      let becomes: Track['becomes'];
+      if (tr.becomes !== undefined) {
+        const b = tr.becomes;
+        if (!isObj(b) || typeof b.t !== 'number' || b.t < 0 || b.t > 1) {
+          R.error(sf, `tracks[${i}].becomes: expected { t: 0–1, model }`);
+        } else {
+          keys(sf, b, ['t', 'model'], `tracks[${i}].becomes`);
+          const m = readModel(R, sf, b.model, `tracks[${i}].becomes.model`, assetsDir, copies, 'characters');
+          if (m) becomes = { t: b.t, model: m };
+        }
+      }
       const kfs: Keyframe[] = [];
       let lt = -1;
       tr.keyframes.forEach((k, j) => {
@@ -578,7 +590,7 @@ export function buildContent(contentDir: string): BuildResult {
         lt = k.t;
         kfs.push({ t: k.t, x: k.x, z: k.z, ...k.action ? { action: k.action as Keyframe['action'] } : {}, ...k.thought ? { thought: text(sf, k.thought, `${what}.thought`) } : {} });
       });
-      tracks.push({ characterId: tr.characterId, keyframes: kfs, ...model ? { model } : {} });
+      tracks.push({ characterId: tr.characterId, keyframes: kfs, ...model ? { model } : {}, ...becomes ? { becomes } : {} });
     });
 
     const armies = readArmies(FC, sf, s.armies, r.summary);
