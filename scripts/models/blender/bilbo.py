@@ -81,16 +81,7 @@ def body_rings(z0, z1, grow=0.0, levels=6):
     return rings
 
 
-def limb(a, b, radii, sides=7):
-    """A tube from joint a to joint b, with radii along it (one per ring)."""
-    a, b = Vector(a), Vector(b)
-    axis = (b - a).normalized()
-    u = Vector((1, 0, 0)) if abs(axis.x) < 0.9 else Vector((0, 1, 0))
-    u = (u - axis * u.dot(axis)).normalized()
-    v = axis.cross(u)
-    n = len(radii)
-    rings = [(a + (b - a) * (i / (n - 1)), r, r) for i, r in enumerate(radii)]
-    return lp.loft(rings, sides=sides, u=u, v=v)
+limb = lp.limb
 
 
 def coat_shell():
@@ -296,7 +287,7 @@ def main():
     arm = rig.build_armature('bilbo', J)
     mesh = build_mesh()
     rig.bind(mesh, arm)
-    made = rig.make_clips(arm, HEIGHT, J)
+    made = rig.make_clips(arm, rig.clips(HEIGHT, J), J)
     tris = sum(len(p.vertices) - 2 for p in mesh.data.polygons)
     print(f'bilbo: {tris} triangles, {len(arm.data.bones)} bones, clips: '
           + ', '.join(f'{n} ({f} frames)' for n, f in made))
