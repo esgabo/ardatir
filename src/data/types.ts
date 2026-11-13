@@ -328,6 +328,15 @@ export interface Army {
   keyframes: ArmyKeyframe[];
 }
 
+/** The light of a diorama at a moment (src/scene/lighting.ts has the look of each). */
+export const LIGHT_PRESETS = ['dawn', 'morning', 'day', 'evening', 'dusk', 'night'] as const;
+export type LightPreset = (typeof LIGHT_PRESETS)[number];
+/** From `t` on, the light moves towards `preset` (staging.yaml `light`); between keys it blends. */
+export interface LightKey {
+  t: number;
+  preset: LightPreset;
+}
+
 export interface Beat {
   id: string;
   t: number;
@@ -362,6 +371,10 @@ export interface EventDetail extends EventSummary {
   tracks: Track[];
   /** A battle's armies (staging.yaml `armies`), when it has any. */
   armies?: Army[];
+  /** The place built for this event (staging.yaml `set`: a kit model's URL), instead of the generic tile. */
+  set?: string;
+  /** How the light changes through the event (staging.yaml `light`); without it, a fixed day. */
+  light?: LightKey[];
   audioFiles: Partial<Record<Lang, NarrationAudio>>;
 }
 

@@ -1,101 +1,325 @@
 stage: diorama
-duration: 20
+duration: 36
+# Bag End (assets/kits/shire/bag-end.glb, scripts/models/blender/shire.py): the morning at the
+# round door, then the next evening inside, seen through the cut-away Hill.
+set: kits/shire/bag-end.glb
+light:
+  - { t: 0, preset: morning }
+  - { t: 0.38, preset: morning }
+  - { t: 0.5, preset: evening }
+  - { t: 0.75, preset: dusk }
 narration:
   morning: 0
-  mark: 0.3
-  dwarves: 0.55
-  quest: 0.8
+  mark: 0.26
+  dwarves: 0.46
+  quest: 0.72
 tracks:
   - characterId: bilbo
     keyframes:
-      - { t: 0, x: -1, z: 0, action: idle, thought: { en: "A fine morning for a pipe on the doorstep.", es: "Una buena mañana para fumar en pipa en la puerta." } }
-      - { t: 0.3, x: -1, z: 0.5, action: talk, thought: { en: "An adventure? Not for a Baggins, thank you.", es: "¿Una aventura? No para un Bolsón, gracias." } }
-      - { t: 0.6, x: -2.5, z: 0.5, action: walk, thought: { en: "Who are all these dwarves, and why are they eating my cakes?", es: "¿Quiénes son todos estos enanos y por qué se comen mis pasteles?" } }
-      - { t: 1, x: -2, z: -0.5, action: idle, thought: { en: "Perhaps... perhaps I could go after all.", es: "Quizás... quizás sí podría ir, después de todo." } }
+      - { t: 0, x: -1.1, z: -0.3, action: idle, thought: { en: "A fine morning for a pipe on the doorstep.", es: "Una buena mañana para fumar en pipa en la puerta." } }
+      - { t: 0.13, x: -1.1, z: -0.3, action: talk, thought: { en: "An adventure? Not for a Baggins, thank you.", es: "¿Una aventura? No para un Bolsón, gracias." } }
+      - { t: 0.25, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.275, x: -1.1, z: -1.3, action: walk }
+      - { t: 0.29, x: -1.55, z: -1.0, action: idle }
+      - { t: 0.5, x: -1.55, z: -1.0, action: talk, thought: { en: "Who are all these dwarves, and why are they eating my cakes?", es: "¿Quiénes son todos estos enanos y por qué se comen mis pasteles?" } }
+      - { t: 0.86, x: -1.55, z: -1.0, action: walk }
+      - { t: 0.88, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.9, x: -0.6, z: -2.8, action: idle }
+      - { t: 1, x: -0.6, z: -2.8, action: idle, thought: { en: "Perhaps... perhaps I could go after all.", es: "Quizás... quizás sí podría ir, después de todo." } }
   - characterId: gandalf
     keyframes:
-      - { t: 0, x: 4, z: 2, action: walk, thought: { en: "This one has more in him than he knows.", es: "Este tiene más dentro de lo que él mismo sabe." } }
-      - { t: 0.3, x: 0.2, z: 0.8, action: talk, thought: { en: "A little mark on the door should settle it.", es: "Una pequeña marca en la puerta lo resolverá." } }
-      - { t: 0.65, x: 2.5, z: 2.5, action: walk }
-      - { t: 0.8, x: 3.8, z: 3.2, action: idle }
-      - { t: 0.84, x: 3.8, z: 3.2, action: talk }
-      - { t: 1, x: -0.5, z: -1.2, action: idle, thought: { en: "The burglar has been found.", es: "Ya tenemos saqueador." } }
+      - { t: 0, x: 6.4, z: 6.9, action: walk, thought: { en: "This one has more in him than he knows.", es: "Este tiene más dentro de lo que él mismo sabe." } }
+      - { t: 0.033, x: 4.8, z: 5.9, action: walk }
+      - { t: 0.06, x: 3.6, z: 4.9, action: walk }
+      - { t: 0.088, x: 2.2, z: 4.1, action: walk }
+      - { t: 0.117, x: 0.6, z: 3.6, action: walk }
+      - { t: 0.141, x: -0.6, z: 2.95, action: walk }
+      - { t: 0.152, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.168, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.188, x: -0.85, z: 0.25, action: talk }
+      - { t: 0.28, x: -0.85, z: 0.25, action: walk }
+      - { t: 0.3, x: -0.95, z: -0.42, action: talk, thought: { en: "A little mark on the door should settle it.", es: "Una pequeña marca en la puerta lo resolverá." } }
+      - { t: 0.35, x: -0.95, z: -0.42, action: walk }
+      - { t: 0.37, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.385, x: -0.6, z: 2.95, action: walk }
+      - { t: 0.42, x: 4.8, z: 5.9, action: walk }
+      - { t: 0.45, x: 11, z: 11, action: idle }
+      - { t: 0.717, x: 6.05, z: 7.25, action: run }
+      - { t: 0.734, x: 4.62, z: 6.08, action: run }
+      - { t: 0.749, x: 3.43, z: 5.08, action: run }
+      - { t: 0.763, x: 2.03, z: 4.27, action: run }
+      - { t: 0.779, x: 0.42, z: 3.77, action: run }
+      - { t: 0.792, x: -0.77, z: 3.12, action: run }
+      - { t: 0.809, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.828, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.849, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.863, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.886, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.905, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.924, x: -0.4, z: -2.9, action: walk }
+      - { t: 0.949, x: -0.35, z: -4.15, action: idle }
+      - { t: 0.969, x: -0.35, z: -4.15, action: talk }
+      - { t: 1, x: -0.35, z: -4.15, action: talk, thought: { en: "The burglar has been found.", es: "Ya tenemos saqueador." } }
   - characterId: thorin
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.72, x: 11, z: 11, action: walk, thought: { en: "Late, but I will not apologise to a hobbit.", es: "Llego tarde, pero no pienso disculparme ante un hobbit." } }
-      - { t: 0.84, x: 4.3, z: 3.3, action: walk }
-      - { t: 0.88, x: 4.3, z: 3.3, action: idle }
-      - { t: 1, x: -1, z: -1.5, action: talk, thought: { en: "This is the burglar Gandalf promised us?", es: "¿Este es el saqueador que nos prometió Gandalf?" } }
+      - { t: 0.7, x: 11, z: 11, action: run, thought: { en: "Late, but I will not apologise to a hobbit.", es: "Llego tarde, pero no pienso disculparme ante un hobbit." } }
+      - { t: 0.712, x: 6.22, z: 7.08, action: run }
+      - { t: 0.729, x: 4.71, z: 5.99, action: run }
+      - { t: 0.744, x: 3.51, z: 4.99, action: run }
+      - { t: 0.759, x: 2.11, z: 4.19, action: run }
+      - { t: 0.774, x: 0.51, z: 3.69, action: run }
+      - { t: 0.787, x: -0.69, z: 3.04, action: run }
+      - { t: 0.802, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.821, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.842, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.856, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.879, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.899, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.918, x: -2.0, z: -2.7, action: walk }
+      - { t: 0.928, x: -2.15, z: -3.15, action: walk }
+      - { t: 0.933, x: -2.3, z: -3.3, action: idle }
+      - { t: 0.953, x: -2.3, z: -3.3, action: talk }
+      - { t: 1, x: -2.3, z: -3.3, action: talk, thought: { en: "This is the burglar Gandalf promised us?", es: "¿Este es el saqueador que nos prometió Gandalf?" } }
   - characterId: balin
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.6, x: 11, z: 11, action: walk, thought: { en: "A tidy little house. They will not mind us.", es: "Una casita ordenada. No les molestará que entremos." } }
-      - { t: 0.68, x: 2.4, z: 0.4, action: idle }
-      - { t: 1, x: 2.4, z: 0.4, action: talk }
+      - { t: 0.52, x: 11, z: 11, action: run, thought: { en: "A tidy little house. They will not mind us.", es: "Una casita ordenada. No les molestará que entremos." } }
+      - { t: 0.532, x: 6.58, z: 6.72, action: run }
+      - { t: 0.55, x: 4.89, z: 5.81, action: run }
+      - { t: 0.564, x: 3.69, z: 4.81, action: run }
+      - { t: 0.579, x: 2.29, z: 4.01, action: run }
+      - { t: 0.595, x: 0.69, z: 3.51, action: run }
+      - { t: 0.607, x: -0.51, z: 2.86, action: run }
+      - { t: 0.619, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.638, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.659, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.674, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.696, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.716, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.727, x: -1.6, z: -2.6, action: walk }
+      - { t: 0.736, x: -1.95, z: -2.85, action: idle }
+      - { t: 0.9, x: -1.95, z: -2.85, action: talk }
+      - { t: 1, x: -1.95, z: -2.85, action: talk }
   - characterId: dwalin
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.55, x: 11, z: 11, action: walk, thought: { en: "Is there anything to eat? A dwarf could empty a larder.", es: "¿Hay algo de comer? Un enano podría vaciar una despensa." } }
-      - { t: 0.63, x: 1.5, z: 1.2, action: idle }
-      - { t: 1, x: 1.5, z: 1.2, action: talk }
+      - { t: 0.47, x: 11, z: 11, action: run, thought: { en: "Is there anything to eat? A dwarf could empty a larder.", es: "¿Hay algo de comer? Un enano podría vaciar una despensa." } }
+      - { t: 0.482, x: 6.22, z: 7.08, action: run }
+      - { t: 0.499, x: 4.71, z: 5.99, action: run }
+      - { t: 0.514, x: 3.51, z: 4.99, action: run }
+      - { t: 0.529, x: 2.11, z: 4.19, action: run }
+      - { t: 0.544, x: 0.51, z: 3.69, action: run }
+      - { t: 0.557, x: -0.69, z: 3.04, action: run }
+      - { t: 0.572, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.591, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.612, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.626, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.649, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.669, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.688, x: -2.0, z: -2.7, action: walk }
+      - { t: 0.72, x: -2.15, z: -4.2, action: walk }
+      - { t: 0.725, x: -1.95, z: -4.35, action: idle }
+      - { t: 0.9, x: -1.95, z: -4.35, action: talk }
+      - { t: 1, x: -1.95, z: -4.35, action: talk }
   - characterId: fili
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.64, x: 11, z: 11, action: walk }
-      - { t: 0.72, x: 1.2, z: -1.5, action: idle }
-      - { t: 1, x: 1.2, z: -1.5, action: talk }
+      - { t: 0.565, x: 11, z: 11, action: run }
+      - { t: 0.577, x: 6.22, z: 7.08, action: run }
+      - { t: 0.594, x: 4.71, z: 5.99, action: run }
+      - { t: 0.609, x: 3.51, z: 4.99, action: run }
+      - { t: 0.624, x: 2.11, z: 4.19, action: run }
+      - { t: 0.639, x: 0.51, z: 3.69, action: run }
+      - { t: 0.652, x: -0.69, z: 3.04, action: run }
+      - { t: 0.667, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.686, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.707, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.721, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.744, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.764, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.782, x: -0.4, z: -2.9, action: walk }
+      - { t: 0.791, x: -0.35, z: -3.35, action: idle }
+      - { t: 0.9, x: -0.35, z: -3.35, action: talk }
+      - { t: 1, x: -0.35, z: -3.35, action: talk }
   - characterId: kili
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.64, x: 11, z: 11, action: walk, thought: { en: "Is this the burglar? He looks very small.", es: "¿Este es el saqueador? Parece muy pequeño." } }
-      - { t: 0.72, x: 2.2, z: -2.2, action: idle }
-      - { t: 1, x: 2.2, z: -2.2, action: talk }
+      - { t: 0.575, x: 11, z: 11, action: run, thought: { en: "Is this the burglar? He looks very small.", es: "¿Este es el saqueador? Parece muy pequeño." } }
+      - { t: 0.587, x: 6.58, z: 6.72, action: run }
+      - { t: 0.605, x: 4.89, z: 5.81, action: run }
+      - { t: 0.619, x: 3.69, z: 4.81, action: run }
+      - { t: 0.634, x: 2.29, z: 4.01, action: run }
+      - { t: 0.65, x: 0.69, z: 3.51, action: run }
+      - { t: 0.662, x: -0.51, z: 2.86, action: run }
+      - { t: 0.674, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.693, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.714, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.729, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.751, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.771, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.789, x: -0.4, z: -2.9, action: walk }
+      - { t: 0.827, x: -0.8, z: -4.7, action: idle }
+      - { t: 0.9, x: -0.8, z: -4.7, action: talk }
+      - { t: 1, x: -0.8, z: -4.7, action: talk }
   - characterId: dori
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.68, x: 11, z: 11, action: walk, thought: { en: "Mind the doily, brother.", es: "Cuidado con el tapete, hermano." } }
-      - { t: 0.76, x: 3.2, z: 1.6, action: idle }
-      - { t: 1, x: 3.2, z: 1.6, action: talk }
+      - { t: 0.6, x: 11, z: 11, action: run, thought: { en: "Mind the doily, brother.", es: "Cuidado con el tapete, hermano." } }
+      - { t: 0.612, x: 6.22, z: 7.08, action: run }
+      - { t: 0.629, x: 4.71, z: 5.99, action: run }
+      - { t: 0.644, x: 3.51, z: 4.99, action: run }
+      - { t: 0.659, x: 2.11, z: 4.19, action: run }
+      - { t: 0.674, x: 0.51, z: 3.69, action: run }
+      - { t: 0.687, x: -0.69, z: 3.04, action: run }
+      - { t: 0.702, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.721, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.742, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.756, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.779, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.794, x: -0.45, z: -1.05, action: idle }
+      - { t: 0.9, x: -0.45, z: -1.05, action: talk }
+      - { t: 1, x: -0.45, z: -1.05, action: talk }
   - characterId: nori
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.69, x: 11, z: 11, action: walk }
-      - { t: 0.77, x: 3.8, z: 0.4, action: idle }
-      - { t: 1, x: 3.8, z: 0.4, action: talk }
+      - { t: 0.612, x: 11, z: 11, action: run }
+      - { t: 0.624, x: 6.58, z: 6.72, action: run }
+      - { t: 0.642, x: 4.89, z: 5.81, action: run }
+      - { t: 0.656, x: 3.69, z: 4.81, action: run }
+      - { t: 0.671, x: 2.29, z: 4.01, action: run }
+      - { t: 0.687, x: 0.69, z: 3.51, action: run }
+      - { t: 0.699, x: -0.51, z: 2.86, action: run }
+      - { t: 0.711, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.73, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.751, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.766, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.788, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.802, x: -1.55, z: -1.9, action: idle }
+      - { t: 0.9, x: -1.55, z: -1.9, action: talk }
+      - { t: 1, x: -1.55, z: -1.9, action: talk }
   - characterId: ori
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.7, x: 11, z: 11, action: walk }
-      - { t: 0.78, x: 3.8, z: -0.9, action: idle }
-      - { t: 1, x: 3.8, z: -0.9, action: talk }
+      - { t: 0.624, x: 11, z: 11, action: run }
+      - { t: 0.636, x: 6.22, z: 7.08, action: run }
+      - { t: 0.653, x: 4.71, z: 5.99, action: run }
+      - { t: 0.668, x: 3.51, z: 4.99, action: run }
+      - { t: 0.683, x: 2.11, z: 4.19, action: run }
+      - { t: 0.698, x: 0.51, z: 3.69, action: run }
+      - { t: 0.711, x: -0.69, z: 3.04, action: run }
+      - { t: 0.726, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.745, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.766, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.78, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.803, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.819, x: -0.45, z: -1.85, action: idle }
+      - { t: 0.9, x: -0.45, z: -1.85, action: talk }
+      - { t: 1, x: -0.45, z: -1.85, action: talk }
   - characterId: oin
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.71, x: 11, z: 11, action: walk }
-      - { t: 0.79, x: 3.2, z: -2.2, action: idle }
-      - { t: 1, x: 3.2, z: -2.2, action: talk }
+      - { t: 0.636, x: 11, z: 11, action: run }
+      - { t: 0.648, x: 6.58, z: 6.72, action: run }
+      - { t: 0.666, x: 4.89, z: 5.81, action: run }
+      - { t: 0.68, x: 3.69, z: 4.81, action: run }
+      - { t: 0.695, x: 2.29, z: 4.01, action: run }
+      - { t: 0.711, x: 0.69, z: 3.51, action: run }
+      - { t: 0.723, x: -0.51, z: 2.86, action: run }
+      - { t: 0.735, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.754, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.775, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.79, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.812, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.832, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.843, x: -1.6, z: -2.6, action: walk }
+      - { t: 0.852, x: -1.2, z: -2.6, action: idle }
+      - { t: 0.9, x: -1.2, z: -2.6, action: talk }
+      - { t: 1, x: -1.2, z: -2.6, action: talk }
   - characterId: gloin
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.72, x: 11, z: 11, action: walk }
-      - { t: 0.8, x: 4.6, z: -1.4, action: idle }
-      - { t: 1, x: 4.6, z: -1.4, action: talk }
+      - { t: 0.648, x: 11, z: 11, action: run }
+      - { t: 0.66, x: 6.22, z: 7.08, action: run }
+      - { t: 0.677, x: 4.71, z: 5.99, action: run }
+      - { t: 0.692, x: 3.51, z: 4.99, action: run }
+      - { t: 0.707, x: 2.11, z: 4.19, action: run }
+      - { t: 0.722, x: 0.51, z: 3.69, action: run }
+      - { t: 0.735, x: -0.69, z: 3.04, action: run }
+      - { t: 0.75, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.769, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.79, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.804, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.827, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.847, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.866, x: -2.0, z: -2.7, action: walk }
+      - { t: 0.906, x: -2.15, z: -4.6, action: walk }
+      - { t: 0.919, x: -1.5, z: -4.75, action: idle }
+      - { t: 0.939, x: -1.5, z: -4.75, action: talk }
+      - { t: 1, x: -1.5, z: -4.75, action: talk }
   - characterId: bifur
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.74, x: 11, z: 11, action: walk }
-      - { t: 0.82, x: 0.2, z: 2.4, action: idle }
-      - { t: 1, x: 0.2, z: 2.4, action: talk }
+      - { t: 0.66, x: 11, z: 11, action: run }
+      - { t: 0.672, x: 6.58, z: 6.72, action: run }
+      - { t: 0.69, x: 4.89, z: 5.81, action: run }
+      - { t: 0.704, x: 3.69, z: 4.81, action: run }
+      - { t: 0.719, x: 2.29, z: 4.01, action: run }
+      - { t: 0.735, x: 0.69, z: 3.51, action: run }
+      - { t: 0.747, x: -0.51, z: 2.86, action: run }
+      - { t: 0.759, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.778, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.799, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.814, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.836, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.856, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.873, x: -0.45, z: -2.9, action: walk }
+      - { t: 0.905, x: -0.45, z: -4.45, action: walk }
+      - { t: 0.923, x: -1.1, z: -5.05, action: walk }
+      - { t: 0.933, x: -1.4, z: -5.4, action: idle }
+      - { t: 0.953, x: -1.4, z: -5.4, action: talk }
+      - { t: 1, x: -1.4, z: -5.4, action: talk }
   - characterId: bofur
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.74, x: 11, z: 11, action: walk }
-      - { t: 0.82, x: 1.2, z: 3.0, action: idle }
-      - { t: 1, x: 1.2, z: 3.0, action: talk }
+      - { t: 0.672, x: 11, z: 11, action: run }
+      - { t: 0.684, x: 6.22, z: 7.08, action: run }
+      - { t: 0.701, x: 4.71, z: 5.99, action: run }
+      - { t: 0.716, x: 3.51, z: 4.99, action: run }
+      - { t: 0.731, x: 2.11, z: 4.19, action: run }
+      - { t: 0.746, x: 0.51, z: 3.69, action: run }
+      - { t: 0.759, x: -0.69, z: 3.04, action: run }
+      - { t: 0.774, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.793, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.814, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.828, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.851, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.871, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.888, x: -0.45, z: -2.9, action: walk }
+      - { t: 0.92, x: -0.45, z: -4.45, action: walk }
+      - { t: 0.938, x: -1.1, z: -5.05, action: walk }
+      - { t: 0.963, x: -1.35, z: -6.25, action: idle }
+      - { t: 0.983, x: -1.35, z: -6.25, action: talk }
+      - { t: 1, x: -1.35, z: -6.25, action: talk }
   - characterId: bombur
     keyframes:
       - { t: 0, x: 11, z: 11, action: idle }
-      - { t: 0.75, x: 11, z: 11, action: walk, thought: { en: "Last in, and the cakes are already gone.", es: "Los últimos en llegar, y los pasteles ya se acabaron." } }
-      - { t: 0.83, x: -0.2, z: 3.5, action: idle }
-      - { t: 1, x: -0.2, z: 3.5, action: talk }
+      - { t: 0.684, x: 11, z: 11, action: run, thought: { en: "Last in, and the cakes are already gone.", es: "Los últimos en llegar, y los pasteles ya se acabaron." } }
+      - { t: 0.696, x: 6.58, z: 6.72, action: run }
+      - { t: 0.714, x: 4.89, z: 5.81, action: run }
+      - { t: 0.728, x: 3.69, z: 4.81, action: run }
+      - { t: 0.743, x: 2.29, z: 4.01, action: run }
+      - { t: 0.759, x: 0.69, z: 3.51, action: run }
+      - { t: 0.771, x: -0.51, z: 2.86, action: run }
+      - { t: 0.783, x: -0.65, z: 2.3, action: walk }
+      - { t: 0.802, x: -0.85, z: 1.4, action: walk }
+      - { t: 0.823, x: -1.05, z: 0.4, action: walk }
+      - { t: 0.838, x: -1.1, z: -0.3, action: walk }
+      - { t: 0.86, x: -1.1, z: -1.4, action: walk }
+      - { t: 0.88, x: -1.1, z: -2.35, action: walk }
+      - { t: 0.897, x: -0.45, z: -2.9, action: walk }
+      - { t: 0.929, x: -0.45, z: -4.45, action: walk }
+      - { t: 0.947, x: -1.1, z: -5.05, action: walk }
+      - { t: 0.964, x: -0.95, z: -5.85, action: idle }
+      - { t: 0.984, x: -0.95, z: -5.85, action: talk }
+      - { t: 1, x: -0.95, z: -5.85, action: talk }
