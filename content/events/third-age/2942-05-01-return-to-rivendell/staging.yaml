@@ -1,5 +1,12 @@
 stage: diorama
 duration: 26
+set: kits/rivendell/last-homely-house.glb
+# The first of May: they come in at evening, and it is night by the time the talk turns serious.
+light:
+  - { t: 0, preset: evening }
+  - { t: 0.4, preset: dusk }
+  - { t: 0.75, preset: night }
+  - { t: 1, preset: night }
 narration:
   arrive: 0
   tales: 0.2
