@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 57.69
+starts:
+  tomb: 0.8
+  stone: 8.12
+  sword: 16.2
+  mourning: 32.28
+  dain: 38.36
+  peace: 49.21
+textHash: sha256:05045d97ee77eafa
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  tomb: sha256:5fc06baceb897ac4
+  stone: sha256:3db0a993f81b0b62
+  sword: sha256:50f4578f515e661a
+  mourning: sha256:d202432e5f013311
+  dain: sha256:eab78fcc7a81b40c
+  peace: sha256:7cf010470973eb09
+takes:
+  tomb: 4d2e87015c01@101
+  stone: 69d22da75e6b@101
+  sword: 47e1fafdc330@101
+  mourning: ae0a4cc7f833@101
+  dain: 65cc04357127@2101
+  peace: a1f10a70f4de@101

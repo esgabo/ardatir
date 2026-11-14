@@ -1,0 +1,30 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 99.24
+starts:
+  alone: 0.8
+  lake: 15.12
+  gollum: 27.48
+  game: 44.36
+  pocket: 57.19
+  ring: 69.5
+  pity: 82.91
+textHash: sha256:a605d85797c1c4c3
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  alone: sha256:c9c2f88836997bf5
+  lake: sha256:30a85599cd84a0c1
+  gollum: sha256:134c8b6b86f28187
+  game: sha256:752717349b14edd0
+  pocket: sha256:44af238a31082e5c
+  ring: sha256:22a20a01c6cf4375
+  pity: sha256:66d67e9157b868d6
+takes:
+  alone: 912e8f634eab@101
+  lake: 8009fad03200@101
+  gollum: 91e3fb146e98@101
+  game: b552c2e92418@101
+  pocket: 0a1f28f6ab6a@101
+  ring: d2763f8f13e0@101
+  pity: e124709b3b6b@101

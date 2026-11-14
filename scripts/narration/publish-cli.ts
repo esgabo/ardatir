@@ -33,14 +33,14 @@ let bin = '';
 try { bin = ffmpeg(); } catch (e) { fail((e as Error).message); }
 
 /**
- * Mono 128 kbps mp3 at 24 kHz (VoxCPM2's 48 kHz takes too), every narrator normalised to the same
+ * Mono 64 kbps mp3 at 24 kHz (VoxCPM2's 48 kHz takes too), every narrator normalised to the same
  * loudness; the length must not change.
  * An mp3 runs a little long (at 24 kHz a frame is 24 ms, plus the encoder's delay and padding,
  * which players trim from the LAME header): 69.83 s came out 69.888 s. More than this is drift.
  */
 const SLACK = 0.1;
 const encode: Encoder = async (wav, out) => {
-  execFileSync(bin, ['-v', 'error', '-y', '-f', 'wav', '-i', '-', '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', '-ac', '1', '-ar', '24000', '-b:a', '128k', out], { input: wav });
+  execFileSync(bin, ['-v', 'error', '-y', '-f', 'wav', '-i', '-', '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', '-ac', '1', '-ar', '24000', '-b:a', '64k', out], { input: wav });
   const want = wavSeconds(wav), got = probeDuration(out);
   if (Math.abs(got - want) > SLACK) throw new Error(`${path.relative(root, out)}: encoded ${got.toFixed(3)} s, expected ${want.toFixed(3)} s; starts would drift`);
 };

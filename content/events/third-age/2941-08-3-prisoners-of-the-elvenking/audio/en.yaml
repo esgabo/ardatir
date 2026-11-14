@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 68.7
+starts:
+  thorin: 0.8
+  gates: 14.66
+  king: 26.86
+  cells: 36.67
+  wander: 45.54
+  hope: 56.3
+textHash: sha256:ace380a810fccfa8
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  thorin: sha256:3cd87ccb9ca64eda
+  gates: sha256:26d720ae8694fe1a
+  king: sha256:e65a89b6c5cc0cc6
+  cells: sha256:7e6327d6b9d79157
+  wander: sha256:baed8890223015f7
+  hope: sha256:1853cd05b8480d94
+takes:
+  thorin: 262c67ebd0bc@101
+  gates: 67521ba11431@101
+  king: 5fd1cffb7c0e@101
+  cells: db3b568d5d13@101
+  wander: 428fd4f7db82@101
+  hope: 449f45daaa02@101

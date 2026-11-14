@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 71.52
+starts:
+  beorn: 0.8
+  tale: 13.28
+  welcome: 25.92
+  supper: 36.8
+  night: 45.6
+  gifts: 58.08
+textHash: sha256:ed80c581807748c5
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  beorn: sha256:41152ce2de331656
+  tale: sha256:669e33ceb26a2da7
+  welcome: sha256:a890cebaa3b3e267
+  supper: sha256:c6cf19e789c1d956
+  night: sha256:32066a861ce54524
+  gifts: sha256:b2b0c11d6317fa0b
+takes:
+  beorn: 872f04fe5f4d@101
+  tale: 07e1a0adb06f@101
+  welcome: 408ccdae11ca@101
+  supper: 65773f1453f9@101
+  night: 9803859bb9f3@101
+  gifts: 167f2323edda@101

@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 75.2
+starts:
+  cellars: 0.8
+  wine: 12.96
+  barrels: 28.64
+  last: 39.36
+  river: 52.8
+  raft: 64.32
+textHash: sha256:22ced61a971160fe
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  cellars: sha256:75d0953b7aa1e953
+  wine: sha256:c6c0d67eab9b4fc4
+  barrels: sha256:cdbff158ccc4b144
+  last: sha256:ad2efbbd88bf10fe
+  river: sha256:d6a52b5d08db3bdf
+  raft: sha256:b8a01e0c79a86869
+takes:
+  cellars: a5f7e7faf404@101
+  wine: 6a89c6ce99ed@101
+  barrels: d2798185adcb@101
+  last: a54e7e9ac431@101
+  river: e33de5ce6048@101
+  raft: d70836174b50@101

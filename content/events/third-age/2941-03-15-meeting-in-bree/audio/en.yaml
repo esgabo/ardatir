@@ -1,0 +1,24 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 64.57
+starts:
+  worry: 0.8
+  road: 11.96
+  inn: 25.98
+  plan: 39.7
+  burglar: 52.41
+textHash: sha256:0c8412ba47885764
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  worry: sha256:06646bb714411df3
+  road: sha256:cc9083e1a90ade2c
+  inn: sha256:8bae7dc931a19ceb
+  plan: sha256:f7cdf43105e09872
+  burglar: sha256:5bbc7473e5f2d0c4
+takes:
+  worry: 7ebf470f0dc4@101
+  road: 6d8a032ff8fc@101
+  inn: 27ed3ff8a60c@101
+  plan: 10c40f843770@101
+  burglar: c70a9fdb66dc@101

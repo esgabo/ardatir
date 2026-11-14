@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 66.72
+starts:
+  wander: 0.8
+  gate: 10.88
+  enters: 22.4
+  azog: 33.12
+  contempt: 44.64
+  news: 56.48
+textHash: sha256:a056c1eb53e606ec
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  wander: sha256:4e5f551206417dae
+  gate: sha256:611a6342744ed4e1
+  enters: sha256:fb65be07f12b7453
+  azog: sha256:13135ff139b0e9c9
+  contempt: sha256:49ef160216e15de0
+  news: sha256:42ec0ff2373e4019
+takes:
+  wander: 577f730a54ef@101
+  gate: f96848a1e006@101
+  enters: 8b607e2ef907@101
+  azog: 2df3948c328a@101
+  contempt: d3f720ce79c6@101
+  news: b788496b7c9f@101

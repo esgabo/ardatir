@@ -1,0 +1,31 @@
+# The Third Age narrator: audition candidate B (en) and M (es), chosen 2026-11-12 and 2026-11-13. See README.md here.
+id: the-lady
+brief:
+  en: A calm, middle-aged woman who seems far older than she looks, gentle, clear and unhurried, with quiet authority and warmth. Tells the Third Age as history she watched unfold, with grace and gravity, never as a children's story.
+  es: Una mujer serena de mediana edad que parece mucho más antigua de lo que aparenta, amable, clara y sin prisa, con autoridad tranquila y calidez. Cuenta la Tercera Edad como una historia que vio suceder, con gracia y gravedad, nunca como un cuento infantil.
+voices:
+  en:
+    engine: omnivoice
+    engineVersion: 0.5.6
+    instruct: "female, middle-aged, moderate pitch, british accent"
+    seed: 101
+    speed: 0.9
+    reference: the-lady.en.flac
+    referenceHash: sha256:47958f6082d452153dddd2ddc0c231413a6afbaece1ad46b32b2e7e48260ecf4
+    refText: At the way out, Gollum crouched in the passage. Bilbo could have used his sword, but he felt sorry for the wretched, lonely creature and could not do it. He leapt over Gollum and escaped, with a wail of hatred echoing behind him.
+    version: 1
+  es:
+    engine: voxcpm2
+    engineVersion: 0.5.6
+    # VoxCPM2 voice design, no reference: the description the voice was made from. Recordings
+    # clone the sample (refText given, no instruct), so the description isn't sent after this.
+    instruct: "A middle-aged woman with a calm, low, warm voice: a Latin American Spanish narrator with a neutral accent, speaking slowly and serenely, wise and gentle, like an ancient elf queen telling the history of her world."
+    seed: 101
+    speed: 1
+    params:
+      # Holds the clone closer to the sample than the default 2.0, as for the-elder.
+      guidance_scale: 3
+    reference: the-lady.es.flac
+    referenceHash: sha256:f71bfc2aa1ecc27b92dd3f7c2ebdac26dc4266dc5a56a4c2c03bd9cc7116af4e
+    refText: Junto a la salida, Gollum estaba agazapado en el pasadizo. Bilbo podría haber usado su espada, pero sintió lástima de aquella criatura desdichada y solitaria, y no fue capaz. Saltó por encima de Gollum y escapó, mientras un grito de odio resonaba a sus espaldas.
+    version: 1

@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 70.42
+starts:
+  siege: 0.8
+  stone: 13.1
+  night: 25.22
+  gift: 36.19
+  gandalf: 48.95
+  back: 58.85
+textHash: sha256:6bb56cb1425be4ad
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  siege: sha256:4a985ec71afe2808
+  stone: sha256:37f95f69f809ae76
+  night: sha256:6b4be5766a2a4624
+  gift: sha256:b838ba18c061a920
+  gandalf: sha256:77d2d66ca7900e7c
+  back: sha256:930567931ff8284e
+takes:
+  siege: fee3e24b823b@101
+  stone: b3ff553cffb3@101
+  night: a678c44ade3c@101
+  gift: 282701abbce2@101
+  gandalf: ebc10422f650@101
+  back: 252d6b0e7a0e@101

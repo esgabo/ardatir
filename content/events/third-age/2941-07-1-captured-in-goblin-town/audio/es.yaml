@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 81.44
+starts:
+  storm: 0.8
+  crack: 15.84
+  flash: 30.56
+  hall: 40
+  gandalf: 54.72
+  lost: 65.76
+textHash: sha256:ed24d69cbbee2347
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  storm: sha256:a0bd8f4da000a62e
+  crack: sha256:ad4cc10a83f1daca
+  flash: sha256:0b556ac4348872dd
+  hall: sha256:3034aad54a026db3
+  gandalf: sha256:63e2e26f0223f0a5
+  lost: sha256:faf8dff251b1686e
+takes:
+  storm: e25885bbaabd@101
+  crack: bf70e0d43c74@101
+  flash: b8e310eb3556@101
+  hall: 8b655486cc54@101
+  gandalf: 941b2fbabcbd@101
+  lost: 53690e69562e@101

@@ -1,0 +1,24 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 59.36
+starts:
+  exile: 0.8
+  restless: 18.4
+  farewell: 28.48
+  road: 40.48
+  hunted: 50.4
+textHash: sha256:fe5b981a4a9c9509
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  exile: sha256:06dfc4744f894cf1
+  restless: sha256:30a7e0f12c06435a
+  farewell: sha256:292c79668377732f
+  road: sha256:3da688019ecb5cc3
+  hunted: sha256:240846fdd2e643e0
+takes:
+  exile: 2e891a184422@101
+  restless: eceaa60a5a5f@101
+  farewell: eb2dd51d262d@101
+  road: 3b736e477fb3@101
+  hunted: e8687a681a6e@101

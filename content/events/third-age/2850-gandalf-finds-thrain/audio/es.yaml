@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 68.96
+starts:
+  shadow: 0.8
+  enters: 15.04
+  truth: 23.84
+  dungeon: 36
+  key: 51.36
+  keep: 60.8
+textHash: sha256:e13f1ac5d75ef6b0
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  shadow: sha256:a289b64931b4dcee
+  enters: sha256:7e257b1d9c3a3bd5
+  truth: sha256:36a596e882fcb982
+  dungeon: sha256:1ba45083cf72c1f3
+  key: sha256:8734d62dc94ead1e
+  keep: sha256:f8857f70d1271337
+takes:
+  shadow: a70c36b9219d@101
+  enters: e07f3750dfc6@101
+  truth: 72009e1db6bd@101
+  dungeon: e50aaf0d494b@101
+  key: 1926b8bae94a@1101
+  keep: 264ef9153082@101

@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 80.32
+starts:
+  barrels: 0.8
+  town: 16.48
+  king: 30.56
+  songs: 43.68
+  feast: 55.52
+  master: 67.36
+textHash: sha256:5b9feb44142f9ebd
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  barrels: sha256:970b2ac282076b66
+  town: sha256:a50a902502eeb92c
+  king: sha256:4383bf5fdaea41a4
+  songs: sha256:e598b9a07976baf7
+  feast: sha256:e771c3d6bafe5ca7
+  master: sha256:e8fff552fdb13b14
+takes:
+  barrels: 56f5cc4ba8a4@101
+  town: 7421290d134b@101
+  king: 0299ac3ac3e8@101
+  songs: f203ca6cbcd4@101
+  feast: 33535cf1a74d@101
+  master: d899e6a4a70b@101

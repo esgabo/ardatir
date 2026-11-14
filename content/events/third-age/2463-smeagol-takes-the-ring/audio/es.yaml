@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 81.92
+starts:
+  river: 0.8
+  find: 16.8
+  murder: 31.04
+  secrets: 45.6
+  gollum: 58.08
+  mountains: 68
+textHash: sha256:bc031dd4d0f44b98
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  river: sha256:8436ed39ec46b2b1
+  find: sha256:f87f61e9ca842b1a
+  murder: sha256:451d9a6de5b7ab51
+  secrets: sha256:ee6c208d9b33fd07
+  gollum: sha256:e2a28da57f41c9d4
+  mountains: sha256:5a875dae721f6661
+takes:
+  river: 372de5937b16@101
+  find: 7da669a3c0df@101
+  murder: cb56dd956bc4@101
+  secrets: 19e512f11117@101
+  gollum: 9ecab6d7c43c@101
+  mountains: 47ab369d251d@101

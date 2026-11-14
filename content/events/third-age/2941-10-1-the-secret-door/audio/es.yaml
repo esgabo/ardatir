@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 73.6
+starts:
+  desolation: 0.8
+  bay: 12.16
+  waiting: 24.64
+  thrush: 37.76
+  keyhole: 48
+  door: 59.84
+textHash: sha256:d83750af5ce058a1
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  desolation: sha256:d51a615185c617f9
+  bay: sha256:9832915cfd97e971
+  waiting: sha256:16eaa1dc3e5cf695
+  thrush: sha256:1ce3878cac2f6359
+  keyhole: sha256:81087a9d57348d49
+  door: sha256:778811075272709c
+takes:
+  desolation: 6942abe5f5fe@101
+  bay: 271e181954ac@101
+  waiting: e2c81d2d003e@101
+  thrush: 01e42b619064@101
+  keyhole: f09cf98af31b@101
+  door: 40621ffd348c@101

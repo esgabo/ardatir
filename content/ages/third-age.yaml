@@ -5,4 +5,5 @@ abbr: { en: T.A., es: T.E. }
 summary:
   en: From Sauron's first defeat to the War of the Ring.
   es: Desde la primera derrota de Sauron hasta la Guerra del Anillo.
+narrator: the-lady
 axis: { start: 4032 }   # 591 + 3441 years of the Second Age

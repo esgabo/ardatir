@@ -1,0 +1,24 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 60.96
+starts:
+  wake: 0.8
+  camp: 12.96
+  words: 26.4
+  wisdom: 37.92
+  grief: 50.56
+textHash: sha256:5a3bf866d655464d
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  wake: sha256:f348975db360c493
+  camp: sha256:959fc61f0cfa0d80
+  words: sha256:668504a3b1bc5ae3
+  wisdom: sha256:e5a719502c461afb
+  grief: sha256:2ac0b8d82cafd6cf
+takes:
+  wake: a17c02cd4324@101
+  camp: 18aec14427b0@101
+  words: 8b9ca160fc3f@101
+  wisdom: 9eed29325901@101
+  grief: 406ebcc23b54@101
