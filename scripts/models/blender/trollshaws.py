@@ -3,7 +3,7 @@
     blender --background --python scripts/models/blender/trollshaws.py -- [--out out/models/trolls-camp.glb] [--blend <path>]
 
 Writes the raw export (default `out/models/trolls-camp.glb`); `npm run model:pack` compresses it
-into `assets/kits/wild/trolls-camp.glb`, which an event's staging names as its `set:`.
+into `assets/kits/trollshaws/trolls-camp.glb`, which an event's staging names as its `set:`.
 
 Our own design, from The Hobbit, chapter 2: a wet night in the hills east of the Last Bridge.
 The road comes through the wood from the west; off it, in a clearing among oaks and beeches, a

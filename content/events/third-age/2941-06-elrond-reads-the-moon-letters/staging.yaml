@@ -1,5 +1,11 @@
 stage: diorama
 duration: 36
+set: kits/rivendell/last-homely-house.glb
+# Midsummer's Eve: the last of the dusk over the valley, then the night the moon-letters need.
+light:
+  - { t: 0, preset: dusk }
+  - { t: 0.14, preset: night }
+  - { t: 1, preset: night }
 narration:
   valley: 0
   swords: 0.17
