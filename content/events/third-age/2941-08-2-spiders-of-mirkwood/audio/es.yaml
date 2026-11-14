@@ -1,0 +1,30 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 85.6
+starts:
+  hunger: 0.8
+  lights: 14.08
+  web: 27.2
+  sting: 40.32
+  bundles: 51.52
+  rescue: 61.76
+  thorin: 75.36
+textHash: sha256:970a7a47067554be
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  hunger: sha256:0565f2ba2ff63668
+  lights: sha256:18a1e34356e19377
+  web: sha256:84f96ff18c56896e
+  sting: sha256:f846ee3c652de777
+  bundles: sha256:c095f6ba2cf4a85a
+  rescue: sha256:de1be20c8ad03c14
+  thorin: sha256:ef7e0a62e7b61e60
+takes:
+  hunger: 85080e40677a@101
+  lights: 6c04444c9ad6@101
+  web: 016b5ce4bb4b@101
+  sting: d51f0d21b199@101
+  bundles: b8a196ae1530@101
+  rescue: 6e7ebab4fff4@101
+  thorin: d133d417db6b@101

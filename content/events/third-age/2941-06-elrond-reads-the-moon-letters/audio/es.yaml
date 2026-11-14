@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 81.28
+starts:
+  valley: 0.8
+  swords: 12.96
+  map: 26.56
+  letters: 38.88
+  message: 55.04
+  durin: 68.64
+textHash: sha256:b764d6b765a56af8
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  valley: sha256:1bddc06f43f3ef57
+  swords: sha256:623dc8a6d2666196
+  map: sha256:e51e4483c2c5e76a
+  letters: sha256:2f7b71d42d003d17
+  message: sha256:10d9f886d34b462b
+  durin: sha256:22d2e923e756f2c7
+takes:
+  valley: 10105fdd0bff@101
+  swords: fe05b261ea1e@101
+  map: 858075e8f0d3@101
+  letters: f278187abaf8@101
+  message: 73cb2466a7f7@101
+  durin: 9dfbb2afc287@101

@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 72.64
+starts:
+  morning: 0.8
+  relief: 13.6
+  note: 24.96
+  eleven: 35.84
+  run: 49.44
+  away: 60
+textHash: sha256:d1b25fe3aaf421e7
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  morning: sha256:4feb5800bec1be9b
+  relief: sha256:1c87e7e747163092
+  note: sha256:ca37d49ceb3359f0
+  eleven: sha256:c23bde20d25d52f6
+  run: sha256:007270fc7c75c9aa
+  away: sha256:ff4e758eb27da18a
+takes:
+  morning: b4c06d4e412b@101
+  relief: d33b072c6eb4@101
+  note: 7decf35d91f1@101
+  eleven: d38a9b272b6d@101
+  run: 7cc1654f3f60@101
+  away: 7edb4a259fff@101

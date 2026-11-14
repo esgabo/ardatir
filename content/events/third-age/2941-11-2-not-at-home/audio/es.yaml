@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 84.48
+starts:
+  shut: 0.8
+  silence: 15.68
+  stone: 30.24
+  hoard: 45.92
+  mithril: 62.4
+  gate: 73.76
+textHash: sha256:159d09f4629a68ac
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  shut: sha256:9a48d34a1c184db2
+  silence: sha256:aa46e21e125af6cd
+  stone: sha256:e9b03a24e943da63
+  hoard: sha256:c30aff06f8fb0972
+  mithril: sha256:3482843fdb99cc51
+  gate: sha256:22a619f98a565c9e
+takes:
+  shut: 4f3338277150@101
+  silence: 668fcdcdaad5@101
+  stone: 42f7b1eaaf83@101
+  hoard: e42ee3d83647@101
+  mithril: ccba4b0515da@101
+  gate: 96fcfa79cfdd@101

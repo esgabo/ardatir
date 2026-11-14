@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 69.76
+starts:
+  kingdom: 0.8
+  dragon: 14.24
+  attack: 27.68
+  halls: 37.76
+  escape: 47.2
+  lost: 60.32
+textHash: sha256:127d47cd3a879745
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  kingdom: sha256:f75b037649477941
+  dragon: sha256:f2d32640d3c28c1e
+  attack: sha256:730bc7d20e4c7e5b
+  halls: sha256:4f56b46945a54c21
+  escape: sha256:e21716a74bd8f6b2
+  lost: sha256:fba0d32ce9dcab7c
+takes:
+  kingdom: a8da6196cba8@101
+  dragon: 45048451a3a4@101
+  attack: a1885dda9f7b@101
+  halls: fd54ed989d9d@101
+  escape: a048b47c823b@101
+  lost: 508e86503a06@1101

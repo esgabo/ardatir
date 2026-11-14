@@ -1,0 +1,30 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 88.96
+starts:
+  thror: 0.8
+  war: 13.76
+  battle: 28
+  oak: 40
+  dain: 52.8
+  moria: 64.8
+  after: 77.28
+textHash: sha256:3a07999aa2cdd27c
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  thror: sha256:6a773db32902cdd4
+  war: sha256:87b47baf6a354aae
+  battle: sha256:77d31532b80e674f
+  oak: sha256:d6fa01f1b05b8b89
+  dain: sha256:43d70ca3cca5162c
+  moria: sha256:1d7a6fa0b02325cc
+  after: sha256:1b727c8c43e158a6
+takes:
+  thror: 6b1bcf2b7b37@101
+  war: 5b2c5ae3a24c@101
+  battle: f980a155faab@101
+  oak: 45f64f2d68b7@101
+  dain: 37c16109aafd@1101
+  moria: 36c4f5c4fccf@101
+  after: 49369271652d@101

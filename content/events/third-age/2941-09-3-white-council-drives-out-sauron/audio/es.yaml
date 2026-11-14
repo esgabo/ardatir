@@ -1,0 +1,24 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 57.6
+starts:
+  meanwhile: 0.8
+  urging: 12.64
+  saruman: 23.68
+  attack: 36.96
+  flight: 46.56
+textHash: sha256:82586bb1228be77a
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  meanwhile: sha256:64ded64f51f85de5
+  urging: sha256:d100c31ed95f493b
+  saruman: sha256:6df6f925793e4569
+  attack: sha256:0c6fa2633bce8d8f
+  flight: sha256:ce751db5f3067ccf
+takes:
+  meanwhile: 83724a9ed606@101
+  urging: db09be5dab92@101
+  saruman: e89e7ae1a0ff@101
+  attack: 8a61bb86040f@101
+  flight: 110061306b4f@101

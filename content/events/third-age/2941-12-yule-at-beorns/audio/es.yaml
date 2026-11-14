@@ -1,0 +1,24 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 56.32
+starts:
+  road: 0.8
+  winter: 10.88
+  yule: 22.72
+  peace: 34.24
+  chief: 44.64
+textHash: sha256:8b2366def5e85587
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  road: sha256:5d4f98a77787c9b5
+  winter: sha256:7b846f3690858a7b
+  yule: sha256:997ff9586e0b3a9a
+  peace: sha256:7016bb1c9b02acbb
+  chief: sha256:5684b2df0bb7c8f2
+takes:
+  road: 74e434439bde@101
+  winter: 7fa125de691c@101
+  yule: ed14723f01b8@101
+  peace: 8d256e3ff227@101
+  chief: bb13b4cb1dc5@101

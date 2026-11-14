@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 77.12
+starts:
+  reunion: 0.8
+  wargs: 15.68
+  fire: 28.8
+  eagles: 39.84
+  eyrie: 52.96
+  carrock: 67.68
+textHash: sha256:229c9993f5e7188f
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  reunion: sha256:8da8552857ed86b2
+  wargs: sha256:76e8ef78a82cb54e
+  fire: sha256:8baf09a530f1346b
+  eagles: sha256:0320f2787a4faf1d
+  eyrie: sha256:b7da45c5d24f3dd4
+  carrock: sha256:46c2795f1ec3b731
+takes:
+  reunion: 259c0ff80172@101
+  wargs: 231542f17679@101
+  fire: e16574cc6742@101
+  eagles: 9530331903a6@101
+  eyrie: b73d47de2faf@101
+  carrock: d61436b587f0@101

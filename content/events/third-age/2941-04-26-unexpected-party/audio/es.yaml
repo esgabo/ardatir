@@ -1,0 +1,21 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 44
+starts:
+  morning: 0.8
+  mark: 10.88
+  dwarves: 23.2
+  quest: 34.56
+textHash: sha256:7f9dc7ab54baeee3
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  morning: sha256:b94aae2b0c562720
+  mark: sha256:7b24e18c65d746ee
+  dwarves: sha256:897150c58cca3cbe
+  quest: sha256:9c789db5abed2e50
+takes:
+  morning: f1592d6d6204@101
+  mark: 6e39a733f049@101
+  dwarves: f0ed71ebeda8@101
+  quest: 473b2d4ac882@101

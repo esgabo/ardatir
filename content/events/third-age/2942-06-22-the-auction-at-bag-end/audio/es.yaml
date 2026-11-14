@@ -1,0 +1,27 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 70.56
+starts:
+  hill: 0.8
+  auction: 12
+  buy: 26.08
+  cousins: 40.32
+  reputation: 49.44
+  content: 59.36
+textHash: sha256:c75d71c3aee1b34b
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  hill: sha256:a88c4d16d1e0f1ad
+  auction: sha256:23a746403b0440d5
+  buy: sha256:80e47cfad7e40f44
+  cousins: sha256:1f2195789417eebc
+  reputation: sha256:b2f72a48fb61e79f
+  content: sha256:932ac44d11de6929
+takes:
+  hill: 7ebb4cbf082e@101
+  auction: 551dafe5b9a9@101
+  buy: 36a945193288@101
+  cousins: 5212f7b9b90a@101
+  reputation: 9efde82cc39d@101
+  content: 17a68d64e69f@101

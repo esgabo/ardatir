@@ -1,0 +1,30 @@
+# Written by npm run narration:publish; don't edit by hand.
+duration: 99.04
+starts:
+  wrath: 0.8
+  brink: 16.96
+  alliance: 32.16
+  charge: 43.52
+  eagles: 58.08
+  beorn: 75.68
+  cost: 87.84
+textHash: sha256:7a3e9b2346b99920
+narrator:
+  id: the-lady
+  version: 1
+passages:
+  wrath: sha256:cec0fa323cfd5df8
+  brink: sha256:e7ccee7b8aecf96f
+  alliance: sha256:dfc72cb0a15c29ad
+  charge: sha256:635bb38b36ae9517
+  eagles: sha256:99876b9d49075897
+  beorn: sha256:15ac5eb255b2eb6d
+  cost: sha256:8e8219f29aae80be
+takes:
+  wrath: 363c4cd8bb41@101
+  brink: b28bc4cb77ea@1101
+  alliance: 7c950b4c4450@101
+  charge: 09aa8dc9099f@101
+  eagles: 8fe2578685c2@101
+  beorn: d132dd51d080@101
+  cost: 868236371c52@101
