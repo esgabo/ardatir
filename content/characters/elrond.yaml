@@ -6,3 +6,4 @@ summary:
   es: "Señor de Rivendel, sabio en tradiciones y en antiguas escrituras."
 color: "#5a5a8a"
 scale: 1.9
+model: characters/elrond/elrond.glb
