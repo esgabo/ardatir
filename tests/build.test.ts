@@ -77,8 +77,15 @@ describe('the real content', () => {
     expect(r.errors).toEqual([]);
     // Until the Third Age narrator is auditioned (docs/superpowers/plans/2026-11-10-narration-voices.md).
     // Only Before Time has a narrator so far; the other ages get theirs at audition.
-    expect(r.warnings.filter((w) => !/^content\/ages\/[\w-]+\.yaml: has staged events but no narrator/.test(w))).toEqual([]);
+    // Crowding (#81) is a backlog the check itself uncovered: twenty of the staged events were
+    // written before anything looked at whether two figures share a spot, and most of what is
+    // left is companies of fourteen crossing a small tile. Restaging them is composition work,
+    // one scene at a time, so the warnings stand as the list of what to go through, and this
+    // allows them rather than pretending they are not there.
+    const known = /^content\/ages\/[\w-]+\.yaml: has staged events but no narrator|(stand inside|walk through) each other at t|more pairs of figures overlapping/;
+    expect(r.warnings.filter((w) => !known.test(w))).toEqual([]);
   });
+
 
   it('places every best guess inside its honest range', () => {
     for (const e of r.index.events) if (e.span) {
@@ -439,6 +446,9 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'unknown beat', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['{ knock: 0.1 }', '{ knock: 0.1, song: 0.8 }'] }], error: 'beats: no beat "song" in event.yaml' },
   { name: 'track for a character not in the event', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['characterId: bilbo', 'characterId: thorin'] }], error: 'tracks[0]: "thorin" is not in the event\'s characters' },
   { name: 'keyframes not rising', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['{ t: 1, x: 1', '{ t: -0.5, x: 1'] }], error: 't must rise from 0 to 1' },
+  // `y` is how high above the ground a figure stands — on a log, a bench, a doorstep (#81).
+  // A tile is 14 units across, so a height in metres or centimetres is a typo, not a balcony.
+  { name: 'a keyframe standing absurdly high', changes: [{ file: `${PARTY}/staging.yaml`, replace: ['{ t: 0, x: 0, z: 0,', '{ t: 0, x: 0, z: 0, y: 40,'] }], error: 'keyframes[0].y: expected a height in tile units, -1 to 4' },
   { name: 'timing file without a recording', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\n' }], error: 'timing file without a recording next to it' },
   { name: 'recording without a timing file', changes: [{ file: `${PARTY}/audio/es.mp3`, write: '' }], error: 'recording without es.yaml' },
   { name: 'recording starts out of order', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 10, tea: 4 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: earlier than the passage before it' },

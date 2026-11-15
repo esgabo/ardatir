@@ -13,6 +13,9 @@ beats:
   bear: 0.67
   ponies: 0.84
 tracks:
+# At t = 1 the company leaves along the eastern way, each by their own line and off the tile,
+# so the event ends with them gone. They used to share three exit points and finished the
+# event standing inside one another (#81).
   - characterId: beorn
     keyframes:
       - { t: 0, x: -4.5, z: -4.5, action: idle, thought: { en: "Visitors again. I like them better as stories.", es: "Otra vez visitas. Me gustan más como cuentos." } }
@@ -34,7 +37,7 @@ tracks:
       - { t: 0.5, x: -3, z: 0.5, action: idle }
       - { t: 0.67, x: -3, z: 0.5, action: hide }
       - { t: 0.84, x: -3, z: 0.5, action: idle }
-      - { t: 1, x: 5, z: 5, action: walk }
+      - { t: 1, x: 8.37, z: 2.72, action: walk }
   - characterId: bilbo
     model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
@@ -44,7 +47,7 @@ tracks:
       - { t: 0.5, x: -2.2, z: -1.5, action: idle, thought: { en: "Honey and cream. This is the best day so far.", es: "Miel y crema. El mejor día hasta ahora." } }
       - { t: 0.67, x: -2.2, z: -1.5, action: hide, thought: { en: "Something huge is sniffing at the door.", es: "Algo enorme olfatea en la puerta." } }
       - { t: 0.84, x: -2.2, z: -1.5, action: idle }
-      - { t: 1, x: 5, z: 5, action: walk }
+      - { t: 1, x: 8.14, z: 3.35, action: walk }
   - characterId: bifur
     keyframes:
       - { t: 0, x: 6.3, z: 5.8, action: idle }
@@ -53,7 +56,7 @@ tracks:
       - { t: 0.5, x: -1.4, z: 0.4, action: idle }
       - { t: 0.67, x: -1.4, z: 0.4, action: hide }
       - { t: 0.84, x: -1.4, z: 0.4, action: idle }
-      - { t: 1, x: 5.5, z: 5.1, action: walk }
+      - { t: 1, x: 7.85, z: 3.97, action: walk }
   - characterId: bofur
     keyframes:
       - { t: 0, x: 6.3, z: 5.3, action: idle }
@@ -62,7 +65,7 @@ tracks:
       - { t: 0.5, x: -2.5, z: -0.4, action: idle }
       - { t: 0.67, x: -2.5, z: -0.4, action: hide }
       - { t: 0.84, x: -2.5, z: -0.4, action: idle }
-      - { t: 1, x: 5.5, z: 5.5, action: walk }
+      - { t: 1, x: 7.53, z: 4.56, action: walk }
   - characterId: dori
     keyframes:
       - { t: 0, x: 6.3, z: 4.8, action: idle }
@@ -71,7 +74,7 @@ tracks:
       - { t: 0.5, x: 0.9, z: 0.5, action: idle }
       - { t: 0.67, x: 0.9, z: 0.5, action: hide }
       - { t: 0.84, x: 0.9, z: 0.5, action: idle }
-      - { t: 1, x: 5.5, z: 5.1, action: walk }
+      - { t: 1, x: 7.16, z: 5.12, action: walk }
   - characterId: nori
     keyframes:
       - { t: 0, x: 6.3, z: 4.3, action: idle }
@@ -80,7 +83,7 @@ tracks:
       - { t: 0.5, x: 2, z: 1.5, action: idle }
       - { t: 0.67, x: 2, z: 1.5, action: hide }
       - { t: 0.84, x: 2, z: 1.5, action: idle }
-      - { t: 1, x: 5.5, z: 5.5, action: walk }
+      - { t: 1, x: 6.74, z: 5.66, action: walk }
   - characterId: ori
     keyframes:
       - { t: 0, x: 6.3, z: 3.8, action: idle }
@@ -89,7 +92,7 @@ tracks:
       - { t: 0.5, x: 2.6, z: 0, action: idle }
       - { t: 0.67, x: 2.6, z: 0, action: hide }
       - { t: 0.84, x: 2.6, z: 0, action: idle }
-      - { t: 1, x: 5.5, z: 5.1, action: walk }
+      - { t: 1, x: 6.29, z: 6.16, action: walk }
   - characterId: oin
     keyframes:
       - { t: 0, x: 6.3, z: 3.3, action: idle }
@@ -98,7 +101,7 @@ tracks:
       - { t: 0.5, x: 1.5, z: -0.8, action: idle }
       - { t: 0.67, x: 1.5, z: -0.8, action: hide }
       - { t: 0.84, x: 1.5, z: -0.8, action: idle }
-      - { t: 1, x: 5.5, z: 5.5, action: walk }
+      - { t: 1, x: 5.80, z: 6.62, action: walk }
   - characterId: gloin
     keyframes:
       - { t: 0, x: 6.3, z: 2.8, action: idle }
@@ -107,7 +110,7 @@ tracks:
       - { t: 0.5, x: -0.1, z: -0.3, action: idle }
       - { t: 0.67, x: -0.1, z: -0.3, action: hide }
       - { t: 0.84, x: -0.1, z: -0.3, action: idle }
-      - { t: 1, x: 5.5, z: 5.1, action: walk }
+      - { t: 1, x: 5.27, z: 7.05, action: walk }
   - characterId: balin
     keyframes:
       - { t: 0, x: 6.3, z: 2.3, action: idle }
@@ -116,7 +119,7 @@ tracks:
       - { t: 0.5, x: -0.8, z: 1.6, action: idle }
       - { t: 0.67, x: -0.8, z: 1.6, action: hide }
       - { t: 0.84, x: -0.8, z: 1.6, action: idle }
-      - { t: 1, x: 5.5, z: 5.5, action: walk }
+      - { t: 1, x: 4.72, z: 7.43, action: walk }
   - characterId: kili
     keyframes:
       - { t: 0, x: 6.3, z: 1.8, action: idle }
@@ -125,7 +128,7 @@ tracks:
       - { t: 0.5, x: -2.5, z: 1.6, action: idle }
       - { t: 0.67, x: -2.5, z: 1.6, action: hide }
       - { t: 0.84, x: -2.5, z: 1.6, action: idle }
-      - { t: 1, x: 5.5, z: 5.1, action: walk }
+      - { t: 1, x: 4.13, z: 7.77, action: walk }
   - characterId: fili
     keyframes:
       - { t: 0, x: 6.3, z: 1.3, action: idle }
@@ -134,7 +137,7 @@ tracks:
       - { t: 0.5, x: -1.5, z: 2.8, action: idle }
       - { t: 0.67, x: -1.5, z: 2.8, action: hide }
       - { t: 0.84, x: -1.5, z: 2.8, action: idle }
-      - { t: 1, x: 5.5, z: 5.5, action: walk }
+      - { t: 1, x: 3.52, z: 8.06, action: walk }
   - characterId: dwalin
     keyframes:
       - { t: 0, x: 6.3, z: 0.8, action: idle }
@@ -143,7 +146,7 @@ tracks:
       - { t: 0.5, x: 0.4, z: 3.0, action: idle }
       - { t: 0.67, x: 0.4, z: 3.0, action: hide }
       - { t: 0.84, x: 0.4, z: 3.0, action: idle }
-      - { t: 1, x: 5.5, z: 5.1, action: walk }
+      - { t: 1, x: 2.89, z: 8.31, action: walk }
   - characterId: bombur
     keyframes:
       - { t: 0, x: 6.3, z: 0.3, action: idle }
@@ -152,7 +155,7 @@ tracks:
       - { t: 0.5, x: 1.2, z: 2.2, action: idle }
       - { t: 0.67, x: 1.2, z: 2.2, action: hide }
       - { t: 0.84, x: 1.2, z: 2.2, action: idle }
-      - { t: 1, x: 5.5, z: 5.5, action: walk }
+      - { t: 1, x: 2.25, z: 8.51, action: walk }
   - characterId: thorin
     keyframes:
       - { t: 0, x: 6.3, z: 6.3, action: idle }
@@ -161,4 +164,4 @@ tracks:
       - { t: 0.5, x: -1, z: -1.2, action: idle }
       - { t: 0.67, x: -1, z: -1.2, action: hide }
       - { t: 0.84, x: -1, z: -1.2, action: idle, thought: { en: "We take ponies and food, and ask no more.", es: "Aceptamos ponis y comida, y no pedimos más." } }
-      - { t: 1, x: 6, z: 6, action: walk }
+      - { t: 1, x: 1.59, z: 8.66, action: walk }

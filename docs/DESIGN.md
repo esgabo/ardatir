@@ -424,6 +424,28 @@ the same frame.
   three.js already compiles, so switching it off would buy nothing and cost the scene its depth.
   Measuring what a device can actually do, rather than guessing, is #30.
 
+### 9.2 Where a figure stands (#81)
+
+A figure is placed on the kit's `terrain` mesh, which is the walkable ground. That is one
+height per (x, z), and it is the right thing to raycast: it is low-poly, it is one mesh, and it
+cannot put a character on a table top by accident. What it cannot say is that a character is
+standing **on** something the kit built above it.
+
+- **`y` on a keyframe** (`src/data/types.ts`) is the author saying how high that surface is: the
+  stump by the trolls' fire, the bench outside the Green Dragon, a doorstep, a bridge deck. It
+  is interpolated like `x` and `z`, so a figure steps up and down. Staging already names an
+  exact spot in a tile the kit built; this is the third number of that spot.
+- **Nothing pushes figures apart at render time**, and nothing should: a figure's position has
+  to stay a pure function of `t` alone for scrubbing and deep links to land on the same frame,
+  and who stands in front of whom is a composition the author made, not a simulation to run. So
+  crowding is a **build warning** (`crowding` in `src/timeline.ts`): two figures within a
+  figure-width of each other at the same `t`, standing still or walking through each other,
+  with figures offstage and figures on different levels left alone.
+- **There is no sitting pose yet.** Until one exists, a seat is a place to stand beside rather
+  than on, which is how the trolls and the Green Dragon's dwarves are staged. When one arrives
+  it belongs with `y`: the pose puts the hips at a known height above the feet, and `y` is the
+  seat's height less that, so the figure's weight lands on the seat.
+
 ## 10. IP guidelines (fan project)
 
 - Non-commercial; no ads, merchandise or paywall.
@@ -465,6 +487,7 @@ the same frame.
 | 2026-11-09 | **What is foretold** (#57): the Dagor Dagorath and the Second Music in a timeless age flagged `foretold`, after the Fourth Age and never on the axis; every event cites its source and may name who foretold it (`foretoldBy`); marked as prophecy everywhere (badge, page line, dashed segment after the axis, lanes); the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*), split into one scene per event (§4.8). |
 | 2026-11-09 | Model pipeline (#20): `assets/<type>/<id>/<id>.glb` (`.blend` sources beside, never deployed; no Git LFS); Blender exports glTF binary, Y-up, applied transforms, one scene, compressed with meshopt via `npm run model:pack` (gltfpack; meshopt over Draco for its smaller decoder); `model:` on characters and per-event on tracks, checked by the build (exists, loadable, within budget: characters 300 kB, kits 800 kB, props 100 kB); the loader is its own chunk; placeholder while loading or without a model; clips driven from `t` (§9, `MODELS.md`). |
 | 2026-11-09 | Wonder and learning (#29): a first visit to the front door opens with a short guided opening over the Ainulindalë (one line per beat, Next, skippable at once, then three ways in: a story, a moment, a life), remembered per visitor, at `#/start` and reopened from the sidebar's *Start here*; `pronounce: { en, es }` respellings in the *AR-da* style on characters, places, ages and events, validated, shown as a small hint; *About this scene* on the stage; gentle pointers to the books from `source`, with chapter titles in both languages (§3.5). |
+| 2026-11-15 | Where a figure stands (#81): a keyframe's `y` says how high above the walkable ground a character is, so one placed on a log, a bench or a doorstep is not buried in it; crowding is a **build warning**, not a push-apart at render time, because a figure's place must stay a pure function of `t` and who stands in front of whom is the author's composition (§9.2). |
 | 2026-11-15 | The render look (#76): a soft second light that comes up as the sun goes down, so a night scene can be seen; haze tinted toward the background, never toward a bright sky, so the far edge of a tile recedes instead of dissolving; a grade per place applied to **the light, not the pixels** (no post-processing pass: a second render of the frame is the first thing to fail on a phone), where a place that takes light away gets the soft light back, and the background takes only a third of the tint so the void stays dark; contact shadows under figures, because at this scale where a figure touches says more than the shadow behind it; one quality setting turning the shadow map, pixel ratio and effect counts down together, guessed from the device and overridable with `?quality=` (§9.1). |
 | 2026-11-09 | Factions (#18): one file per side in `content/factions/` (name, banner colour, kind, summary, leaders), reused across battles; battles list `sides` as groups of allied factions; staging places `armies` (faction, size, keyframes) as instanced blocks of small figures in the faction's colour, named characters keeping their own tracks; one being who comes alone (Beorn) is a character, a host (the Eagles) a faction. First example: the Battle of Five Armies (§2, §4.9). |
 

@@ -171,7 +171,10 @@ export function createDioramaStage(
           clip = model.play(clipLayers(actionMix(track, t, eventSeconds), eventSeconds, t, strides));
         }
         const bob = pose.moving && !clip ? Math.abs(Math.sin(ambient * (pose.action === 'run' ? 14 : 8))) * 0.05 : 0;
-        const ground = groundHeight(diorama, pose.x, pose.z);
+        // The ground under the figure, plus whatever the staging says they are standing on: a log
+        // by the fire, a bench, a doorstep (`Keyframe.y`). The terrain runs under those, so
+        // without it a seated troll is buried in his log to the waist.
+        const ground = groundHeight(diorama, pose.x, pose.z) + pose.y;
         fig.position.set(pose.x, ground + bob, pose.z);
         fig.rotation.y = headingAt(track, t, eventSeconds);
         fig.scale.y = pose.action === 'hide' && clip !== 'hide' ? 0.75 : 1;

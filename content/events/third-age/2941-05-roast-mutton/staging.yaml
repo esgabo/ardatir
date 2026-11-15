@@ -17,11 +17,15 @@ beats:
   caught: 0.45
   dawn: 0.88
 tracks:
+  # The trolls stand just outside the stumps and boulder the kit puts round the fire
+  # (trollshaws.py SEATS), not on their spots: there is no sitting pose yet, and a standing
+  # figure placed at a seat is buried in it to the waist (#81). When one arrives, they move
+  # back onto the seats with `action: sit` and a `y` for the seat's height.
   - characterId: william
     becomes: { t: 0.88, model: characters/william/william-stone.glb }
     keyframes:
-      - { t: 0, x: -1.75, z: -0.55, action: talk, thought: { en: "Mutton again. Always mutton.", es: "Carnero otra vez. Siempre carnero." } }
-      - { t: 0.3, x: -1.75, z: -0.55, action: idle }
+      - { t: 0, x: -2.35, z: -0.90, action: talk, thought: { en: "Mutton again. Always mutton.", es: "Carnero otra vez. Siempre carnero." } }
+      - { t: 0.3, x: -2.35, z: -0.90, action: idle }
       - { t: 0.38, x: -2.05, z: -0.30, action: walk }
       - { t: 0.42, x: -2.05, z: -0.30, action: talk, thought: { en: "What is this little thing? Too small to be worth the trouble.", es: "¿Qué es esta cosita? Demasiado pequeña para tanto lío." } }
       - { t: 0.78, x: -2.05, z: -0.30, action: fight }
@@ -30,23 +34,23 @@ tracks:
   - characterId: bert
     becomes: { t: 0.88, model: characters/bert/bert-stone.glb }
     keyframes:
-      - { t: 0, x: 1.95, z: -0.85, action: talk }
-      - { t: 0.3, x: 1.95, z: -0.85, action: idle }
-      - { t: 0.38, x: 1.95, z: -0.85, action: idle }
-      - { t: 0.66, x: 1.95, z: -0.85, action: talk, thought: { en: "Roast them. I say roast them, and be done.", es: "Asarlos. Digo que los asemos, y se acabó." } }
-      - { t: 0.78, x: 1.95, z: -0.85, action: fight }
-      - { t: 0.86, x: 1.95, z: -0.85, action: idle }
-      - { t: 1, x: 1.95, z: -0.85, action: idle }
+      - { t: 0, x: 2.50, z: -1.28, action: talk }
+      - { t: 0.3, x: 2.50, z: -1.28, action: idle }
+      - { t: 0.38, x: 2.50, z: -1.28, action: idle }
+      - { t: 0.66, x: 2.50, z: -1.28, action: talk, thought: { en: "Roast them. I say roast them, and be done.", es: "Asarlos. Digo que los asemos, y se acabó." } }
+      - { t: 0.78, x: 2.50, z: -1.28, action: fight }
+      - { t: 0.86, x: 2.50, z: -1.28, action: idle }
+      - { t: 1, x: 2.50, z: -1.28, action: idle }
   - characterId: tom
     becomes: { t: 0.88, model: characters/tom/tom-stone.glb }
     keyframes:
-      - { t: 0, x: 0.45, z: 2.30, action: talk }
-      - { t: 0.3, x: 0.45, z: 2.30, action: idle }
-      - { t: 0.38, x: 0.45, z: 2.30, action: idle }
-      - { t: 0.72, x: 0.45, z: 2.30, action: talk, thought: { en: "Who keeps saying that? Was that you, Bert?", es: "¿Quién dice eso? ¿Fuiste tú, Berto?" } }
-      - { t: 0.78, x: 0.45, z: 2.30, action: fight }
-      - { t: 0.86, x: 0.45, z: 2.30, action: idle }
-      - { t: 1, x: 0.45, z: 2.30, action: idle }
+      - { t: 0, x: 0.55, z: 2.99, action: talk }
+      - { t: 0.3, x: 0.55, z: 2.99, action: idle }
+      - { t: 0.38, x: 0.55, z: 2.99, action: idle }
+      - { t: 0.72, x: 0.55, z: 2.99, action: talk, thought: { en: "Who keeps saying that? Was that you, Bert?", es: "¿Quién dice eso? ¿Fuiste tú, Berto?" } }
+      - { t: 0.78, x: 0.55, z: 2.99, action: fight }
+      - { t: 0.86, x: 0.55, z: 2.99, action: idle }
+      - { t: 1, x: 0.55, z: 2.99, action: idle }
   - characterId: bilbo
     model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
