@@ -13,20 +13,40 @@ export interface Light {
   ground: string;
   hemiIntensity: number;
   background: string;
+  /**
+   * A soft second light from the viewer's side, which comes up as the sun goes down.
+   *
+   * A night diorama lit only by a weak moon and a hearth is atmospheric and unreadable: the
+   * faces, the gestures and half the set disappear. This is the lamp a model-maker puts beside
+   * the case. It never casts a shadow and it never touches story state, so what it lifts is how
+   * well the scene can be seen, not what is happening in it.
+   */
+  fill: string;
+  fillIntensity: number;
   /** How lit the lamps, windows and fires are: 0 by day, 1 at night. */
   lamps: number;
   /** Fireflies, from 0 (none) to 1. */
   fireflies: number;
+  /**
+   * The colour of the air between the front of the tile and the back.
+   *
+   * Close to `background`, never a bright sky-grey: a diorama is a lit object on a dark field,
+   * and air the colour of daylight makes its far edge glow and dissolve instead of receding.
+   * Haze here darkens toward the void, which is what reads as depth.
+   */
+  fog: string;
+  /** How much of that air there is: 0 is clear, 1 is a thick morning mist. */
+  fogDepth: number;
 }
 
 export const LIGHTS: Record<LightPreset, Light> = {
-  dawn: { sun: '#ffb37a', sunIntensity: 1.3, sunFrom: [12, 5, 7], sky: '#ffd9c0', ground: '#4a3a50', hemiIntensity: 0.75, background: '#2a2433', lamps: 0.45, fireflies: 0 },
-  morning: { sun: '#fff0d0', sunIntensity: 2.3, sunFrom: [10, 12, 8], sky: '#fff4e0', ground: '#3a3040', hemiIntensity: 1.1, background: '#1d2029', lamps: 0, fireflies: 0 },
+  dawn: { sun: '#ffb37a', sunIntensity: 1.3, sunFrom: [12, 5, 7], sky: '#ffd9c0', ground: '#4a3a50', hemiIntensity: 0.75, background: '#2a2433', fill: '#c9b0c6', fillIntensity: 0.5, lamps: 0.45, fireflies: 0, fog: '#3d3242', fogDepth: 0.62 },
+  morning: { sun: '#fff0d0', sunIntensity: 2.3, sunFrom: [10, 12, 8], sky: '#fff4e0', ground: '#3a3040', hemiIntensity: 1.1, background: '#1d2029', fill: '#dfe8ff', fillIntensity: 0, lamps: 0, fireflies: 0, fog: '#2c313b', fogDepth: 0.3 },
   // The look every diorama had before it had a light: the default.
-  day: { sun: '#fff0d0', sunIntensity: 2.2, sunFrom: [8, 14, 5], sky: '#fff4e0', ground: '#3a3040', hemiIntensity: 1.1, background: '#1b1e26', lamps: 0, fireflies: 0 },
-  evening: { sun: '#ffc283', sunIntensity: 1.9, sunFrom: [-5, 7, 10], sky: '#ffd6a8', ground: '#3a2c3a', hemiIntensity: 0.8, background: '#231d26', lamps: 0.55, fireflies: 0.2 },
-  dusk: { sun: '#ff9468', sunIntensity: 1.0, sunFrom: [-9, 3.5, 7], sky: '#9a90c8', ground: '#2e2638', hemiIntensity: 0.75, background: '#17151f', lamps: 1, fireflies: 1 },
-  night: { sun: '#a8bcff', sunIntensity: 0.4, sunFrom: [-4, 12, -6], sky: '#5a6aa0', ground: '#141420', hemiIntensity: 0.38, background: '#0c0e16', lamps: 1, fireflies: 0.7 },
+  day: { sun: '#fff0d0', sunIntensity: 2.2, sunFrom: [8, 14, 5], sky: '#fff4e0', ground: '#3a3040', hemiIntensity: 1.1, background: '#1b1e26', fill: '#dfe8ff', fillIntensity: 0, lamps: 0, fireflies: 0, fog: '#282d36', fogDepth: 0.22 },
+  evening: { sun: '#ffc283', sunIntensity: 1.9, sunFrom: [-5, 7, 10], sky: '#ffd6a8', ground: '#3a2c3a', hemiIntensity: 0.8, background: '#231d26', fill: '#cfae92', fillIntensity: 0.34, lamps: 0.55, fireflies: 0.2, fog: '#33262f', fogDepth: 0.34 },
+  dusk: { sun: '#ff9468', sunIntensity: 1.0, sunFrom: [-9, 3.5, 7], sky: '#9a90c8', ground: '#2e2638', hemiIntensity: 0.75, background: '#17151f', fill: '#a9aee0', fillIntensity: 0.68, lamps: 1, fireflies: 1, fog: '#232030', fogDepth: 0.46 },
+  night: { sun: '#a8bcff', sunIntensity: 0.4, sunFrom: [-4, 12, -6], sky: '#5a6aa0', ground: '#141420', hemiIntensity: 0.38, background: '#0c0e16', fill: '#9db3e6', fillIntensity: 1.0, lamps: 1, fireflies: 0.7, fog: '#151827', fogDepth: 0.5 },
 };
 
 function hex(c: string): [number, number, number] {
@@ -39,7 +59,38 @@ function toHex([r, g, b]: number[]): string {
 }
 
 const lerp = (a: number, b: number, f: number) => a + (b - a) * f;
-const lerpColour = (a: string, b: string, f: number) => toHex(hex(a).map((v, i) => lerp(v, hex(b)[i], f)));
+
+/** Two colours mixed: `f` = 0 is `a`, 1 is `b`. Channel by channel, which is enough at these strengths. */
+export const lerpColour = (a: string, b: string, f: number) => toHex(hex(a).map((v, i) => lerp(v, hex(b)[i], f)));
+
+/** A colour pulled toward its own brightness: `s` = 1 leaves it, 0 makes it grey. */
+export function desaturate(c: string, s: number): string {
+  const [r, g, b] = hex(c);
+  const grey = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return toHex([r, g, b].map((v) => lerp(grey, v, s)));
+}
+
+/**
+ * Where the haze begins and where it is total, in world units from the camera.
+ *
+ * The isometric camera sits about 35 units from the middle of a 14-unit tile, so its near corner
+ * is about 26 away and its far corner about 43. The haze starts just in front of the near corner
+ * and runs far past the back of the tile, which keeps the ramp gentle across it: at its thinnest
+ * the far corner is about a fifth hazed and the near corner not at all, at its thickest about
+ * half and a twentieth. Air in front of the tile would fog the thing being looked at, and a far
+ * corner much past half would lose the back of the scene rather than set it back.
+ */
+/**
+ * Where the soft second light comes from: the viewer's side of the tile and a little above, far
+ * enough off the camera's own corner that faces still shade from one side to the other. Fixed, so
+ * it cannot turn with the orbit and make the scene swim.
+ */
+export const FILL_FROM: readonly [number, number, number] = [10, 9, 14];
+
+export function fogRange(depth: number): [number, number] {
+  const d = Math.min(1, Math.max(0, depth));
+  return [26 - 2 * d, 104 - 44 * d];
+}
 
 /** Two lights mixed: `f` = 0 is `a`, 1 is `b`. */
 export function mixLights(a: Light, b: Light, f: number): Light {
@@ -51,8 +102,12 @@ export function mixLights(a: Light, b: Light, f: number): Light {
     ground: lerpColour(a.ground, b.ground, f),
     hemiIntensity: lerp(a.hemiIntensity, b.hemiIntensity, f),
     background: lerpColour(a.background, b.background, f),
+    fill: lerpColour(a.fill, b.fill, f),
+    fillIntensity: lerp(a.fillIntensity, b.fillIntensity, f),
     lamps: lerp(a.lamps, b.lamps, f),
     fireflies: lerp(a.fireflies, b.fireflies, f),
+    fog: lerpColour(a.fog, b.fog, f),
+    fogDepth: lerp(a.fogDepth, b.fogDepth, f),
   };
 }
 

@@ -11,6 +11,7 @@
 import * as THREE from 'three';
 import type { Light } from './lighting';
 import { loadModel } from './models';
+import { QUALITY, type QualitySettings } from './quality';
 
 export interface SetInstance {
   object: THREE.Object3D;
@@ -19,16 +20,17 @@ export interface SetInstance {
   dispose(): void;
 }
 
-const SMOKE_PUFFS = 9;
-const FIREFLIES = 9;
-
 /** A tiny repeatable hash in [0, 1). */
 function rnd(i: number, k: number): number {
   const s = Math.sin(i * 127.1 + k * 311.7) * 43758.5453;
   return s - Math.floor(s);
 }
 
-export async function loadSet(url: string): Promise<SetInstance> {
+export async function loadSet(url: string, quality: QualitySettings = QUALITY.high): Promise<SetInstance> {
+  // How many small moving things this device can afford. They are decoration: fewer puffs of
+  // smoke is a cheaper picture of the same chimney, never a different moment in the story.
+  const SMOKE_PUFFS = quality.smokePuffs;
+  const FIREFLIES = quality.fireflies;
   const model = await loadModel(url);
   const object = model.scene.clone(true);
   object.name = 'set';
@@ -101,7 +103,7 @@ export async function loadSet(url: string): Promise<SetInstance> {
   const flyMat = new THREE.PointsMaterial({ color: '#f4ff9a', size: 0.08, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
   owned.push(sprayMat, flyMat);
   const spray = marker('fx-spray').map((m) => {
-    const pts = new THREE.Points(dotGeo(40), sprayMat);
+    const pts = new THREE.Points(dotGeo(quality.sprayPoints), sprayMat);
     m.add(pts);
     return pts;
   });

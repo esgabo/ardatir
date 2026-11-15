@@ -8,6 +8,7 @@ import { h } from './dom';
 import { honestDate } from './format';
 import { foretoldBadge, foretoldParts, isForetold } from './foretold';
 import { ICONS } from './icons';
+import { chooseQuality, isQuality, QUALITY, type Quality } from './scene/quality';
 import { initialLang, isLang, rememberLang, t as ui, tr, type UiKey } from './i18n';
 import { renderReader } from './reader';
 import { sidesLine } from './sides';
@@ -99,9 +100,26 @@ const audioLang = (event: EventDetail) => pickAudio(event.audio, state.lang, sta
 
 // ---------- Renderer ----------
 const viewport = $('viewport');
+// How much render this device gets (scene/quality.ts): the shadow map, the haze, the pixel ratio
+// and the counts of small moving things, turned down together. `?quality=low|medium|high|auto`
+// overrides the guess and is remembered, so a visitor who knows better only says so once.
+const quality: Quality = (() => {
+  const asked = new URLSearchParams(location.hash.split('?')[1] ?? '').get('quality');
+  let remembered: string | null = null;
+  try { remembered = localStorage.getItem('ardatir.quality'); } catch { /* storage unavailable */ }
+  const chosen = chooseQuality(asked, remembered, {
+    cores: navigator.hardwareConcurrency,
+    memory: (navigator as Navigator & { deviceMemory?: number }).deviceMemory,
+    coarsePointer: matchMedia?.('(pointer: coarse)').matches,
+  });
+  if (isQuality(asked)) { try { localStorage.setItem('ardatir.quality', asked); } catch { /* storage unavailable */ } }
+  return chosen;
+})();
+const render = QUALITY[quality];
+
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-renderer.shadowMap.enabled = true;
+renderer.setPixelRatio(Math.min(devicePixelRatio, render.maxPixelRatio));
+renderer.shadowMap.enabled = render.shadows;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 viewport.appendChild(renderer.domElement);
 
@@ -135,7 +153,7 @@ async function buildStage(event: EventDetail): Promise<Stage> {
     });
   }
   const { createDioramaStage } = await import('./scene/dioramaStage');
-  return createDioramaStage(event, characterMap, state.lang, new Map((index.factions ?? []).map((f) => [f.id, f])));
+  return createDioramaStage(event, characterMap, state.lang, new Map((index.factions ?? []).map((f) => [f.id, f])), render);
 }
 
 /** Bumped on every loadStage (and when a page opens), so a slower load can't replace a newer view. */
