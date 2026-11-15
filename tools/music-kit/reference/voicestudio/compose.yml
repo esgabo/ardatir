@@ -1,0 +1,68 @@
+# VoiceStudio on the AMD test box (Radeon 780M iGPU).
+# Default service = voicestudio-therock: VoiceStudio stable + AMD TheRock torch 2.8.0+rocm7.12.0 with
+# native gfx1103 kernels (no HSA override). It passed a stress test with zero amdgpu resets.
+# Fallbacks (stop the default first, they all bind :3900):
+#   CPU:              docker compose --profile cpu up -d voicestudio-cpu
+#   upstream ROCm 7.2.4 + HSA override (caused MODE2 resets of the shared iGPU; image removed,
+#   compose pulls it again, 42 GB): docker compose --profile rocm up -d voicestudio-rocm
+x-common: &common
+  env_file: .env
+  restart: unless-stopped
+  healthcheck:
+    test: ["CMD", "curl", "-sf", "http://localhost:3900/health"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+    start_period: 180s
+x-env: &env
+  HF_HOME: /app/omnivoice_data/huggingface
+  OMNIVOICE_DATA_DIR: /app/omnivoice_data
+  PYTHONPATH: /app/backend
+  PYTHONUNBUFFERED: "1"
+  OMNIVOICE_SERVER_MODE: "1"
+  OMNIVOICE_ANALYTICS_DISABLED: "1"
+services:
+  voicestudio-therock:
+    <<: *common
+    image: voicestudio:therock712
+    build: ./variants/therock712
+    container_name: voicestudio-therock
+    devices: [/dev/kfd, /dev/dri]
+    group_add: ["104", "44"]
+    ports: ["0.0.0.0:3900:3900"]
+    environment:
+      <<: *env
+      # Inductor/Triton on gfx1103 is untested; eager mode is what passed the stress test
+      TORCH_COMPILE_DISABLE: "1"
+    volumes:
+      - ./data-therock:/app/omnivoice_data
+      - ./hf:/app/omnivoice_data/huggingface
+      - ./miopen-therock/cache:/root/.cache/miopen
+      - ./miopen-therock/config:/root/.config/miopen
+  voicestudio-cpu:
+    <<: *common
+    profiles: ["cpu"]
+    image: ghcr.io/debpalash/voicestudio:stable
+    container_name: voicestudio-cpu
+    ports: ["0.0.0.0:3900:3900"]
+    environment: *env
+    volumes:
+      - ./data-cpu:/app/omnivoice_data
+      - ./hf:/app/omnivoice_data/huggingface
+  voicestudio-rocm:
+    <<: *common
+    profiles: ["rocm"]
+    image: ghcr.io/debpalash/voicestudio:stable-rocm
+    container_name: voicestudio-rocm
+    devices: [/dev/kfd, /dev/dri]
+    group_add: ["104", "44"]
+    ports: ["0.0.0.0:3900:3900"]
+    environment:
+      <<: *env
+      HSA_OVERRIDE_GFX_VERSION: "11.0.0"
+      TORCH_COMPILE_DISABLE: "1"
+    volumes:
+      - ./data-rocm:/app/omnivoice_data
+      - ./hf:/app/omnivoice_data/huggingface
+      - ./miopen-cache:/root/.cache/miopen
+      - ./miopen-config:/root/.config/miopen

@@ -1,0 +1,30 @@
+# MusicGen-melody API (audiocraft + facebook/musicgen-melody, CC-BY-NC 4.0 weights), beside VoiceStudio on the AMD test box.
+# Separate stack and process: it never touches the voicestudio container.
+services:
+  musicgen:
+    image: musicgen:therock712
+    build: .
+    container_name: musicgen
+    restart: unless-stopped
+    env_file: .env   # MUSICGEN_API_KEY (mode 600)
+    devices: [/dev/kfd, /dev/dri]
+    group_add: ["104", "44"]
+    ports: ["0.0.0.0:3910:3910"]
+    # hard cap so a bad load OOM-kills this container, never pushes VoiceStudio (same 16 GB container host) into swap thrash
+    mem_limit: 6g
+    memswap_limit: 6g
+    # a GPU hang crash dumped a 4 GB core into the container layer; don't
+    ulimits:
+      core: 0
+    environment:
+      MUSICGEN_MODEL: facebook/musicgen-melody
+    volumes:
+      - ./data:/data
+      - ./miopen/cache:/root/.cache/miopen
+      - ./miopen/config:/root/.config/miopen
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:3910/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 300s

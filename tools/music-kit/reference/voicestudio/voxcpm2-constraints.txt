@@ -1,0 +1,8 @@
+# Keep the TheRock gfx1103 torch stack and the app-pinned libs; voxcpm leaves torch unpinned.
+torch==2.8.0+rocm7.12.0
+torchaudio==2.8.0a0+rocm7.12.0
+torchvision==0.23.0a0+rocm7.12.0
+# torchcodec 0.7 is the release built for torch 2.8 (newer ones need newer torch)
+torchcodec==0.7.0
+numpy==2.3.2
+transformers==5.17.0
