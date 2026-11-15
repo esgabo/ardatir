@@ -57,12 +57,14 @@ tracks:
       - { t: 0.86, x: 4.30, z: 2.74, action: idle }
       - { t: 0.93, x: 5.80, z: 2.10, action: walk }
       - { t: 1, x: 7.30, z: 3.02, action: walk }
+  # Dori and Gloin stand beside the inn's trestle tables rather than at them: with no sitting
+  # pose, a figure placed on a bench stands inside it (#81).
   - characterId: dori
     keyframes:
-      - { t: 0, x: 0.90, z: 0.60, action: idle }
-      - { t: 0.5, x: 0.90, z: 0.60, action: talk }
-      - { t: 0.72, x: 0.90, z: 0.60, action: idle }
-      - { t: 0.86, x: 0.90, z: 0.60, action: idle }
+      - { t: 0, x: 1.20, z: 1.45, action: idle }
+      - { t: 0.5, x: 1.20, z: 1.45, action: talk }
+      - { t: 0.72, x: 1.20, z: 1.45, action: idle }
+      - { t: 0.86, x: 1.20, z: 1.45, action: idle }
       - { t: 0.93, x: 4.60, z: 2.40, action: walk }
       - { t: 1, x: 7.60, z: 1.90, action: walk }
   - characterId: nori
@@ -91,10 +93,10 @@ tracks:
       - { t: 1, x: 7.60, z: 2.74, action: walk }
   - characterId: gloin
     keyframes:
-      - { t: 0, x: 4.45, z: 0.35, action: idle }
-      - { t: 0.5, x: 4.45, z: 0.35, action: talk }
-      - { t: 0.72, x: 4.45, z: 0.35, action: idle }
-      - { t: 0.86, x: 4.45, z: 0.35, action: idle }
+      - { t: 0, x: 4.40, z: -0.15, action: idle }
+      - { t: 0.5, x: 4.40, z: -0.15, action: talk }
+      - { t: 0.72, x: 4.40, z: -0.15, action: idle }
+      - { t: 0.86, x: 4.40, z: -0.15, action: idle }
       - { t: 0.93, x: 5.80, z: 2.40, action: walk }
       - { t: 1, x: 7.00, z: 3.02, action: walk }
   - characterId: bifur

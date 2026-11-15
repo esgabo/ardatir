@@ -130,6 +130,16 @@ A track may give the character this event's own model, `model: characters/bilbo/
 
 From that `t` the second model stands in the first one's place. Like everything else it is a function of `t`, so scrubbing back shows the troll alive again. Keep the track still from a little before the change, since the stone holds one pose.
 
+Standing on something, `y`:
+
+```yaml
+      - { t: 0.2, x: 1.95, z: -0.85, y: 0.49, action: idle }   # on the stump by the fire
+```
+
+A figure is placed on the kit's walkable `terrain`, which runs underneath the things the kit builds on top of it — a log, a bench, a doorstep, a bridge. Without `y` a figure placed at a seat's own spot stands *inside* it, buried to the waist. `y` is how high that surface is, in tile units; it is interpolated like `x` and `z`, so a figure can step up onto something and down again. Leave it out for anyone on the ground.
+
+There is no sitting pose yet, so a seat is still a place to stand beside rather than on; the build warns when two figures end up in the same spot (`stand inside each other`), since nothing pushes them apart at render time — where everyone stands is the staging's composition, and has to stay a pure function of `t`.
+
 The tile runs about -7 to 7 on both axes. A figure whose position is off the tile (say `x: 11, z: 11`) is not drawn: off the tile = offstage. Use it to wait out the scenes before an entrance. A figure moving between two `hide` keyframes stays hidden (it is not shown walking).
 
 ## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`

@@ -48,16 +48,17 @@ function discTexture(): THREE.Texture {
 /**
  * How far above the ground the discs sit.
  *
- * Higher than it looks like it should be, and for a reason worth knowing: `groundHeight` reports
- * the height of the kit's `terrain` mesh, which is what characters stand on, but a kit also draws
- * its lawn, paving and path as separate meshes a little above that. A disc lifted by a hair is
- * buried under them and never appears at all. This clears the ones the Shire, Trollshaws and
- * Rivendell kits build; the cost is that the disc reads very slightly up-slope of the feet.
+ * `groundHeight` reports the height of the kit's `terrain` mesh, which is the walkable ground,
+ * but a kit also draws its lawn, paving and path as thin meshes just above it. A disc lifted by
+ * a hair is buried under those and never appears at all.
  *
- * The real fix is for a kit's walkable `terrain` and its visible ground to be the same surface,
- * which would also stop characters standing a little sunk into the lawn.
+ * Measured across the four kits, those skins stand at most about 6 cm above the terrain where
+ * characters actually stand, so this clears them with a little to spare and still reads as
+ * darkness at the feet rather than a disc hovering under them. Anything a character stands *on*
+ * rather than over — a log, a bench, a doorstep — is the staging's `y` (data/types.ts), which is
+ * already in the spot's height by the time it gets here.
  */
-const LIFT = 0.22;
+const LIFT = 0.08;
 
 export function createContactShadows(): ContactShadows {
   const group = new THREE.Group();

@@ -294,6 +294,19 @@ export interface Keyframe {
   /** Position inside the event's diorama (local units, origin at the tile centre). */
   x: number;
   z: number;
+  /**
+   * How high the character stands above the ground here, in tile units (default 0).
+   *
+   * A figure is placed on the kit's `terrain` mesh, which is the walkable ground. A kit also
+   * builds things a character can be *on* — a log by the fire, a bench outside the inn, a
+   * doorstep, a bridge — and the terrain runs underneath those, so a troll sitting on a log
+   * placed at ground level is buried in it to the waist. `y` is the author saying how far up
+   * that surface is. Staging already names an exact spot in a tile the kit built; this is the
+   * third number of that spot.
+   *
+   * It is interpolated like `x` and `z`, so a figure can step up onto something and down again.
+   */
+  y?: number;
   action?: 'idle' | 'walk' | 'run' | 'fight' | 'talk' | 'hide';
   thought?: LocalizedText;
 }

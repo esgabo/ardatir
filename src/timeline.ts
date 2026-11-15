@@ -3,6 +3,8 @@ import type { Keyframe, LocalizedText, Track } from './data/types';
 export interface Pose {
   x: number;
   z: number;
+  /** How high above the ground the figure stands here (Keyframe.y): 0 on the ground itself. */
+  y: number;
   /** Heading in radians, facing the direction of travel. */
   heading: number;
   action: NonNullable<Keyframe['action']>;
@@ -21,7 +23,7 @@ export function onTile(pose: { x: number; z: number }): boolean {
 /** Sample a character's track at normalised time t (0 → 1). Pure, so the scrubber can jump anywhere. */
 export function samplePose(track: Track, t: number): Pose {
   const ks = track.keyframes;
-  if (ks.length === 0) return { x: 0, z: 0, heading: 0, action: 'idle', moving: false };
+  if (ks.length === 0) return { x: 0, z: 0, y: 0, heading: 0, action: 'idle', moving: false };
 
   let i = 0;
   while (i < ks.length - 1 && ks[i + 1].t <= t) i++;
@@ -32,6 +34,8 @@ export function samplePose(track: Track, t: number): Pose {
   const u = span > 0 ? Math.min(Math.max((t - a.t) / span, 0), 1) : 0;
   const x = a.x + (b.x - a.x) * u;
   const z = a.z + (b.z - a.z) * u;
+  const ay = a.y ?? 0, by = b.y ?? 0;
+  const y = ay + (by - ay) * u;
   const dx = b.x - a.x, dz = b.z - a.z;
   const moving = span > 0 && u < 1 && Math.hypot(dx, dz) > 1e-3;
 
@@ -39,7 +43,7 @@ export function samplePose(track: Track, t: number): Pose {
   for (let k = 0; k <= i; k++) if (ks[k].thought) thought = ks[k].thought;
 
   return {
-    x, z,
+    x, z, y,
     heading: Math.atan2(dx, dz),
     action: moving ? (a.action === 'hide' && b.action === 'hide' ? 'hide' : b.action === 'run' ? 'run' : 'walk') : (a.action ?? 'idle'),
     thought,
@@ -153,4 +157,76 @@ export function strideSeconds(
   }
   if (t > ks[ks.length - 1].t) s += (t - ks[ks.length - 1].t) * eventSeconds;
   return s;
+}
+
+// ---- Crowding: two figures in the same spot (#81) ----
+
+/**
+ * How wide a figure is on the ground, as the contact shadow and the eye read it.
+ *
+ * `FIGURE_HEIGHT` lives in scene/figure.ts, which pulls in three.js; this file is pure and is
+ * also read by the content build, so the number is repeated here rather than imported.
+ */
+const GROUND_RADIUS = 0.82 * 0.3;
+
+export interface Crowding {
+  a: string;
+  b: string;
+  /** The moment they are deepest inside each other. */
+  t: number;
+  /** How far apart they are there, and how far apart they would have to be not to overlap. */
+  gap: number;
+  needs: number;
+  /** Both standing still at that moment: the case the eye catches, rather than a brush in passing. */
+  still: boolean;
+  /** The share of the event they overlap for, 0 → 1. */
+  share: number;
+}
+
+/**
+ * Where two characters stand inside each other.
+ *
+ * Nothing pushes figures apart at render time, and nothing should: a figure's position has to
+ * stay a pure function of `t` alone for scrubbing and deep links to land in the same place, and
+ * who stands in front of whom is a staged composition, not a simulation. So this is a check on
+ * the staging, run by the build, and the author moves the keyframe.
+ *
+ * Figures off the tile are ignored: they are not drawn, and staging parks them all together
+ * offstage on purpose.
+ */
+export function crowding(
+  tracks: readonly Track[],
+  scaleOf: (characterId: string) => number = () => 1,
+  steps = 200,
+): Crowding[] {
+  const worst = new Map<string, Crowding>();
+  const seen = new Map<string, number>();
+  for (let s = 0; s <= steps; s++) {
+    const t = s / steps;
+    const at = tracks.map((tr) => ({ id: tr.characterId, pose: samplePose(tr, t), r: GROUND_RADIUS * scaleOf(tr.characterId) }));
+    for (let i = 0; i < at.length; i++) {
+      for (let j = i + 1; j < at.length; j++) {
+        const p = at[i], q = at[j];
+        if (!onTile(p.pose) || !onTile(q.pose)) continue;
+        // Figures on different levels (one on a bench, one beside it) do not collide.
+        if (Math.abs(p.pose.y - q.pose.y) > 0.4) continue;
+        const gap = Math.hypot(p.pose.x - q.pose.x, p.pose.z - q.pose.z);
+        const needs = p.r + q.r;
+        if (gap >= needs) continue;
+        const key = p.id < q.id ? `${p.id}|${q.id}` : `${q.id}|${p.id}`;
+        seen.set(key, (seen.get(key) ?? 0) + 1);
+        const prev = worst.get(key);
+        if (!prev || gap < prev.gap) {
+          worst.set(key, {
+            a: p.id, b: q.id, t: +t.toFixed(3),
+            gap: +gap.toFixed(3), needs: +needs.toFixed(3),
+            still: !p.pose.moving && !q.pose.moving,
+            share: 0,
+          });
+        }
+      }
+    }
+  }
+  for (const [key, c] of worst) c.share = +((seen.get(key) ?? 0) / (steps + 1)).toFixed(3);
+  return [...worst.values()].sort((x, y) => x.gap - y.gap);
 }

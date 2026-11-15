@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { actionMix, headingAt, onTile, samplePose, strideSeconds } from '../src/timeline';
+import { actionMix, crowding, headingAt, onTile, samplePose, strideSeconds } from '../src/timeline';
 
 const at = (x: number, z: number, action: 'hide' | 'walk' | 'run' | 'idle', t: number) => ({ t, x, z, action });
 
@@ -76,5 +76,72 @@ describe('motion between poses', () => {
     // Continuous across a keyframe.
     expect(strideSeconds(track, 0.4 - 1e-9, S, pace)).toBeCloseTo(strideSeconds(track, 0.4 + 1e-9, S, pace));
     expect(strideSeconds(track, 1, S, pace)).toBeCloseTo(2 + 4 + 2 + 4 + 2);
+  });
+});
+
+describe('standing on something (Keyframe.y)', () => {
+  it('is zero when the staging says nothing', () => {
+    const track = { characterId: 'a', keyframes: [at(0, 0, 'idle', 0), at(2, 2, 'walk', 1)] };
+    expect(samplePose(track, 0.5).y).toBe(0);
+  });
+  it('is interpolated like x and z, so a figure steps up and down', () => {
+    const track = { characterId: 'a', keyframes: [
+      { t: 0, x: 0, z: 0, y: 0, action: 'walk' as const },
+      { t: 0.5, x: 1, z: 0, y: 0.5, action: 'idle' as const },
+      { t: 1, x: 2, z: 0, action: 'walk' as const },
+    ] };
+    expect(samplePose(track, 0).y).toBe(0);
+    expect(samplePose(track, 0.25).y).toBeCloseTo(0.25, 6);
+    expect(samplePose(track, 0.5).y).toBeCloseTo(0.5, 6);
+    expect(samplePose(track, 0.75).y).toBeCloseTo(0.25, 6);
+    expect(samplePose(track, 1).y).toBe(0);
+  });
+});
+
+describe('crowding', () => {
+  const standing = (id: string, x: number, z: number, y?: number) => ({
+    characterId: id,
+    keyframes: [{ t: 0, x, z, ...y === undefined ? {} : { y }, action: 'idle' as const },
+                { t: 1, x, z, ...y === undefined ? {} : { y }, action: 'idle' as const }],
+  });
+
+  it('says nothing when everyone has room', () => {
+    expect(crowding([standing('a', 0, 0), standing('b', 3, 0)])).toEqual([]);
+  });
+
+  it('catches two figures on the same spot, and says they are still', () => {
+    const [c] = crowding([standing('a', 0, 0), standing('b', 0, 0)]);
+    expect(c.a).toBe('a');
+    expect(c.b).toBe('b');
+    expect(c.gap).toBe(0);
+    expect(c.still).toBe(true);
+    expect(c.share).toBe(1);
+  });
+
+  it('reports one line per pair, at their worst moment', () => {
+    const walker = { characterId: 'b', keyframes: [
+      { t: 0, x: -3, z: 0, action: 'walk' as const },
+      { t: 1, x: 3, z: 0, action: 'walk' as const },
+    ] };
+    const found = crowding([standing('a', 0, 0), walker]);
+    expect(found).toHaveLength(1);
+    expect(found[0].t).toBeCloseTo(0.5, 1);
+    expect(found[0].still).toBe(false);
+    // Only the moment it passes through, not the whole walk.
+    expect(found[0].share).toBeLessThan(0.3);
+  });
+
+  it('leaves alone figures on different levels: one on a bench, one beside it', () => {
+    expect(crowding([standing('a', 0, 0), standing('b', 0.1, 0, 0.6)])).toEqual([]);
+  });
+
+  it('ignores figures parked off the tile, where staging stacks them on purpose', () => {
+    expect(crowding([standing('a', 11, 11), standing('b', 11, 11)])).toEqual([]);
+  });
+
+  it('gives a bigger figure more room', () => {
+    const pair = [standing('troll', 0, 0), standing('hobbit', 0.7, 0)];
+    expect(crowding(pair)).toEqual([]);
+    expect(crowding(pair, (id) => (id === 'troll' ? 2.2 : 1))).toHaveLength(1);
   });
 });

@@ -17,6 +17,7 @@ import {
 import { narrationHash, passageHash, TEXT_HASH } from '../narration/text.ts';
 import type { Lexicon } from '../narration/pronounce.ts';
 import { pronounceProblem } from '../../src/data/pronounce.ts';
+import { crowding } from '../../src/timeline.ts';
 import { battlesByFaction, readArmies, readFactions, readSides } from './factions.ts';
 import { checkSources, readModel } from './models.ts';
 
@@ -529,6 +530,8 @@ export function buildContent(contentDir: string): BuildResult {
   }
 
   // ---------- staging, audio → details ----------
+  // A character's height, for the crowding check: a dwarf takes less room than a troll.
+  const charScale = new Map(characters.map((c) => [c.id, c.scale ?? 1]));
   const details: EventDetail[] = [];
   for (const r of raws) {
     const s = r.staging;
@@ -588,10 +591,33 @@ export function buildContent(contentDir: string): BuildResult {
         if (!isObj(k) || typeof k.t !== 'number' || typeof k.x !== 'number' || typeof k.z !== 'number') { R.error(sf, `${what}: needs t, x, z`); return; }
         if (k.t < lt || k.t < 0 || k.t > 1) R.error(sf, `${what}: t must rise from 0 to 1`);
         lt = k.t;
-        kfs.push({ t: k.t, x: k.x, z: k.z, ...k.action ? { action: k.action as Keyframe['action'] } : {}, ...k.thought ? { thought: text(sf, k.thought, `${what}.thought`) } : {} });
+        keys(sf, k, ['t', 'x', 'z', 'y', 'action', 'thought'], what);
+        // How high above the ground they stand here: on a log, a bench, a doorstep (types.ts).
+        // A tile is 14 units across and a hobbit about one tall, so anything past a few units is
+        // a typo, not a balcony.
+        let y: number | undefined;
+        if (k.y !== undefined) {
+          if (typeof k.y !== 'number' || !(k.y >= -1 && k.y <= 4)) R.error(sf, `${what}.y: expected a height in tile units, -1 to 4`);
+          else if (k.y !== 0) y = k.y;
+        }
+        kfs.push({ t: k.t, x: k.x, z: k.z, ...y !== undefined ? { y } : {}, ...k.action ? { action: k.action as Keyframe['action'] } : {}, ...k.thought ? { thought: text(sf, k.thought, `${what}.thought`) } : {} });
       });
       tracks.push({ characterId: tr.characterId, keyframes: kfs, ...model ? { model } : {}, ...becomes ? { becomes } : {} });
     });
+
+    // Two figures standing inside each other. A warning, not an error: nothing pushes them apart
+    // at render time (that would make a figure's place depend on the others instead of on `t`),
+    // so the staging is where it gets fixed. See src/timeline.ts `crowding`.
+    // Two figures brushing as they pass is not worth a line; two standing in each other, or one
+    // walking through the middle of another, is. Only the five worst, so one crowded scene can't
+    // bury the rest of the build.
+    const crowded = crowding(tracks, (id) => charScale.get(id) ?? 1)
+      .filter((c) => c.still || c.gap < c.needs * 0.5);
+    for (const c of crowded.slice(0, 5)) {
+      const how = c.still ? 'stand inside each other' : 'walk through each other';
+      R.warn(sf, `${c.a} and ${c.b} ${how} at t = ${c.t} (${c.gap} apart, needs ${c.needs}); move a keyframe, or stand one of them on something with "y"`);
+    }
+    if (crowded.length > 5) R.warn(sf, `and ${crowded.length - 5} more pairs of figures overlapping`);
 
     const armies = readArmies(FC, sf, s.armies, r.summary);
 
