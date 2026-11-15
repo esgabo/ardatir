@@ -51,6 +51,7 @@ Requires Node 22. Recording narration also needs `ffmpeg` and the homelab Voice 
 | **Status pipeline**: outline → scripted → staged → animated | Lets the phases overlap; the build checks each event has the files its status claims. |
 | **One shared time axis** with date precision; typed links; journeys for whereabouts | Powers the time cursor ("what's happening now") and character lanes ("where their lives cross"). |
 | **Time cursor is the first platform feature**, then character lanes | Decided 2026-11-08. |
+| **The render look is graded light, not post-processing** (`scene/grade.ts`): a place tints the sun, sky, background and haze; a soft second light comes up as the sun goes down so a night scene can be seen; haze tints toward the background, never a bright sky; contact shadows under figures; one `quality` setting turns the shadow map, pixel ratio and effect counts down together (`?quality=`) | A post pass is a second render of the frame, its own chunk and the first thing to fail on a phone, and it can drift out of step with the shadows. Graded light costs nothing and stays a pure function of `t` and the place. A dark field is what makes a diorama read as a made object, so the background takes only a third of a place's tint. See `docs/DESIGN.md` §9.1. Decided 2026-11-15 (#76). |
 | **Navigation is a collapsible left sidebar** (icon rail + panel: Ages, Time, Stories, Lives, Books, Places), not dropdowns | Keeps the 3D stage clear while making every way in visible. Fantasy look kept light: a few small ornaments, no textures. See `docs/DESIGN.md` §3.3. Decided 2026-11-09. |
 | **"Likely at the same time" is a labelled, explained guess**: never for two scenes sharing a character (unless linked `concurrent`/`crossing`); otherwise best guesses within ±3 / ±15 / ±45 days for day / month / season (the vaguer of the two); never for a year or vaguer | Story order already says which of a character's scenes comes first; a fixed window was too loose for vague dates (the secret door "during" Lake-town, #2). Gap-to-anchors was hard to explain, exact-only made "likely" vanish. Every guess records why it landed there (`atReason`) and the site says so in words. See `docs/DESIGN.md` §4.4.1. Decided 2026-11-09. |
 | **Factions are one file per side** (`content/factions/`: name, banner colour, kind, summary, leaders), reused across battles; a battle's `sides` are groups of allied factions; staging places `armies` (faction, size, keyframes) as blocks of small figures in the faction's colour | Pages and the time cursor can say who fought whom, battles are findable by faction, and a diorama can show hosts without giving every soldier a track. Named characters keep their own tracks and lead them. One being who comes alone (Beorn) is a character, a host (the Eagles) a faction. See `docs/DESIGN.md` §2 (battles) and §4.9. Decided 2026-11-09 (#18). |
@@ -108,7 +109,10 @@ src/
   scene/models.ts    glTF models: GLTFLoader + meshopt, cached per URL, scaled to Character.scale, clips set from t (its own chunk)
   scene/modelClips.ts   which clip plays for a pose, and its time at t: pure, tested
   scene/sets.ts      an event's set (staging `set`, a kit): the tile from Blender, glowing lamps, doors that open, smoke, spray, fireflies
-  scene/lighting.ts  the light at t (staging `light`): presets dawn to night, blended between keys: pure, tested
+  scene/lighting.ts  the light at t (staging `light`): presets dawn to night, blended between keys; each carries its sun, sky, haze and the soft second light that keeps a night scene readable: pure, tested
+  scene/grade.ts     the grade of a place (Shire warm, Mirkwood oppressive, Lake-town grey): applied to the light, not the pixels: pure, tested
+  scene/quality.ts   how much render this device gets: shadow map, pixel ratio, effect counts; `?quality=`: pure, tested
+  scene/contact.ts   the soft dark disc under each figure: what tells the eye the scale
   scene/armies.ts    a battle's armies: instanced blocks of small figures in their faction's colour, banners (pure in t)
   sidebar.ts         the collapsible sidebar: rail + panel views built from the index
   reader.ts          an event's page, for events that can't be watched yet (DESIGN §3.4)
@@ -135,6 +139,7 @@ src/
 
 ### Rules the code depends on
 
+- **The light, the haze and the grade are pure too.** `lightAt(keys, t)` gives the hour, `graded(light, gradeFor(place))` gives the place; the stage only copies the result onto the lights, the fog and the background. Nothing in either may read the wall clock, and neither may touch `lamps` or `fireflies`, which are story state.
 - **Everything visible is a pure function of the event time `t` (0 → 1).** That is what makes scrubbing and deep links work. `ambient` seconds may only drive idle motion (shimmer, drift, bobbing), never story state.
 - **The playhead runs in seconds of narration; `t` is derived** via `EventClock.tAt`. Seeking converts back with `secondsAt`. Never advance `t` directly.
 - **Narration timing:** `staging.yaml` gives each passage's `t` (where it belongs in the animation); `audio/<lang>.yaml` gives the second it starts in that recording, keyed by passage id. The build turns both into ordered arrays, and the clock stretches the animation between those points.

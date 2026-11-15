@@ -379,11 +379,50 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 - **Shared rigs and animation sets** per body type (hobbit, dwarf, man/elf, wizard, troll), so one set of clips (idle, walk, run, talk, gesture, fight, hide…) serves many characters. Animation playback stays a pure function of the event time `t`.
 - **Kits for places**: the Shire (hobbit-holes with round doors, hills, gardens, hedges), Rivendell, Mirkwood, Lake-town, the Mountain, built from reusable pieces.
 - **Designs come from Tolkien's descriptions**, not from the films or series: proportions and mood may echo film-like realism, but no recognisable film designs or likenesses.
-- **Light and mood carry the story**: time of day (the dawn that turns the trolls to stone), weather, warm interiors, colour grading per place.
+- **Light and mood carry the story**: time of day (the dawn that turns the trolls to stone), weather, warm interiors, colour grading per place. See §9.1.
 - **Budgets**: models stay small enough for a static site on ordinary laptops and phones (compressed glTF, shared textures or flat colours, no Git LFS, since GitHub Pages doesn't serve it): a character ≤ 300 kB, a kit file ≤ 800 kB, a prop ≤ 100 kB after meshopt compression, checked by the build (`MODEL_BUDGETS` in `scripts/content/models.ts`).
 - **Pipeline** ([`MODELS.md`](MODELS.md), #20): sources and exports live in `assets/` (`characters/<id>/<id>.glb`, optional `<id>.blend` beside it, never deployed; `kits/<kit>/`, `props/<id>/`). Export from Blender as glTF binary, Y-up, transforms applied, one scene per asset, no Draco; `npm run model:pack` compresses with meshopt (gltfpack) into `assets/`. A character's `model:` (and a track's per-event `model:` in `staging.yaml`) links it; the build checks it exists, is a loadable `.glb` and fits its budget, and copies it into the site.
 - **In the diorama**: the placeholder figure stands while a model loads and whenever there is none or it fails; models are scaled to the placeholder's height times `Character.scale`, so relative heights stay in content. Clips named `idle`, `walk`, `run`, `talk`, `hide`, `fight` play for the pose sampled at `t`, with an `AnimationMixer` whose time is **set** from `t` each frame (never advanced by the wall clock), so scrubbing and deep links stay exact (#22); without clips the placeholder's motion stays.
 - **Asset plan**: every model *The Hobbit* needs, with rig, priority and status, is listed in [`ASSETS.md`](ASSETS.md).
+
+### 9.1 The render look (#76)
+
+What makes a diorama feel like a made object rather than lit geometry. All of it is a pure
+function of the event time `t` and the event's place, so scrubbing and deep links land on exactly
+the same frame.
+
+- **The light of the hour** (`src/scene/lighting.ts`): staging's `light:` keys name a preset from
+  `dawn` to `night`, blended between keys. A preset now carries its air and its fill as well as
+  its sun and sky.
+- **A soft second light** (`fill`), from the viewer's side and above, that comes up as the sun
+  goes down: nothing at midday, strongest at night. A night scene lit only by a weak moon and a
+  hearth is atmospheric and unreadable — faces, gestures and half the set disappear. This is the
+  lamp a model-maker puts beside the case. It casts no shadow, and it changes how well the scene
+  can be seen, never what is happening in it. Decided 2026-11-15.
+- **Haze with depth** (`fog`, `fogDepth`): air between the front of the tile and the back, tinted
+  **toward the background, never toward a bright sky**. A diorama is a lit object on a dark field;
+  air the colour of daylight makes its far edge glow and dissolve instead of recede. At its
+  thinnest the far corner is about a fifth hazed, at its thickest about half.
+- **A grade per place** (`src/scene/grade.ts`): the Shire warm and green, the wild damp and cold,
+  Rivendell clear and silver, Mirkwood oppressive, Lake-town grey, Mordor without comfort. We
+  grade **the light, not the pixels**: a post-processing pass would be a second render of the
+  frame, a chunk of its own and the first thing to fail on a phone, while pulling the sun, sky and
+  haze toward a place's colour costs nothing and cannot drift out of step with the shadows. A
+  place whose grade takes light away gets more of the soft second light back, not less, so a cave
+  is moody rather than unreadable. The background takes only a third of the tint, so the void
+  around the tile stays dark. A place nobody has graded is `plain`: the light exactly as it was.
+- **Shadows**: one sun, a shadow camera wrapped close around the tile, map size by quality.
+  Under each figure a **contact shadow** — a soft disc on the ground, four triangles — because at
+  this scale what tells the eye how big everything is is where a figure *touches*, not the long
+  shadow behind it. Not ambient occlusion, and not pretending to be: a screen-space pass is the
+  first thing that would fail on a phone.
+- **A quality setting** (`src/scene/quality.ts`), `low` / `medium` / `high`, guessed from what the
+  browser will say for free and overridable with `?quality=`, which is then remembered. It turns
+  the shadow map, the pixel ratio and the counts of small moving things down together. Contact
+  shadows and the haze stay on all the way down: the discs are nearly free and are the only thing
+  holding figures to the ground once the shadow map goes, and the haze is a term in shaders
+  three.js already compiles, so switching it off would buy nothing and cost the scene its depth.
+  Measuring what a device can actually do, rather than guessing, is #30.
 
 ## 10. IP guidelines (fan project)
 
@@ -426,6 +465,7 @@ Everything on screen today is a **placeholder** (stand-in figures, generic terra
 | 2026-11-09 | **What is foretold** (#57): the Dagor Dagorath and the Second Music in a timeless age flagged `foretold`, after the Fourth Age and never on the axis; every event cites its source and may name who foretold it (`foretoldBy`); marked as prophecy everywhere (badge, page line, dashed segment after the axis, lanes); the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*), split into one scene per event (§4.8). |
 | 2026-11-09 | Model pipeline (#20): `assets/<type>/<id>/<id>.glb` (`.blend` sources beside, never deployed; no Git LFS); Blender exports glTF binary, Y-up, applied transforms, one scene, compressed with meshopt via `npm run model:pack` (gltfpack; meshopt over Draco for its smaller decoder); `model:` on characters and per-event on tracks, checked by the build (exists, loadable, within budget: characters 300 kB, kits 800 kB, props 100 kB); the loader is its own chunk; placeholder while loading or without a model; clips driven from `t` (§9, `MODELS.md`). |
 | 2026-11-09 | Wonder and learning (#29): a first visit to the front door opens with a short guided opening over the Ainulindalë (one line per beat, Next, skippable at once, then three ways in: a story, a moment, a life), remembered per visitor, at `#/start` and reopened from the sidebar's *Start here*; `pronounce: { en, es }` respellings in the *AR-da* style on characters, places, ages and events, validated, shown as a small hint; *About this scene* on the stage; gentle pointers to the books from `source`, with chapter titles in both languages (§3.5). |
+| 2026-11-15 | The render look (#76): a soft second light that comes up as the sun goes down, so a night scene can be seen; haze tinted toward the background, never toward a bright sky, so the far edge of a tile recedes instead of dissolving; a grade per place applied to **the light, not the pixels** (no post-processing pass: a second render of the frame is the first thing to fail on a phone), where a place that takes light away gets the soft light back, and the background takes only a third of the tint so the void stays dark; contact shadows under figures, because at this scale where a figure touches says more than the shadow behind it; one quality setting turning the shadow map, pixel ratio and effect counts down together, guessed from the device and overridable with `?quality=` (§9.1). |
 | 2026-11-09 | Factions (#18): one file per side in `content/factions/` (name, banner colour, kind, summary, leaders), reused across battles; battles list `sides` as groups of allied factions; staging places `armies` (faction, size, keyframes) as instanced blocks of small figures in the faction's colour, named characters keeping their own tracks; one being who comes alone (Beorn) is a character, a host (the Eagles) a faction. First example: the Battle of Five Armies (§2, §4.9). |
 
 ## 12. Open questions

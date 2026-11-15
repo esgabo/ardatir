@@ -5,7 +5,10 @@ import { t as ui, tr, type UiKey } from '../i18n';
 import { actionMix, headingAt, onTile, samplePose, strideSeconds } from '../timeline';
 import { clipLayers, GAIT_PACE } from './modelClips';
 import { createDiorama, groundHeight } from './diorama';
-import { lightAt } from './lighting';
+import { createContactShadows, type Spot } from './contact';
+import { gradeFor, graded } from './grade';
+import { FILL_FROM, fogRange, lightAt } from './lighting';
+import { QUALITY, type QualitySettings } from './quality';
 import { createFigure, FIGURE_HEIGHT, setSelected, useModel } from './figure';
 import type { ModelInstance } from './models';
 import type { SetInstance } from './sets';
@@ -19,9 +22,20 @@ import { disposeTree } from './util';
  */
 
 /** An event staged on an isometric low-poly diorama tile with animated characters. */
-export function createDioramaStage(event: EventDetail, characters: Map<string, Character>, lang: Lang, factions = new Map<string, Faction>()): Stage {
+export function createDioramaStage(
+  event: EventDetail,
+  characters: Map<string, Character>,
+  lang: Lang,
+  factions = new Map<string, Faction>(),
+  quality: QualitySettings = QUALITY.high,
+): Stage {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#1b1e26');
+
+  // The air of this place (grade.ts), on top of whatever light `t` asks for.
+  const grade = gradeFor(event.place);
+  const fog = new THREE.Fog('#1b1e26', 1, 2);
+  scene.fog = fog;
 
   // True isometric: orthographic camera on the (1, 1, 1) diagonal.
   const camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 200);
@@ -34,10 +48,25 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
   scene.add(hemi);
   const sun = new THREE.DirectionalLight('#fff0d0', 2.2);
   sun.position.set(8, 14, 5);
-  sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
-  Object.assign(sun.shadow.camera, { left: -10, right: 10, top: 10, bottom: -10 });
+  sun.castShadow = quality.shadows;
+  sun.shadow.mapSize.set(quality.shadowMap, quality.shadowMap);
+  // Wrapped close around the tile: every texel the map spends outside it is softness lost.
+  Object.assign(sun.shadow.camera, { left: -10, right: 10, top: 10, bottom: -10, near: 0.5, far: 60 });
+  sun.shadow.bias = -0.0015;
+  sun.shadow.normalBias = 0.02;
   scene.add(sun);
+
+  // The soft second light that keeps a night scene readable (lighting.ts `fill`). It casts no
+  // shadow: one shadow map is all a phone should pay for, and a second set of shadows crossing
+  // the sun's would read as two suns rather than as a lamp beside the case.
+  const fill = new THREE.DirectionalLight('#dfe8ff', 0);
+  fill.position.set(...FILL_FROM);
+  scene.add(fill);
+
+  // Soft darkness where a figure meets the ground (contact.ts): what tells the eye the scale.
+  const contact = quality.contactShadows ? createContactShadows() : undefined;
+  if (contact) scene.add(contact.group);
+  const spots: Spot[] = [];
 
   const seed = [...event.id].reduce((a, ch) => a + ch.charCodeAt(0), 0) % 97;
   // The place: its own set when the event has one (built for it, docs/MODELS.md), else the
@@ -73,7 +102,7 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
     .filter((w): w is { ch: Character; key: string; url: string } => !!w.ch && !!w.url);
   if (event.set) {
     const url = import.meta.env.BASE_URL + event.set;
-    void import('./sets').then((S) => S.loadSet(url)).then((inst) => {
+    void import('./sets').then((S) => S.loadSet(url, quality)).then((inst) => {
       if (disposed) { inst.dispose(); return; }
       set = inst;
       diorama.add(inst.object);
@@ -103,15 +132,20 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
     scene, camera, target,
 
     update(t, ambient, eventSeconds = event.durationSeconds) {
-      const light = lightAt(event.light, t);
+      const light = graded(lightAt(event.light, t), grade);
       sun.color.set(light.sun);
       sun.intensity = light.sunIntensity;
       sun.position.set(...light.sunFrom);
       hemi.color.set(light.sky);
       hemi.groundColor.set(light.ground);
       hemi.intensity = light.hemiIntensity;
+      fill.color.set(light.fill);
+      fill.intensity = light.fillIntensity;
       (scene.background as THREE.Color).set(light.background);
+      fog.color.set(light.fog);
+      [fog.near, fog.far] = fogRange(light.fogDepth);
       armies?.update(t, ambient);
+      spots.length = 0;
       for (const track of event.tracks) {
         const fig = figures.get(track.characterId);
         if (!fig) continue;
@@ -137,10 +171,17 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
           clip = model.play(clipLayers(actionMix(track, t, eventSeconds), eventSeconds, t, strides));
         }
         const bob = pose.moving && !clip ? Math.abs(Math.sin(ambient * (pose.action === 'run' ? 14 : 8))) * 0.05 : 0;
-        fig.position.set(pose.x, groundHeight(diorama, pose.x, pose.z) + bob, pose.z);
+        const ground = groundHeight(diorama, pose.x, pose.z);
+        fig.position.set(pose.x, ground + bob, pose.z);
         fig.rotation.y = headingAt(track, t, eventSeconds);
         fig.scale.y = pose.action === 'hide' && clip !== 'hide' ? 0.75 : 1;
+        if (fig.visible) {
+          const height = FIGURE_HEIGHT * (characters.get(track.characterId)?.scale ?? 1);
+          spots.push({ x: pose.x, y: ground, z: pose.z, radius: height * 0.38 });
+        }
       }
+      // Dark under the feet whatever the hour: strongest in full sun, never gone at night.
+      contact?.update(spots, 0.3 + 0.32 * Math.min(1, light.sunIntensity / 2.3));
       set?.update(light, ambient, [...figures.values()].filter((f) => f.visible).map((f) => f.position));
     },
 
@@ -180,6 +221,7 @@ export function createDioramaStage(event: EventDetail, characters: Map<string, C
 
     dispose() {
       disposed = true;
+      contact?.dispose();
       set?.dispose(); // shares geometry with the loader's cache: out before the scene is freed
       // Models share geometry with the loader's cache: take them out so the next visit reuses it.
       for (const m of models.values()) { m.dispose(); m.object.removeFromParent(); }
