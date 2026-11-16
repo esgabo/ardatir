@@ -446,6 +446,33 @@ standing **on** something the kit built above it.
   it belongs with `y`: the pose puts the hips at a known height above the feet, and `y` is the
   seat's height less that, so the figure's weight lands on the seat.
 
+### 9.3 How a scene is framed (#28)
+
+For a long time every diorama was seen from one fixed wide shot holding the whole fourteen-unit
+tile. That is right for a scene played across a hillside and wrong for one played in a room: at
+that distance a hobbit is a few dozen pixels and an interior is a tenth of the picture. The
+cost was not that interiors looked small — it was that scenes *moved outdoors to be seen*. The
+Unexpected Party was staged with the company queueing up the garden path while Bag End's
+modelled, dressed, lit rooms stood empty behind them.
+
+- **`camera` in `staging.yaml`** is a list of `{ t, x, z, width }`: where the view looks on the
+  ground, and the side of the square of ground to hold in frame. It is eased between keys like
+  the light, and `width` eases through its ratio rather than its difference, so halving the
+  frame feels the same move whether it starts at the whole tile or at one room.
+- **The framing is the author's**, not a consequence of where the figures happen to be. An
+  automatic fit would make the shot a function of the blocking; this way the blocking can serve
+  the shot, which is the direction a scene is actually composed in.
+- **It never fights the visitor's hand.** The stage reports the shot (`framingAt`); the app
+  applies it as a *change* from the one applied last frame, so a pan or a zoom survives as an
+  offset from the staged view. A fresh stage has nothing to offset from, so the first frame
+  lands on the shot exactly — which is what makes a deep link open on the composed view.
+- **An event without `camera` is untouched**: the whole tile, as before.
+
+What this does not fix: a kit's rooms have to be deep enough and tall enough to be looked into.
+Bag End's vault hides anything more than about a unit back from the cut, so the party shows its
+front rank and the rest are inferred. That is kit work (`scripts/models/blender/shire.py`), not
+staging work.
+
 ## 10. IP guidelines (fan project)
 
 - Non-commercial; no ads, merchandise or paywall.

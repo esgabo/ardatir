@@ -38,7 +38,8 @@ const FORETOLD: Change[] = [
 
 const GANDALF = 'characters/gandalf.yaml';
 const TEST_KIT = 'kits/test-place/test-place.glb';
-const SET_AND_LIGHT = `set: ${TEST_KIT}\nlight:\n  - { t: 0, preset: morning }\n  - { t: 0.6, preset: dusk }\n`;
+const SET_AND_LIGHT = `set: ${TEST_KIT}\nlight:\n  - { t: 0, preset: morning }\n  - { t: 0.6, preset: dusk }\n`
+  + 'camera:\n  - { t: 0, x: 0, z: 0, width: 12 }\n  - { t: 0.5, x: -1.5, z: -1, width: 3.4 }\n';
 const withSet = (yaml: string) => ({ file: `${PARTY}/staging.yaml`, replace: ['duration: 12\n', `duration: 12\n${yaml}`] as [string, string] });
 const TEST_MODEL = 'characters/test-figure/test-figure.glb';
 /** A minimal .glb around a glTF JSON (no buffers): enough for the build's checks, which read only the JSON. */
@@ -338,13 +339,14 @@ describe('the valid fixture', () => {
     expect(r.details.find((x) => x.id === 'the-party')!.tracks[0].becomes).toBeUndefined();
   });
 
-  it('reads an event\'s set (a kit) and how its light changes', () => {
+  it('reads an event\'s set (a kit), how its light changes and how it is framed', () => {
     const kit = { file: `../assets/${TEST_KIT}`, write: glb({ scenes: [{}], extensionsUsed: ['EXT_meshopt_compression'] }) };
     const ok = buildWith([kit, { file: `${PARTY}/staging.yaml`, replace: ['duration: 12\n', `duration: 12\n${SET_AND_LIGHT}`] }]);
     expect(ok.errors).toEqual([]);
     const d = ok.details.find((x) => x.id === 'the-party')!;
     expect(d.set).toBe(`data/models/${TEST_KIT}`);
     expect(d.light).toEqual([{ t: 0, preset: 'morning' }, { t: 0.6, preset: 'dusk' }]);
+    expect(d.camera).toEqual([{ t: 0, x: 0, z: 0, width: 12 }, { t: 0.5, x: -1.5, z: -1, width: 3.4 }]);
     expect(ok.copies.some((c) => c.to === `data/models/${TEST_KIT}`)).toBe(true);
     expect(r.details.find((x) => x.id === 'the-party')!.set).toBeUndefined();
   });
@@ -469,6 +471,11 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'light of an unknown preset', changes: [withSet('light:\n  - { t: 0, preset: twilight }\n')], error: 'light[0].preset: one of dawn, morning, day, evening, dusk, night' },
   { name: 'light keys out of order', changes: [withSet('light:\n  - { t: 0.5, preset: day }\n  - { t: 0.2, preset: dusk }\n')], error: 'light[1]: t must rise' },
   { name: 'light without a time', changes: [withSet('light:\n  - { preset: day }\n')], error: 'light[0]: needs a time t, 0–1' },
+  // The framing (#28): a look-at point on the tile, and how much ground to hold around it.
+  { name: 'camera looking off the tile', changes: [withSet('camera:\n  - { t: 0, x: 40, z: 0, width: 6 }\n')], error: 'camera[0]: x and z are a point on the tile, -7 to 7' },
+  { name: 'camera framing less than a figure', changes: [withSet('camera:\n  - { t: 0, x: 0, z: 0, width: 0.4 }\n')], error: 'camera[0].width: how much ground to hold in frame, 2 to 30 tile units' },
+  { name: 'camera keys out of order', changes: [withSet('camera:\n  - { t: 0.5, x: 0, z: 0, width: 6 }\n  - { t: 0.2, x: 1, z: 1, width: 4 }\n')], error: 'camera[1]: t must rise' },
+  { name: 'camera without a time', changes: [withSet('camera:\n  - { x: 0, z: 0, width: 6 }\n')], error: 'camera[0]: needs a time t, 0–1' },
   { name: 'recording start past its end', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 0, tea: 25 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: needs a second within the recording' },
 ];
 

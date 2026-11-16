@@ -24,6 +24,7 @@ import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
 import type { Stage } from './scene/stage';
+import { zoomFor } from './scene/framing';
 import { Opening, openingSeen } from './opening';
 import { renderLearn, sayHint } from './learn';
 import './style.css';
@@ -212,8 +213,12 @@ async function loadStage(load?: StageLoad): Promise<void> {
     controls.enableRotate = false; // keep the isometric angle; pan + zoom only
     controls.screenSpacePanning = true;
     controls.minZoom = 0.5;
-    controls.maxZoom = 4;
+    // Room for a staged framing to come right in: holding one room of Bag End in frame is
+    // around 6, and the visitor may zoom in from there. Below this the controls would clamp
+    // the author's shot on the next update and the view would drift back out.
+    controls.maxZoom = 16;
   }
+  staged = null; // a new stage: the first frame lands on its framing exactly (keepStaged)
   clock = new EventClock(event, audioLang(event));
   narration = new Narration(event, audioLang(event), clock);
   playhead = clock.secondsAt(state.t);
@@ -902,6 +907,32 @@ eventFold.addEventListener('click', () => {
 // camera glides after them (target and camera move together, so the user's orbit and zoom are
 // kept). A dead zone in the middle leaves the view alone while they stay comfortably in it.
 // This moves the viewpoint only, never what happens in the scene.
+// The shot the staging asks for (staging.yaml `camera`, scene/framing.ts). The author's framing
+// is applied as a *change* from the one applied last frame — the view is moved by what the shot
+// moved, and zoomed by the ratio the shot zoomed — so whatever the visitor has panned or zoomed
+// survives as an offset from it instead of being overwritten sixty times a second. On a fresh
+// stage there is nothing to be an offset from, so the first frame lands on the shot exactly,
+// which is what makes a deep link open on the view the author composed.
+let staged: { x: number; z: number; zoom: number } | null = null;
+const stagedStep = new THREE.Vector3();
+function keepStaged(): void {
+  const shot = stage.framing?.(state.t);
+  if (!shot) { staged = null; return; }
+  const h = viewport.clientHeight || innerHeight;
+  const zoom = zoomFor(shot.width, (viewport.clientWidth || innerWidth) / (h || 1));
+  if (!staged) {
+    stagedStep.set(shot.x - controls.target.x, 0, shot.z - controls.target.z);
+    stage.camera.zoom = zoom;
+  } else {
+    stagedStep.set(shot.x - staged.x, 0, shot.z - staged.z);
+    stage.camera.zoom *= zoom / staged.zoom;
+  }
+  controls.target.add(stagedStep);
+  stage.camera.position.add(stagedStep);
+  stage.camera.updateProjectionMatrix();
+  staged = { x: shot.x, z: shot.z, zoom };
+}
+
 const FRAME_DEAD_ZONE = 0.45;
 const followNdc = new THREE.Vector3();
 const followStep = new THREE.Vector3();
@@ -936,7 +967,8 @@ function frame(): void {
   narration.sync(playhead, state.playing);
   renderNarration();
   stage.update(state.t, ambient, clock.duration);
-  keepFramed(dt);
+  keepStaged();   // the author's shot for this moment
+  keepFramed(dt); // then the followed character, if any, nudged back into it
   opening.sync(state.t);
   flash.style.opacity = String(stage.flash?.(state.t) ?? 0);
   controls.update();
