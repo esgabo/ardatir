@@ -355,6 +355,27 @@ export interface LightKey {
   preset: LightPreset;
 }
 
+/**
+ * Where the view looks at a moment, and how much ground it holds (staging.yaml `camera`).
+ *
+ * Without this an event is seen from one fixed wide shot holding the whole tile, which is right
+ * for a scene played across a hillside and wrong for one played in a room: at that distance a
+ * hobbit is a few dozen pixels and an interior is a tenth of the picture, so the action gets
+ * pushed out onto the open ground where it can be seen. The framing is the author's, like the
+ * light and the blocking, and it is interpolated between keys so the view glides.
+ */
+export interface CameraKey {
+  t: number;
+  /** The point on the ground the view centres on (tile units, origin at the tile centre). */
+  x: number;
+  z: number;
+  /**
+   * How much ground to hold in frame: the side of a square centred on (x, z) that is kept
+   * visible, in tile units. The whole tile is 14 across; Bag End's parlour is about 3.
+   */
+  width: number;
+}
+
 export interface Beat {
   id: string;
   t: number;
@@ -393,6 +414,8 @@ export interface EventDetail extends EventSummary {
   set?: string;
   /** How the light changes through the event (staging.yaml `light`); without it, a fixed day. */
   light?: LightKey[];
+  /** How the view is framed through the event (staging.yaml `camera`); without it, the whole tile. */
+  camera?: CameraKey[];
   audioFiles: Partial<Record<Lang, NarrationAudio>>;
 }
 

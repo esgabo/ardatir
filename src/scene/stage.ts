@@ -1,4 +1,5 @@
 import type * as THREE from 'three';
+import type { Framing } from './framing';
 
 /** What the side panel shows for a selected thing at the current moment. */
 export interface SelectionInfo {
@@ -27,6 +28,12 @@ export interface Stage {
   info?(id: string, t: number): SelectionInfo | null;
   /** Where a selected thing stands now (world space), so the camera can keep it framed; null when it is offstage. */
   focus?(id: string): THREE.Vector3 | null;
+  /**
+   * The shot the author staged for this moment (scene/framing.ts), or undefined when the event
+   * stages none and the view is left alone. The app glides onto it; the stage never moves its
+   * own camera, so what the visitor has panned and zoomed survives.
+   */
+  framing?(t: number): Framing | undefined;
   /** Full-screen flash strength 0 → 1 (e.g. the moment of Eä). */
   flash?(t: number): number;
   dispose(): void;

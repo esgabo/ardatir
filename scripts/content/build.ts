@@ -10,7 +10,7 @@ import { dateSpan, EPS, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../
 import {
   EXTRA_DAYS, LANGS, LIGHT_PRESETS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
-  type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText,
+  type CameraKey, type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText,
   type NarrationAudio, type NarrationSegment, type Narrator, type NarratorVoice, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
@@ -537,7 +537,7 @@ export function buildContent(contentDir: string): BuildResult {
     const s = r.staging;
     if (!s) continue;
     const sf = path.join(r.dir, 'staging.yaml');
-    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies', 'set', 'light'], 'staging');
+    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies', 'set', 'light', 'camera'], 'staging');
     const stage = String(s.stage) as StageKind;
     if (!STAGES.includes(stage)) R.error(sf, `stage: one of ${STAGES.join(', ')}`);
     if (!(typeof s.duration === 'number' && s.duration > 0)) R.error(sf, 'duration: seconds, a positive number');
@@ -639,6 +639,27 @@ export function buildContent(contentDir: string): BuildResult {
       }
     }
 
+    // How the view is framed through the event (types.ts `CameraKey`). A tile runs -7 to 7, so a
+    // look-at point outside that is pointing the camera off the diorama; a width under 2 holds
+    // less ground than one figure stands on, and over 30 the tile is a speck.
+    let camera: CameraKey[] | undefined;
+    if (s.camera !== undefined) {
+      camera = [];
+      if (!Array.isArray(s.camera) || !s.camera.length) R.error(sf, 'camera: a list of { t, x, z, width }');
+      else {
+        let ct = -1;
+        s.camera.forEach((k, i) => {
+          const at = `camera[${i}]`;
+          if (!isObj(k) || typeof k.t !== 'number' || k.t < 0 || k.t > 1) { R.error(sf, `${at}: needs a time t, 0–1`); return; }
+          if (typeof k.x !== 'number' || typeof k.z !== 'number' || Math.abs(k.x) > 7 || Math.abs(k.z) > 7) { R.error(sf, `${at}: x and z are a point on the tile, -7 to 7`); return; }
+          if (typeof k.width !== 'number' || !(k.width >= 2 && k.width <= 30)) { R.error(sf, `${at}.width: how much ground to hold in frame, 2 to 30 tile units`); return; }
+          if (k.t < ct) R.error(sf, `${at}: t must rise`);
+          ct = k.t;
+          camera!.push({ t: k.t, x: k.x, z: k.z, width: k.width });
+        });
+      }
+    }
+
     // Recordings: audio/<lang>.yaml + audio/<lang>.<ext>
     const audioFiles: EventDetail['audioFiles'] = {};
     const ad = path.join(r.dir, 'audio');
@@ -709,7 +730,7 @@ export function buildContent(contentDir: string): BuildResult {
     }
 
     r.summary.stage = stage;
-    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, ...set ? { set } : {}, ...light?.length ? { light } : {}, audioFiles });
+    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, ...set ? { set } : {}, ...light?.length ? { light } : {}, ...camera?.length ? { camera } : {}, audioFiles });
   }
 
   // Scripts: every narration as text, so a scripted event can be read before it is staged.

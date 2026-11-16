@@ -5,6 +5,7 @@ import { t as ui, tr, type UiKey } from '../i18n';
 import { actionMix, headingAt, onTile, samplePose, strideSeconds } from '../timeline';
 import { clipLayers, GAIT_PACE } from './modelClips';
 import { createDiorama, groundHeight } from './diorama';
+import { framingAt } from './framing';
 import { createContactShadows, type Spot } from './contact';
 import { gradeFor, graded } from './grade';
 import { FILL_FROM, fogRange, lightAt } from './lighting';
@@ -202,6 +203,10 @@ export function createDioramaStage(
     focus(id) {
       const fig = figures.get(id);
       return fig?.visible ? fig.position.clone().setY(fig.position.y + FIGURE_HEIGHT * 0.5) : null;
+    },
+
+    framing(t) {
+      return framingAt(event.camera, t);
     },
 
     info(id, t) {

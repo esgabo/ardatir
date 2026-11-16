@@ -140,6 +140,24 @@ A figure is placed on the kit's walkable `terrain`, which runs underneath the th
 
 There is no sitting pose yet, so a seat is still a place to stand beside rather than on; the build warns when two figures end up in the same spot (`stand inside each other`), since nothing pushes them apart at render time — where everyone stands is the staging's composition, and has to stay a pure function of `t`.
 
+### `camera`: how the scene is framed
+
+Without it the whole tile is always in frame, which is right outdoors and much too far away for
+a scene played in a room. `camera` is a list of keys, eased between like `light`:
+
+```yaml
+camera:
+  - { t: 0, x: -0.2, z: 1.0, width: 13 }      # wide on the Hill
+  - { t: 0.4, x: -1.1, z: -2.1, width: 6 }    # in through the door
+  - { t: 0.74, x: -1.15, z: -3.5, width: 4.4 }  # close on the parlour
+```
+
+`x`, `z` is the point on the ground the view centres on; `width` is the side of the square of
+ground kept in frame, in tile units (the whole tile is 14, one of Bag End's rooms about 3). A
+narrow window shows more ground rather than cropping the scene. A visitor's own pan and zoom
+survive as an offset, so the framing guides without taking the view away. See `docs/DESIGN.md`
+§9.3.
+
 The tile runs about -7 to 7 on both axes. A figure whose position is off the tile (say `x: 11, z: 11`) is not drawn: off the tile = offstage. Use it to wait out the scenes before an entrance. A figure moving between two `hide` keyframes stays hidden (it is not shown walking).
 
 ## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`
