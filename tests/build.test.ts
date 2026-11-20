@@ -39,9 +39,14 @@ const FORETOLD: Change[] = [
 const GANDALF = 'characters/gandalf.yaml';
 const TEST_KIT = 'kits/test-place/test-place.glb';
 const SET_AND_LIGHT = `set: ${TEST_KIT}\nlight:\n  - { t: 0, preset: morning }\n  - { t: 0.6, preset: dusk }\n`
-  + 'camera:\n  - { t: 0, x: 0, z: 0, width: 12 }\n  - { t: 0.5, x: -1.5, z: -1, width: 3.4 }\n';
+  + 'camera:\n  - { t: 0, x: 0, z: 0, width: 12 }\n  - { t: 0.5, x: -1.5, z: -1, width: 3.4 }\n'
+  + 'reveal:\n  - { t: 0.2, cover: roof, amount: 0 }\n  - { t: 0.5, cover: roof, amount: 1 }\n';
+/** The fixture kit names one cover, so a `reveal` has something real to lift (scene/reveal.ts). */
+const KIT_GLB = { scenes: [{}], nodes: [{ name: 'terrain' }, { name: 'cover-roof' }], extensionsUsed: ['EXT_meshopt_compression'] };
 const withSet = (yaml: string) => ({ file: `${PARTY}/staging.yaml`, replace: ['duration: 12\n', `duration: 12\n${yaml}`] as [string, string] });
 const TEST_MODEL = 'characters/test-figure/test-figure.glb';
+/** A staging on the fixture kit, for the checks that need a set with a real cover in it. */
+const withKit = (yaml: string) => [{ file: `../assets/${TEST_KIT}`, write: glb(KIT_GLB) }, withSet(`set: ${TEST_KIT}\n${yaml}`)];
 /** A minimal .glb around a glTF JSON (no buffers): enough for the build's checks, which read only the JSON. */
 function glb(json: object): Uint8Array {
   let text = JSON.stringify({ asset: { version: '2.0' }, ...json });
@@ -339,14 +344,15 @@ describe('the valid fixture', () => {
     expect(r.details.find((x) => x.id === 'the-party')!.tracks[0].becomes).toBeUndefined();
   });
 
-  it('reads an event\'s set (a kit), how its light changes and how it is framed', () => {
-    const kit = { file: `../assets/${TEST_KIT}`, write: glb({ scenes: [{}], extensionsUsed: ['EXT_meshopt_compression'] }) };
+  it('reads an event\'s set (a kit), how its light changes, how it is framed and what it lifts away', () => {
+    const kit = { file: `../assets/${TEST_KIT}`, write: glb(KIT_GLB) };
     const ok = buildWith([kit, { file: `${PARTY}/staging.yaml`, replace: ['duration: 12\n', `duration: 12\n${SET_AND_LIGHT}`] }]);
     expect(ok.errors).toEqual([]);
     const d = ok.details.find((x) => x.id === 'the-party')!;
     expect(d.set).toBe(`data/models/${TEST_KIT}`);
     expect(d.light).toEqual([{ t: 0, preset: 'morning' }, { t: 0.6, preset: 'dusk' }]);
     expect(d.camera).toEqual([{ t: 0, x: 0, z: 0, width: 12 }, { t: 0.5, x: -1.5, z: -1, width: 3.4 }]);
+    expect(d.reveal).toEqual([{ t: 0.2, cover: 'roof', amount: 0 }, { t: 0.5, cover: 'roof', amount: 1 }]);
     expect(ok.copies.some((c) => c.to === `data/models/${TEST_KIT}`)).toBe(true);
     expect(r.details.find((x) => x.id === 'the-party')!.set).toBeUndefined();
   });
@@ -476,6 +482,11 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'camera framing less than a figure', changes: [withSet('camera:\n  - { t: 0, x: 0, z: 0, width: 0.4 }\n')], error: 'camera[0].width: how much ground to hold in frame, 2 to 30 tile units' },
   { name: 'camera keys out of order', changes: [withSet('camera:\n  - { t: 0.5, x: 0, z: 0, width: 6 }\n  - { t: 0.2, x: 1, z: 1, width: 4 }\n')], error: 'camera[1]: t must rise' },
   { name: 'camera without a time', changes: [withSet('camera:\n  - { x: 0, z: 0, width: 6 }\n')], error: 'camera[0]: needs a time t, 0–1' },
+  // Covers the set lifts away: the name has to be one the kit really has.
+  { name: 'reveal of a cover the kit has not got', changes: withKit('reveal:\n  - { t: 0, cover: chimney, amount: 1 }\n'), error: 'reveal[0].cover: the set has no cover "chimney" (it has roof)' },
+  { name: 'reveal with no set to lift', changes: [withSet('reveal:\n  - { t: 0, cover: hill, amount: 1 }\n')], error: 'reveal: only a set has covers to lift; add set: <kit>.glb' },
+  { name: 'reveal lifted past the top', changes: withKit('reveal:\n  - { t: 0, cover: roof, amount: 1.4 }\n'), error: 'reveal[0].amount: 0 (closed) to 1 (lifted away)' },
+  { name: 'reveal keys out of order', changes: withKit('reveal:\n  - { t: 0.6, cover: roof, amount: 1 }\n  - { t: 0.2, cover: roof, amount: 0 }\n'), error: 'reveal[1]: t must rise within a cover' },
   { name: 'recording start past its end', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 0, tea: 25 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: needs a second within the recording' },
 ];
 

@@ -376,6 +376,24 @@ export interface CameraKey {
   width: number;
 }
 
+/**
+ * A cover the diorama lifts away so the scene under it can be seen (staging.yaml `reveal`).
+ *
+ * A scene played indoors is hidden by whatever keeps the weather off it: the earth over a
+ * hobbit-hole, a hall's shingled roof, an inn's thatch. Rather than build those places open —
+ * which would cost them their silhouette, and a hobbit-hole is its hill — a kit names each
+ * cover (an object called `cover-<name>`), and the staging says when it rises out of the way,
+ * like a lid off a doll's house. `amount` is 0 for closed and 1 for fully lifted, eased between
+ * keys, and it is the author's call at every moment, never a consequence of where the camera is.
+ */
+export interface CoverKey {
+  t: number;
+  /** Which cover: the `<name>` of a `cover-<name>` object in the kit (`hill` for Bag End). */
+  cover: string;
+  /** 0 = closed, 1 = lifted clear and faded out. */
+  amount: number;
+}
+
 export interface Beat {
   id: string;
   t: number;
@@ -416,6 +434,8 @@ export interface EventDetail extends EventSummary {
   light?: LightKey[];
   /** How the view is framed through the event (staging.yaml `camera`); without it, the whole tile. */
   camera?: CameraKey[];
+  /** Covers the set lifts away (staging.yaml `reveal`); without it, the place stays shut. */
+  reveal?: CoverKey[];
   audioFiles: Partial<Record<Lang, NarrationAudio>>;
 }
 

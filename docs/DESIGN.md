@@ -468,10 +468,42 @@ modelled, dressed, lit rooms stood empty behind them.
   lands on the shot exactly — which is what makes a deep link open on the composed view.
 - **An event without `camera` is untouched**: the whole tile, as before.
 
-What this does not fix: a kit's rooms have to be deep enough and tall enough to be looked into.
-Bag End's vault hides anything more than about a unit back from the cut, so the party shows its
-front rank and the rest are inferred. That is kit work (`scripts/models/blender/shire.py`), not
-staging work.
+What framing alone does not fix is that a covered place is still covered: pointing the view at
+a room under three metres of meadow only gets you a closer look at the meadow. That is §9.4.
+
+### 9.4 Seeing inside a covered place (#28)
+
+Measuring the sight lines into Bag End settled where the problem actually was. A ray out of the
+parlour rises one unit for every unit it travels east, and the rooms are only about two and a
+half deep, so it clears the vault and the partition walls and leaves through the cut face —
+and then runs into the Hill, three metres of turf standing over the whole hole. The earth on
+top was hiding the scene, not the architecture under it. (An earlier note here blamed the vault;
+that was wrong, and the vault only becomes the blocker once the turf is gone.)
+
+Rather than build indoor places open — a hobbit-hole without its hill is not a hobbit-hole, and
+the green dome with its round door is the picture everyone comes for — the diorama **lifts the
+cover away**, like the lid off a doll's house.
+
+- **A kit names its covers.** Any object called `cover-<name>` can be lifted. Bag End has two:
+  `cover-hill`, the turf over the rooms, and `cover-vaults`, the ceilings under it. What stays
+  is the front bank with its door and windows and the cut east face with its earth strata — the
+  two things that say *hobbit-hole*, kept whether the lid is on or off.
+- **`reveal` in `staging.yaml`** is a list of `{ t, cover, amount }`, 0 closed to 1 lifted
+  clear, eased between that cover's own keys. Each cover is its own little track, so a scene
+  may take the roof off one building and leave the next alone, or shut one again.
+- **It rises as it fades**, by rather more than half its own height. Fading alone reads as
+  glass; rising alone leaves a solid slab floating over the scene. Together they read as the
+  diorama opening itself, which is the feeling worth having.
+- **The author says when**, not the camera. An automatic reveal — fade whatever the view is
+  behind — would put the composition back in the camera's hands, the thing §9.3 took out of
+  them, and it would flicker as the shot eases past geometry.
+- **The build checks the name** against the `cover-*` objects the kit's `.glb` really has. A
+  typo would otherwise fail silently, leaving the scene shut with nothing to say why.
+
+The cost is that a visitor who pans away from the composed shot can still find a cover the
+author had no reason to lift at that moment. That is the price of the author owning the
+composition, and it is the right way round: a wrong reveal is visible to everyone, a missed one
+only to someone who went looking.
 
 ## 10. IP guidelines (fan project)
 
@@ -514,6 +546,7 @@ staging work.
 | 2026-11-09 | **What is foretold** (#57): the Dagor Dagorath and the Second Music in a timeless age flagged `foretold`, after the Fourth Age and never on the axis; every event cites its source and may name who foretold it (`foretoldBy`); marked as prophecy everywhere (badge, page line, dashed segment after the axis, lanes); the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*), split into one scene per event (§4.8). |
 | 2026-11-09 | Model pipeline (#20): `assets/<type>/<id>/<id>.glb` (`.blend` sources beside, never deployed; no Git LFS); Blender exports glTF binary, Y-up, applied transforms, one scene, compressed with meshopt via `npm run model:pack` (gltfpack; meshopt over Draco for its smaller decoder); `model:` on characters and per-event on tracks, checked by the build (exists, loadable, within budget: characters 300 kB, kits 800 kB, props 100 kB); the loader is its own chunk; placeholder while loading or without a model; clips driven from `t` (§9, `MODELS.md`). |
 | 2026-11-09 | Wonder and learning (#29): a first visit to the front door opens with a short guided opening over the Ainulindalë (one line per beat, Next, skippable at once, then three ways in: a story, a moment, a life), remembered per visitor, at `#/start` and reopened from the sidebar's *Start here*; `pronounce: { en, es }` respellings in the *AR-da* style on characters, places, ages and events, validated, shown as a small hint; *About this scene* on the stage; gentle pointers to the books from `source`, with chapter titles in both languages (§3.5). |
+| 2026-11-17 | Seeing inside a covered place (#28): a kit names its covers (`cover-<name>`) and the staging lifts them away in `t` (`reveal`), like the lid off a doll's house — rising and fading together. The author says when, never the camera, for the same reason the framing is authored (§9.4). |
 | 2026-11-15 | Where a figure stands (#81): a keyframe's `y` says how high above the walkable ground a character is, so one placed on a log, a bench or a doorstep is not buried in it; crowding is a **build warning**, not a push-apart at render time, because a figure's place must stay a pure function of `t` and who stands in front of whom is the author's composition (§9.2). |
 | 2026-11-15 | The render look (#76): a soft second light that comes up as the sun goes down, so a night scene can be seen; haze tinted toward the background, never toward a bright sky, so the far edge of a tile recedes instead of dissolving; a grade per place applied to **the light, not the pixels** (no post-processing pass: a second render of the frame is the first thing to fail on a phone), where a place that takes light away gets the soft light back, and the background takes only a third of the tint so the void stays dark; contact shadows under figures, because at this scale where a figure touches says more than the shadow behind it; one quality setting turning the shadow map, pixel ratio and effect counts down together, guessed from the device and overridable with `?quality=` (§9.1). |
 | 2026-11-09 | Factions (#18): one file per side in `content/factions/` (name, banner colour, kind, summary, leaders), reused across battles; battles list `sides` as groups of allied factions; staging places `armies` (faction, size, keyframes) as instanced blocks of small figures in the faction's colour, named characters keeping their own tracks; one being who comes alone (Beorn) is a character, a host (the Eagles) a faction. First example: the Battle of Five Armies (§2, §4.9). |
