@@ -42,6 +42,7 @@ FLOOR = 0.15         # the floor of Bag End (and the lawn terrace in front of it
 CUTX = 0.0           # the Hill is cut away east of this plane
 ZF = -0.7            # the Hill's front bank, with the door, faces south along this line
 door_parts = []      # the door is its own object, hinged on its west edge, so the site can open it
+vault_parts = []     # the rooms' ceilings: part of the lid, so an open hole shows its rooms
 
 
 # --- the plan: lane, stream, path, garden ------------------------------------------------------
@@ -151,8 +152,17 @@ def ground_colour(x, z, seed):
 
 
 def hill():
-    """The Hill's grassy top, its stone-faced front bank (with the door) and its cut east face."""
+    """The Hill, in two objects: the turf lid over the rooms, and the bank and cut face that stay.
+
+    Returns (hill, cover-hill). The grassy top is the whole reason a scene inside Bag End can't be
+    seen: a sight line out of the parlour clears the vault and the partitions, then runs into three
+    metres of meadow. So the top is its own object, named `cover-hill`, which the staging lifts away
+    like the lid off a doll's house (`reveal`, src/scene/reveal.ts). What stays is the front bank
+    with its round door and windows, and the cut east face with its earth strata: the two things
+    that say *hobbit-hole*, and the diorama keeps them whether the lid is on or off.
+    """
     p = Painted()
+    lid = Painted()
 
     def hill_colour(x, z, seed):
         h = hill_height(x, z)
@@ -179,7 +189,7 @@ def hill():
             for k, tri in enumerate(tris):
                 cx = sum(q.x for q in tri) / 3
                 cz = -sum(q.y for q in tri) / 3
-                p.face(list(tri), hill_colour(cx, cz, 7 + k))
+                lid.face(list(tri), hill_colour(cx, cz, 7 + k))
 
     # the front bank, facing south: dressed stone round the door, rough below the turf
     def front_hole(x, y):
@@ -242,7 +252,7 @@ def hill():
                     c = strata(cy - 0.9, (ta + tb) / 2 - 0.9, 13, cz)
                     p.quad(P(CUTX, ya0, zb), P(CUTX, yb0, za), P(CUTX, max(yb1, yb0), za), P(CUTX, max(ya1, ya0), zb), c)
                 y = y1
-    return finish_painted('hill', p)
+    return finish_painted('hill', p), finish_painted('cover-hill', lid)
 
 
 # --- Bag End itself ----------------------------------------------------------------------------
@@ -260,7 +270,10 @@ def interior():
         bx((x0 - 0.03, FLOOR + 0.2, (z0 + z1) / 2), (0.06, 0.4, z1 - z0), WOOD_DARK)
         bx((x0 - 0.04, FLOOR + 0.4 + (wall - 0.4) / 2, (z0 + z1) / 2), (0.06, wall - 0.4, z1 - z0), PLASTER)
         bx((x0 - 0.0, FLOOR + 0.41, (z0 + z1) / 2), (0.03, 0.03, z1 - z0), WOOD)
-        # the vault: a quarter ellipse from the wall top up to the apex at the cut
+        # the vault: a quarter ellipse from the wall top up to the apex at the cut. It goes into
+        # the lid with the turf above it — with the Hill off, a vault left behind would still roof
+        # its room, and the company under it would still be out of sight.
+        into(vault_parts)
         bm = bmesh.new()
         segs = 7
         rows = []
@@ -289,6 +302,7 @@ def interior():
                 bm2 = lp.box(P(*c), (L + 0.02, 0.07, 0.05))
                 bmesh.ops.rotate(bm2, cent=P(*c), matrix=Matrix.Rotation(ang, 3, 'Y').inverted(), verts=bm2.verts)
                 add(bm2, WOOD_DARK)
+        out_of()
         # the far end wall of each room (its north wall, facing south into it), with an arched doorway
         # into the next room behind; the hall's north wall leads into the parlour, and so on
         zn = z0 - 0.07
@@ -303,8 +317,11 @@ def interior():
             disc_z((gap[0] + gap[1]) / 2, FLOOR + 0.5, zn - 0.06, 0.6, SOOT, sides=10)  # the dark beyond
         else:
             bx(((x0 + CUTX) / 2, FLOOR + wall / 2 + 0.05, zn), (CUTX - x0 + 0.1, wall + 0.1, 0.14), PLASTER)
-        # above the wall, fill up to the vault so nothing shows through
+        # above the wall, fill up to the vault so nothing shows through — and lift away with it,
+        # or it would be left standing as a slab of plaster over an open room
+        into(vault_parts)
         bx(((x0 + CUTX) / 2, FLOOR + wall + (apex - wall) / 2 + 0.05, zn), (CUTX - x0 + 0.1, apex - wall + 0.1, 0.14), PLASTER)
+        out_of()
 
     # --- the hall: pegs, a bench, a runner, a lamp
     for k in range(6):
@@ -694,12 +711,13 @@ def outside():
 def main():
     out = Path(ARGS[ARGS.index('--out') + 1]) if '--out' in ARGS else ROOT / 'out' / 'models' / 'bag-end.glb'
     out.parent.mkdir(parents=True, exist_ok=True)
-    objs = [terrain(ground_colour), plinth(), hill()]
+    objs = [terrain(ground_colour), plinth(), *hill()]
     lamps = interior()
     fx = outside()
     decor = lp.finish('bag-end', kit.parts)
+    vaults = lp.finish('cover-vaults', vault_parts)
     door = hinge_object('door', door_parts, (DOOR_C[0] - DOOR_R, FLOOR, ZF - 0.05))
-    objs += [decor, door]
+    objs += [decor, vaults, door]
     tris = triangles(objs)
     empties = [empty('fx-smoke', fx['smoke']), empty('fx-spray', fx['spray']), empty('fx-fire', lamps['fire'])]
     empties += [empty(f'fx-lamp-{k}', lamps[k]) for k in ('hall', 'parlour', 'pantry')]
