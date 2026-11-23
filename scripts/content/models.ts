@@ -95,6 +95,21 @@ export function readModel(
   return to;
 }
 
+/**
+ * The covers a kit names: its `cover-<name>` objects, which a staging's `reveal` lifts away
+ * (src/scene/reveal.ts). Returns the names without the prefix, or undefined when the file can't
+ * be read — the caller has already reported that. `npm run model:pack` keeps node names (`-kn`),
+ * so what Blender called a cover is what the site looks for.
+ */
+export function coverNames(assetsDir: string, v: string): string[] | undefined {
+  const src = path.join(assetsDir, v);
+  if (!fs.existsSync(src)) return undefined;
+  const glb = readGlb(src);
+  if (!glb.json) return undefined;
+  const nodes = (glb.json.nodes as { name?: string }[] | undefined) ?? [];
+  return nodes.map((n) => n.name ?? '').filter((n) => n.startsWith('cover-')).map((n) => n.slice('cover-'.length));
+}
+
 /** Blender sources too big for git (no LFS): warn before they get committed. */
 export function checkSources(R: ModelReport, assetsDir: string): void {
   if (!fs.existsSync(assetsDir)) return;

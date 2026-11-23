@@ -10,7 +10,7 @@ import { dateSpan, EPS, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../
 import {
   EXTRA_DAYS, LANGS, LIGHT_PRESETS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
-  type CameraKey, type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText,
+  type CameraKey, type CoverKey, type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText,
   type NarrationAudio, type NarrationSegment, type Narrator, type NarratorVoice, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
@@ -19,7 +19,7 @@ import type { Lexicon } from '../narration/pronounce.ts';
 import { pronounceProblem } from '../../src/data/pronounce.ts';
 import { crowding } from '../../src/timeline.ts';
 import { battlesByFaction, readArmies, readFactions, readSides } from './factions.ts';
-import { checkSources, readModel } from './models.ts';
+import { checkSources, coverNames, readModel } from './models.ts';
 
 export interface BuildResult {
   index: ContentIndex;
@@ -537,7 +537,7 @@ export function buildContent(contentDir: string): BuildResult {
     const s = r.staging;
     if (!s) continue;
     const sf = path.join(r.dir, 'staging.yaml');
-    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies', 'set', 'light', 'camera'], 'staging');
+    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies', 'set', 'light', 'camera', 'reveal'], 'staging');
     const stage = String(s.stage) as StageKind;
     if (!STAGES.includes(stage)) R.error(sf, `stage: one of ${STAGES.join(', ')}`);
     if (!(typeof s.duration === 'number' && s.duration > 0)) R.error(sf, 'duration: seconds, a positive number');
@@ -660,6 +660,31 @@ export function buildContent(contentDir: string): BuildResult {
       }
     }
 
+    // Covers the set lifts away (types.ts `CoverKey`). A cover belongs to the kit, so the name
+    // is checked against the `cover-*` objects the .glb actually has: a typo here would fail
+    // silently at render time, with the scene still under its hill and nothing to say why.
+    let reveal: CoverKey[] | undefined;
+    if (s.reveal !== undefined) {
+      reveal = [];
+      const have = s.set === undefined ? undefined : coverNames(assetsDir, String(s.set));
+      if (s.set === undefined) R.error(sf, 'reveal: only a set has covers to lift; add set: <kit>.glb');
+      else if (!Array.isArray(s.reveal) || !s.reveal.length) R.error(sf, 'reveal: a list of { t, cover, amount }');
+      else {
+        const last = new Map<string, number>();
+        s.reveal.forEach((k, i) => {
+          const at = `reveal[${i}]`;
+          if (!isObj(k) || typeof k.t !== 'number' || k.t < 0 || k.t > 1) { R.error(sf, `${at}: needs a time t, 0–1`); return; }
+          if (typeof k.cover !== 'string' || !/^[a-z0-9-]+$/.test(k.cover)) { R.error(sf, `${at}.cover: the name of a cover in the kit, like hill`); return; }
+          if (typeof k.amount !== 'number' || !(k.amount >= 0 && k.amount <= 1)) { R.error(sf, `${at}.amount: 0 (closed) to 1 (lifted away)`); return; }
+          if (have && !have.includes(k.cover)) { R.error(sf, `${at}.cover: the set has no cover "${k.cover}"${have.length ? ` (it has ${have.join(', ')})` : ' (it names none)'}`); return; }
+          const prev = last.get(k.cover);
+          if (prev !== undefined && k.t < prev) R.error(sf, `${at}: t must rise within a cover`);
+          last.set(k.cover, k.t);
+          reveal!.push({ t: k.t, cover: k.cover, amount: k.amount });
+        });
+      }
+    }
+
     // Recordings: audio/<lang>.yaml + audio/<lang>.<ext>
     const audioFiles: EventDetail['audioFiles'] = {};
     const ad = path.join(r.dir, 'audio');
@@ -730,7 +755,7 @@ export function buildContent(contentDir: string): BuildResult {
     }
 
     r.summary.stage = stage;
-    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, ...set ? { set } : {}, ...light?.length ? { light } : {}, ...camera?.length ? { camera } : {}, audioFiles });
+    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, ...set ? { set } : {}, ...light?.length ? { light } : {}, ...camera?.length ? { camera } : {}, ...reveal?.length ? { reveal } : {}, audioFiles });
   }
 
   // Scripts: every narration as text, so a scripted event can be read before it is staged.

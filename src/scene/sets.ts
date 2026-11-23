@@ -4,21 +4,33 @@
 // a dynamic import() from dioramaStage.ts, so it shares the models chunk.
 //
 // What the kit names (scripts/models/blender/shire.py): `terrain` (walkable ground), materials
-// `glow-*` (lit by `Light.lamps`), and empty markers `fx-smoke`, `fx-spray`, `fx-fireflies-*`,
-// `fx-lamp-*`, `fx-fire`. Story state comes from the light (a function of t); `ambient` seconds
-// only move the smoke, spray, flames and fireflies.
+// `glow-*` (lit by `Light.lamps`), objects `cover-*` (lifted away by `reveal`, scene/reveal.ts)
+// and empty markers `fx-smoke`, `fx-spray`, `fx-fireflies-*`, `fx-lamp-*`, `fx-fire`. Story state
+// comes from the light and the reveal (both functions of t); `ambient` seconds only move the
+// smoke, spray, flames and fireflies.
 
 import * as THREE from 'three';
 import type { Light } from './lighting';
 import { loadModel } from './models';
 import { QUALITY, type QualitySettings } from './quality';
+import { SHUT, type Reveal, liftOf } from './reveal';
 
 export interface SetInstance {
   object: THREE.Object3D;
-  /** `figures`: where the characters stand at this t (a door opens while one is near it). */
-  update(light: Light, ambient: number, figures: readonly THREE.Vector3[]): void;
+  /**
+   * `figures`: where the characters stand at this t (a door opens while one is near it).
+   * `reveal`: how far each `cover-*` has lifted at this t (scene/reveal.ts).
+   */
+  update(light: Light, ambient: number, figures: readonly THREE.Vector3[], reveal?: Reveal): void;
   dispose(): void;
 }
+
+/**
+ * How far a cover rises when it is fully lifted, as a multiple of its own height: enough to be
+ * clear of the rooms and read as taken off, not so much that it leaves the frame and the place
+ * loses its shape. It fades as it goes, so what is left is a hint of the Hill over the scene.
+ */
+const LIFT = 0.55;
 
 /** A tiny repeatable hash in [0, 1). */
 function rnd(i: number, k: number): number {
@@ -120,9 +132,47 @@ export async function loadSet(url: string, quality: QualitySettings = QUALITY.hi
     return { d, centre: box.getCenter(new THREE.Vector3()), rest: d.rotation.y };
   });
 
+  // Covers: what the kit puts over an indoor scene (`cover-hill` is the earth over Bag End). Each
+  // gets its own copies of its materials, because a cover's earth and grass are the same materials
+  // the open ground uses — fading the shared ones would fade the whole tile with it.
+  const covers = marker('cover-').map((c) => {
+    const box = new THREE.Box3().setFromObject(c);
+    const height = Math.max(0.5, box.max.y - box.min.y);
+    const mats: THREE.Material[] = [];
+    c.traverse((o) => {
+      const mesh = o as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const mine = (m: THREE.Material) => {
+        const mat = m.clone();
+        mat.transparent = true;
+        mat.depthWrite = true;
+        owned.push(mat);
+        mats.push(mat);
+        return mat;
+      };
+      mesh.material = Array.isArray(mesh.material) ? mesh.material.map(mine) : mine(mesh.material);
+    });
+    return { c, name: c.name.slice('cover-'.length), rest: c.position.y, height, mats, shown: true };
+  });
+
   return {
     object,
-    update(light, ambient, figures) {
+    update(light, ambient, figures, reveal = SHUT) {
+      for (const cover of covers) {
+        const lift = liftOf(reveal, cover.name);
+        // Gone once it is all but lifted: a fully faded mesh still costs a draw call and still
+        // sorts against everything behind it.
+        const shown = lift < 0.995;
+        if (shown !== cover.shown) {
+          cover.c.visible = shown;
+          cover.shown = shown;
+        }
+        if (!shown) continue;
+        cover.c.position.y = cover.rest + lift * LIFT * cover.height;
+        for (const m of cover.mats) m.opacity = 1 - lift;
+        // A lid on its way up must stop laying its shadow over the rooms it is uncovering.
+        cover.c.traverse((o) => { (o as THREE.Mesh).castShadow = lift < 0.02; });
+      }
       for (const { d, centre, rest } of doors) {
         let near = Infinity;
         for (const f of figures) near = Math.min(near, Math.hypot(f.x - centre.x, f.z - centre.z));

@@ -10,6 +10,7 @@ import { createContactShadows, type Spot } from './contact';
 import { gradeFor, graded } from './grade';
 import { FILL_FROM, fogRange, lightAt } from './lighting';
 import { QUALITY, type QualitySettings } from './quality';
+import { revealAt } from './reveal';
 import { createFigure, FIGURE_HEIGHT, setSelected, useModel } from './figure';
 import type { ModelInstance } from './models';
 import type { SetInstance } from './sets';
@@ -186,7 +187,8 @@ export function createDioramaStage(
       }
       // Dark under the feet whatever the hour: strongest in full sun, never gone at night.
       contact?.update(spots, 0.3 + 0.32 * Math.min(1, light.sunIntensity / 2.3));
-      set?.update(light, ambient, [...figures.values()].filter((f) => f.visible).map((f) => f.position));
+      set?.update(light, ambient, [...figures.values()].filter((f) => f.visible).map((f) => f.position),
+        revealAt(event.reveal, t));
     },
 
     pick(ray) {

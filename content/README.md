@@ -158,6 +158,26 @@ narrow window shows more ground rather than cropping the scene. A visitor's own 
 survive as an offset, so the framing guides without taking the view away. See `docs/DESIGN.md`
 §9.3.
 
+### `reveal`: lifting a cover off an indoor scene
+
+Pointing the camera at a room under a hill only gets you a closer look at the hill. A kit names
+what can be lifted — objects called `cover-<name>` — and `reveal` says when each one rises out
+of the way and fades, like the lid off a doll's house. Bag End has two: `hill` (the turf over
+the rooms) and `vaults` (the ceilings under it).
+
+```yaml
+reveal:
+  - { t: 0.26, cover: hill, amount: 0 }    # shut for the wide shot of the Hill
+  - { t: 0.42, cover: hill, amount: 1 }    # off as the view goes inside
+  - { t: 0.30, cover: vaults, amount: 0 }  # the ceilings follow a moment behind,
+  - { t: 0.48, cover: vaults, amount: 1 }  # so the hole opens from the top down
+```
+
+`amount` is 0 (closed) to 1 (lifted clear). Each cover is its own track, so one may open while
+another stays shut, and a key pair in reverse shuts it again. The build checks the name against
+the covers the kit really has, and only an event with a `set` can have a `reveal`. See
+`docs/DESIGN.md` §9.4.
+
 The tile runs about -7 to 7 on both axes. A figure whose position is off the tile (say `x: 11, z: 11`) is not drawn: off the tile = offstage. Use it to wait out the scenes before an entrance. A figure moving between two `hide` keyframes stays hidden (it is not shown walking).
 
 ## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`

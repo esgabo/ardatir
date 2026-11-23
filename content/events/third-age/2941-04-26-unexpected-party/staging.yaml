@@ -24,8 +24,22 @@ camera:
   - { t: 0.3, x: -1.0, z: -0.2, width: 5 }
   - { t: 0.4, x: -1.1, z: -2.1, width: 6 }
   - { t: 0.56, x: -1.2, z: -3.4, width: 7.6 }
-  - { t: 0.74, x: -1.15, z: -3.5, width: 4.4 }
-  - { t: 1, x: -1.15, z: -3.5, width: 4.2 }
+  # With the lid off, the quest shot can hold the whole hole: the parlour round the table, the
+  # hall behind it and the pantry at the end. It was tight on the parlour only because that was
+  # all there was to see.
+  - { t: 0.74, x: -1.2, z: -3.3, width: 6.4 }
+  - { t: 1, x: -1.2, z: -3.3, width: 6.2 }
+
+# The Hill's turf lifts away as the camera goes in after Bilbo, so the rooms can be seen from
+# above. It stays on for the opening wide shot — the green Hill with its round door is the
+# picture everyone comes for — and comes off between the mark on the door and the first knock.
+reveal:
+  - { t: 0.26, cover: hill, amount: 0 }
+  - { t: 0.42, cover: hill, amount: 1 }
+  # The vaults go a moment behind the turf, so the hole opens from the top down rather than all
+  # at once: first the Hill, then the ceilings under it.
+  - { t: 0.30, cover: vaults, amount: 0 }
+  - { t: 0.48, cover: vaults, amount: 1 }
 narration:
   morning: 0
   mark: 0.26
