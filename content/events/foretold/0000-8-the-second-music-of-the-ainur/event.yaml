@@ -14,6 +14,12 @@ title: { en: "The Second Music of the Ainur", es: "La Segunda Música de los Ain
 summary:
   en: "After the end of days the Ainur and the Children of Ilúvatar will sing before him a music greater than the first. Then his themes will be played as he meant them, and Men, the Valar said, will sing too."
   es: "Después del fin de los días, los Ainur y los Hijos de Ilúvatar cantarán ante él una música mayor que la primera. Entonces sus temas se tocarán tal como él los pensó, y los Hombres, dijeron los Valar, cantarán también."
+# The round world comes back here after two flat scenes (#59, DESIGN §4.8). It is not a third
+# answer to the world's shape: this scene is a dream of the world and not a map of it, which the
+# `note` says to visitors so the chain of five reads as one telling.
+note:
+  en: "The three scenes before this one show the world first round, then flat, because the prophecy says the Earth is remade but never what shape it takes. This last scene is not a map at all: the singers stand before a great light, and the world is only remembered in it."
+  es: "Las tres escenas anteriores muestran el mundo primero redondo y luego plano, porque la profecía dice que la Tierra se rehace pero nunca qué forma toma. Esta última escena no es un mapa en absoluto: los cantores están ante una gran luz, y el mundo sólo se recuerda en ella."
 links:
   - to: ainulindale
     type: enabled-by

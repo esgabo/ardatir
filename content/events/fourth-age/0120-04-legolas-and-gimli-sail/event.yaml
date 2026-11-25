@@ -1,0 +1,31 @@
+id: legolas-and-gimli-sail
+age: fourth-age
+when:
+  # Fo.A. 120. Appendix B puts it after the King's passing in the same year but gives no month;
+  # the sort key only says it comes after, which is all the source claims.
+  start: { age: fourth-age, year: 120 }
+  precision: year
+place: ithilien
+characters: [ legolas, gimli ]
+arcs: [ the-last-of-the-fellowship ]
+journeys: []
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix B" }
+title:
+  en: Legolas and Gimli Sail
+  es: Legolas y Gimli zarpan
+summary:
+  en: With Aragorn dead, Legolas gives in at last to the Sea-longing he has carried since Pelargir, builds a grey ship in Ithilien, and sails down Anduin. It is said Gimli went with him, and no dwarf had ever been granted that road.
+  es: Muerto Aragorn, Legolas cede por fin a la añoranza del Mar que arrastra desde Pelargir, construye una nave gris en Ithilien y baja por el Anduin. Se cuenta que Gimli fue con él, y a ningún enano se le había concedido nunca ese camino.
+note:
+  en: "That Gimli went with him is told as report, not certainty: Appendix B says only that it is said he did, because no dwarf had ever been granted the passage West."
+  es: "Que Gimli fuera con él se cuenta como rumor, no como certeza: el Apéndice B dice sólo que así se cuenta, porque a ningún enano se le había concedido nunca la travesía al Oeste."
+links:
+  - to: the-passing-of-king-elessar
+    type: caused-by
+    note:
+      en: Legolas stayed in Middle-earth for Aragorn's sake; with him gone, the Sea-longing wins.
+      es: Legolas se quedó en la Tierra Media por Aragorn; con él muerto, la añoranza del Mar se impone.
+beats:
+  - { id: ship, label: { en: A grey ship in Ithilien, es: Una nave gris en Ithilien } }

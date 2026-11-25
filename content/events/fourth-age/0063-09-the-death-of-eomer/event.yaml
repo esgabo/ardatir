@@ -1,0 +1,30 @@
+id: the-death-of-eomer
+age: fourth-age
+when:
+  # S.R. 1484, "in that autumn" (Appendix B).
+  start: { age: fourth-age, year: 63, season: autumn }
+  precision: season
+place: edoras
+# Appendix B names Meriadoc at Éomer's side; Pippin rode with him and went on to Gondor after,
+# so he is here too.
+characters: [ eomer, merry, pippin ]
+arcs: [ the-last-of-the-fellowship ]
+journeys: [ the-last-ride-of-the-shire ]
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix B" }
+title:
+  en: The Death of Éomer
+  es: La muerte de Éomer
+summary:
+  en: Merry reaches Edoras in time and sits with Éomer until the end. Éomer Éadig had ruled Rohan for sixty-five years, and the Mark had never been richer; then Merry and Pippin ride south to Gondor, to spend what is left of their lives there.
+  es: Merry llega a Edoras a tiempo y acompaña a Éomer hasta el final. Éomer Éadig había gobernado Rohan sesenta y cinco años, y la Marca nunca había sido más próspera; después Merry y Pippin cabalgan al sur, a Gondor, a pasar allí lo que les quede de vida.
+links:
+  - to: merry-and-pippin-ride-away
+    type: caused-by
+    note:
+      en: Éomer's message is why they left, and they arrived in time.
+      es: El mensaje de Éomer es la razón de su partida, y llegaron a tiempo.
+beats:
+  - { id: edoras, label: { en: Merry reaches Edoras, es: Merry llega a Edoras } }
+  - { id: south, label: { en: South to Gondor, es: "Al sur, a Gondor" } }

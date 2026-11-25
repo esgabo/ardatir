@@ -1,0 +1,38 @@
+id: the-last-of-the-ringbearers
+age: fourth-age
+when:
+  # S.R. 1482, 22 September: Bilbo's and Frodo's birthday, and the day Frodo left the Shire for
+  # the Havens. Appendix B dates Sam's riding out; the Tower Hills and the crossing have no date,
+  # and the crossing itself is tradition, not record (see `note`).
+  start: { age: fourth-age, year: 61, month: 9, day: 22 }
+  precision: day
+place: tower-hills
+characters: [ sam, elanor ]
+arcs: [ the-last-of-the-fellowship ]
+journeys: [ sams-last-road ]
+tags: [ lord-of-the-rings, the-ring ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix B" }
+title:
+  en: The Last of the Ring-bearers
+  es: El último de los Portadores del Anillo
+summary:
+  en: Three months after Rose dies, on the day Frodo once rode away, Sam leaves Bag End for the last time. At the Tower Hills he gives Elanor the Red Book, and goes on west alone.
+  es: Tres meses después de morir Rosita, el día en que Frodo se marchó un día, Sam deja Bolsón Cerrado por última vez. En las Colinas de las Torres da a Elanor el Libro Rojo, y sigue solo hacia el oeste.
+note:
+  en: Appendix B records that Sam rode out and was last seen by Elanor, to whom he gave the Red Book. That he then took ship is handed down among her descendants as tradition, not written as record, and this scene tells it the way they told it.
+  es: El Apéndice B recoge que Sam partió a caballo y que Elanor fue la última en verlo, y que a ella le dio el Libro Rojo. Que después embarcara se transmite entre sus descendientes como tradición, no como crónica, y esta escena lo cuenta como ellos lo contaban.
+links:
+  - to: the-death-of-rose-cotton
+    type: caused-by
+    note:
+      en: He waited until she was gone, and then went on the date Frodo had gone.
+      es: Esperó a que ella se fuera, y luego partió en la misma fecha en que lo hizo Frodo.
+  - to: frodo-sails-from-the-grey-havens
+    type: crossing
+    note:
+      en: Sixty-one years apart, both Ring-bearers leave the Shire on the same day of the year, and sail from the same quay.
+      es: Con sesenta y un años de diferencia, los dos Portadores del Anillo dejan la Comarca el mismo día del año, y embarcan en el mismo muelle.
+beats:
+  - { id: book, label: { en: The Red Book changes hands, es: El Libro Rojo cambia de manos } }
+  - { id: westward, label: { en: Westward, es: Hacia el oeste } }

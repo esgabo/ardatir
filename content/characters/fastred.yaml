@@ -1,0 +1,8 @@
+id: fastred
+name: { en: "Fastred of Greenholm", es: "Fastred de Verdealtozano" }
+kind: hobbit
+summary:
+  en: "A hobbit of the Far Downs who marries Elanor; the first Warden of Westmarch, keeping the Shire's new western country."
+  es: "Un hobbit de las Lomas Lejanas que se casa con Elanor; el primer Guardián de la Marca del Oeste, que custodia la nueva tierra occidental de la Comarca."
+color: "#8a7a52"
+scale: 1

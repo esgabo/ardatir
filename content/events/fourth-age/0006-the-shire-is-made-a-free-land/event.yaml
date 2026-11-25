@@ -1,0 +1,26 @@
+id: the-shire-is-made-a-free-land
+age: fourth-age
+when:
+  # Shire Reckoning 1427 (Appendix B's later events are dated in S.R.; S.R. 1422 = Fo.A. 1,
+  # so Fo.A. = S.R. - 1421). Appendix B gives the year and no day.
+  start: { age: fourth-age, year: 6 }
+  precision: year
+place: the-shire
+characters: [ aragorn, sam ]
+arcs: [ the-age-of-men ]
+journeys: []
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix B" }
+title:
+  en: The Shire is Made a Free Land
+  es: La Comarca se declara tierra libre
+summary:
+  en: King Elessar forbids Men to enter the Shire and takes it under the protection of the Northern Sceptre, leaving the hobbits to govern themselves. The same year Sam is elected Mayor for the first of seven times.
+  es: El rey Elessar prohíbe a los Hombres entrar en la Comarca y la pone bajo la protección del Cetro del Norte, dejando que los hobbits se gobiernen a sí mismos. Ese mismo año Sam es elegido alcalde por primera de siete veces.
+links:
+  - to: coronation-of-king-elessar
+    type: enabled-by
+    note:
+      en: Only a crowned king of the North and South could set the Shire outside the traffic of Men and make it stick.
+      es: Sólo un rey coronado del Norte y del Sur podía poner la Comarca al margen del paso de los Hombres y hacer que se respetara.

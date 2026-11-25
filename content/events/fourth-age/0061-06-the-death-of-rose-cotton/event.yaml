@@ -1,0 +1,25 @@
+id: the-death-of-rose-cotton
+age: fourth-age
+when:
+  # S.R. 1482, Mid-year's Day. A day outside the months (Appendix D), so `day` and no `month`.
+  start: { age: fourth-age, year: 61, day: midyear }
+  precision: day
+place: bag-end
+characters: [ sam, rosie ]
+arcs: [ the-age-of-men, the-last-of-the-fellowship ]
+journeys: []
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix B" }
+title:
+  en: The Death of Rose Cotton
+  es: La muerte de Rosita Coto
+summary:
+  en: On Mid-year's Day, in the house they had filled with thirteen children, Rose dies. Sam is ninety-two, and for the first time since he came home from the Sea there is nothing keeping him in the Shire.
+  es: El Día de Mediados del Año, en la casa que habían llenado de trece hijos, muere Rosita. Sam tiene noventa y dos años, y por primera vez desde que volvió del Mar nada lo retiene en la Comarca.
+links:
+  - to: sam-marries-rosie
+    type: caused-by
+    note:
+      en: Sixty-two years of marriage end on the brightest day of the Shire's year.
+      es: Sesenta y dos años de matrimonio acaban en el día más luminoso del año de la Comarca.

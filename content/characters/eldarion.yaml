@@ -1,0 +1,9 @@
+id: eldarion
+name: { en: "Eldarion", es: "Eldarion" }
+kind: man
+summary:
+  en: "The son of Aragorn and Arwen, who takes the crown of the Reunited Kingdom when his father lays down his life."
+  es: "El hijo de Aragorn y Arwen, que recibe la corona del Reino Reunificado cuando su padre entrega la vida."
+color: "#4a5a74"
+scale: 1
+pronounce: { en: el-DAR-ee-on, es: el-DA-ri-on }

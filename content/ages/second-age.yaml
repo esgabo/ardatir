@@ -6,3 +6,6 @@ summary:
   en: The rise and fall of Númenor, the forging of the Rings, and the Last Alliance against Sauron.
   es: El auge y la caída de Númenor, la forja de los Anillos y la Última Alianza contra Sauron.
 axis: { start: 591 }    # after the 590 years of the First Age
+# the-elder reads to the end of the Last Alliance; the Third Age is where the-lady
+# takes over. Provisional until the Second Age gets an audition of its own (DESIGN §5).
+narrator: the-elder

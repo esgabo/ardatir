@@ -1,0 +1,22 @@
+id: merry-and-pippin-ride-away
+age: fourth-age
+when:
+  # S.R. 1484, "in the spring of the year" (Appendix B): a season, not a month.
+  start: { age: fourth-age, year: 63, season: spring }
+  precision: season
+place: sarn-ford
+characters: [ merry, pippin ]
+arcs: [ the-last-of-the-fellowship ]
+journeys: [ the-last-ride-of-the-shire ]
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix B" }
+title:
+  en: Merry and Pippin Ride Away
+  es: Merry y Pippin se marchan
+summary:
+  en: A message comes from King Éomer, who wants to see Holdwine of the Mark one last time. Merry is a hundred and two; he hands Buckland to his son, Pippin hands over the Thainship, and the two of them cross Sarn Ford and are never seen in the Shire again.
+  es: Llega un mensaje del rey Éomer, que quiere ver una última vez a Holdwine de la Marca. Merry tiene ciento dos años; entrega Los Gamos a su hijo, Pippin cede el cargo de Thain, y los dos cruzan el Vado de Sarn y no vuelven a ser vistos en la Comarca.
+beats:
+  - { id: message, label: { en: A message from Rohan, es: Un mensaje de Rohan } }
+  - { id: ford, label: { en: Over Sarn Ford, es: Más allá del Vado de Sarn } }

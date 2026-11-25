@@ -1,0 +1,10 @@
+id: the-last-ride-of-the-shire
+title: { en: "The Last Ride out of the Shire", es: "La última cabalgada fuera de la Comarca" }
+characters: [ merry, pippin ]
+# Spring Fo.A. 63 (S.R. 1484) over Sarn Ford, to Edoras before Éomer died that autumn, and south
+# to Gondor, where they lived out their years.
+waypoints:
+  - { place: the-shire, date: { age: fourth-age, year: 63, season: spring }, precision: season }
+  - { place: sarn-ford, date: { age: fourth-age, year: 63, season: spring }, precision: season }
+  - { place: edoras, date: { age: fourth-age, year: 63, season: autumn }, precision: season }
+  - { place: minas-tirith, date: { age: fourth-age, year: 63 }, precision: approximate }

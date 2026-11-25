@@ -1,0 +1,9 @@
+id: elanor
+name: { en: "Elanor the Fair", es: "Elanor la Bella" }
+kind: hobbit
+summary:
+  en: "Sam and Rosie's eldest daughter, named for the golden flower of Lothlórien; a maid of honour to Queen Arwen, and the last to see her father in Middle-earth."
+  es: "La hija mayor de Sam y Rosita, llamada así por la flor dorada de Lothlórien; dama de honor de la reina Arwen, y la última en ver a su padre en la Tierra Media."
+color: "#e8c468"
+scale: 1
+pronounce: { en: EL-a-nor, es: E-la-nor }

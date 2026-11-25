@@ -1,0 +1,20 @@
+id: elanor-marries-fastred
+age: fourth-age
+when:
+  # S.R. 1451. The Westmarch was given to the Shire the following year (S.R. 1452), and the
+  # couple moved to Undertowers then; that is told here as what came after, not as this year.
+  start: { age: fourth-age, year: 30 }
+  precision: year
+place: the-shire
+characters: [ elanor, fastred, sam, rosie ]
+arcs: [ the-age-of-men ]
+journeys: []
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix B" }
+title:
+  en: Elanor Marries Fastred
+  es: Elanor se casa con Fastred
+summary:
+  en: Sam's eldest daughter marries Fastred of Greenholm on the Far Downs. The next year the King gives the Shire the land west to the Tower Hills, and the two of them go to keep it.
+  es: La hija mayor de Sam se casa con Fastred de Verdealtozano en las Lomas Lejanas. Al año siguiente el Rey entrega a la Comarca la tierra que llega hasta las Colinas de las Torres, y los dos van a custodiarla.

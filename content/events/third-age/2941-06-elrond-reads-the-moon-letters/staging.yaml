@@ -6,6 +6,15 @@ light:
   - { t: 0, preset: dusk }
   - { t: 0.14, preset: night }
   - { t: 1, preset: night }
+# The shot (#28): the valley at dusk, then in and in — the swords, the map on the table, the
+# letters themselves — because this event is four people reading one piece of paper.
+camera:
+  - { t: 0, x: 1.00, z: 1.40, width: 12.0 }
+  - { t: 0.17, x: -0.10, z: -0.30, width: 7.8 }
+  - { t: 0.33, x: -0.05, z: -0.05, width: 6.1 }
+  - { t: 0.5, x: -0.20, z: -0.35, width: 5.8 }
+  - { t: 0.84, x: -0.20, z: -0.35, width: 5.8 }
+  - { t: 1, x: -0.20, z: -0.30, width: 6.2 }
 narration:
   valley: 0
   swords: 0.17
@@ -47,8 +56,8 @@ tracks:
       - { t: 1, x: 1.2, z: 0.6, action: idle }
   - characterId: gandalf
     keyframes:
-      - { t: 0, x: 4.5, z: 5.5, action: walk }
-      - { t: 0.12, x: 2.2, z: 2.2, action: walk }
+      - { t: 0, x: 5.0, z: 5.8, action: walk }
+      - { t: 0.12, x: 2.8, z: 1.4, action: walk }
       - { t: 0.33, x: 0.8, z: -0.6, action: idle }
       - { t: 0.5, x: 0.8, z: -0.6, action: idle, thought: { en: "Luck, or the right night. The Valar are kind.", es: "Suerte, o la noche justa. Los Valar son amables." } }
       - { t: 0.67, x: 0.8, z: -0.6, action: talk, thought: { en: "The key and the map. It all begins to fit.", es: "La llave y el mapa. Todo empieza a encajar." } }

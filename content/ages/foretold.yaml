@@ -8,3 +8,6 @@ summary:
 # past the end of the axis (docs/DESIGN.md §4.8). Every event here is prophecy and needs a `source`.
 timeless: true
 foretold: true
+# What is foretold is read by the voice that read the beginning, so the world opens
+# and closes in the same voice. Provisional until it gets an audition of its own (DESIGN §5).
+narrator: the-elder

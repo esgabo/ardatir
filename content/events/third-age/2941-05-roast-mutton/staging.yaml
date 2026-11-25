@@ -7,6 +7,16 @@ light:
   - { t: 0.84, preset: night }
   - { t: 0.93, preset: dawn }
   - { t: 1, preset: morning }
+# The shot (#28, #83): wide on the wet wood and the one light in it, in to the fire as Bilbo
+# creeps up, tight on the purse that cries out, then out again as the company is brought in and
+# laid along the path, and wide for the dawn that turns the three of them to stone.
+camera:
+  - { t: 0, x: -2.30, z: 1.60, width: 12.5 }
+  - { t: 0.22, x: -0.30, z: 0.90, width: 8.6 }
+  - { t: 0.42, x: 0.20, z: 0.90, width: 7.5 }
+  - { t: 0.62, x: -1.70, z: 1.80, width: 11.8 }
+  - { t: 0.85, x: -0.10, z: 1.80, width: 9.2 }
+  - { t: 1, x: 0.00, z: 1.80, width: 9.0 }
 narration:
   fire: 0
   trolls: 0.22
@@ -62,8 +72,8 @@ tracks:
       - { t: 0.4, x: -1.60, z: 0.45, action: hide, thought: { en: "That purse is right there. One quiet hand.", es: "Esa bolsa está justo ahí. Una mano en silencio." } }
       - { t: 0.45, x: -1.50, z: 0.20, action: run, thought: { en: "It talked! The purse talked!", es: "¡Habló! ¡La bolsa habló!" } }
       - { t: 0.5, x: -2.20, z: 0.75, action: hide }
-      - { t: 0.62, x: -0.35, z: 2.90, action: hide, thought: { en: "A sack, and the dark, and the three of them arguing.", es: "Un saco, la oscuridad, y los tres discutiendo." } }
-      - { t: 0.88, x: -0.35, z: 2.90, action: hide }
+      - { t: 0.62, x: -0.50, z: 2.86, action: hide, thought: { en: "A sack, and the dark, and the three of them arguing.", es: "Un saco, la oscuridad, y los tres discutiendo." } }
+      - { t: 0.88, x: -0.50, z: 2.86, action: hide }
       - { t: 0.94, x: -1.10, z: 2.25, action: idle, thought: { en: "Stone. They are all stone.", es: "Piedra. Son todos de piedra." } }
       - { t: 1, x: -1.10, z: 2.25, action: idle }
   - characterId: gandalf
@@ -78,108 +88,105 @@ tracks:
       - { t: 1, x: -1.90, z: 2.00, action: talk }
   - characterId: thorin
     keyframes:
-      - { t: 0, x: -8.20, z: 4.20, action: idle }
-      - { t: 0.47, x: -6.40, z: 4.30, action: walk }
-      - { t: 0.52, x: -2.45, z: 3.55, action: walk }
-      - { t: 0.57, x: -0.95, z: 2.95, action: hide }
-      - { t: 0.59, x: -0.95, z: 2.95, action: hide, thought: { en: "One by one, into their sacks. I should have come first.", es: "Uno a uno, a sus sacos. Debí haber venido yo primero." } }
-      - { t: 0.93, x: -0.95, z: 2.95, action: hide }
-      - { t: 1, x: -0.95, z: 2.95, action: hide }
+      - { t: 0, x: -8.80, z: 6.40, action: idle }
+      - { t: 0.558, x: -8.80, z: 6.40, action: idle }
+      - { t: 0.613, x: -6.40, z: 4.38, action: walk }
+      - { t: 0.703, x: -2.70, z: 3.60, action: hide }
+      - { t: 0.93, x: -2.70, z: 3.60, action: hide }
+      - { t: 1, x: -2.70, z: 3.60, action: hide, thought: { en: "One by one, into their sacks. I should have come first.", es: "Uno a uno, a sus sacos. Debí haber venido yo primero." } }
   - characterId: balin
     keyframes:
-      - { t: 0, x: -8.50, z: 4.50, action: idle }
-      - { t: 0.482, x: -6.40, z: 4.55, action: walk }
-      - { t: 0.532, x: -1.85, z: 3.85, action: walk }
-      - { t: 0.582, x: -0.35, z: 3.25, action: hide }
-      - { t: 0.93, x: -0.35, z: 3.25, action: hide }
-      - { t: 0.95, x: -0.35, z: 3.25, action: hide, thought: { en: "The sun. Look at them — the sun has done it.", es: "El sol. Míralos: lo ha hecho el sol." } }
-      - { t: 1, x: -0.35, z: 3.25, action: hide }
+      - { t: 0, x: -8.30, z: 4.00, action: idle }
+      - { t: 0.393, x: -8.30, z: 4.00, action: idle }
+      - { t: 0.448, x: -6.40, z: 3.42, action: walk }
+      - { t: 0.538, x: 2.70, z: 4.30, action: hide }
+      - { t: 0.93, x: 2.70, z: 4.30, action: hide }
+      - { t: 1, x: 2.70, z: 4.30, action: hide, thought: { en: "The sun. Look at them — the sun has done it.", es: "El sol. Míralos: lo ha hecho el sol." } }
   - characterId: dwalin
     keyframes:
-      - { t: 0, x: -8.80, z: 4.80, action: idle }
-      - { t: 0.494, x: -6.40, z: 4.80, action: walk }
-      - { t: 0.544, x: -1.20, z: 4.00, action: walk }
-      - { t: 0.594, x: 0.30, z: 3.40, action: hide }
-      - { t: 0.93, x: 0.30, z: 3.40, action: hide }
-      - { t: 1, x: 0.30, z: 3.40, action: hide }
+      - { t: 0, x: -8.80, z: 4.00, action: idle }
+      - { t: 0.406, x: -8.80, z: 4.00, action: idle }
+      - { t: 0.461, x: -6.40, z: 4.38, action: walk }
+      - { t: 0.551, x: 1.90, z: 4.20, action: hide }
+      - { t: 0.93, x: 1.90, z: 4.20, action: hide }
+      - { t: 1, x: 1.90, z: 4.20, action: hide }
   - characterId: fili
     keyframes:
-      - { t: 0, x: -9.10, z: 4.20, action: idle }
-      - { t: 0.506, x: -6.40, z: 4.30, action: walk }
-      - { t: 0.556, x: -0.55, z: 3.85, action: walk }
-      - { t: 0.606, x: 0.95, z: 3.25, action: hide }
-      - { t: 0.93, x: 0.95, z: 3.25, action: hide }
-      - { t: 1, x: 0.95, z: 3.25, action: hide }
+      - { t: 0, x: -8.30, z: 4.60, action: idle }
+      - { t: 0.431, x: -8.30, z: 4.60, action: idle }
+      - { t: 0.486, x: -6.40, z: 2.95, action: walk }
+      - { t: 0.576, x: 1.50, z: 4.80, action: hide }
+      - { t: 0.93, x: 1.50, z: 4.80, action: hide }
+      - { t: 1, x: 1.50, z: 4.80, action: hide }
   - characterId: kili
     keyframes:
-      - { t: 0, x: -8.20, z: 4.50, action: idle }
-      - { t: 0.518, x: -6.40, z: 4.55, action: walk }
-      - { t: 0.568, x: 0.05, z: 3.60, action: walk }
-      - { t: 0.618, x: 1.55, z: 3.00, action: hide }
-      - { t: 0.93, x: 1.55, z: 3.00, action: hide }
-      - { t: 1, x: 1.55, z: 3.00, action: hide }
+      - { t: 0, x: -8.80, z: 4.60, action: idle }
+      - { t: 0.444, x: -8.80, z: 4.60, action: idle }
+      - { t: 0.499, x: -6.40, z: 3.90, action: walk }
+      - { t: 0.589, x: 1.10, z: 4.20, action: hide }
+      - { t: 0.93, x: 1.10, z: 4.20, action: hide }
+      - { t: 1, x: 1.10, z: 4.20, action: hide }
   - characterId: dori
     keyframes:
-      - { t: 0, x: -8.50, z: 4.80, action: idle }
-      - { t: 0.53, x: -6.40, z: 4.80, action: walk }
-      - { t: 0.58, x: -2.85, z: 3.05, action: walk }
-      - { t: 0.63, x: -1.35, z: 2.45, action: hide }
-      - { t: 0.93, x: -1.35, z: 2.45, action: hide }
-      - { t: 1, x: -1.35, z: 2.45, action: hide }
+      - { t: 0, x: -9.30, z: 4.60, action: idle }
+      - { t: 0.457, x: -9.30, z: 4.60, action: idle }
+      - { t: 0.512, x: -6.40, z: 4.85, action: walk }
+      - { t: 0.602, x: 0.70, z: 4.80, action: hide }
+      - { t: 0.93, x: 0.70, z: 4.80, action: hide }
+      - { t: 1, x: 0.70, z: 4.80, action: hide }
   - characterId: nori
     keyframes:
-      - { t: 0, x: -8.80, z: 4.20, action: idle }
-      - { t: 0.542, x: -6.40, z: 4.30, action: walk }
-      - { t: 0.592, x: -2.20, z: 3.20, action: walk }
-      - { t: 0.642, x: -0.70, z: 2.60, action: hide }
-      - { t: 0.93, x: -0.70, z: 2.60, action: hide }
-      - { t: 1, x: -0.70, z: 2.60, action: hide }
+      - { t: 0, x: -8.30, z: 5.20, action: idle }
+      - { t: 0.469, x: -8.30, z: 5.20, action: idle }
+      - { t: 0.524, x: -6.40, z: 2.95, action: walk }
+      - { t: 0.614, x: 0.30, z: 4.20, action: hide }
+      - { t: 0.93, x: 0.30, z: 4.20, action: hide }
+      - { t: 1, x: 0.30, z: 4.20, action: hide }
   - characterId: ori
     keyframes:
-      - { t: 0, x: -9.10, z: 4.50, action: idle }
-      - { t: 0.554, x: -6.40, z: 4.55, action: walk }
-      - { t: 0.604, x: -0.20, z: 3.10, action: walk }
-      - { t: 0.654, x: 1.30, z: 2.50, action: hide }
-      - { t: 0.93, x: 1.30, z: 2.50, action: hide }
-      - { t: 1, x: 1.30, z: 2.50, action: hide }
+      - { t: 0, x: -8.80, z: 5.20, action: idle }
+      - { t: 0.482, x: -8.80, z: 5.20, action: idle }
+      - { t: 0.537, x: -6.40, z: 3.90, action: walk }
+      - { t: 0.627, x: -0.30, z: 3.80, action: hide }
+      - { t: 0.93, x: -0.30, z: 3.80, action: hide }
+      - { t: 1, x: -0.30, z: 3.80, action: hide }
   - characterId: oin
     keyframes:
-      - { t: 0, x: -8.20, z: 4.80, action: idle }
-      - { t: 0.566, x: -6.40, z: 4.80, action: walk }
-      - { t: 0.616, x: 0.40, z: 3.35, action: walk }
-      - { t: 0.666, x: 1.90, z: 2.75, action: hide }
-      - { t: 0.93, x: 1.90, z: 2.75, action: hide }
-      - { t: 1, x: 1.90, z: 2.75, action: hide }
+      - { t: 0, x: -9.30, z: 5.20, action: idle }
+      - { t: 0.495, x: -9.30, z: 5.20, action: idle }
+      - { t: 0.55, x: -6.40, z: 4.85, action: walk }
+      - { t: 0.64, x: -0.40, z: 4.60, action: hide }
+      - { t: 0.93, x: -0.40, z: 4.60, action: hide }
+      - { t: 1, x: -0.40, z: 4.60, action: hide }
   - characterId: gloin
     keyframes:
-      - { t: 0, x: -8.50, z: 4.20, action: idle }
-      - { t: 0.578, x: -6.40, z: 4.30, action: walk }
-      - { t: 0.628, x: 0.90, z: 3.65, action: walk }
-      - { t: 0.678, x: 2.40, z: 3.05, action: hide }
-      - { t: 0.93, x: 2.40, z: 3.05, action: hide }
-      - { t: 1, x: 2.40, z: 3.05, action: hide }
+      - { t: 0, x: -8.30, z: 5.80, action: idle }
+      - { t: 0.507, x: -8.30, z: 5.80, action: idle }
+      - { t: 0.562, x: -6.40, z: 2.95, action: walk }
+      - { t: 0.652, x: -1.00, z: 4.10, action: hide }
+      - { t: 0.93, x: -1.00, z: 4.10, action: hide }
+      - { t: 1, x: -1.00, z: 4.10, action: hide }
   - characterId: bifur
     keyframes:
-      - { t: 0, x: -8.80, z: 4.50, action: idle }
-      - { t: 0.59, x: -6.40, z: 4.55, action: walk }
-      - { t: 0.64, x: -3.40, z: 3.40, action: walk }
-      - { t: 0.69, x: -1.90, z: 2.80, action: hide }
-      - { t: 0.93, x: -1.90, z: 2.80, action: hide }
-      - { t: 1, x: -1.90, z: 2.80, action: hide }
+      - { t: 0, x: -8.80, z: 5.80, action: idle }
+      - { t: 0.52, x: -8.80, z: 5.80, action: idle }
+      - { t: 0.575, x: -6.40, z: 3.90, action: walk }
+      - { t: 0.665, x: -1.20, z: 3.40, action: hide }
+      - { t: 0.93, x: -1.20, z: 3.40, action: hide }
+      - { t: 1, x: -1.20, z: 3.40, action: hide }
   - characterId: bofur
     keyframes:
-      - { t: 0, x: -9.10, z: 4.80, action: idle }
-      - { t: 0.602, x: -6.40, z: 4.80, action: walk }
-      - { t: 0.652, x: 0.65, z: 2.90, action: walk }
-      - { t: 0.702, x: 2.15, z: 2.30, action: hide }
-      - { t: 0.93, x: 2.15, z: 2.30, action: hide }
-      - { t: 1, x: 2.15, z: 2.30, action: hide }
+      - { t: 0, x: -9.30, z: 5.80, action: idle }
+      - { t: 0.533, x: -9.30, z: 5.80, action: idle }
+      - { t: 0.588, x: -6.40, z: 4.85, action: walk }
+      - { t: 0.678, x: -1.70, z: 4.30, action: hide }
+      - { t: 0.93, x: -1.70, z: 4.30, action: hide }
+      - { t: 1, x: -1.70, z: 4.30, action: hide }
   - characterId: bombur
     keyframes:
-      - { t: 0, x: -8.20, z: 4.20, action: idle }
-      - { t: 0.614, x: -6.40, z: 4.30, action: walk }
-      - { t: 0.664, x: 1.25, z: 3.15, action: walk }
-      - { t: 0.714, x: 2.75, z: 2.55, action: hide }
-      - { t: 0.74, x: 2.75, z: 2.55, action: hide, thought: { en: "They are still arguing. Let them argue all night.", es: "Siguen discutiendo. Que discutan toda la noche." } }
-      - { t: 0.93, x: 2.75, z: 2.55, action: hide }
-      - { t: 1, x: 2.75, z: 2.55, action: hide }
+      - { t: 0, x: -8.30, z: 6.40, action: idle }
+      - { t: 0.545, x: -8.30, z: 6.40, action: idle }
+      - { t: 0.6, x: -6.40, z: 3.42, action: walk }
+      - { t: 0.69, x: -1.90, z: 3.60, action: hide }
+      - { t: 0.93, x: -1.90, z: 3.60, action: hide }
+      - { t: 1, x: -1.90, z: 3.60, action: hide, thought: { en: "They are still arguing. Let them argue all night.", es: "Siguen discutiendo. Que discutan toda la noche." } }

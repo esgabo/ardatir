@@ -1,0 +1,28 @@
+id: arwen-on-cerin-amroth
+age: fourth-age
+when:
+  # Appendix A: she died "ere the falling of the leaves" of the year after Aragorn's, so Fo.A. 121,
+  # late in the year. The source gives a season at most; we claim the year.
+  start: { age: fourth-age, year: 121 }
+  precision: year
+place: cerin-amroth
+characters: [ arwen ]
+arcs: [ the-last-of-the-fellowship ]
+journeys: []
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix A (Aragorn and Arwen)" }
+title:
+  en: Arwen on Cerin Amroth
+  es: Arwen en Cerin Amroth
+summary:
+  en: Arwen leaves Minas Tirith and goes to Lothlórien, now empty of its people, and lies down on the green mound where she gave Aragorn her troth. There she dies, and with her the last evening star of her kindred goes out of Middle-earth.
+  es: Arwen deja Minas Tirith y va a Lothlórien, ya vacía de su gente, y se tiende en el túmulo verde donde dio su palabra a Aragorn. Allí muere, y con ella se apaga en la Tierra Media la última estrella vespertina de su linaje.
+links:
+  - to: the-passing-of-king-elessar
+    type: caused-by
+    note:
+      en: She outlives him by one year, and spends it going back to where it started.
+      es: Le sobrevive un año, y lo pasa volviendo al lugar donde todo empezó.
+beats:
+  - { id: mound, label: { en: The green mound, es: El túmulo verde } }
