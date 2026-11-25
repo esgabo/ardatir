@@ -17,6 +17,21 @@ camera:
   - { t: 0.62, x: -1.70, z: 1.80, width: 11.8 }
   - { t: 0.85, x: -0.10, z: 1.80, width: 9.2 }
   - { t: 1, x: 0.00, z: 1.80, width: 9.0 }
+# What the scene does, at the beat it does it (DESIGN §9.5). The fire itself is the place's own
+# sound (a `camp` scape), so only what happens around it is written here.
+sound:
+  # A log going in the fire the mutton is burning over.
+  - { t: 0.07, cue: crack, gain: 0.6 }
+  # The trolls fall out among themselves, as they do over everything.
+  - { t: 0.33, cue: thud }
+  - { t: 0.36, cue: thud, gain: 0.7 }
+  # The company caught one at a time and dropped in sacks.
+  - { t: 0.44, cue: thud }
+  - { t: 0.47, cue: thud, gain: 0.85 }
+  - { t: 0.5, cue: thud, gain: 0.8 }
+  - { t: 0.53, cue: thud, gain: 0.75 }
+  # The sun comes over the trees and three trolls become three stones.
+  - { t: 0.87, cue: rumble }
 narration:
   fire: 0
   trolls: 0.22

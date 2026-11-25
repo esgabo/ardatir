@@ -178,6 +178,31 @@ another stays shut, and a key pair in reverse shuts it again. The build checks t
 the covers the kit really has, and only an event with a `set` can have a `reveal`. See
 `docs/DESIGN.md` §9.4.
 
+### `sound`: what the scene does
+
+An event's **ambience** needs nothing written here: the wind, the leaves, the birds, the crickets,
+the water and the hearth come from the event's **place** and the hour the `light` keys ask for
+(`PLACE_SCAPES` in `src/sound/scape.ts`), so every staged event in a place somebody has listened
+for is heard the moment it is staged. **Footsteps** come free too, off the figures' own gaits.
+
+`sound` is for what the story *does* at a moment:
+
+```yaml
+sound:
+  - { t: 0.4, cue: chime }               # the doorbell at Bag End
+  - { t: 0.412, cue: door, gain: 0.8 }   # and the round door opened to it
+  - { t: 0.63, cue: clatter }            # the pantry emptied onto the table
+```
+
+The vocabulary is closed, and the build checks it: `knock`, `door`, `thud`, `clang`, `splash`,
+`crack`, `whoosh`, `wings`, `rumble`, `chime`, `pour`, `clatter`. A cue the engine cannot build
+out of noise and a filter would simply be silence, so there is no point writing one. `gain` is
+optional and goes from 0 to 2, louder or softer than that cue's own level. `step` is not on the
+list: a footstep placed by hand would land where the legs are not.
+
+Keys rise in `t`, like everything else. Nothing is sampled — it is all synthesized in the browser
+— so there is no audio file to add and nothing to licence. See `docs/DESIGN.md` §9.5.
+
 The tile runs about -7 to 7 on both axes. A figure whose position is off the tile (say `x: 11, z: 11`) is not drawn: off the tile = offstage. Use it to wait out the scenes before an entrance. A figure moving between two `hide` keyframes stays hidden (it is not shown walking).
 
 ## Recordings: `audio/<lang>.mp3` + `audio/<lang>.yaml`

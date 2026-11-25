@@ -40,6 +40,31 @@ reveal:
   # at once: first the Hill, then the ceilings under it.
   - { t: 0.30, cover: vaults, amount: 0 }
   - { t: 0.48, cover: vaults, amount: 1 }
+# What the scene does, at the beat it does it (DESIGN §9.5). The ambience of Bag End — the fire,
+# the room, the birds in the garden — comes from the place and the hour and is not written here.
+sound:
+  # Gandalf scratches his mark on the green door and goes; the door shuts behind him.
+  - { t: 0.315, cue: door }
+  # "The doorbell kept ringing": each knot of dwarves at the bell-pull, in the order the book
+  # brings them, with the door opened to each — Dwalin, Balin, Fili and Kili, the three who mind
+  # the doilies, then the other five together.
+  - { t: 0.4, cue: chime }
+  - { t: 0.412, cue: door, gain: 0.8 }
+  - { t: 0.44, cue: chime }
+  - { t: 0.452, cue: door, gain: 0.8 }
+  - { t: 0.478, cue: chime }
+  - { t: 0.492, cue: door, gain: 0.8 }
+  - { t: 0.516, cue: chime }
+  - { t: 0.53, cue: door, gain: 0.8 }
+  - { t: 0.552, cue: chime }
+  - { t: 0.566, cue: door, gain: 0.8 }
+  # Thorin comes last, and knocks: by now the door has hardly been shut.
+  - { t: 0.6, cue: knock }
+  - { t: 0.617, cue: door, gain: 0.8 }
+  # The pantry emptied onto the table, and the beer with it.
+  - { t: 0.63, cue: clatter }
+  - { t: 0.662, cue: pour }
+  - { t: 0.695, cue: clatter, gain: 0.8 }
 narration:
   morning: 0
   mark: 0.26

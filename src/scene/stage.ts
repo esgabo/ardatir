@@ -1,5 +1,7 @@
 import type * as THREE from 'three';
 import type { Framing } from './framing';
+import type { Cue } from '../sound/cues';
+import type { Layers } from '../sound/scape';
 
 /** What the side panel shows for a selected thing at the current moment. */
 export interface SelectionInfo {
@@ -34,6 +36,13 @@ export interface Stage {
    * own camera, so what the visitor has panned and zoomed survives.
    */
   framing?(t: number): Framing | undefined;
+  /**
+   * What is heard between two moments of the animation (DESIGN §9.5): the ambience bed, which is a
+   * function of the place and the hour, and the one-shots that fall in between — footsteps off the
+   * gait, and whatever the staging placed at a `t`. A level with no sound of its own has no
+   * `sound` at all, which is how the cosmos stays silent.
+   */
+  sound?(from: number, to: number, eventSeconds: number): { layers: Layers; cues: Cue[] };
   /** Full-screen flash strength 0 → 1 (e.g. the moment of Eä). */
   flash?(t: number): number;
   dispose(): void;

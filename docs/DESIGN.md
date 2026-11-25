@@ -341,7 +341,7 @@ starts: { fire: 0.4, trolls: 7.2, caught: 13.9 }
 - Names follow the published translations (Bilbo Bolsón, Bolsón Cerrado, Thorin Escudo de Roble).
 - Interface strings live in `src/i18n.ts`.
 - The language comes from `?lang=` in the URL, then the visitor's last choice, then English. Following a link with `?lang=` switches the open tab to that language; a link without one keeps the current language.
-- **What you hear is apart from what you read.** `?lang=` is the reading language (text and interface); `?audio=` is the recording that plays, or `off`. Without `?audio=`, the reading language's recording plays if there is one, else the English one, else none (`pickAudio` in `src/audioChoice.ts`). So Spanish text can ship before Spanish voices, and a visitor can read Spanish while hearing English. The clock follows the recording that plays; text in another language appears as its passage starts in that recording. A small button beside the sound control shows and switches the voice's language when there is a choice. Muting is `audio=off`: the event keeps the staging's own pace.
+- **What you hear is apart from what you read.** `?lang=` is the reading language (text and interface); `?audio=` is the recording that plays, or `off`. Without `?audio=`, the reading language's recording plays if there is one, else the English one, else none (`pickAudio` in `src/audioChoice.ts`). So Spanish text can ship before Spanish voices, and a visitor can read Spanish while hearing English. The clock follows the recording that plays; text in another language appears as its passage starts in that recording. A small button beside the sound control shows and switches the voice's language when there is a choice. Muting is `audio=off`: the event keeps the staging's own pace, and the place's own sound (§9.5) goes quiet with the voice.
 
 ## 7. Shareable moments
 
@@ -511,6 +511,79 @@ author had no reason to lift at that moment. That is the price of the author own
 composition, and it is the right way round: a wrong reveal is visible to everyone, a missed one
 only to someone who went looking.
 
+### 9.5 Sound (#27)
+
+A diorama with no sound is a model under glass. The sound is what tells a visitor that the Shire
+is a place where things live, that a hall has walls, that a cave does not.
+
+**Nothing is recorded. Everything is synthesized**, in the browser, out of noise, a filter and an
+envelope (`src/sound/engine.ts`, loaded with a dynamic `import()` the first time somebody presses
+play — about 3 kB over the wire). The reasons line up with every other decision here:
+
+- **It is ours.** The art rules say maps, models and terrain are original; a bought or borrowed
+  ambience bed would be the one place where somebody else's wood stands in for ours.
+- **There is nothing to credit and nothing to track.** No licence per file, no source list that
+  has to stay true, no audio anybody has to clear before publishing.
+- **It weighs nothing.** This repository cannot use Git LFS (GitHub Pages will not serve it), and
+  a sampled bed for every place would be tens of megabytes of what is otherwise a site of text
+  and small models.
+- **It is honestly a made thing**, like the faceted terrain: a few simple shapes, obviously built
+  rather than photographed. A fire here is noise through a low filter and a scatter of pops, and
+  it sounds like what it is.
+
+**The bed comes from the place and the hour, with nothing authored** (`src/sound/scape.ts`). This
+is exactly the bargain §9.1 makes with the grade: a place is decided once, and every event in it
+agrees. A `Scape` is eight layers — wind, leaves, birds, crickets, water, fire, room, drips — each
+0 → 1, and `PLACE_SCAPES` says which named scape a place takes (`hall`, `wood`, `camp`, `mirkwood`,
+`elvish`, `lake`, `mountain`, `cave`, `mordor`, `shire`, `open`). The hour folds in through the
+same `Light.lamps` that lights the windows: birds by day, crickets after dark, the wind dropping
+at night, a hearth that burns a little by day and comes up once it is the light in the room. So
+every staged event in a listed place is heard without anyone writing a line of staging, and a new
+event in Bag End sounds like Bag End on the day it is staged.
+
+A place nobody has listened for gets **silence**, the way an ungraded place gets `plain` light.
+That is a real answer and not a gap: the cosmos events have no place and make no sound, because
+deciding what the Music of the Ainur sounds like is a decision somebody should make on purpose,
+not a side effect of a lookup table.
+
+**The one-shots come from two places, and both are already written down** (`src/sound/cues.ts`):
+
+- **Footsteps come free from the gait.** A figure's feet are on the same clock as its legs
+  (`strideSeconds`), so a step lands when the walk cycle puts a foot down, at the pace the staging
+  has the figure covering ground, and a heavier figure lands harder. Figures standing, hiding or
+  offstage make none, and across a seek none are fired at all, so a scrub cannot empty the whole
+  event's footsteps into one frame.
+- **Everything else is the author's**, as `sound` in `staging.yaml`: a list of `{ t, cue, gain? }`,
+  from a closed vocabulary (`CUES` in `src/data/types.ts`: `knock`, `door`, `thud`, `clang`,
+  `splash`, `crack`, `whoosh`, `wings`, `rumble`, `chime`, `pour`, `clatter`). The build checks
+  every name against it, because a cue the engine cannot make is simply silence. They sit at a `t`
+  for the same reason the camera and the covers do (§9.3, §9.4): a knock derived from a figure
+  standing near a door would be a sound caused by the blocking rather than by the story.
+
+**What is pure and what is not.** The cues are a pure function of the pair of moments they fall
+between, so the same scrub sounds the same twice and a deep link never misses a beat. The bed is
+not: it runs on the audio clock, as shimmer and drift run on `ambient` seconds, because nothing in
+the story depends on where in a gust you are. `Stage.sound(from, to, eventSeconds)` reports both
+and the stage makes no noise itself, exactly as it moves no camera.
+
+**The mix.** Everything goes out dry and again through a room's tail — an impulse built the same
+way, noise with an exponential decay — and the scape's `room` layer sets how much of the second is
+heard, which is what tells the ear whether a footstep is in a field, a hall or a cave. While a
+recording is playing the whole bed steps back to `DUCK` from its first passage on, because the
+narrators read an event nearly end to end and a recording does not say where it pauses for breath;
+an event with no recording has no voice to duck under and is heard in full. The master never goes
+above half, because the sound is a layer over the scene and never the scene.
+
+**Muting is one control.** `?audio=off` already meant "no voice, and the event keeps its own
+pace"; it now means nothing to hear at all, which is what a speaker icon promises. Nothing is
+fetched and no audio clock is started until somebody presses play unmuted, and the control is
+offered only where there is something to hear: a recording, or a diorama.
+
+**Not done yet, deliberately:** music. An original score is a composer's decision and a
+listening choice, like the narrators' audition (§5), and a synthesized bed is ambience, not music.
+Until somebody makes that decision there is none — which also means the cosmos, where the first
+music of all is sung, is still silent.
+
 ## 10. IP guidelines (fan project)
 
 - Non-commercial; no ads, merchandise or paywall.
@@ -552,6 +625,7 @@ only to someone who went looking.
 | 2026-11-09 | **What is foretold** (#57): the Dagor Dagorath and the Second Music in a timeless age flagged `foretold`, after the Fourth Age and never on the axis; every event cites its source and may name who foretold it (`foretoldBy`); marked as prophecy everywhere (badge, page line, dashed segment after the axis, lanes); the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*), split into one scene per event (§4.8). |
 | 2026-11-09 | Model pipeline (#20): `assets/<type>/<id>/<id>.glb` (`.blend` sources beside, never deployed; no Git LFS); Blender exports glTF binary, Y-up, applied transforms, one scene, compressed with meshopt via `npm run model:pack` (gltfpack; meshopt over Draco for its smaller decoder); `model:` on characters and per-event on tracks, checked by the build (exists, loadable, within budget: characters 300 kB, kits 800 kB, props 100 kB); the loader is its own chunk; placeholder while loading or without a model; clips driven from `t` (§9, `MODELS.md`). |
 | 2026-11-09 | Wonder and learning (#29): a first visit to the front door opens with a short guided opening over the Ainulindalë (one line per beat, Next, skippable at once, then three ways in: a story, a moment, a life), remembered per visitor, at `#/start` and reopened from the sidebar's *Start here*; `pronounce: { en, es }` respellings in the *AR-da* style on characters, places, ages and events, validated, shown as a small hint; *About this scene* on the stage; gentle pointers to the books from `source`, with chapter titles in both languages (§3.5). |
+| 2026-11-25 | **Sound** (#27): synthesized in the browser, never sampled — original by construction, nothing to licence or credit, and weightless in a repository that cannot use Git LFS. The ambience of an event is a pure function of its **place and the hour** (`PLACE_SCAPES`, folded through the same `Light.lamps` that lights the windows), so every staged event in a listed place is heard without authoring; a place nobody has listened for is silent, as an ungraded place is `plain`. Footsteps come free from the gait (`strideSeconds`), and everything else the story does is authored at a `t` in `sound`, from a closed vocabulary the build checks. The bed ducks under a recording and the mute button silences all of it. No music yet: that is a composer's decision (§9.5). |
 | 2026-11-17 | Seeing inside a covered place (#28): a kit names its covers (`cover-<name>`) and the staging lifts them away in `t` (`reveal`), like the lid off a doll's house — rising and fading together. The author says when, never the camera, for the same reason the framing is authored (§9.4). |
 | 2026-11-15 | Where a figure stands (#81): a keyframe's `y` says how high above the walkable ground a character is, so one placed on a log, a bench or a doorstep is not buried in it; crowding is a **build warning**, not a push-apart at render time, because a figure's place must stay a pure function of `t` and who stands in front of whom is the author's composition (§9.2). |
 | 2026-11-15 | The render look (#76): a soft second light that comes up as the sun goes down, so a night scene can be seen; haze tinted toward the background, never toward a bright sky, so the far edge of a tile recedes instead of dissolving; a grade per place applied to **the light, not the pixels** (no post-processing pass: a second render of the frame is the first thing to fail on a phone), where a place that takes light away gets the soft light back, and the background takes only a third of the tint so the void stays dark; contact shadows under figures, because at this scale where a figure touches says more than the shadow behind it; one quality setting turning the shadow map, pixel ratio and effect counts down together, guessed from the device and overridable with `?quality=` (§9.1). |

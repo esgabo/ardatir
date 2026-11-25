@@ -15,6 +15,14 @@ camera:
   - { t: 0.5, x: -0.20, z: -0.35, width: 5.8 }
   - { t: 0.84, x: -0.20, z: -0.35, width: 5.8 }
   - { t: 1, x: -0.20, z: -0.30, width: 6.2 }
+# What the scene does, at the beat it does it (DESIGN §9.5). Rivendell's own sound is the Bruinen
+# under the house, which comes from the place.
+sound:
+  # The swords out of the trolls' hoard, laid on the table for Elrond to name.
+  - { t: 0.19, cue: clang }
+  - { t: 0.23, cue: clang, gain: 0.7 }
+  # The moon-letters come up in the held-up map: elvish glass, for a thing written in moonlight.
+  - { t: 0.52, cue: chime }
 narration:
   valley: 0
   swords: 0.17

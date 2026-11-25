@@ -36,6 +36,20 @@ camera:
   - { t: 0.74, x: -0.5, z: 0, width: 13.4 }
   - { t: 0.88, x: -0.4, z: -0.6, width: 7.4 }
   - { t: 1, x: -0.9, z: 2.2, width: 10.4 }
+# What the scene does, at the beat it does it (DESIGN §9.5). The hall's fire, the bees and the
+# birds in the clover come from the place and the hour, not from here.
+sound:
+  # The wide gate in the thorn hedge, once for each knot of dwarves Gandalf lets in by twos.
+  - { t: 0.172, cue: door, gain: 0.7 }
+  - { t: 0.217, cue: door, gain: 0.7 }
+  - { t: 0.262, cue: door, gain: 0.7 }
+  - { t: 0.307, cue: door, gain: 0.7 }
+  # Supper: bowls of honey and cream, and mead poured for fifteen.
+  - { t: 0.48, cue: clatter }
+  - { t: 0.52, cue: pour }
+  - { t: 0.56, cue: clatter, gain: 0.8 }
+  # The company files out at dawn and the gate swings shut behind them.
+  - { t: 0.965, cue: door }
 narration:
   beorn: 0
   tale: 0.17

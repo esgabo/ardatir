@@ -18,6 +18,11 @@ camera:
   - { t: 0.6, x: 1.00, z: -0.40, width: 6.4 }
   - { t: 0.82, x: 0.80, z: 0.10, width: 6.8 }
   - { t: 1, x: -1.10, z: 0.65, width: 9.8 }
+# What the scene does, at the beat it does it (DESIGN §9.5).
+sound:
+  # The company fed and listened to, a year and a road later.
+  - { t: 0.22, cue: pour }
+  - { t: 0.25, cue: clatter, gain: 0.8 }
 narration:
   arrive: 0
   tales: 0.2
