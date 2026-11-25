@@ -535,6 +535,77 @@ def hedge(pts, seed):
             bl((x, y + r * 0.9, z), (r, r * rnd.uniform(0.95, 1.2), r), HEDGE if k % 3 else LEAF_DARK)
 
 
+def gable_roof(x0, x1, z0, z1, eave, ridge, mat, mat_dark, over=0.26, axis='x', hole=None,
+               gable_mat=None):
+    """A thatched gable roof over a rectangle, overhanging all round.
+
+    The ridge runs east-west (`axis='x'`, the usual) or north-south (`axis='z'`). `hole` is a
+    span along the ridge left open — a smoke-hole over a hearth in the middle of a floor — where
+    both slopes stop short of the top instead of meeting.
+    """
+    if axis == 'x':
+        a0, a1, b0, b1 = x0, x1, z0, z1
+
+        def pt(a, y, b):
+            return (a, y, b)
+    else:
+        a0, a1, b0, b1 = z0, z1, x0, x1
+
+        def pt(a, y, b):
+            return (b, y, a)
+
+    def size(along, up, across):
+        return (along, up, across) if axis == 'x' else (across, up, along)
+
+    aa, ab = a0 - over, a1 + over
+    ba, bb = b0 - over, b1 + over
+    bm = (b0 + b1) / 2
+    n = max(2, round((ab - aa) / 0.5))
+    for i in range(n):
+        p0 = aa + (ab - aa) * i / n
+        p1 = aa + (ab - aa) * (i + 1) / n
+        m = mat if i % 2 else mat_dark
+        f = 0.62 if hole and hole[0] - 1e-9 < (p0 + p1) / 2 < hole[1] + 1e-9 else 1.0
+        yt = ridge if f == 1.0 else eave + (ridge - eave) * f
+        for bs, be in ((ba, bm), (bm, bb)):
+            mesh = bmesh.new()
+            if be == bm:
+                bt = bm if f == 1.0 else bs + (bm - bs) * f
+                q = [pt(p0, eave, bs), pt(p1, eave, bs), pt(p1, yt, bt), pt(p0, yt, bt)]
+            else:
+                bt = bm if f == 1.0 else be + (bm - be) * f
+                q = [pt(p0, yt, bt), pt(p1, yt, bt), pt(p1, eave, be), pt(p0, eave, be)]
+            vs = [mesh.verts.new(P(*v)) for v in q]
+            mesh.faces.new(vs)
+            bmesh.ops.recalc_face_normals(mesh, faces=mesh.faces)
+            bmesh.ops.solidify(mesh, geom=mesh.faces[:], thickness=0.12)
+            add(mesh, m)
+    # the gable ends, filled in under the slopes
+    for a in (a0, a1):
+        mesh = bmesh.new()
+        vs = [mesh.verts.new(P(*v)) for v in
+              (pt(a, eave, b0 - 0.02), pt(a, ridge, bm), pt(a, eave, b1 + 0.02))]
+        mesh.faces.new(vs)
+        bmesh.ops.recalc_face_normals(mesh, faces=mesh.faces)
+        bmesh.ops.solidify(mesh, geom=mesh.faces[:], thickness=0.06)
+        add(mesh, gable_mat or PLASTER)
+    # a rolled ridge along the top, and a thick rolled edge at each eave
+    nr = max(3, round((ab - aa) / 0.28))
+    for i in range(nr):
+        a = aa + (ab - aa) * (i + 0.5) / nr
+        if not (hole and hole[0] < a < hole[1]):
+            bl(pt(a, ridge + 0.02, bm), size(0.15, 0.07, 0.14), mat_dark if i % 2 else mat, subdiv=0)
+        for be in (ba, bb):
+            bl(pt(a, eave - 0.03, be), size(0.15, 0.09, 0.1), mat_dark if i % 2 else mat, subdiv=0)
+    ne = max(2, round((bb - ba) / 0.3))
+    for i in range(ne):     # and down the gable verges
+        b = ba + (bb - ba) * (i + 0.5) / ne
+        g = 1 - abs(b - bm) / max(1e-6, bm - ba)
+        for ae in (aa, ab):
+            bl(pt(ae, eave + (ridge - eave) * g - 0.02, b), size(0.1, 0.08, 0.14),
+               mat if i % 2 else mat_dark, subdiv=0)
+
+
 def round_door(cx, cy, z, r, bucket, colour=DOOR, boards=DOOR_DARK, floor=None):
     """A round hobbit door as its own object, so the site can swing it on its west edge."""
     into(bucket)

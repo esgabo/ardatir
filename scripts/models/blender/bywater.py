@@ -350,46 +350,7 @@ def timber_panel(x0, x1, y0, y1, z, brace=True, seed=0):
         add(bm, WOOD_DARK)
 
 
-def gable_roof(x0, x1, z0, z1, eave, ridge, mat, mat_dark, over=0.26):
-    """A thatched gable roof, ridge running east-west, overhanging all round."""
-    xa, xb = x0 - over, x1 + over
-    za, zb = z0 - over, z1 + over
-    zm = (z0 + z1) / 2
-    n = max(2, round((xb - xa) / 0.5))
-    for i in range(n):
-        ax = xa + (xb - xa) * i / n
-        bx_ = xa + (xb - xa) * (i + 1) / n
-        m = mat if i % 2 else mat_dark
-        for zs, ze in ((za, zm), (zm, zb)):
-            bm = bmesh.new()
-            q = [P(ax, eave, zs), P(bx_, eave, zs), P(bx_, ridge, zm), P(ax, ridge, zm)] if ze == zm else \
-                [P(ax, ridge, zm), P(bx_, ridge, zm), P(bx_, eave, ze), P(ax, eave, ze)]
-            vs = [bm.verts.new(v) for v in q]
-            bm.faces.new(vs)
-            bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
-            bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.12)
-            add(bm, m)
-    # the gable ends, filled in under the slopes
-    for x in (x0, x1):
-        bm = bmesh.new()
-        vs = [bm.verts.new(v) for v in (P(x, eave, z0 - 0.02), P(x, ridge, zm), P(x, eave, z1 + 0.02))]
-        bm.faces.new(vs)
-        bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
-        bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.06)
-        add(bm, PLASTER)
-    # a rolled ridge along the top, and a thick rolled edge at each eave
-    nr = max(3, round((xb - xa) / 0.28))
-    for i in range(nr):
-        x = xa + (xb - xa) * (i + 0.5) / nr
-        bl((x, ridge + 0.02, zm), (0.15, 0.07, 0.14), mat_dark if i % 2 else mat, subdiv=0)
-        for ze in (za, zb):
-            bl((x, eave - 0.03, ze), (0.15, 0.09, 0.1), mat_dark if i % 2 else mat, subdiv=0)
-    ne = max(2, round((zb - za) / 0.3))
-    for i in range(ne):     # and down the gable verges
-        z = za + (zb - za) * (i + 0.5) / ne
-        f = 1 - abs(z - zm) / max(1e-6, zm - za)
-        for xe in (xa, xb):
-            bl((xe, eave + (ridge - eave) * f - 0.02, z), (0.1, 0.08, 0.14), mat if i % 2 else mat_dark, subdiv=0)
+# The gabled thatch roof is shared with the other tiles: `gable_roof` in kit.py.
 
 
 def dragon_sign(x, z, y):

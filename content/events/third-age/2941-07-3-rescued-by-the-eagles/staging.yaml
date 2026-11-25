@@ -15,18 +15,18 @@ beats:
 tracks:
   - characterId: gandalf
     keyframes:
-      - { t: 0, x: -5.8, z: 3, action: talk, thought: { en: "He may yet turn up. He is more than he seems.", es: "Aún puede aparecer. Es más de lo que parece." } }
-      - { t: 0.12, x: -5.8, z: 3, action: talk }
-      - { t: 0.17, x: -4.8, z: 2.5, action: run }
-      - { t: 0.3, x: -1.8, z: 0, action: run }
-      - { t: 0.33, x: -1.5, z: 0.1, action: hide, thought: { en: "Fire cones. Let them taste a little light.", es: "Piñas encendidas. Que prueben un poco de luz." } }
-      - { t: 0.47, x: -1.5, z: 0.1, action: hide }
-      - { t: 0.52, x: -1.5, z: 0.1, action: hide }
-      - { t: 0.62, x: -6.3, z: -4, action: walk }
-      - { t: 0.67, x: -6.3, z: -4.5, action: idle }
-      - { t: 0.78, x: -6.3, z: -4.5, action: idle }
-      - { t: 0.84, x: 2.2, z: 4, action: walk }
-      - { t: 1, x: 2.2, z: 4, action: idle }
+      - { t: 0, x: -5.99, z: 3, action: talk, thought: { en: "He may yet turn up. He is more than he seems.", es: "Aún puede aparecer. Es más de lo que parece." } }
+      - { t: 0.12, x: -5.99, z: 3, action: talk }
+      - { t: 0.17, x: -4.99, z: 2.5, action: run }
+      - { t: 0.3, x: -1.99, z: 0, action: run }
+      - { t: 0.33, x: -1.69, z: 0.1, action: hide, thought: { en: "Fire cones. Let them taste a little light.", es: "Piñas encendidas. Que prueben un poco de luz." } }
+      - { t: 0.47, x: -1.69, z: 0.1, action: hide }
+      - { t: 0.52, x: -1.8, z: 0.1, action: hide }
+      - { t: 0.62, x: -6.69, z: -3.99, action: walk }
+      - { t: 0.67, x: -6.65, z: -4.42, action: idle }
+      - { t: 0.78, x: -6.65, z: -4.44, action: idle }
+      - { t: 0.84, x: 2, z: 4, action: walk }
+      - { t: 1, x: 2.01, z: 4, action: idle }
   - characterId: thorin
     keyframes:
       - { t: 0, x: -5.8, z: 3.8, action: talk, thought: { en: "Go back for the hobbit? Only if we must.", es: "¿Volver por el hobbit? Solo si es necesario." } }
@@ -35,11 +35,11 @@ tracks:
       - { t: 0.3, x: -1.8, z: 0.8, action: run }
       - { t: 0.33, x: -1.5, z: 0.9, action: hide }
       - { t: 0.47, x: -1.5, z: 0.9, action: hide }
-      - { t: 0.52, x: -1.5, z: 0.9, action: hide }
-      - { t: 0.62, x: -6.3, z: -3.2, action: walk }
-      - { t: 0.67, x: -6.3, z: -3.7, action: idle }
-      - { t: 0.78, x: -6.3, z: -3.7, action: idle }
-      - { t: 0.84, x: 2.2, z: 4.8, action: walk, thought: { en: "Brought down on a rock in a river. Strange luck.", es: "Dejados sobre una roca en un río. Extraña suerte." } }
+      - { t: 0.52, x: -1.66, z: 0.92, action: hide }
+      - { t: 0.62, x: -6.49, z: -3.16, action: walk }
+      - { t: 0.67, x: -6.34, z: -3.53, action: idle }
+      - { t: 0.78, x: -6.41, z: -3.55, action: idle }
+      - { t: 0.84, x: 2.18, z: 4.81, action: walk, thought: { en: "Brought down on a rock in a river. Strange luck.", es: "Dejados sobre una roca en un río. Extraña suerte." } }
       - { t: 1, x: 2.2, z: 4.8, action: idle }
   - characterId: balin
     keyframes:
@@ -47,112 +47,112 @@ tracks:
       - { t: 0.12, x: -5.12, z: 2.25, action: talk }
       - { t: 0.17, x: -4.12, z: 1.75, action: run }
       - { t: 0.3, x: -1.12, z: -0.75, action: run }
-      - { t: 0.33, x: -0.82, z: -0.65, action: hide }
-      - { t: 0.47, x: -0.82, z: -0.65, action: hide }
-      - { t: 0.52, x: -0.82, z: -0.65, action: hide }
-      - { t: 0.62, x: -5.62, z: -4.75, action: walk }
-      - { t: 0.67, x: -5.62, z: -5.25, action: idle }
-      - { t: 0.78, x: -5.62, z: -5.25, action: idle }
-      - { t: 0.84, x: 2.88, z: 3.25, action: walk }
-      - { t: 1, x: 2.88, z: 3.25, action: idle }
+      - { t: 0.33, x: -1.01, z: -0.68, action: hide }
+      - { t: 0.47, x: -1.01, z: -0.69, action: hide }
+      - { t: 0.52, x: -1.16, z: -0.72, action: hide }
+      - { t: 0.62, x: -5.92, z: -4.79, action: walk }
+      - { t: 0.67, x: -6.48, z: -5.29, action: idle }
+      - { t: 0.78, x: -6.24, z: -5.25, action: idle }
+      - { t: 0.84, x: 2.51, z: 3.34, action: walk }
+      - { t: 1, x: 2.81, z: 3.21, action: idle }
   - characterId: dwalin
     keyframes:
       - { t: 0, x: -4.38, z: 2.25, action: talk }
       - { t: 0.12, x: -4.38, z: 2.25, action: talk }
       - { t: 0.17, x: -3.38, z: 1.75, action: run }
-      - { t: 0.3, x: -0.38, z: -0.75, action: run }
-      - { t: 0.33, x: -0.08, z: -0.65, action: hide }
-      - { t: 0.47, x: -0.08, z: -0.65, action: hide }
-      - { t: 0.52, x: -0.08, z: -0.65, action: hide }
-      - { t: 0.62, x: -4.88, z: -4.75, action: walk }
-      - { t: 0.67, x: -4.88, z: -5.25, action: idle }
-      - { t: 0.78, x: -4.88, z: -5.25, action: idle }
-      - { t: 0.84, x: 3.62, z: 3.25, action: walk }
-      - { t: 1, x: 3.62, z: 3.25, action: idle }
+      - { t: 0.3, x: -0.45, z: -0.74, action: run }
+      - { t: 0.33, x: -0.2, z: -0.63, action: hide }
+      - { t: 0.47, x: -0.04, z: -0.7, action: hide }
+      - { t: 0.52, x: -0.55, z: -0.39, action: hide }
+      - { t: 0.62, x: -5.11, z: -5.42, action: walk }
+      - { t: 0.67, x: -4.29, z: -5.81, action: idle }
+      - { t: 0.78, x: -4.55, z: -4.98, action: idle }
+      - { t: 0.84, x: 3.77, z: 3.3, action: walk }
+      - { t: 1, x: 3.49, z: 3.17, action: idle }
   - characterId: fili
     keyframes:
       - { t: 0, x: -3.62, z: 2.25, action: talk }
-      - { t: 0.12, x: -3.62, z: 2.25, action: talk }
-      - { t: 0.17, x: -2.62, z: 1.75, action: run }
-      - { t: 0.3, x: 0.38, z: -0.75, action: run }
-      - { t: 0.33, x: 0.68, z: -0.65, action: hide }
-      - { t: 0.47, x: 0.68, z: -0.65, action: hide }
-      - { t: 0.52, x: 0.68, z: -0.65, action: hide }
-      - { t: 0.62, x: -4.12, z: -4.75, action: walk }
-      - { t: 0.67, x: -4.12, z: -5.25, action: idle }
-      - { t: 0.78, x: -4.12, z: -5.25, action: idle }
-      - { t: 0.84, x: 4.38, z: 3.25, action: walk }
-      - { t: 1, x: 4.38, z: 3.25, action: idle }
+      - { t: 0.12, x: -3.74, z: 2.15, action: talk }
+      - { t: 0.17, x: -2.77, z: 1.32, action: run }
+      - { t: 0.3, x: 0.62, z: -1.26, action: run }
+      - { t: 0.33, x: 1, z: -0.58, action: hide }
+      - { t: 0.47, x: 0.66, z: -0.55, action: hide }
+      - { t: 0.52, x: 0.72, z: -0.6, action: hide }
+      - { t: 0.62, x: -4.15, z: -5.3, action: walk }
+      - { t: 0.67, x: -3.64, z: -5.74, action: idle }
+      - { t: 0.78, x: -3.73, z: -5.53, action: idle }
+      - { t: 0.84, x: 4.6, z: 2.89, action: walk }
+      - { t: 1, x: 4.53, z: 2.9, action: idle }
   - characterId: kili
     keyframes:
-      - { t: 0, x: -2.88, z: 2.25, action: talk }
-      - { t: 0.12, x: -2.88, z: 2.25, action: talk }
-      - { t: 0.17, x: -1.88, z: 1.75, action: run }
-      - { t: 0.3, x: 1.12, z: -0.75, action: run }
-      - { t: 0.33, x: 1.43, z: -0.65, action: hide }
-      - { t: 0.47, x: 1.43, z: -0.65, action: hide }
-      - { t: 0.52, x: 1.43, z: -0.65, action: hide }
-      - { t: 0.62, x: -3.38, z: -4.75, action: walk }
-      - { t: 0.67, x: -3.38, z: -5.25, action: idle }
-      - { t: 0.78, x: -3.38, z: -5.25, action: idle }
-      - { t: 0.84, x: 5.12, z: 3.25, action: walk }
+      - { t: 0, x: -2.88, z: 2.23, action: talk }
+      - { t: 0.12, x: -2.73, z: 2.51, action: talk }
+      - { t: 0.17, x: -1.57, z: 1.9, action: run }
+      - { t: 0.3, x: 1.14, z: -0.75, action: run }
+      - { t: 0.33, x: 1.69, z: -0.69, action: hide }
+      - { t: 0.47, x: 1.62, z: -0.7, action: hide }
+      - { t: 0.52, x: 1.33, z: -0.79, action: hide }
+      - { t: 0.62, x: -3.18, z: -5.28, action: walk }
+      - { t: 0.67, x: -2.93, z: -5.23, action: idle }
+      - { t: 0.78, x: -3.08, z: -5.2, action: idle }
+      - { t: 0.84, x: 5.15, z: 3.24, action: walk }
       - { t: 1, x: 5.12, z: 3.25, action: idle }
   - characterId: dori
     keyframes:
-      - { t: 0, x: -5.12, z: 3.0, action: talk }
-      - { t: 0.12, x: -5.12, z: 3.0, action: talk }
+      - { t: 0, x: -5.12, z: 3, action: talk }
+      - { t: 0.12, x: -5.12, z: 3, action: talk }
       - { t: 0.17, x: -4.12, z: 2.5, action: run }
-      - { t: 0.3, x: -1.12, z: 0.0, action: run }
+      - { t: 0.3, x: -1.12, z: 0, action: run }
       - { t: 0.33, x: -0.82, z: 0.1, action: hide }
       - { t: 0.47, x: -0.82, z: 0.1, action: hide }
-      - { t: 0.52, x: -0.82, z: 0.1, action: hide }
-      - { t: 0.62, x: -5.62, z: -4.0, action: walk }
-      - { t: 0.67, x: -5.62, z: -4.5, action: idle }
-      - { t: 0.78, x: -5.62, z: -4.5, action: idle }
-      - { t: 0.84, x: 2.88, z: 4.0, action: walk }
-      - { t: 1, x: 2.88, z: 4.0, action: idle }
+      - { t: 0.52, x: -0.87, z: 0.19, action: hide }
+      - { t: 0.62, x: -5.78, z: -4.15, action: walk }
+      - { t: 0.67, x: -5.8, z: -4.45, action: idle }
+      - { t: 0.78, x: -5.57, z: -4.52, action: idle }
+      - { t: 0.84, x: 2.96, z: 3.99, action: walk }
+      - { t: 1, x: 2.9, z: 4, action: idle }
   - characterId: nori
     keyframes:
-      - { t: 0, x: -4.38, z: 3.0, action: talk }
-      - { t: 0.12, x: -4.38, z: 3.0, action: talk }
-      - { t: 0.17, x: -3.38, z: 2.5, action: run }
-      - { t: 0.3, x: -0.38, z: 0.0, action: run }
-      - { t: 0.33, x: -0.08, z: 0.1, action: hide }
+      - { t: 0, x: -4.38, z: 3, action: talk }
+      - { t: 0.12, x: -4.38, z: 2.99, action: talk }
+      - { t: 0.17, x: -3.34, z: 2.61, action: run }
+      - { t: 0.3, x: -0.26, z: 0.01, action: run }
+      - { t: 0.33, x: -0.09, z: 0.1, action: hide }
       - { t: 0.47, x: -0.08, z: 0.1, action: hide }
-      - { t: 0.52, x: -0.08, z: 0.1, action: hide }
-      - { t: 0.62, x: -4.88, z: -4.0, action: walk }
-      - { t: 0.67, x: -4.88, z: -4.5, action: idle }
-      - { t: 0.78, x: -4.88, z: -4.5, action: idle }
-      - { t: 0.84, x: 3.62, z: 4.0, action: walk }
-      - { t: 1, x: 3.62, z: 4.0, action: idle }
+      - { t: 0.52, x: -0.17, z: 0.25, action: hide }
+      - { t: 0.62, x: -5.21, z: -3.65, action: walk }
+      - { t: 0.67, x: -5.16, z: -4, action: idle }
+      - { t: 0.78, x: -4.87, z: -4.38, action: idle }
+      - { t: 0.84, x: 3.63, z: 4.06, action: walk }
+      - { t: 1, x: 3.66, z: 4, action: idle }
   - characterId: ori
     keyframes:
-      - { t: 0, x: -3.62, z: 3.0, action: talk }
-      - { t: 0.12, x: -3.62, z: 3.0, action: talk }
-      - { t: 0.17, x: -2.62, z: 2.5, action: run }
-      - { t: 0.3, x: 0.38, z: 0.0, action: run }
-      - { t: 0.33, x: 0.68, z: 0.1, action: hide }
-      - { t: 0.47, x: 0.68, z: 0.1, action: hide }
-      - { t: 0.52, x: 0.68, z: 0.1, action: hide }
-      - { t: 0.62, x: -4.12, z: -4.0, action: walk }
-      - { t: 0.67, x: -4.12, z: -4.5, action: idle }
-      - { t: 0.78, x: -4.12, z: -4.5, action: idle }
-      - { t: 0.84, x: 4.38, z: 4.0, action: walk }
-      - { t: 1, x: 4.38, z: 4.0, action: idle }
+      - { t: 0, x: -3.62, z: 2.97, action: talk }
+      - { t: 0.12, x: -3.62, z: 2.98, action: talk }
+      - { t: 0.17, x: -2.54, z: 2.78, action: run }
+      - { t: 0.3, x: 0.46, z: 0.16, action: run }
+      - { t: 0.33, x: 0.68, z: 0.14, action: hide }
+      - { t: 0.47, x: 0.66, z: 0.17, action: hide }
+      - { t: 0.52, x: 0.59, z: 0.23, action: hide }
+      - { t: 0.62, x: -3.66, z: -4.84, action: walk }
+      - { t: 0.67, x: -3.57, z: -5.06, action: idle }
+      - { t: 0.78, x: -4.14, z: -4.46, action: idle }
+      - { t: 0.84, x: 4.39, z: 4.3, action: walk }
+      - { t: 1, x: 4.42, z: 4.21, action: idle }
   - characterId: oin
     keyframes:
-      - { t: 0, x: -2.88, z: 3.0, action: talk }
-      - { t: 0.12, x: -2.88, z: 3.0, action: talk }
-      - { t: 0.17, x: -1.88, z: 2.5, action: run }
-      - { t: 0.3, x: 1.12, z: 0.0, action: run }
-      - { t: 0.33, x: 1.43, z: 0.1, action: hide }
-      - { t: 0.47, x: 1.43, z: 0.1, action: hide }
-      - { t: 0.52, x: 1.43, z: 0.1, action: hide }
-      - { t: 0.62, x: -3.38, z: -4.0, action: walk }
-      - { t: 0.67, x: -3.38, z: -4.5, action: idle }
-      - { t: 0.78, x: -3.38, z: -4.5, action: idle }
-      - { t: 0.84, x: 5.12, z: 4.0, action: walk }
-      - { t: 1, x: 5.12, z: 4.0, action: idle }
+      - { t: 0, x: -2.69, z: 3.03, action: talk }
+      - { t: 0.12, x: -2.71, z: 3.16, action: talk }
+      - { t: 0.17, x: -1.82, z: 2.52, action: run }
+      - { t: 0.3, x: 1.13, z: 0, action: run }
+      - { t: 0.33, x: 1.62, z: 0.09, action: hide }
+      - { t: 0.47, x: 1.63, z: 0.11, action: hide }
+      - { t: 0.52, x: 1.47, z: -0.01, action: hide }
+      - { t: 0.62, x: -3.03, z: -4.5, action: walk }
+      - { t: 0.67, x: -3.04, z: -4.47, action: idle }
+      - { t: 0.78, x: -3.27, z: -4.51, action: idle }
+      - { t: 0.84, x: 5.45, z: 3.84, action: walk }
+      - { t: 1, x: 5.31, z: 3.96, action: idle }
   - characterId: gloin
     keyframes:
       - { t: 0, x: -5.12, z: 3.75, action: talk }
@@ -161,76 +161,76 @@ tracks:
       - { t: 0.3, x: -1.12, z: 0.75, action: run }
       - { t: 0.33, x: -0.82, z: 0.85, action: hide }
       - { t: 0.47, x: -0.82, z: 0.85, action: hide }
-      - { t: 0.52, x: -0.82, z: 0.85, action: hide }
-      - { t: 0.62, x: -5.62, z: -3.25, action: walk }
-      - { t: 0.67, x: -5.62, z: -3.75, action: idle }
-      - { t: 0.78, x: -5.62, z: -3.75, action: idle }
-      - { t: 0.84, x: 2.88, z: 4.75, action: walk }
-      - { t: 1, x: 2.88, z: 4.75, action: idle }
+      - { t: 0.52, x: -0.71, z: 0.83, action: hide }
+      - { t: 0.62, x: -5.73, z: -3.22, action: walk }
+      - { t: 0.67, x: -5.67, z: -3.57, action: idle }
+      - { t: 0.78, x: -5.66, z: -3.55, action: idle }
+      - { t: 0.84, x: 2.87, z: 4.95, action: walk }
+      - { t: 1, x: 2.88, z: 4.79, action: idle }
   - characterId: bifur
     keyframes:
       - { t: 0, x: -4.38, z: 3.75, action: talk }
       - { t: 0.12, x: -4.38, z: 3.75, action: talk }
-      - { t: 0.17, x: -3.38, z: 3.25, action: run }
-      - { t: 0.3, x: -0.38, z: 0.75, action: run }
-      - { t: 0.33, x: -0.08, z: 0.85, action: hide }
-      - { t: 0.47, x: -0.08, z: 0.85, action: hide }
-      - { t: 0.52, x: -0.08, z: 0.85, action: hide }
-      - { t: 0.62, x: -4.88, z: -3.25, action: walk }
-      - { t: 0.67, x: -4.88, z: -3.75, action: idle }
-      - { t: 0.78, x: -4.88, z: -3.75, action: idle }
-      - { t: 0.84, x: 3.62, z: 4.75, action: walk }
+      - { t: 0.17, x: -3.38, z: 3.26, action: run }
+      - { t: 0.3, x: -0.38, z: 0.76, action: run }
+      - { t: 0.33, x: -0.08, z: 1.04, action: hide }
+      - { t: 0.47, x: -0.08, z: 1.04, action: hide }
+      - { t: 0.52, x: -0.06, z: 0.94, action: hide }
+      - { t: 0.62, x: -5.05, z: -2.92, action: walk }
+      - { t: 0.67, x: -4.98, z: -3.37, action: idle }
+      - { t: 0.78, x: -4.9, z: -3.54, action: idle }
+      - { t: 0.84, x: 3.62, z: 4.76, action: walk }
       - { t: 1, x: 3.62, z: 4.75, action: idle }
   - characterId: bofur
     keyframes:
       - { t: 0, x: -3.62, z: 3.75, action: talk }
-      - { t: 0.12, x: -3.62, z: 3.75, action: talk }
-      - { t: 0.17, x: -2.62, z: 3.25, action: run }
-      - { t: 0.3, x: 0.38, z: 0.75, action: run }
+      - { t: 0.12, x: -3.62, z: 3.76, action: talk }
+      - { t: 0.17, x: -2.64, z: 3.53, action: run }
+      - { t: 0.3, x: 0.37, z: 0.85, action: run }
       - { t: 0.33, x: 0.68, z: 0.85, action: hide }
       - { t: 0.47, x: 0.68, z: 0.85, action: hide }
-      - { t: 0.52, x: 0.68, z: 0.85, action: hide }
-      - { t: 0.62, x: -4.12, z: -3.25, action: walk }
-      - { t: 0.67, x: -4.12, z: -3.75, action: idle }
-      - { t: 0.78, x: -4.12, z: -3.75, action: idle }
-      - { t: 0.84, x: 4.38, z: 4.75, action: walk }
-      - { t: 1, x: 4.38, z: 4.75, action: idle }
+      - { t: 0.52, x: 0.67, z: 0.87, action: hide }
+      - { t: 0.62, x: -4.14, z: -2.57, action: walk }
+      - { t: 0.67, x: -4.27, z: -3, action: idle }
+      - { t: 0.78, x: -4.07, z: -3.74, action: idle }
+      - { t: 0.84, x: 4.36, z: 4.95, action: walk }
+      - { t: 1, x: 4.37, z: 4.94, action: idle }
   - characterId: bombur
     keyframes:
-      - { t: 0, x: -2.88, z: 3.75, action: talk }
-      - { t: 0.12, x: -2.88, z: 3.75, action: talk }
-      - { t: 0.17, x: -1.88, z: 3.25, action: run }
+      - { t: 0, x: -2.88, z: 3.79, action: talk }
+      - { t: 0.12, x: -2.88, z: 3.94, action: talk }
+      - { t: 0.17, x: -1.88, z: 3.27, action: run }
       - { t: 0.3, x: 1.12, z: 0.75, action: run }
       - { t: 0.33, x: 1.43, z: 0.85, action: hide }
       - { t: 0.47, x: 1.43, z: 0.85, action: hide }
-      - { t: 0.52, x: 1.43, z: 0.85, action: hide }
-      - { t: 0.62, x: -3.38, z: -3.25, action: walk }
-      - { t: 0.67, x: -3.38, z: -3.75, action: idle }
-      - { t: 0.78, x: -3.38, z: -3.75, action: idle }
-      - { t: 0.84, x: 5.12, z: 4.75, action: walk }
+      - { t: 0.52, x: 1.33, z: 1.21, action: hide }
+      - { t: 0.62, x: -3.1, z: -2.35, action: walk }
+      - { t: 0.67, x: -3.24, z: -3.85, action: idle }
+      - { t: 0.78, x: -3.28, z: -3.72, action: idle }
+      - { t: 0.84, x: 5.06, z: 5, action: walk }
       - { t: 1, x: 5.12, z: 4.75, action: idle }
   - characterId: bilbo
     model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
       - { t: 0, x: 3.5, z: -1.5, action: walk, thought: { en: "I have been walking for hours. Where are they?", es: "Llevo horas caminando. ¿Dónde están?" } }
-      - { t: 0.12, x: -2.5, z: 2, action: walk, thought: { en: "Still invisible. Let me see how they take it.", es: "Aún invisible. A ver cómo lo toman." } }
-      - { t: 0.17, x: -2.7, z: 2.2, action: idle }
-      - { t: 0.3, x: 0.4, z: -0.8, action: run }
-      - { t: 0.33, x: 0.5, z: -0.8, action: hide, thought: { en: "Wolves! I am hanging on to Dori.", es: "¡Lobos! Me agarro a Dori." } }
-      - { t: 0.5, x: 0.5, z: -0.8, action: hide }
-      - { t: 0.62, x: -4.2, z: -3.6, action: walk }
-      - { t: 0.67, x: -4.2, z: -4, action: idle, thought: { en: "A real high ledge. And I am alive.", es: "Una cornisa altísima. Y estoy vivo." } }
-      - { t: 0.84, x: 4.3, z: 3.5, action: walk }
-      - { t: 1, x: 4.3, z: 3.5, action: idle }
+      - { t: 0.12, x: -2.53, z: 1.58, action: walk, thought: { en: "Still invisible. Let me see how they take it.", es: "Aún invisible. A ver cómo lo toman." } }
+      - { t: 0.17, x: -2.67, z: 2.1, action: idle }
+      - { t: 0.3, x: 0.22, z: -0.36, action: run }
+      - { t: 0.33, x: 0.31, z: -1.12, action: hide, thought: { en: "Wolves! I am hanging on to Dori.", es: "¡Lobos! Me agarro a Dori." } }
+      - { t: 0.5, x: 0.91, z: -1.27, action: hide }
+      - { t: 0.62, x: -4.48, z: -3.05, action: walk }
+      - { t: 0.67, x: -4.24, z: -3.76, action: idle, thought: { en: "A real high ledge. And I am alive.", es: "Una cornisa altísima. Y estoy vivo." } }
+      - { t: 0.84, x: 4.4, z: 3.44, action: walk }
+      - { t: 1, x: 4.22, z: 3.58, action: idle }
   - characterId: lord-of-the-eagles
     keyframes:
       - { t: 0, x: 6, z: -6, action: idle }
       - { t: 0.4, x: 6, z: -6, action: idle, thought: { en: "Fire in the forest. Gandalf is down there.", es: "Fuego en el bosque. Gandalf está allí." } }
-      - { t: 0.48, x: 2, z: -2, action: run }
-      - { t: 0.55, x: 1.2, z: -1.2, action: fight, thought: { en: "I have not forgotten who healed me.", es: "No he olvidado quién me curó." } }
-      - { t: 0.62, x: -3.8, z: -3.2, action: run }
-      - { t: 0.67, x: -5.2, z: -5.2, action: idle }
-      - { t: 0.78, x: -5.2, z: -5.2, action: idle }
-      - { t: 0.84, x: 3, z: 3, action: run }
+      - { t: 0.48, x: 2.07, z: -2.06, action: run }
+      - { t: 0.55, x: 1.8, z: -1.14, action: fight, thought: { en: "I have not forgotten who healed me.", es: "No he olvidado quién me curó." } }
+      - { t: 0.62, x: -3.27, z: -3.37, action: run }
+      - { t: 0.67, x: -5.56, z: -5.44, action: idle }
+      - { t: 0.78, x: -5.31, z: -5.86, action: idle }
+      - { t: 0.84, x: 3.11, z: 2.6, action: run }
       - { t: 0.92, x: 4.8, z: -5, action: run }
       - { t: 1, x: 6, z: -6, action: idle }
