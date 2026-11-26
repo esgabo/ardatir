@@ -72,7 +72,7 @@ Past the end of history the cosmos has one more story, **what is foretold** (§4
 3. **By character**: a character's life as a lane of events.
 4. **Search**: any event, place or character.
 
-Events are not isolated stories. Two **cross-views** show how they connect:
+Events are not isolated stories. Three **cross-views** show how they connect: the time cursor (§3.1) for *what else was happening then*, character lanes (§3.2) for *where two lives crossed*, and family trees (§3.6) for *how these two are related*.
 
 ### 3.1 Time cursor (built first)
 
@@ -93,7 +93,9 @@ From inside an event the same list shows what is happening elsewhere at that mom
 
 ### 3.2 Character lanes
 
-A character's life as a lane of events and journey legs. Add more characters and their lanes run side by side; where they share an event the lanes **cross**. Tuor's lane meets Túrin's at the pools of Ivrin, where the cousins pass without knowing each other, a few years before Túrin's end. Kin relations (`kin`) suggest which lanes to add.
+A character's life as a lane of events and journey legs. Add more characters and their lanes run side by side; where they share an event the lanes **cross**. Tuor's lane meets Túrin's at the pools of Ivrin, where the cousins pass without knowing each other, a few years before Túrin's end. Family relations suggest which lanes to add — derived from `parents` and the narrowed `kin` (§4.11).
+
+**Lanes own time; the family tree owns descent** (§3.6). A lane never draws parentage and a tree never lists events, so the two cannot become halves of one feature. They link to each other instead: a lane's kin suggestions carry *See the family →*, and every card on a tree carries *Follow their life →*.
 
 **Route:** `#/lives?with=tuor,turin` (the order of the lanes; up to eight). It opens as a page in place of the stage, like an event page (§3.4).
 
@@ -102,7 +104,7 @@ A character's life as a lane of events and journey legs. Add more characters and
 - **Crossings:** a row where two or more lanes share an event gets filled nodes ringed in gold, joined by a gold bar across the lanes, and a soft gold band behind the title with *Paths cross · Tuor, Túrin*, each full name in its lane's colour. A row with one lane has a plain node in that lane's colour.
 - **Time between rows** is said honestly: an age heading when the age changes, and *at least N years later* (dotted threads) when the honest ranges are a year or more apart (`yearsBetween` in `calendar.ts`), counted in the age's own years: in the Years of the Trees, *at least 75 Valian years later*. Each row states only its honest date; the best guess is never shown.
 - **Clicking an event opens it**: its stage if staged, else its page; Back returns to the lanes.
-- **Choosing lanes:** chips at the top (each with its colour and a remove button), a search box to add a life (a combobox: whole-name, then name-start, then word-start matches first; arrow keys, Enter, Escape), and **kin suggestions** from `kin`, written from the chosen character's side (*Túrin Turambar, cousin of Tuor*; *Thráin, father of Thorin Oakenshield*). Characters have no gender field, so Spanish takes the gender from the relation word (*Nienor, hermana de Túrin*) and says gender-neutral ones without guessing (*Túrin y Tuor, primos*; *Aragorn y Arwen, prometidos*). With no lanes chosen, the page offers a few **lives that cross**: for each age, the pair sharing the most events. Kin suggestions and pairs are links to the lanes with them added, so they can be opened or shared and Back undoes them; the add box and the remove buttons change the lanes in place and keep focus in the add box.
+- **Choosing lanes:** chips at the top (each with its colour and a remove button), a search box to add a life (a combobox: whole-name, then name-start, then word-start matches first; arrow keys, Enter, Escape), and **kin suggestions** from the family graph (derived from `parents`, plus the authored `kin`; §4.11), written from the chosen character's side (*Túrin Turambar, cousin of Tuor*; *Thráin, father of Thorin Oakenshield*). Characters have no gender field, so Spanish takes the gender from the relation word (*Nienor, hermana de Túrin*) and says gender-neutral ones without guessing (*Túrin y Tuor, primos*; *Aragorn y Arwen, prometidos*). With no lanes chosen, the page offers a few **lives that cross**: for each age, the pair sharing the most events. Kin suggestions and pairs are links to the lanes with them added, so they can be opened or shared and Back undoes them; the add box and the remove buttons change the lanes in place and keep focus in the add box.
 - **Ways in:** the sidebar's **Lives** view shows the chosen lives as chips with *Side by side →*, and every character row has a **+ / ✓ toggle** that adds or removes their lane; a character's name on an event page opens their lane, and *See their lives side by side* opens everyone in the event; the selected character's card on a stage has *Follow their life →*.
 
 ### 3.3 The interface: a collapsible sidebar
@@ -121,7 +123,7 @@ The ways in live in a **sidebar on the left**, not in dropdowns. The 3D stage fi
 | **Ages** | The ages as a vertical thread of nodes. The current age is lit and opens into its arcs, then their events, with the event on screen highlighted. |
 | **Time** | The time cursor (§3.1): what it is, the moment on screen (or *Open the timeline →*), the current event's moment, and the moments to visit. Its page is the timeline itself. |
 | **Stories** | The arcs as cards: age, name, one line of summary. |
-| **Lives** | The lives chosen for lanes as chips, with *Side by side →* (§3.2); then characters in the current event first, then everyone; each opens into summary, kin and their events in order, and has a + / ✓ toggle that adds or removes their lane. |
+| **Lives** | The lives chosen for lanes as chips, with *Side by side →* (§3.2); then characters in the current event first, then everyone; each opens into summary, family, *See their family →* (§3.6) and their events in order, and has a + / ✓ toggle that adds or removes their lane. |
 | **Books** | Each book opens into chapters (from events' `source`), linking to the events they cover. |
 | **Places** | Places with their events, alphabetical for now; grouped by region, with a way into the world map, once the world map exists. |
 
@@ -147,7 +149,7 @@ Most events will be outlines for a long time, and they are exactly what the cros
 - **One centred column**, set like a page of a book: the age and stories as a small overline, the title large in the serif, then the **honest date** (start and end at their precision, e.g. *Winter, F.A. 495*; never the best guess), the place and the source (book and chapter, cited, not quoted). A quiet note says it isn't staged yet.
 - The **summary** in the serif, larger than body text. When the event is `scripted`, **the telling**: its narration passages read as plain text, in order, without animation (`data/scripts/<id>.json`, loaded with the page).
 - **What is foretold** (§4.8) says so first, under the title, in a dashed box: the *Foretold* badge and one line, *Foretold by Mandos, not told as history. Source: The Lost Road and Other Writings, “Quenta Silmarillion”.* (who foretells it only when the source names one).
-- **Who was there**: the characters as small cards (name, kind, one line); a name opens their life.
+- **Who was there**: the characters as small cards (name, kind, one line); a name opens their life, and *See their family →* opens their tree (§3.6).
 - **Connections**: every link, both directions (the reverses come from the build), with its type (*caused by*, *makes possible*…) and its note.
 - **Part of**: each arc with its summary and the events before and after this one in it; each journey with its places in order, this one lit.
 - **Around the same time**: events whose honest range overlaps this one (as Meanwhile does), split into *likely* (our best guess, each with a short explanation behind an info button) and *possibly* (§4.4.1). Under the honest date at the top, a quiet line says how an event that isn't exactly dated is placed on the timeline (§4.4).
@@ -165,6 +167,120 @@ The scenes are the show, but a newcomer also needs a door, a hand on the shoulde
 - **About this scene** (`src/learn.ts`): a button in the stage's bar beside Meanwhile (one panel open at a time) that opens, on demand, **where is this** (the place and its summary; for the Music, which has no place, *when*: its age), **who is here** (each character with kind, how to say the name and their one line; the name shows them on the stage when they have a track, *Follow their life →* opens their lane), **before and after** (the previous and next event in its first story, else in the chronicle) and **in the books**. On event pages the same questions are already answered by the page (§3.4); the place gets an (i) that opens its summary under the meta lines.
 - **Pointers to the books.** From `source`, gently: *Read this in* The Hobbit*, chapter 5, “Riddles in the Dark”.* / *Léelo en* El Hobbit*, capítulo 5, «Acertijos en las tinieblas».*, then *Here it is told in a few words of our own; Tolkien tells it in full, and far better.* On every event page (*In the books*, before Before / After) and in *About this scene*. The Hobbit's chapters are cited by number and named here; the others by their English title, given in Spanish from the published editions (`src/books.ts`; the unconfirmed ones go on the #51 checklist). The meta line's source uses the same titles, and a test keeps every cited chapter translated.
 - **Tone.** Short sentences, no jargon before it is needed, warm without being sugary, and accurate for readers who know the books (the opening's lines are paraphrase, checked against the *Ainulindalë*).
+
+### 3.6 Family trees: how two people are related (#89)
+
+The books say *son of*, *of the house of*, *kinsman of* on nearly every page, and the site could
+not answer any of it. The time cursor says what was happening at a moment (§3.1); the lanes say
+where two lives crossed (§3.2); **how are these two related** is the third question the texts keep
+asking, and it needs a view of its own, because its answer is neither a moment nor a sequence — it
+is a shape. The format the shape is drawn from is §4.11.
+
+**It is not a lane, and must not become one.** Lanes own time: they run down the page in story
+order and say *at least seventy-five years later*. A tree owns descent, and descent is not time.
+Galadriel is Finwë's granddaughter and the contemporary of her own great-great-nephews; three
+mortal generations pass while one elvish generation does not end. So **the tree has no time
+axis**: its rows are generations counted from the person at the centre, and dates are writing on a
+card, never a position. A tree that set Elrond and Elros on one line and then let their
+descendants drift three thousand years apart would be two views fighting inside one picture. They
+hand off instead: every card carries *Follow their life →* into that character's lane, and the
+lanes' kin suggestions gain *See the family →* back. Descent here, time there, one link each way.
+
+**One person at the centre, two generations each way.** A whole house at once is a hairball on a
+phone and not much better on a desk: the house of Finwë is sixty-odd people and Durin's line is
+twenty generations of one column. So the tree opens on one character with their parents and
+grandparents above, their children and grandchildren below, and beside them their siblings, their
+spouse or spouses, and their siblings' children — which is what a reader means by *their family*.
+Everything further is one tap away and every tap goes into the URL, so a grown tree is shareable,
+the same restraint lanes keep with their cap of eight.
+
+- **Rows are generations.** One band per generation, the centre's band lit, parents above,
+  children below. A couple stands side by side with a short tie between them and their children
+  hang from the middle of that tie. A person whose other parent the sources never name hangs from
+  a single stem, and **no empty box is ever drawn for a parent we are not told about**: silence is
+  shown as silence, exactly as an undated event shows only its honest range (§4.4).
+- **Half-siblings are drawn as half-siblings**, because in this story almost nothing matters more:
+  Fëanor and Fingolfin share a father and not a mother, and most of the First Age comes out of
+  that fact. They hang from the shared parent alone, not from a couple's tie, and the card says
+  *half-brother* in words.
+- **The four race shapes come out of the data, not out of four layouts.** One layout; the shape
+  follows the edges, because the edges *are* the difference between the houses:
+
+| House | What its edges are | What the one layout draws |
+|---|---|---|
+| Durin's line | one child a generation, twenty deep | a column one card wide — a chain is what a generation-row layout does with a chain |
+| the house of Finwë | broad, deep, with marriage inside it (Fingolfin's children and Finarfin's marry across) | a wide tree whose ties cross; a marriage inside the house is one tie drawn between two cards in the same band |
+| the kings of Númenor, the Line of Elros, the Stewards | succession with a few branch points | a near-column with short side branches, which is what succession is |
+| the Bagginses, Tooks and Brandybucks | shallow, very broad, heavily intermarried | wide bands with many ties in them: the sprawl *is* the joke, and the layout tells it by being crowded |
+
+- **A row too wide to read collapses.** Past about ten cards a band draws the people joined to the
+  centre plus a chip, *and nine more Tooks*, which opens in place. The Shire's sprawl survives
+  being told in two breaths.
+- **Following a line is one control, not twenty taps.** Where every generation has a single child
+  the tree offers *Durin's line: twenty generations →*, which sets the depth to the whole chain.
+  Same layout, only narrow.
+- **A card** is the name with its pronunciation hint (§3.5), the character's kind, their honest
+  dates where we have them (*born F.A. 464*, *F.A. 472 – 501*), their one line of summary, and,
+  where the sources say something other than a death, their `fate` in a sentence (§4.11). A card
+  of a kind other than the centre's is marked as such, which is how a half-elven tree reads at a
+  glance.
+- **The relation is said in warm words, and computed.** *Galadriel is Fingon's aunt.* For anything
+  further off, a sentence instead of a term: *They share an ancestor: Finwë, four generations above
+  Galadriel and six above Gil-galad.* We do **not** print cousin degrees. English and Spanish do
+  not cut them the same way, *second cousin once removed* is jargon a newcomer cannot use, and the
+  sentence is both truer and friendlier. A `kin` tie the parentage graph cannot derive (§4.11) is
+  said in its own words and drawn as a dotted tie, never a stem.
+
+**The half-elven crossing is the reason to build this at all.** Elrond and Elros are brothers of
+two different `kind`s, Elros chose the fate of Men and Elrond the Elves, and sixty-odd generations
+later Aragorn and Arwen rejoin two houses sundered three thousand years. The design serves it in
+four plain ways: an edge never cares what race it crosses, so the brothers simply stand together
+in one band with their kinds marked; `fate` carries the Choice in one sentence on each of the four
+who made it (Lúthien, Elros, Elrond, Arwen); `also=` grafts a second line into the same picture,
+so `#/kin/aragorn?also=arwen` draws both; and the common-ancestor sentence says the thing a
+diagram cannot — *Aragorn and Arwen share an ancestor: Elros and Elrond were brothers, sixty-six
+generations and three thousand years ago*. It is also exactly why the rows are generations and not
+years: the two lines take different numbers of generations to cross the same span, and that
+difference is the story.
+
+**Route.**
+
+```
+#/kin/elrond                              one life at the centre, two generations each way
+#/kin/thorin?up=all                       Durin's line followed all the way back up
+#/kin/aragorn?also=arwen&up=4             a second line grafted in, and more ancestors
+```
+
+`up` and `down` are whole numbers or `all` (the default is 2 and 2, left out of the URL);
+`also` is a comma-separated list of extra people grafted in, like lanes' `with=`. Expanding,
+collapsing and recentring behave as scrubbing does (§7): growing the tree replaces the current
+history entry, opening another view adds one, and a fresh deep link lands on the grown tree.
+It opens as a page in place of the stage, like the lanes and the time cursor.
+
+**Ways in — and no new rail item.** A view that needs a person chosen before it can show anything
+would open on nothing, so there is no seventh icon, by the same reasoning that gave factions none
+(§4.9). Instead: the sidebar's **Lives** view gains *See their family →* on each character beside
+the lane toggle; an event page's *Who was there* cards and the selected character's card on a
+stage gain the same link; the lanes' kin suggestions link to the tree as well as adding a lane;
+and every card on the tree recentres the tree on that person.
+
+**Phones.** The bands scroll sideways with the centre card marked and the generation labels
+sticky; the collapse chips keep each band short enough that sideways scrolling is a nudge and not
+a journey. Nothing is drawn that a tap cannot reach.
+
+**Where the code goes.** The arithmetic — generation depth, siblings and half-siblings, the
+nearest common ancestor and the sentence about it, which bands collapse — is pure and tested in
+`src/kinGraph.ts`, the precedent being `laneRows.ts`, `timeAxis.ts` and `whereabouts.ts`. The DOM
+is `src/kin.ts`, loaded with a dynamic `import()` as its own chunk.
+
+**The look is ours, and this matters here more than anywhere.** Appendix C of *The Lord of the
+Rings* and the tables in *The Silmarillion* are Tolkien's own **diagrams**, and the same rule
+applies as to the published maps (§10, `docs/MAP.md`): who begat whom is fact, not anyone's
+expression, and may be read off them as reference — their layout, typography and design may not be
+reproduced. So we draw in the site's own language: night ground, parchment ink, one gold accent,
+the diamond on a rule (§3.3). No ruled boxes, no columns of small capitals, and no `=` between
+spouses, which is those tables' own signature. The resemblance between any two family trees is the
+family, not the drawing.
 
 ## 4. Content model
 
@@ -282,7 +398,7 @@ Journeys follow who actually travels together: in *The Hobbit*, Bilbo's journey,
 
 ### 4.7 Characters
 
-Name, kind, summary, optionally how to say the name (`pronounce`, §3.5) and, for staging, a placeholder colour and relative height (`scale`). `kin` lists family relations (`{ id: turin, as: cousin }`), used to suggest lanes to compare. `home` (a place id) is for characters who never travel, like Tom Bombadil in the Old Forest: when no journey places them, the time cursor shows them at home, but only between the start of their first event and the end of their last (honest ranges), since outside that the sources say nothing of them. A journey that comes to visit them (one of their events is on it) extends that span through its stops at their home: Gandalf's stay with Tom in November 3019 keeps Tom at home after his last event.
+Name, kind, summary, optionally how to say the name (`pronounce`, §3.5) and, for staging, a placeholder colour and relative height (`scale`). `parents`, `spouse` and the narrowed `kin` say who they are related to, and the family tree is drawn from them (§3.6, §4.11); optional `born`, `died` and `fate` say what the sources say about the ends of their life, and nothing more. Siblings, cousins, descendants and generation depth are derived by the build, never authored. `home` (a place id) is for characters who never travel, like Tom Bombadil in the Old Forest: when no journey places them, the time cursor shows them at home, but only between the start of their first event and the end of their last (honest ranges), since outside that the sources say nothing of them. A journey that comes to visit them (one of their events is on it) extends that span through its stops at their home: Gandalf's stay with Tom in November 3019 keeps Tom at home after his last event.
 
 ### 4.8 What is foretold
 
@@ -569,6 +685,258 @@ is untouched. The one join worth having costs nothing and already exists in both
 arc's telling links to the time cursor at its first event's moment, and an event opened from an arc
 keeps its own *See this moment on the timeline →*.
 
+### 4.11 Parentage: the one edge a family tree is drawn from (#89)
+
+`kin` was written for one job and does it: it suggests whose lane to open beside another's
+(§3.2). It cannot draw a tree, for four reasons that are worth stating because each one decides
+something below. It records the **derived** relation instead of the primitive one (`brother`,
+`cousin`, `nephew`, where a tree needs only *child of*); its `as:` vocabulary is **open and
+unchecked**, so `father`, `sire` and `padre` would all pass; the build derives **no reverse**, so
+which way round a pair was written is arbitrary; and `cousin` and `kin`, a sixth of the entries,
+carry **no generation at all**, so nothing can place them in a band.
+
+**One primitive edge: `parents`.** A tree is built from *child of* and nothing else.
+
+```yaml
+parents: [ thingol, melian ]     # 0, 1 or 2 known parents; order carries no meaning
+```
+
+Why a list, and not `father:` / `mother:`:
+
+- **Characters have no gender field, on purpose.** §3.2 leans on that: Spanish takes its gender
+  from the relation word, and says the gender-neutral ones without guessing. `father:` and
+  `mother:` would bring gender in through the back door and then demand it be known for every
+  parent in the content.
+- **One named parent is a common and honest case** — Melian and Lúthien's line, the many
+  characters whose mother the texts never name — and with a list it needs no special writing: you
+  list the parent you were told about. With two keys, *the sources do not name her* and *we have
+  not written her file yet* would be the same missing key.
+- **Order is not meaning**, so nobody has to remember a convention. Couples are drawn from
+  `spouse` (below), not from the order of this list: two parents who are also spouses are drawn as
+  a couple with their children under the tie, and two who are not are drawn as two stems meeting.
+- There is no placeholder for an unnamed parent, and none is wanted. A box with nothing in it is a
+  claim about a person we know nothing about; the tree draws a single stem instead (§3.6).
+
+**Everything else is derived by the build, never authored.** Children, siblings, half-siblings
+(one shared parent, flagged), ancestors, descendants, cousins, uncles, nephews, generation depth
+and the houses themselves are all consequences of `parents`, and are derived at build time into
+`index.json`, exactly as a character's events and a place's events are (§4.1). Authoring any of
+them would be writing the same fact twice and inviting the two copies to disagree. **This is the
+rule, not a guideline:** if a relation can be computed from parentage, it is not a field.
+
+**Spouses are their own key, because a tree draws couples and marriage is not descent.**
+
+```yaml
+spouse: [ miriel, indis ]        # in the order they were married
+betrothed: [ ]                   # a betrothal that never became a marriage
+```
+
+A list rather than one id, and Finwë settles that on his own: Míriel, then Indis. The list order is
+the order they were married, which is the order the tree draws them in. `betrothed` stays in the
+format because the books do have betrothals that end otherwise, but it is rare: Beren and Lúthien,
+Tuor and Idril, Aragorn and Arwen, Faramir and Éowyn all married, so all four are `spouse`.
+Both keys are **symmetric**, and the build derives the other side and marks it `reverse: true` —
+the precedent is event links (§4.5), written once and reversed by the build.
+
+**`kin` survives, narrowed to exactly what parentage cannot say.** The vocabulary becomes a
+**closed list the build checks**, like the sound cues and a kit's cover names (§9.5, §9.4), because
+a word the view cannot draw is silently nothing on the screen:
+
+| `as` | What it means | Why it cannot be derived |
+|---|---|---|
+| `ancestor` / `descendant` | the books assert the descent, and the generations between are not in our content | real and unfakeable: *a descendant of Durin* with eight unwritten links in between must not be invented as eight placeholder people |
+| `cousin` | the books call them kinsmen of one generation, and we cannot reach a common ancestor in our data | it is said on the site and drawn as a dotted tie; once both lines reach a shared ancestor, the derived relation replaces it |
+| `kin` | related, and the sources say no more | the honest vague word, and worth keeping for that |
+| `foster-parent` / `fosterling` | raised them, or was raised by them | **not descent at all**, and the texts care about it enormously: Túrin in Thingol's halls, Aragorn in Elrond's, Frodo as Bilbo's heir |
+
+A `kin` tie is drawn as a dotted tie, never a stem, and never counts as a generation. So fostering
+can sit in a tree without pretending to be blood, which is the whole reason to keep the field.
+
+#### Migration: what happens to the thirteen words in use
+
+Thirty-six files carry `kin` today. Each word has one answer:
+
+| In use | Count | Becomes |
+|---|--:|---|
+| `father`, `son`, `grandfather`, `grandson` | 20 | a `parents:` entry on the child (and, for the grandparents, on the parent in between) — then deleted |
+| `brother`, `sister` | 15 | nothing of its own: `parents:` on both, and the build derives the sibling edge, half-siblings included |
+| `uncle`, `nephew` | 5 | nothing of its own: derived from `parents:` once the sibling in between has them |
+| `wife`, `husband` | 4 | `spouse:` on either side (the build reverses it) |
+| `betrothed` | 1 | `spouse:` — Aragorn and Arwen marry; the field is for betrothals that did not |
+| `cousin` | 10 | `parents:` on both where the common ancestor is in our content (Húrin and Huor are brothers, so Túrin and Tuor are derived exactly); **kept as `kin`** where it is not |
+| `kin` | 6 | kept as it is |
+
+**The build's voice during the migration, and after.** The closed vocabulary ships as a
+**warning**, not an error, naming the exact replacement for the word it found (*`as: brother` is
+derived from `parents:` now — put Húrin's parentage on both and delete this*). An error on the day
+the rule ships would break `npm run content` on 36 files at once and force the content change into
+the same commit as the format, which is how a careful migration turns into a rushed one. It
+becomes an **error** when the last file is migrated, and it must: two statements of the same fact
+that can disagree are worse than either. The build also warns when a `kin` entry is *derivable
+from the parentage already authored* — that warning is how the migration finds its own end, and it
+stays useful afterwards, since it catches a `cousin` that became computable when somebody wrote the
+missing grandparent's file.
+
+The lanes change as little as possible. `kinPhrase` keeps its templates and is now fed the
+**derived** relation as well as the authored one, so *Thráin, father of Thorin Oakenshield* reads
+the same while coming from `parents:` instead of `kin:`; the gender-from-the-word rule (§3.2) is
+untouched. The suggestions get better by themselves, because the derived graph knows siblings and
+nephews for everyone with parentage, not only for the pairs somebody remembered to write down.
+
+#### Dates: `born`, `died`, and the event that says so
+
+Characters have no dates at all today, and births and deaths exist only as events. Both halves of
+that are kept, with one checked against the other.
+
+- **An event says whose life begins or ends in it.** `event.yaml` gains optional `born:` and
+  `died:`, lists of character ids that must be among the event's own `characters`. The build then
+  derives that character's date from the **event's honest range** (§4.4), at the event's own
+  precision. *The birth of Túrin* is dated to F.A. 464 to the year, so Túrin is born in F.A. 464,
+  no better and no worse.
+- **A character may state a date the content has no scene for.** `born:` and `died:` on a
+  character take the same shape as a journey's waypoint — a date in the §4.4 vocabulary and its
+  own precision:
+
+  ```yaml
+  # content/characters/thrain.yaml — Appendix A dates him; no scene of ours is his birth or death
+  born: { date: { age: third-age, year: 2644 }, precision: year }
+  died: { date: { age: third-age, year: 2850 }, precision: year }
+  ```
+
+  Appendix A dates most of Durin's line and every king of Númenor, and almost none of them will
+  ever be a scene. Refusing those dates to keep one mechanism would make the tree poorer for
+  nothing. This is not derived data authored by hand: no other file holds these facts.
+- **When both exist they must agree.** A stated date that falls outside the honest range of the
+  event that claims the birth or death is an **error**, not a quiet preference for one of them.
+  That check is the reason two sources of truth are safe here.
+- **No heuristic, ever.** Recognising a birth or a death from the title was the obvious shortcut
+  and is a trap: it would have to work in two languages, and the real folder names show how it
+  would go — `nienor-is-born` says nothing about *born* in Spanish, `the-passing-of-king-elessar`
+  is a death that never says so, and `celeborn-leaves-middle-earth` is not a death at all. The
+  event declares it or the character does.
+- **Silence is silence.** No `died` means the sources do not say they died, and the tree draws no
+  end: **an elf who is never said to die is never drawn as dead.** A stem simply runs on.
+- **`fate: { en, es }`** is one sentence for a life that ends in something other than a death — a
+  choice of mortality, a passing over Sea, a return out of Mandos. It is where the Choice of the
+  Half-elven is written down, and it is why §3.6 can say what the diagrams cannot.
+- **No date is ever inferred from a generation.** A father is not given a date because his son has
+  one, and a tree never estimates. §4.4's discipline covers this: the best guesses are for placing
+  events on an axis, and a tree has no axis to place anybody on.
+
+#### What the build checks
+
+Unknown ids, as everywhere. A character listed as their own parent, spouse or `kin`. More than two
+`parents`. A **cycle** — nobody is their own ancestor. A `spouse` who is also a parent or child of
+the same character. A `kin` word outside the closed list, and a `kin` entry already derivable from
+parentage (both warnings until the migration ends, then the first becomes an error). `born` after
+`died`. A `born`/`died` on an event naming a character the event does not list. A stated date
+outside the honest range of the event that claims it. A parent whose honest range of birth begins
+after the child's ends — a warning, not an error, because honest ranges are wide on purpose and
+two vague years often overlap.
+
+#### A house is not a content kind
+
+"The House of Finwë", "Durin's Folk", "the Line of Elros" could be files like `content/factions/`
+(§4.9). They should not be. A faction file exists because a host has things a battle needs and
+nothing derives: a banner colour, a `kind` that shapes its figures, leaders, and a side to be on.
+A house file would hold a name, a summary and a list of members — and the list must be derived
+from `parents` or it will go stale, the summary is already the founder's own `summary`, and the
+name is a template: *The House of Finwë* / *La Casa de Finwë* in `src/i18n.ts`, which is right for
+most of them. So the house stays the parentage graph, and the one thing a template cannot give is
+the one authored field:
+
+```yaml
+house: { en: Durin's Folk, es: El Pueblo de Durin }   # on the founder, where the books name it otherwise
+```
+
+The books call it *Durin's Folk*, not *the House of Durin*, and the site should use their words. If
+we later want an editorial paragraph per house, it can be added without touching a single edge —
+which is the test that this is the right way round.
+
+#### The worked example
+
+The house of Finwë, carried down to the half-elven crossing. These are fenced here and **not
+written into `content/characters/`**: the build does not know these keys yet, and content files
+nothing reads would be a trap for the next author.
+
+```yaml
+# content/characters/finwe.yaml
+id: finwe
+name: { en: Finwë, es: Finwë }
+kind: elf
+summary:
+  en: First King of the Noldor, who led them from Cuiviénen into the light of the Trees.
+  es: Primer rey de los Noldor, que los guio desde Cuiviénen hasta la luz de los Árboles.
+spouse: [ miriel, indis ]          # Míriel first; after her death, Indis
+house: { en: The House of Finwë, es: La Casa de Finwë }
+
+# content/characters/feanor.yaml
+id: feanor
+parents: [ finwe, miriel ]
+# no `born:` here: `birth-of-feanor` already says it, and the build takes Y.T. 1169 from that event
+
+# content/characters/fingolfin.yaml
+id: fingolfin
+parents: [ finwe, indis ]          # a half-brother to Fëanor: the build derives it, and says so
+spouse: [ anaire ]
+
+# content/characters/galadriel.yaml
+id: galadriel
+parents: [ finarfin, earwen ]      # Finarfin is Indis's son too, so she is Fëanor's half-niece
+spouse: [ celeborn ]
+fate:
+  en: She did not die; at the end of the Third Age she took ship over Sea.
+  es: No murió; al final de la Tercera Edad se embarcó hacia el Oeste.
+
+# content/characters/idril.yaml
+id: idril
+parents: [ turgon, elenwe ]
+spouse: [ tuor ]                   # a marriage of Elves and Men, the second of the three
+
+# content/characters/earendil.yaml
+id: earendil
+parents: [ tuor, idril ]
+spouse: [ elwing ]
+
+# content/characters/elros.yaml
+id: elros
+parents: [ earendil, elwing ]
+kind: man                           # the same parents as Elrond, and another kind: that is the point
+fate:
+  en: Given the choice of the Half-elven, he took the fate of Men, and was the first King of Númenor.
+  es: Puesto ante la elección de los Medio-elfos, tomó el destino de los Hombres, y fue el primer rey de Númenor.
+# no `died:` here either: `death-of-elros` carries it, to the year
+
+# content/characters/elrond.yaml
+id: elrond
+parents: [ earendil, elwing ]
+kind: elf
+spouse: [ celebrian ]
+fate:
+  en: He chose the Elves, and stayed while his brother's house rose and fell in Númenor.
+  es: Eligió a los Elfos, y permaneció mientras la casa de su hermano se alzaba y caía en Númenor.
+
+# content/characters/arwen.yaml
+id: arwen
+parents: [ elrond, celebrian ]
+spouse: [ aragorn ]                 # today's `kin: [{ id: aragorn, as: betrothed }]`: they marry
+fate:
+  en: Like Lúthien before her, she took a mortal life, and her own choice closed the long sundering.
+  es: Como Lúthien antes que ella, tomó una vida mortal, y su elección cerró la larga separación.
+```
+
+```yaml
+# content/events/first-age/0503-1-birth-of-earendil/event.yaml  (the one added line)
+characters: [ tuor, idril, earendil ]
+born: [ earendil ]
+```
+
+Everything a tree needs is in those edges. From them the build derives that Fëanor and Fingolfin
+are half-brothers; that Galadriel stands one band below Fëanor and is the contemporary of his
+grandchildren; that Elros and Elrond are brothers of two kinds; and that Aragorn and Arwen's
+nearest common ancestor is Eärendil — the sentence §3.6 puts under the two of them, and the reason
+the view exists.
+
 ## 5. Narration
 
 Every event is told by a **narration script**: passages written in our own words (no reading of Tolkien's text aloud). The same script is what the audio reads, and it is shown on screen in step with the voice and the animation.
@@ -618,6 +986,7 @@ The URL always reflects where you are:
 /#/event/roast-mutton?t=0.45&follow=bilbo&lang=es
 /#/event/tuor-sees-turin-at-ivrin?lang=es          an event that isn't staged: its page (§3.4)
 /#/lives?with=tuor,turin                            character lanes, in this order (§3.2)
+/#/kin/elrond?up=3&also=aragorn                     a family tree, grown and grafted (§3.6)
 /#/time/third-age/3019-03-15                        the time cursor at a day (§3.1); …/3019-03, …/3019, …/3019-midyear
 /#/time/first-age/495?zoom=age&from=fall-of-nargothrond   a whole year, at the age scale, opened from an event
 /#/arc/the-fall-of-gondolin?t=0.42                   an arc's telling over the map of its age (§4.10)
@@ -633,7 +1002,7 @@ After every navigation, focus moves to the new view's heading (its `h1`), so key
 - **Static site**: Vite + TypeScript + three.js, no framework. Output is a plain `dist/` folder (GitHub Pages).
 - **Code is split by zoom level**: each stage (`scene/cosmos.ts`, `scene/dioramaStage.ts`) is loaded with a dynamic `import()` the first time it is needed, so the front page never downloads diorama code. Within the cosmos, each event's animation after the Ainulindalë is its own module (`scene/cosmosLamps.ts`, `cosmosTrees.ts`, `cosmosSunMoon.ts`, `cosmosBeleriand.ts`, `cosmosRound.ts`), picked by event id in `scene/cosmos.ts` and loaded the same way; all of them share the Void, the shells, the camera and small helpers (glows, names, fitting the camera to narrow screens) in `scene/cosmosWorld.ts`. The four after the Lamps also share `scene/cosmosLands.ts` (a chunk of its own): an original, simplified map of the lands on the slab after the Lamps (Aman behind the Pelóri, the Great Sea, Middle-earth with Beleriand, the Grinding Ice, the Encircling Sea; Beleriand drowned and Númenor raised in the Second Age), the faceted `Slab` they are drawn on (which can bend into a globe), forests and the Two Trees. The glTF loader (`scene/models.ts`: `GLTFLoader`, the meshopt decoder) is its own chunk too, fetched only when an event has a model. three.js core gets its own chunk (`manualChunks` in `vite.config.ts`), cached across deploys. Chunk budgets are checked by the build (`chunkBudgets` in `vite.config.ts`): every chunk of ours stays under 500 kB minified, and three.js under 600 kB, since it is one module and the loader needs its animation system and loaders (about 55 kB).
 - **Content build** (`scripts/content/`): reads `content/`, validates it, and writes `public/data/` (generated, not committed):
-  - `index.json`: ages, characters, places, arcs, journeys, factions, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc, journey and faction (`byFaction`), and each character's lane (events and uncovered journey legs, in story order; each waypoint also names the event it matched). Small enough to load up front; the time cursor and lanes run on it.
+  - `index.json`: ages, characters, places, arcs, journeys, factions, and every event's summary placed on the axis with links in both directions, plus lookups by character, place, arc, journey and faction (`byFaction`), each character's family (parents, children, spouses, siblings and half-siblings, with the reverses derived; §4.11), and each character's lane (events and uncovered journey legs, in story order; each waypoint also names the event it matched). Small enough to load up front; the time cursor and lanes run on it.
   - `events/<id>.json`: one per staged event, with narration, staging and audio timing, loaded when the event opens.
   - `scripts/<id>.json`: the narration passages of every event that has a `narration.yaml`, so a scripted event's page can show them as text.
   - `audio/<id>/<lang>.mp3`: recordings copied from the event folders.
@@ -897,10 +1266,12 @@ music of all is sung, is still silent.
 | 2026-11-15 | Where a figure stands (#81): a keyframe's `y` says how high above the walkable ground a character is, so one placed on a log, a bench or a doorstep is not buried in it; crowding is a **build warning**, not a push-apart at render time, because a figure's place must stay a pure function of `t` and who stands in front of whom is the author's composition (§9.2). |
 | 2026-11-15 | The render look (#76): a soft second light that comes up as the sun goes down, so a night scene can be seen; haze tinted toward the background, never toward a bright sky, so the far edge of a tile recedes instead of dissolving; a grade per place applied to **the light, not the pixels** (no post-processing pass: a second render of the frame is the first thing to fail on a phone), where a place that takes light away gets the soft light back, and the background takes only a third of the tint so the void stays dark; contact shadows under figures, because at this scale where a figure touches says more than the shadow behind it; one quality setting turning the shadow map, pixel ratio and effect counts down together, guessed from the device and overridable with `?quality=` (§9.1). |
 | 2026-11-09 | Factions (#18): one file per side in `content/factions/` (name, banner colour, kind, summary, leaders), reused across battles; battles list `sides` as groups of allied factions; staging places `armies` (faction, size, keyframes) as instanced blocks of small figures in the faction's colour, named characters keeping their own tracks; one being who comes alone (Beorn) is a character, a host (the Eagles) a faction. First example: the Battle of Five Armies (§2, §4.9). |
+| 2026-11-26 | **Family trees** (#89): a third cross-view, drawn from **one authored edge, `parents: [a, b]`** — a list and not `father:`/`mother:`, because characters have no gender field by decision and one named parent must stay writable without an empty box for the other. Siblings, half-siblings, cousins, uncles, descendants and generation depth are **derived by the build**, never authored; `spouse` (a list, in the order married) and `betrothed` are separate, since a tree draws couples but marriage is not descent; `kin` survives narrowed to a closed, build-checked list of what parentage cannot say (`ancestor`, `descendant`, `cousin`, `kin`, `foster-parent`, `fosterling`), drawn as a dotted tie. Dates come from the event that declares them (`born:`/`died:` on `event.yaml`, at the event's honest range) or, for the hundreds Appendix A gives that will never be a scene, from the character — and an explicit date outside its event's range is an error. Silence is silence: no `died` draws no end, so an elf is never drawn as dead, and `fate` says in a sentence what happened instead. The view is **generation rows, never a time axis** (immortals break the axis and the lanes already own time), one character centred with two generations each way and growth in the URL (`#/kin/<id>?up=&down=&also=`); one layout for all four race shapes, because the shapes are in the edges; no new rail item. A house is derived from the graph, not a content kind (§3.6, §4.11). |
 | 2026-11-26 | **Narration at arc scale** (#88): the world view's content is an arc's own telling over the map of its age — how a war moved across a country — because a map-scale overview is by definition not one scene and so cannot be an event. An arc with a telling becomes a folder (`arc.yaml` + `narration.yaml` + `staging.yaml` + `audio/`) and runs through the same four-word status pipeline, independent of its events'; it is read by the narrator of its first event's age (`narratedBy` when its events cross ages). The clock, the recordings and the authored `camera` are the event machinery unchanged; new are **`hosts`** (a body of people as a mark on a map: `mark` from a closed list, `weight` 1–5 rather than a count of soldiers, keyframes naming places, `faction` or a plain `label` for refugees) and **`roads`** (a journey painted along its waypoints, so an untold leg reads as a stretch of road with nothing on it). The arc's events are pinned from their places and need no authoring; `scenes` says only when the telling reaches each. No `light`, `sound` or `reveal` at map scale, and arcs stay off the time axis: an arc's `t` is narration time, not history (§4.10). |
 
 ## 12. Open questions
 
 - **Journeys**: answered in part (§4.10). A long travel is both at once: inside an arc's telling it is a painted road (`roads`) with the legs we have told marked on it as diamonds, and each of those legs is a diorama of its own. What is still open is only **which** legs earn one — Moria and the Dead Marshes probably, a week of walking probably not — which is an authoring choice per journey, not a design question.
 - **A standalone journey view**: *There and Back Again* end to end, outside any arc (§4.10). Worth having, not designed yet; it should draw the road exactly as an arc's `roads` does.
+- **Family trees** (#89, §3.6, §4.11): the format and the view are designed; the content is the larger half. The four worth authoring first are the house of Finwë, Durin's line, the Line of Elros through to Aragorn, and the Baggins/Took/Brandybuck knot. Open within the design: whether the generation bands ever want a **second arrangement for a single line** (Durin's twenty generations read as a column already, but twenty cards is a long scroll on a phone), and how far **`up=all` on a crowded house** can go before the collapse chips are doing all the work. Both are answerable only by drawing it.
 - **World view**: the original world map per age is not built yet. The coordinate scheme that unblocks it is settled in `docs/MAP.md`; §4.10 depends on nothing more than a named map per age and coordinates per place.

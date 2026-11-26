@@ -39,6 +39,8 @@ sides:                    # battles only: groups of allied factions, each agains
   - [ riders-of-rohan, men-of-gondor ]
   - [ host-of-mordor, haradrim ]
 tags: [ lord-of-the-rings, battle ]
+born: []                  # characters whose life begins in this scene (must be in `characters`)
+died: [ theoden ]         # and whose life ends in it: the build dates them from this event's honest range
 status: outline           # outline | scripted | staged | animated
 source: { book: the-return-of-the-king, chapter: The Battle of the Pelennor Fields }
 title: { en: The Battle of the Pelennor Fields, es: La batalla de los Campos del Pelennor }
@@ -396,7 +398,6 @@ roads:
 
 Between `from` and `to` the road paints itself along the journey's waypoints in order; after `to` the whole road stays. The events the build matched to waypoints sit on it as diamonds, and **a leg with no event is plain road** — so the map says, in a picture, which parts of a journey we have told and which we have not. That is the reason to draw it this way: a stretch of road with nothing on it reads as a road not yet walked.
 
-
 ## Characters
 
 ```yaml
@@ -406,13 +407,47 @@ kind: man                            # hobbit, elf, man, dwarf, wizard, ...
 summary: { en: ..., es: ... }
 color: "#3a6a8a"                     # placeholder for staging
 scale: 1.85                          # height relative to a hobbit
-kin:
-  - { id: turin, as: cousin }
+parents: [ huor, rian ]              # optional: 0, 1 or 2 known parents (each needs its own file)
+spouse: [ idril ]                    # optional: in the order they were married
 home: old-forest                     # optional: a place they stay in (see below)
 model: characters/tuor/tuor.glb      # optional: their glTF model, a path under assets/ (docs/MODELS.md)
 ```
 
 `model` points to an export in `assets/characters/`; the build checks that it exists and fits the budget (300 kB), and copies it into the site. Without one, the diorama draws the placeholder figure in `color`, `scale` tall.
+
+### Family: `parents`, `spouse`, `kin`
+
+A family tree is drawn from **one edge, `parents`** (`docs/DESIGN.md` §3.6, §4.11). Everything else — siblings, half-siblings, cousins, uncles, nephews, descendants, generation depth — is **derived by the build**, exactly as a character's events are, and must never be written by hand.
+
+```yaml
+parents: [ finwe, indis ]   # order carries no meaning; list only the parents the sources name
+spouse: [ miriel, indis ]   # a list, in the order they were married (Finwë: Míriel, then Indis)
+betrothed: [ ]              # only for a betrothal that never became a marriage: rare
+kin:                        # only what parentage cannot say (closed list below)
+  - { id: thingol, as: foster-parent }
+house: { en: Durin's Folk, es: El Pueblo de Durin }   # on a founder, where the books name the house their own way
+```
+
+- **List the parents you were told about**, one or two. There is no placeholder for a parent the sources never name: the tree draws a single stem, and an empty box would be a claim about somebody we know nothing of. `father:`/`mother:` do not exist — characters have no gender field, on purpose.
+- `spouse` and `betrothed` are **symmetric**: write them once, on either side, and the build adds the reverse (like event links). Two parents who are also spouses are drawn as a couple; two who are not are drawn as two stems meeting.
+- `kin` is for relations **parentage cannot express**, and its vocabulary is closed and checked: `ancestor`, `descendant`, `cousin` (where no common ancestor is in our content), `kin` (related, and the sources say no more), `foster-parent`, `fosterling`. They are drawn as a dotted tie and never count as a generation.
+- `house` is the one authored thing about a house: there is no `content/houses/`, since the members are derived and the usual name comes from a template (*The House of Finwë*). Give it only where the books name it otherwise.
+- **Migrating an old `kin` entry:** anything derivable — `brother`, `sister`, `father`, `son`, `grandfather`, `grandson`, `uncle`, `nephew` — becomes `parents` on the people in between and is then deleted; `wife`, `husband` and today's one `betrothed` become `spouse`; `cousin` becomes `parents` on both where the common ancestor is in our content, and stays `kin` where it is not; `kin` stays. The build warns, with the replacement named, until the last of the 36 files is migrated; then an un-migrated word is an error. The full table is in `docs/DESIGN.md` §4.11.
+
+### Dates: `born`, `died`, `fate`
+
+Births and deaths belong to the event that tells them, where there is one: `event.yaml` takes `born: [ ids ]` and `died: [ ids ]` (characters it already lists), and the build takes the character's date from that event's **honest range**, at its precision. For the many dates Appendix A gives that will never be a scene, the character says it itself:
+
+```yaml
+born: { date: { age: third-age, year: 2644 }, precision: year }
+died: { date: { age: third-age, year: 2850 }, precision: year }
+fate:                       # optional: one sentence, for a life that ends in something else
+  en: She did not die; at the end of the Third Age she took ship over Sea.
+  es: No murió; al final de la Tercera Edad se embarcó hacia el Oeste.
+```
+
+Write a date only as precisely as the sources give it, as for an event (§ *Dates, honestly*). **Leave `died` out when the sources do not say they died** — the tree then draws no end, which is the honest answer and the reason an elf is never drawn as dead. When both an event and the character give a date, they must agree: a date outside the event's honest range is an error. No date is ever guessed from a generation.
+
 ### How to say a name: `pronounce`
 
 Characters, places and ages with a hard name (and events whose title is one, like the Ainulindalë) may say how to pronounce it, for readers of each language:
