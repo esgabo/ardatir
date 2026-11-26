@@ -211,5 +211,6 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 
 ## Open questions
 
-- Do long journeys (Frodo's road to Mordor) play only on the world map as a moving path, or do some legs get their own dioramas?
-- The world view (middle zoom level) isn't built yet; places have no map coordinates until the original world map exists.
+- Which legs of a long journey earn a diorama of their own? Answered in part by §4.10: inside an arc's telling a journey is a painted road with the legs we have told marked on it, and each of those is a diorama — so what is left is an authoring choice per journey (Moria probably, a week of walking probably not), not a design question.
+- The world view (middle zoom level) isn't built yet. Places now carry coordinates (`docs/MAP.md`), so what remains is the map geometry itself, drawn by us.
+- Family trees: the houses of elves, men, dwarves and hobbits (#89). `kin` records relationships rather than parentage, so it can't lay out a tree as it stands.
