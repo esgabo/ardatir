@@ -76,6 +76,7 @@ describe('the honest-range helpers', () => {
   });
 
   it('says a duration in days while that reads, then in years', () => {
+    expect(spanWords(0)).toBe('no certain gap');
     expect(spanWords(ONE_DAY)).toBe('1 day');
     expect(spanWords(10 * ONE_DAY)).toBe('10 days');
     expect(spanWords(3)).toBe('3 years');

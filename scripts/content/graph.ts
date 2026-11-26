@@ -81,7 +81,7 @@ export function daysApart(a: Span, b: Span): number {
 /** A duration on the axis in words: days while that reads, then years. */
 export function spanWords(years: number): string {
   const days = Math.round(years / ONE_DAY);
-  if (days <= 0) return 'no gap at all';
+  if (days <= 0) return 'no certain gap';
   if (days === 1) return '1 day';
   if (days < 400) return `${days} days`;
   const y = Math.round(years);
@@ -255,7 +255,7 @@ export function missingLinks(index: ContentIndex): Finding[] {
       query: 'missing-link',
       // The wider the gap inside the window, the more road went unshown, so it ranks higher.
       score: Math.round((days / window) * 10) + Math.min(chars.length, 4) + (shared.length ? 3 : 0),
-      what: `${list(chars.map(N.character))}: "${a.title.en}" → "${b.title.en}", ${days < 1 ? 'the same days' : `${Math.round(days)} days apart`}, unjoined`,
+      what: `${list(chars.map(N.character))}: "${a.title.en}" → "${b.title.en}", ${days < 1 ? 'the same days' : `${Math.round(days)} day${Math.round(days) === 1 ? '' : 's'} apart`}, unjoined`,
       events: [a.id, b.id],
       characters: chars,
       detail: [
@@ -298,7 +298,7 @@ export function samePlaceUnlinked(index: ContentIndex): Finding[] {
         out.push({
           query: 'same-place',
           score: (SAME_PLACE_DAYS - days) + (at_once ? 2 : 0),
-          what: `${N.place(place)}: "${a.title.en}" and "${b.title.en}", ${at_once ? 'at once' : `${Math.round(days)} days apart`}, with nothing said between them`,
+          what: `${N.place(place)}: "${a.title.en}" and "${b.title.en}", ${at_once ? 'at once' : `${Math.round(days)} day${Math.round(days) === 1 ? '' : 's'} apart`}, with nothing said between them`,
           events: [a.id, b.id],
           characters: [...new Set([...a.characters, ...b.characters])],
           detail: [
@@ -432,7 +432,7 @@ export function droppedThreads(index: ContentIndex, foretoldAges = new Set<strin
       query: 'dropped-thread',
       // Depth says it is a thread; a later scene with the same people says the consequence may
       // already be told and only wants a link, which is the cheaper and likelier fix.
-      score: Math.min(c.length, 10) + (next ? 6 : 0),
+      score: Math.min(c.length, 10) + (next ? 6 : 0) + c.length / 100,
       what: `"${e.title.en}" ends a chain of ${c.length} with no consequence told`,
       events: c,
       characters: e.characters,

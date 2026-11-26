@@ -17,6 +17,7 @@ npm run typecheck  # tsc --noEmit
 npm run build      # typecheck + static build into dist/
 npm run preview    # serve dist/ at http://localhost:4173
 npm run content    # validate content/ and write public/data/ (dev and build also do this)
+npm run graph      # the stories content/ knows but doesn't tell yet → out/graph.md
 npm test           # vitest: calendar, best guesses, event clock, armies, content validation (tests/)
 npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event>, --lang es, --changed)
 npm run narration:render   # render passages on the Voice Studio, check them, write out/narration/report.html (--only, --age, --lang, --changed)
@@ -62,18 +63,23 @@ Requires Node 22. Recording narration also needs `ffmpeg` and the homelab Voice 
 | **The time cursor is a page at a readable moment** (`#/time/third-age/3019-03-15`, `…/3019`, `…/before-time`): the ages as log-width segments (timeless ones apart, before the axis) and a finer scale down to a day; likely / possibly by `nearnessDuring`; whereabouts from journeys by company, honest first | Ages differ a hundredfold in length, so each needs room; a moment is said exactly as precisely as it was picked; "somewhere between" when the sources allow several stops, with our guess labelled. See `docs/DESIGN.md` §3.1. Decided 2026-11-09. |
 | **What is foretold is its own timeless age, after the Fourth Age** (`content/ages/foretold.yaml`, `foretold: true`): the Dagor Dagorath and the Second Music, never on the dated axis; every event in it cites its `source` and may name who foretold it (`foretoldBy`); marked as prophecy wherever it appears (a *Foretold* badge, *Foretold by Mandos, not told as history. Source: …* on its page, a dashed segment after the axis) | Prophecy must never read as history. The flag lives on the age so no event can forget it. We tell the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*, *The Lost Road*), one scene per event, so its strongest moments can each be animated. See `docs/DESIGN.md` §4.8. Decided 2026-11-09 (#57). |
 | **Wonder and learning** (#29): a first visit to the front door opens with a short guided opening over the Ainulindalë (`#/start`), then three ways in (a story, a moment, a life); skippable at once, shown once per visitor (localStorage), reopened from the sidebar's *Start here*. Hard names carry `pronounce: { en, es }` in the *AR-da* style; the stage has *About this scene*; event pages point to the book and chapter | A newcomer needs a door and a hand, not a control panel; nothing else appears unasked. Respellings per language, because English and Spanish readers sound letters differently. See `docs/DESIGN.md` §3.5. Decided 2026-11-09. |
+| **Places carry map coordinates** (`map: { on, x, z }`, optional `radius`; `docs/MAP.md`): four maps with their origin at a landmark the books measure from (Bree, the gates of Angband, Tirion, Armenelos), ground plane x/z, +x east, +z south, one unit ten miles; a place on no frame we draw says `map: nowhere` | The world view was blocked on one missing field. Coastlines change and Beleriand sinks, so one frame can't hold every age. Origins at measured-from landmarks make a new place hand-authorable: nearly every distance in the texts is quoted from Bree or from Angband. Ten miles per unit means a whole number is already as precise as the sources. **The published maps are never shipped, traced or scanned**: relative position is fact and only the drawing is anyone's, so we author numbers read off them as reference and our own geometry replaces the look later at the same coordinates. Decided 2026-11-26 (#88). |
+| **An arc can tell its own story over the map** (`arcs/<id>/` with `arc.yaml` + `narration.yaml` + `staging.yaml`): `hosts` (a body of people as a `mark`, weighted 1–5, never a troop count) and `roads` (a journey painted along its waypoints); scenes pinned from their places; no `light`, `sound` or `reveal` at map scale, and arcs stay off the time axis | The world level was a floor to cross, not a place with anything to say, while a map-scale overview — how a war moved across a country — is by definition not one scene and so cannot be an event. Giving it to the arc makes the three zoom levels three scales of storytelling on the event machinery unchanged (one clock, passages at `t`, the authored camera). A weight rather than a count because we don't know how many orcs came over the mountains. An arc's `t` is narration time, not history: one passage covers four centuries and the next one night. A journey drawn as a road makes an untold leg read as a stretch of road with nothing on it. See `docs/DESIGN.md` §4.10. Decided 2026-11-26 (#88). |
 
 ## Architecture
 
 ```
 content/             THE SOURCE OF TRUTH (YAML); see content/README.md
   ages/ characters/ places/ arcs/ journeys/ factions/ narrators/   pronunciation.yaml   (factions: sides in battles)
+  places/<id>.yaml     `map:` coordinates on one of four maps: docs/MAP.md
+  arcs/<id>/           an arc that tells its own story over the map: narration.yaml + staging.yaml (docs/DESIGN.md §4.10)
   events/<age>/<sort-key>-<id>/  event.yaml, narration.yaml, staging.yaml, audio/<lang>.{mp3,yaml}
 assets/              models: characters/<id>/<id>.glb (+ .blend source), kits/<kit>/, props/<id>/; see docs/MODELS.md
 scripts/content/
   build.ts           load + validate content/, place on the time axis, reverse links, lookups, character lanes
   factions.ts        factions, a battle's `sides` and its staging `armies` (read and checked for build.ts); byFaction
   models.ts          `model:` paths: exists, loadable .glb, MODEL_BUDGETS per asset type; copies into public/data/models/
+  graph.ts           `npm run graph`: the content as a graph — untold journey legs, a life's scenes left unjoined, two parties in one place, lives in pieces, threads let go; an authoring report to out/graph.md, no site weight (#88)
 scripts/models/
   pack.ts            `npm run model:pack`: gltfpack (meshopt) a Blender export into assets/, with the budget
   make-test-model.ts writes the fixture's test model (tests/fixtures/valid/assets/): tests only, never real content
