@@ -55,6 +55,7 @@ Past the end of history the cosmos has one more story, **what is foretold** (§4
 
 - Shows one age's geography (coastlines of *that* era) with markers for events nearby in time.
 - Journeys between events are drawn as animated paths.
+- **It has content of its own**: an arc's narration, told over the map, with the arc's scenes pinned on it as diamonds to drop into (§4.10). The world level is a scale of storytelling, not only a floor to cross.
 
 ### Event
 
@@ -205,7 +206,7 @@ content/
 | `staged` | + `staging.yaml` | Playable with placeholder visuals. |
 | `animated` | final assets | Finished terrain, animation and sound. |
 
-The build checks each event has what its status claims.
+The build checks each event has what its status claims. An arc that tells its own story runs through the same four words, with its own files (§4.10), and its status is independent of its events'.
 
 ### 4.4 Time
 
@@ -303,6 +304,271 @@ A **faction** is a host that fights as one body under its own banner: `content/f
 - **Armies** (`armies` in `staging.yaml`): `{ faction, size: small | medium | large, keyframes: [{ t, x, z, action? }] }`, the faction on one of the event's sides. Keyframes place the army's centre; unlike a character's, an army keyframe's `action` says what it does **on the way to** that keyframe (walk or run there; idle or fight where it stands). It faces the way it last marched, wheeling round when it turns (§2, battles).
 - **On the site:** event pages give the sides in the meta lines (*Men of Dale and Dwarves of Erebor against Easterlings*) and a **The sides** section with each faction's summary and leaders (names open their lives); the time cursor's event rows add the sides line; the sidebar's search lists matching factions with their battles (`src/sides.ts`). No new rail item: factions are a way into battles, not a view of their own.
 
+### 4.10 Arcs that tell: narration at the scale of a map (#88)
+
+The three zoom levels were defined together (§2), but only two of them ever had anything to say.
+The cosmos tells the shaping of the world and a diorama tells one scene; the world between them
+was a floor to cross on the way down — a map with markers, and no voice. Meanwhile narration
+lived only inside events, and an arc was three fields: an id, a title and a line of summary, with
+its list of events derived by the build. Arcs grouped scenes and said nothing of their own.
+
+**The world view's content is narration at arc scale.** How a war moved across a country, where a
+host marched, which road the survivors took, how long a city stood before it fell: told over the
+map of its age, with the arc's own scenes pinned on it as diamonds a visitor drops into. The three
+levels become three scales of storytelling rather than three distances from the ground.
+
+| Level | Tells |
+|---|---|
+| cosmos | the Music, the shaping and unmaking of the world |
+| **world** | **how a war moved across a country** |
+| diorama | what happened in one place on one day |
+
+**This cannot be an event.** One event is one scene (§4.1), and a map-scale overview is by
+definition not one scene — it is the thing the scenes are cut out of. Forcing it into an event
+would either break that rule or invent a fourth content kind. It belongs to the **arc**, which
+already is exactly "several scenes that belong together", and which gains a `narration.yaml` and
+a `staging.yaml` of its own.
+
+Almost nothing new is needed underneath. `EventClock` maps seconds ⇄ `t` without caring what it
+is timing; the recordings, the `textHash` staleness and the two languages work as they do for an
+event; `framingAt` already sweeps an authored view across ground; `Stage` plus `buildStage`'s
+dynamic `import()` is how a level is added as its own chunk. Genuinely new are **one set** (the
+map) and **one scale** for the hosts.
+
+#### The shape of an arc
+
+An arc that is only a grouping stays what it is: one flat file, `arcs/<id>.yaml`. An arc that
+gains a telling has several files, and so becomes a folder, exactly as an event does:
+
+```
+arcs/the-war-of-the-ring.yaml          a grouping: nothing more to read
+arcs/the-fall-of-gondolin/
+  arc.yaml           the same fields as the flat file, plus status, sources, beats
+  narration.yaml     the script, passage by passage
+  staging.yaml       the map, the framing, the hosts, the roads, the scenes
+  audio/<lang>.mp3   a recording and its timing, exactly as an event's
+  audio/<lang>.yaml
+```
+
+The build reads both forms and refuses an arc that exists as both. Twenty-five arcs with one
+folder each, twenty-four of them holding a single file, would be churn bought with nothing; a flat
+file **promotes** to a folder the day somebody writes its telling. The id stays the id, so
+nothing that links to the arc changes.
+
+The **status pipeline is the same four words** (§4.3), and means the same thing — the build checks
+an arc has the files its status claims:
+
+| Status | Has | Meaning |
+|---|---|---|
+| `outline` | `arc.yaml` (or the flat file) | A named group of scenes, with a summary. All of today's arcs. |
+| `scripted` | + `narration.yaml` | The overview is written; it can be read as text. |
+| `staged` | + `staging.yaml` | It plays over the map, with placeholder geography. |
+| `animated` | the age's finished map | Final map geometry and a recording. |
+
+An arc's status is **independent of its events'**. That is the point rather than a concession: an
+arc can be staged while every scene in it is still an outline, so a visitor can watch how Gondolin
+fell long before any of its scenes has a diorama — and conversely a finished diorama needs no
+arc telling to be watched. The derived `events` list is unchanged, and stays the build's.
+
+**Who reads it.** A voice belongs to an age (§5), so an arc is read by the narrator of the age of
+its **first event in story order**: that is where the telling opens, and a telling has one voice
+from its first word. Where an arc's events span ages — *The Age of Men*, *After the War* — somebody
+has to choose, and the choice should be visible, so `narratedBy: <age id>` on the arc says which
+age's voice tells it. The build warns when an arc whose events cross an age boundary leaves it
+out. An arc never gets a voice of its own: that would be a narrator per story, which §5 decided
+against.
+
+An arc's narration ids live in their own namespace (`arc/<id>` in `out/narration/`), and the build
+refuses an arc id that collides with an event id, so the pipeline can never record one over the
+other.
+
+#### `staging.yaml` at map scale
+
+```yaml
+map: beleriand                 # which map: beleriand | middle-earth | aman | numenor
+duration: 110                  # seconds, when there is no recording
+narration: { hidden: 0, treason: 0.26 }      # every passage id, rising — as an event's
+beats: { assault: 0.4 }                      # every beat id from arc.yaml
+camera:
+  - { t: 0, x: 6, z: 24, width: 54 }         # the whole of Beleriand
+  - { t: 0.4, x: 8, z: 24, width: 16 }       # in on the Encircling Mountains
+scenes: { fall-of-gondolin: 0.42 }           # which events the telling reaches, and when
+hosts: [ ... ]                               # bodies of people moving over the country
+roads: [ ... ]                               # journeys drawn as painted road
+```
+
+**The framing is `camera`, unchanged** — the same `{ t, x, z, width }` keys, eased the same way,
+with `width` in map units instead of tile units (§9.3). A sweep from Hithlum to Angband is the
+same authored move as a push in through Bag End's door, at a different scale, and inventing a
+second vocabulary for it would only mean two things to keep in step. The same rule holds with it:
+the view is the author's, the stage never moves its own camera, and a visitor's pan and zoom
+survive as an offset.
+
+**There is no `light`, no `reveal` and no `sound`.** A map is not a place and a country has no
+hour: the bargain §9.5 strikes — ambience is a pure function of place and hour, so every staged
+event in a listed place is heard for free — has nothing to bite on here, and a map has no lid to
+lift. So an arc's telling carries the voice and nothing else, the way the cosmos is silent
+(§9.5): what a war sounds like from four hundred miles up is a decision somebody should make on
+purpose. The map's own look belongs to the map, one per age, not to each telling.
+
+#### `hosts`: a body of people at map scale
+
+A tile `army` (§4.9) is a block of small figures with a `size` that means a count of them and
+actions — `idle`, `walk`, `run`, `fight` — that describe what a figure's legs are doing. None of
+that survives the change of scale: across a country a host is not figures, it is a **mark on a
+map**, and a thousand orcs and ten thousand differ in how much of the country they fill, not in
+how many bodies can be counted. So the map gets its own key and its own closed vocabulary, and
+`armies` stays honest at tile scale. Reusing it would make `size` mean two things and leave the
+renderer guessing which scale it was in.
+
+```yaml
+hosts:
+  - faction: host-of-angband     # a faction (§4.9): its banner colour and name
+    mark: column
+    weight: 4
+    keyframes:
+      - { t: 0.26, at: angband, action: hold }
+      - { t: 0.40, x: 7, z: 17, action: march }      # over the northern heights
+      - { t: 0.44, at: gondolin, action: fight }
+  - label: { en: The survivors of Gondolin, es: Los supervivientes de Gondolin }
+    color: "#8fb6c8"
+    mark: trickle
+    weight: 1
+    keyframes:
+      - { t: 0.64, at: gondolin, action: hold }
+```
+
+- **`faction` or `label`, never both.** A fighting side is a faction and takes its name and banner
+  colour from its file, so the map, the battle pages and the time cursor say the same words. But
+  much of what moves across a map is not a side in a battle — refugees out of a burning city, a
+  migration, a fleet of exiles — and a faction file for them would claim they fought something. A
+  host may instead carry its own `label` and `color`.
+- **`mark` is how it is drawn**, from a closed list the build checks, exactly as the sound cues are
+  checked (§9.5): a mark the renderer cannot draw would silently be nothing on the map.
+
+  | `mark` | Drawn as | For |
+  |---|---|---|
+  | `column` | a thickening line with a head | an army on a road or through a pass |
+  | `mass` | a block sitting on the ground | a host encamped, a siege, a city's defence |
+  | `swarm` | scattered, no front | orcs loose over a countryside |
+  | `trickle` | a thin thread | refugees, a small company, a migration |
+  | `fleet` | a mark on water | ships |
+  | `flight` | a mark above the ground | eagles, dragons |
+
+- **`weight`, 1 to 5**, is how much of the country the mark fills. Not a number of soldiers: the
+  sources rarely give one, and a figure invented for a renderer would be a precision the content
+  is not allowed to claim (§4.4 applies to numbers as much as to dates).
+- **A keyframe may carry its own `mark` or `weight`**, and changes the host's from there on. A
+  column that arrives and becomes a mass besieging a city is the commonest thing on a map, and
+  the alternative — two hosts, one appearing exactly where the other stops — would make a single
+  body of people read as two.
+- **A keyframe names a place, not a number, wherever a place exists**: `at: angband`, and the map
+  already knows where that is. Authoring a march as a list of place ids is both easier to check
+  and easier to read than coordinates, and it survives the map's geometry being redrawn.
+  `x`, `z` are for a point that is no place — a river crossing, a pass with no file of its own,
+  open sea — in the map's own units. Exactly one of `at` or `x`/`z` per keyframe.
+- **`action` says what the host does on the way to that keyframe**, as an army's does (§4.9):
+  `march`, `ride`, `sail`, `fly`, `flee`, `hold`, `fight`, `fade`. `hold` and `fight` happen where
+  it stands; `fade` is a host that is destroyed or disperses, the mark thinning to nothing where
+  it is. A host before its first keyframe is not on the map at all, which is how one arrives.
+
+Everything here is a pure function of `t`, like a tile army's formation: where a mark is, how thick
+it is and whether it is on the map at all are read from the keyframes alone, and `ambient` may only
+add the crawl of a column, never move it.
+
+#### `scenes`: the arc's own events on the map
+
+The diamonds are **not authored**. Every event of the arc is already derived, carries a `place`,
+and the place carries coordinates, so a pin per scene costs nothing to write and cannot drift out
+of step with the content. What the staging says is only **when the telling reaches each one**:
+
+```yaml
+scenes: { maeglin-betrays-gondolin: 0.26, fall-of-gondolin: 0.42 }
+```
+
+An event listed here lights at its `t` and stays lit — a filled diamond, the same mark the sidebar
+uses for a scene that can be watched (§3.3). An event of the arc that the telling does not stop at
+is drawn hollow from the first frame, as an unstaged event is listed hollow: *there is a scene
+here, but these words are not about it*. The build checks every id in `scenes` is an event of that
+arc, and that the `t`s rise in the arc's own story order, so a telling cannot claim the city fell
+before it was founded.
+
+**Clicking a diamond is ordinary navigation**, which is what makes it safe mid-telling. The arc
+pauses, the link is `#/event/<id>?from=<arc>`, and because the arc's own route carries its `t`
+(below) the entry left behind in the history is the exact moment the visitor left. Back — and the
+*← Back to The Fall of Gondolin* link the event shows when it was opened from an arc — returns to
+the arc at that moment, paused, ready to play on. Nothing is remembered anywhere but the URL,
+which is the rule the rest of the site already keeps (§7).
+
+#### `roads`: journeys drawn inside the telling
+
+A journey is already an ordered list of dated stops (§4.6), and an arc's telling is usually about
+a road: the flight out of Gondolin, the march of the Last Alliance, the Ring going east. So a
+journey is drawn **inside the arc's staging**, not in a view of its own:
+
+```yaml
+roads:
+  - { journey: the-flight-from-gondolin, from: 0.64, to: 0.9 }
+```
+
+Between `from` and `to` the road paints itself along the journey's waypoints in order; before
+`from` there is nothing, after `to` the whole road stays. The events the build has already matched
+to waypoints sit on it as the diamonds they are, and **a leg with no event is plain road** — which
+is the real reason to draw it this way. The map then says, in a picture and without a word of
+complaint, which parts of a journey we have told and which we have not: a stretch of road with
+nothing on it reads as a road not yet walked, not as a gap in the project. `gandalfs-road-3018`
+is seven waypoints with events on a few of them, and it should look like that.
+
+A standalone **journey view** — *There and Back Again* end to end, outside any arc — is a separate
+feature and not designed here; when it comes it should draw the road exactly as `roads` does
+rather than grow a second vocabulary for the same line.
+
+#### The map, and what this section depends on
+
+An arc plays on **one of the maps** (`MAP_IDS`: `beleriand`, `middle-earth`, `aman`, `numenor`),
+named by `map:`, and framed by its `camera` keys. Everything above needs exactly two things of
+the map: that it has a name, and that **a place has coordinates on it** — `map: { on, x, z }` in
+`content/places/`, in the same ground plane a tile uses (`x` east, `z` south), one unit ten miles
+(`docs/MAP.md`). Nothing else here depends on the geography, so an arc's `camera`, `hosts` and
+`roads` survive the map being redrawn at the same coordinates. The build should check that every
+place used by an arc's events, hosts and roads has an entry for the map the arc names: a telling
+that cannot place half its scenes is an error, not a map with holes in it. A place that is
+`nowhere` on every map cannot carry a diamond, and an arc whose scenes are all nowhere has no
+business being staged at this level.
+
+The geography is drawn as original low-poly geometry at those coordinates, in the same visual
+language as the tiles (§9), and can be replaced later **at the same coordinates**, because the
+coordinates were never the drawing (§10).
+
+#### Route, and what this is deliberately not
+
+```
+#/arc/the-fall-of-gondolin?t=0.42&lang=es&audio=en
+```
+
+The arc's telling is the world level's route, and `t` behaves exactly as an event's: scrubbing and
+seeking replace the current history entry, opening a scene or another view adds one, and a fresh
+deep link lands on the composed view at that moment (§7). An arc with no `narration.yaml` has no
+route of its own — it stays a card in the sidebar's **Stories** view (§3.3), which gains *Watch
+this story over the map →* on the arcs that have a telling. There is no `follow=` at this scale:
+following a mark on a map is not following a life.
+
+**The worked example** is `content/arcs/the-fall-of-gondolin/` — a `narration.yaml` of ten
+passages and a `staging.yaml` with the framing, three hosts (Morgoth's by faction, the refugees
+and the eagles by label), the two roads and the seven scenes the telling stops at, out of the
+arc's thirteen. The build does not read `arcs/<id>/` yet, so the folder is ignored and the arc is
+still its flat file; the folder's own `README.md` says what the build has to learn to accept it.
+
+**The time cursor and the lanes gain nothing from this, on purpose.** An arc's `t` is narration
+time, not history: one passage may cover four hundred years of a hidden city and the next a single
+night, and the clock stretches to the reading, not to the calendar. Putting a telling on the time
+axis would mean giving its passages dates we would then have to defend, and the axis already has
+the arc's events on it, each at its own honest range. So an arc is not on the axis, no passage
+carries a date, the cursor does not list arcs among what is happening at a moment, and `index.lanes`
+is untouched. The one join worth having costs nothing and already exists in both directions: an
+arc's telling links to the time cursor at its first event's moment, and an event opened from an arc
+keeps its own *See this moment on the timeline →*.
+
 ## 5. Narration
 
 Every event is told by a **narration script**: passages written in our own words (no reading of Tolkien's text aloud). The same script is what the audio reads, and it is shown on screen in step with the voice and the animation.
@@ -354,6 +620,7 @@ The URL always reflects where you are:
 /#/lives?with=tuor,turin                            character lanes, in this order (§3.2)
 /#/time/third-age/3019-03-15                        the time cursor at a day (§3.1); …/3019-03, …/3019, …/3019-midyear
 /#/time/first-age/495?zoom=age&from=fall-of-nargothrond   a whole year, at the age scale, opened from an event
+/#/arc/the-fall-of-gondolin?t=0.42                   an arc's telling over the map of its age (§4.10)
 /#/start                                            the opening over the cosmos (§3.5)
 ```
 
@@ -630,8 +897,10 @@ music of all is sung, is still silent.
 | 2026-11-15 | Where a figure stands (#81): a keyframe's `y` says how high above the walkable ground a character is, so one placed on a log, a bench or a doorstep is not buried in it; crowding is a **build warning**, not a push-apart at render time, because a figure's place must stay a pure function of `t` and who stands in front of whom is the author's composition (§9.2). |
 | 2026-11-15 | The render look (#76): a soft second light that comes up as the sun goes down, so a night scene can be seen; haze tinted toward the background, never toward a bright sky, so the far edge of a tile recedes instead of dissolving; a grade per place applied to **the light, not the pixels** (no post-processing pass: a second render of the frame is the first thing to fail on a phone), where a place that takes light away gets the soft light back, and the background takes only a third of the tint so the void stays dark; contact shadows under figures, because at this scale where a figure touches says more than the shadow behind it; one quality setting turning the shadow map, pixel ratio and effect counts down together, guessed from the device and overridable with `?quality=` (§9.1). |
 | 2026-11-09 | Factions (#18): one file per side in `content/factions/` (name, banner colour, kind, summary, leaders), reused across battles; battles list `sides` as groups of allied factions; staging places `armies` (faction, size, keyframes) as instanced blocks of small figures in the faction's colour, named characters keeping their own tracks; one being who comes alone (Beorn) is a character, a host (the Eagles) a faction. First example: the Battle of Five Armies (§2, §4.9). |
+| 2026-11-26 | **Narration at arc scale** (#88): the world view's content is an arc's own telling over the map of its age — how a war moved across a country — because a map-scale overview is by definition not one scene and so cannot be an event. An arc with a telling becomes a folder (`arc.yaml` + `narration.yaml` + `staging.yaml` + `audio/`) and runs through the same four-word status pipeline, independent of its events'; it is read by the narrator of its first event's age (`narratedBy` when its events cross ages). The clock, the recordings and the authored `camera` are the event machinery unchanged; new are **`hosts`** (a body of people as a mark on a map: `mark` from a closed list, `weight` 1–5 rather than a count of soldiers, keyframes naming places, `faction` or a plain `label` for refugees) and **`roads`** (a journey painted along its waypoints, so an untold leg reads as a stretch of road with nothing on it). The arc's events are pinned from their places and need no authoring; `scenes` says only when the telling reaches each. No `light`, `sound` or `reveal` at map scale, and arcs stay off the time axis: an arc's `t` is narration time, not history (§4.10). |
 
 ## 12. Open questions
 
-- **Journeys**: do long travels (Frodo's road to Mordor) play only on the world map as a moving path, or do some legs (Moria, the Dead Marshes) get their own dioramas?
-- **World view**: the original world map per age is not built yet; places have no map coordinates until it is.
+- **Journeys**: answered in part (§4.10). A long travel is both at once: inside an arc's telling it is a painted road (`roads`) with the legs we have told marked on it as diamonds, and each of those legs is a diorama of its own. What is still open is only **which** legs earn one — Moria and the Dead Marshes probably, a week of walking probably not — which is an authoring choice per journey, not a design question.
+- **A standalone journey view**: *There and Back Again* end to end, outside any arc (§4.10). Worth having, not designed yet; it should draw the road exactly as an arc's `roads` does.
+- **World view**: the original world map per age is not built yet. The coordinate scheme that unblocks it is settled in `docs/MAP.md`; §4.10 depends on nothing more than a named map per age and coordinates per place.

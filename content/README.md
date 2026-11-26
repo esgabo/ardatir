@@ -7,6 +7,7 @@ ages/          the ages and their place on the shared time axis
 characters/    one file per character
 places/        one file per place
 arcs/          named periods that group events (The War of the Ring)
+arcs/<id>/     an arc that tells its own story over the map: arc.yaml, narration.yaml, staging.yaml
 journeys/      dated paths of characters between places
 factions/      one file per side in battles (the Elves of Mirkwood)
 events/<age>/<sort-key>-<id>/
@@ -282,6 +283,120 @@ A stay known only within bounds takes an optional `end`, like an event's `when.e
 
 An event on a journey is matched to the waypoint at its place whose range it overlaps, and that waypoint takes the event's best guess. The build warns when an event at one of the journey's places overlaps none of the waypoints there: widen the waypoint (often with an `end`) or check the dates.
 
+## Arcs: a story told over the map
+
+An arc groups the scenes that belong together (*The War of the Ring*, *The Fall of Gondolin*). Most arcs are only that, and stay one flat file:
+
+```yaml
+id: the-fall-of-gondolin
+title: { en: The Fall of Gondolin, es: La Caída de Gondolin }
+summary:
+  en: Tuor's coming to the hidden city, his years there, and its betrayal and ruin.
+  es: La llegada de Tuor a la ciudad oculta, sus años allí, y su traición y ruina.
+```
+
+The event list is derived by the build, never written here.
+
+An arc may also **tell its own story over the map of its age** — how the war moved across the country, where the host marched, which road the survivors took — with its scenes pinned on the map as diamonds a visitor can drop into (`docs/DESIGN.md` §4.10). That needs more than one file, so the arc becomes a folder, exactly as an event does:
+
+```
+arcs/the-fall-of-gondolin/
+  arc.yaml           the fields above, plus status, sources, beats
+  narration.yaml     the script, passage by passage          (status: scripted)
+  staging.yaml       the map, the framing, the hosts          (status: staged)
+  audio/<lang>.mp3 + audio/<lang>.yaml                        (optional)
+```
+
+Move the flat file into the folder as `arc.yaml` when you promote it; an arc that exists as both a file and a folder is an error. The id does not change, so nothing that links to the arc has to.
+
+### `arc.yaml`
+
+```yaml
+id: the-fall-of-gondolin
+title: { en: The Fall of Gondolin, es: La Caída de Gondolin }
+summary:
+  en: Tuor's coming to the hidden city, his years there, and its betrayal and ruin.
+  es: La llegada de Tuor a la ciudad oculta, sus años allí, y su traición y ruina.
+status: staged            # outline | scripted | staged | animated
+sources:                  # the chapters the telling is drawn from; cited, never quoted
+  - { book: the-silmarillion, chapter: "Of Tuor and the Fall of Gondolin" }
+narratedBy: first-age     # only when the arc's events span ages: whose voice tells it
+beats:                    # turning points for the scrubber; their times go in staging.yaml
+  - { id: treason, label: { en: Maeglin is taken, es: Maeglin es capturado } }
+```
+
+An arc's **status means the same four things an event's does**, and is **independent of its events'**: an arc can be staged while every scene in it is still an outline, which is the point — the overview can be watched long before its dioramas are built.
+
+The **narrator** is the one of the age of the arc's first event in story order (`docs/DESIGN.md` §5: a voice belongs to an age, never to a story). `narratedBy` names an age instead, and is only for an arc whose events cross an age boundary; the build warns when such an arc leaves it out.
+
+### `narration.yaml`
+
+Exactly an event's: passages in order, one to three sentences, in our own words, `en` required. Set `status: scripted`. The pipeline (`npm run narration:export`, `:render`, `:publish`) treats an arc like an event, under `out/narration/arc/<id>/`, and `audio/<lang>.yaml` carries the same `duration`, `starts` and `textHash`, with the same staleness warnings.
+
+### `staging.yaml`
+
+```yaml
+map: beleriand                 # which map this plays on: beleriand | middle-earth | aman | numenor
+duration: 110                  # seconds, when there is no recording
+narration: { hidden: 0, treason: 0.26, assault: 0.4 }   # every passage id, rising
+beats: { treason: 0.26, assault: 0.4 }                  # every beat id from arc.yaml
+camera:                        # the framing, as an event's (tile units become map units)
+  - { t: 0, x: 2, z: 24, width: 70 }     # the whole of Beleriand
+  - { t: 0.4, x: 8, z: 24, width: 16 }   # in on the Encircling Mountains
+scenes: { maeglin-betrays-gondolin: 0.26, fall-of-gondolin: 0.42 }
+hosts: [ ... ]                 # see below
+roads: [ ... ]                 # see below
+```
+
+Every place an arc's scenes, hosts and roads name must have an entry for the map the arc plays on. There is **no `light`, no `sound` and no `reveal`**: a country has no hour and a map has no lid to lift, so an arc's telling carries the voice and nothing else (`docs/DESIGN.md` §9.5, §4.10). The map's look belongs to the map, one per age, not to each telling.
+
+#### `scenes`: when the telling reaches each event
+
+The diamonds need no authoring — every event of the arc is derived, and its place has coordinates. `scenes` says only **when the words arrive**: an event listed here lights at its `t` and stays lit (a filled diamond), and an event of the arc that the telling never stops at is drawn hollow from the start, which reads as *there is a scene here, but these words are not about it*. The build checks each id is an event of this arc and that the `t`s rise in the arc's own story order.
+
+Clicking a diamond opens that event (its stage, or its page) and pauses the telling; the back link returns to the arc at the same `t`, because the arc's route carries it (`#/arc/<id>?t=0.42`).
+
+#### `hosts`: a body of people at map scale
+
+At tile scale an `armies` entry is a block of small figures (`docs/DESIGN.md` §4.9). Across a country a host is a **mark on a map**, so it has its own key and its own closed vocabulary:
+
+```yaml
+hosts:
+  - faction: host-of-angband                # a faction file: its name and banner colour
+    mark: column                            # column | mass | swarm | trickle | fleet | flight
+    weight: 4                               # 1..5: how much of the country it fills
+    keyframes:
+      - { t: 0.26, at: angband, action: hold }
+      - { t: 0.40, x: 7, z: 17, action: march }     # a point that is no place: over the heights
+      - { t: 0.44, at: gondolin, action: fight }
+  - label: { en: The survivors of Gondolin, es: Los supervivientes de Gondolin }
+    color: "#8fb6c8"                        # a body that is nobody's side in a battle
+    mark: trickle
+    weight: 1
+    keyframes:
+      - { t: 0.64, at: gondolin, action: hold }
+      - { t: 0.90, at: havens-of-sirion, action: flee }
+```
+
+- **`faction` or `label`, never both.** A fighting side is a faction (`factions/<id>.yaml`), so the map, the battle pages and the search all say the same words. Refugees, a migration or a fleet of exiles are not a side in any battle, and a faction file for them would claim they fought something: give them a `label` and a `color` instead.
+- **`mark`** is how it is drawn, from a closed list the build checks, as the sound cues are: `column` (a thickening line with a head: an army on a road or through a pass), `mass` (a block on the ground: a host encamped, a siege), `swarm` (scattered, no front), `trickle` (a thin thread: refugees, a small company), `fleet` (on water), `flight` (above the ground: eagles, dragons).
+- **`weight` is 1 to 5**, how much of the country the mark fills — never a number of soldiers. The sources rarely give one, and a figure invented for the renderer would be a precision the content is not allowed to claim.
+- **A keyframe may carry its own `mark` or `weight`**, which the host keeps from there on: a column that arrives and becomes a `mass` besieging a city is one body of people, not two hosts.
+- **A keyframe names a place** wherever one exists (`at: angband`): the map knows where it is (`map:` in `places/`, `docs/MAP.md`), it reads better than numbers, and it survives the geography being redrawn. `x`, `z` are for a point that is no place — a pass, a river crossing, open sea — in the map's own units (one unit ten miles, `x` east, `z` south). Exactly one of `at` or `x`/`z`.
+- **`action` is what the host does on the way to that keyframe**, as an army's is: `march`, `ride`, `sail`, `fly`, `flee`, `hold`, `fight`, `fade`. `hold` and `fight` happen where it stands; `fade` is a host destroyed or dispersed, the mark thinning to nothing where it is. Before its first keyframe a host is not on the map at all, which is how one arrives.
+
+Keys rise in `t`, and everything about a host is a pure function of `t`.
+
+#### `roads`: a journey painted on the map
+
+```yaml
+roads:
+  - { journey: the-flight-from-gondolin, from: 0.64, to: 0.9 }
+```
+
+Between `from` and `to` the road paints itself along the journey's waypoints in order; after `to` the whole road stays. The events the build matched to waypoints sit on it as diamonds, and **a leg with no event is plain road** — so the map says, in a picture, which parts of a journey we have told and which we have not. That is the reason to draw it this way: a stretch of road with nothing on it reads as a road not yet walked.
+
+
 ## Characters
 
 ```yaml
@@ -309,6 +424,24 @@ pronounce: { en: ee-LOO-va-tar, es: i-LÚ-va-tar }
 Write it in the *AR-da* style: syllables joined by hyphens, the **stressed syllable in capitals**, exactly one per word, words separated by spaces (`KIR-ith OON-gol`); letters only. Each language respells for its own readers: Spanish writes *th* as *z* (`ZIN-gol`), *h* as *j* (`JÚ-rin`), a hard *g* before *e*/*i* as *gu* (`e-RE-gui-on`), *w* as *u* (`MAN-ue`). Stress follows Tolkien's rules for the Elvish tongues (*The Return of the King*, Appendix E: the second-last syllable when it is long, else the one before it). The site shows it as a small hint after the name; the build refuses a respelling without exactly one stressed syllable per word.
 
 `home` is for characters who don't travel: Tom Bombadil stays in his own country (save his trip to Maggot's in a hobbit rhyme). Between their first and last events (honest ranges), when no journey of theirs covers the moment, the time cursor shows them *in their own country* at that place, in a quiet "At home" group. It must be a known place id. Travellers don't need it: their journeys say where they are.
+
+## Places
+
+```yaml
+id: weathertop
+name: { en: Weathertop, es: La Cima de los Vientos }
+summary: { en: ..., es: ... }
+map: { on: middle-earth, x: 12, z: -2 }   # about 120 miles east of Bree, north of the Road
+```
+
+`map` is where the place sits on one of the four maps the world view draws (`middle-earth`,
+`beleriand`, `aman`, `numenor`; `middle-earth` is the default). The ground plane is x/z, **+x
+east, +z south, one unit ten miles**, each map measured from its own landmark — Middle-earth
+from Bree. A land rather than a spot adds `radius`, how far it reaches from that centre; a
+place on two maps gives a list of entries; a place on no map we draw says `map: nowhere` with
+a comment saying why. Always leave a `#` comment saying where the position came from. The
+whole scheme, and how to work out a new place's numbers by hand, is in
+[`docs/MAP.md`](../docs/MAP.md).
 
 ## Factions: sides in battles
 
