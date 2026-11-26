@@ -3,3 +3,4 @@ name: { en: "The Argonath", es: "El Argonath" }
 summary:
   en: "The Pillars of the Kings, two giant statues guarding the entrance to Nen Hithoel."
   es: "Los Pilares de los Reyes, dos estatuas gigantes que guardan la entrada de Nen Hithoel."
+map: { on: middle-earth, x: 49, z: 48.5 }   # the northern gate of Nen Hithoel

@@ -210,6 +210,11 @@ describe('the valid fixture', () => {
     expect(r.index.places.find((p) => p.id === 'bag-end')!.pronounce).toBeUndefined();
   });
 
+  it('carries a place\'s map coordinates through to the index', () => {
+    expect(r.index.places.find((p) => p.id === 'bag-end')!.map).toEqual([{ on: 'middle-earth', x: -12.2, z: -1.3 }]);
+    expect(r.index.places.find((p) => p.id === 'rivendell')!.map).toEqual([{ on: 'middle-earth', x: 34, z: -7, radius: 1 }]);
+  });
+
   it('keeps a character\'s home', () => {
     expect(r.index.characters.find((c) => c.id === 'bilbo')!.home).toBe('bag-end');
     expect(r.index.characters.find((c) => c.id === 'gandalf')!.home).toBeUndefined();
@@ -385,7 +390,16 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'pronunciation without a stressed syllable', changes: [{ file: 'places/rivendell.yaml', replace: ['en: RIV-en-del', 'en: riv-en-del'] }], error: 'pronounce.en: "riv-en-del": needs exactly one stressed syllable in CAPITALS' },
   { name: 'pronunciation with stray marks', changes: [{ file: 'places/rivendell.yaml', replace: ['es: RI-ven-del', 'es: RI/ven/del'] }], error: 'pronounce.es: only letters' },
   { name: 'pronunciation without English', changes: [{ file: 'characters/gandalf.yaml', replace: ['kind: wizard\n', 'kind: wizard\npronounce: { es: GAN-dalf }\n'] }], error: 'pronounce: needs an English text (en)' },
-  { name: 'age with neither axis nor timeless', changes: [{ file: 'ages/third-age.yaml', replace: ['axis: { start: 4032 }', ''] }], error: 'needs either `timeless: true` or `axis: { start }`' },
+  // Map coordinates (docs/MAP.md): the world view puts an event where its place is.
+  { name: 'a position on an unknown map', changes: [{ file: 'places/rivendell.yaml', replace: ['on: middle-earth', 'on: arda'] }], error: 'map.on: one of middle-earth, beleriand, aman, numenor (got "arda")' },
+  { name: 'a position without x', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map: { on: middle-earth, z: -7 }'] }], error: 'map.x: required' },
+  { name: 'a position that is not a number', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map: { on: middle-earth, x: east, z: -7 }'] }], error: 'map.x: a finite number' },
+  { name: 'a position off every map', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map: { on: middle-earth, x: 3400, z: -7 }'] }], error: 'map.x: 3400 is off every map' },
+  { name: 'a region with no size', changes: [{ file: 'places/rivendell.yaml', replace: ['radius: 1', 'radius: 0'] }], error: 'map.radius: a positive number' },
+  { name: 'a place on one map twice', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map:\n  - { on: middle-earth, x: 34, z: -7 }\n  - { on: middle-earth, x: 1, z: 2 }'] }], error: 'map[1].on: "middle-earth" twice (one position per map)' },
+  { name: 'a position that is not a mapping', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map: somewhere'] }], error: 'map: expected { on, x, z }, a list of those, or the word `nowhere`' },
+
+    { name: 'age with neither axis nor timeless', changes: [{ file: 'ages/third-age.yaml', replace: ['axis: { start: 4032 }', ''] }], error: 'needs either `timeless: true` or `axis: { start }`' },
 
   // Events: references and status
   { name: 'unknown character', changes: [{ file: LETTERS, replace: ['[ bilbo, gandalf ]', '[ bilbo, elrond ]'] }], error: 'characters: unknown character "elrond"' },
@@ -505,6 +519,25 @@ describe('broken content', () => {
       expect(r.errors.some((e) => (typeof c.error === 'string' ? e.includes(c.error) : c.error.test(e))), r.errors.join('\n') || '(no errors)').toBe(true);
     });
   }
+
+  it('warns when a told event\'s place has no position on any map', () => {
+    const r = buildWith([{ file: 'places/bag-end.yaml', replace: ['map: { on: middle-earth, x: -12.2, z: -1.3 }\n', ''] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('places/bag-end.yaml: has no map: position, but 1 told event happens here')), r.warnings.join('\n')).toBe(true);
+  });
+
+  it('does not warn about a place deliberately on no map', () => {
+    const r = buildWith([{ file: 'places/bag-end.yaml', replace: ['map: { on: middle-earth, x: -12.2, z: -1.3 }', 'map: nowhere'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings).toEqual([]);
+    expect(r.index.places.find((p) => p.id === 'bag-end')!.map).toBeUndefined();
+  });
+
+  it('warns when a position has a typo in a field', () => {
+    const r = buildWith([{ file: 'places/rivendell.yaml', replace: ['radius: 1', 'radius: 1, y: 3'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('unknown field "y" in map'))).toBe(true);
+  });
 
   it('warns when a sort key contradicts the dates', () => {
     const r = buildWith([{ file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['year: 2941, season: summer', 'year: 2940, season: summer'] }]);

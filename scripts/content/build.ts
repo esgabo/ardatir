@@ -11,6 +11,7 @@ import {
   EXTRA_DAYS, LANGS, LIGHT_PRESETS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
   AUTHORED_CUES, type CameraKey, type CoverKey, type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText, type SoundKey,
+  MAP_IDS, type MapId, type PlacePoint,
   type NarrationAudio, type NarrationSegment, type Narrator, type NarratorVoice, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
@@ -48,6 +49,8 @@ const STATUS_RANK: Record<Status, number> = { outline: 0, scripted: 1, staged: 2
 const ID = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const AUDIO_EXT = ['.mp3', '.ogg', '.m4a', '.wav'];
 const STAGES: StageKind[] = ['cosmos', 'diorama'];
+/** No map we draw reaches further than this from its origin (units of ten miles): a typo guard. */
+const MAP_LIMIT = 500;
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -285,16 +288,59 @@ export function buildContent(contentDir: string): BuildResult {
   }
   for (const c of characters) for (const k of c.kin ?? []) if (!charIds.has(k.id)) R.error(charFile.get(c.id)!, `kin: unknown character "${k.id}"`);
 
+  /**
+   * `map:` on a place: where it sits on each of the maps the world view draws (docs/MAP.md).
+   * One entry, a list of entries for a place on more than one map (the Blue Mountains), or
+   * the word `nowhere` for a place that belongs to no frame we draw (the Door of Night).
+   */
+  const readMap = (f: string, v: unknown): PlacePoint[] | undefined => {
+    if (v === undefined || v === 'nowhere') return undefined;
+    if (v !== null && (isObj(v) || Array.isArray(v))) {
+      const raw = Array.isArray(v) ? v : [v];
+      if (!raw.length) { R.error(f, 'map: a list of positions must not be empty (use `map: nowhere`)'); return undefined; }
+      const out: PlacePoint[] = [];
+      raw.forEach((e, i) => {
+        const what = `map${Array.isArray(v) ? `[${i}]` : ''}`;
+        if (!isObj(e)) { R.error(f, `${what}: expected { on, x, z }`); return; }
+        keys(f, e, ['on', 'x', 'z', 'radius'], what);
+        const on = e.on === undefined ? 'middle-earth' : String(e.on);
+        if (!(MAP_IDS as readonly string[]).includes(on)) { R.error(f, `${what}.on: one of ${MAP_IDS.join(', ')} (got "${on}")`); return; }
+        const num = (k: 'x' | 'z' | 'radius', required: boolean): number | undefined => {
+          const n = e[k];
+          if (n === undefined) { if (required) R.error(f, `${what}.${k}: required (a number of units, one unit ten miles)`); return undefined; }
+          if (typeof n !== 'number' || !Number.isFinite(n)) { R.error(f, `${what}.${k}: a finite number`); return undefined; }
+          if (k === 'radius' ? !(n > 0) : Math.abs(n) > MAP_LIMIT) {
+            R.error(f, k === 'radius' ? `${what}.radius: a positive number` : `${what}.${k}: ${n} is off every map (keep it within ±${MAP_LIMIT} units)`);
+            return undefined;
+          }
+          return n;
+        };
+        const x = num('x', true), z = num('z', true), radius = num('radius', false);
+        if (x === undefined || z === undefined) return;
+        if (out.some((p) => p.on === on)) { R.error(f, `${what}.on: "${on}" twice (one position per map)`); return; }
+        out.push({ on: on as MapId, x, z, ...radius !== undefined ? { radius } : {} });
+      });
+      return out.length ? out : undefined;
+    }
+    R.error(f, 'map: expected { on, x, z }, a list of those, or the word `nowhere`');
+    return undefined;
+  };
+
   const places: Place[] = [];
   const placeIds = new Set<string>();
+  const placeFile = new Map<string, string>();
+  /** Places with no `map:` at all: not `nowhere` on purpose, just not placed yet. */
+  const placesOffMap = new Set<string>();
   for (const f of yamlFiles(path.join(contentDir, 'places'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'summary', 'world', 'pronounce'], 'place');
+    keys(f, o, ['id', 'name', 'summary', 'map', 'pronounce'], 'place');
     const pid = id(f, o.id, placeIds, 'place');
     if (!pid) continue;
-    const world = isObj(o.world) && typeof o.world.x === 'number' && typeof o.world.z === 'number' ? { x: o.world.x, z: o.world.z } : undefined;
-    places.push({ id: pid, name: text(f, o.name, 'name')!, summary: text(f, o.summary, 'summary')!, ...world ? { world } : {}, ...say(pronounce(f, o.pronounce)) });
+    const map = readMap(f, o.map);
+    if (o.map === undefined) placesOffMap.add(pid);
+    places.push({ id: pid, name: text(f, o.name, 'name')!, summary: text(f, o.summary, 'summary')!, ...map ? { map } : {}, ...say(pronounce(f, o.pronounce)) });
+    placeFile.set(pid, f);
   }
   // A character who stays in one place (Tom Bombadil): the time cursor shows them there between their events.
   for (const c of characters) if (c.home && !placeIds.has(c.home)) R.error(charFile.get(c.id)!, `home: unknown place "${c.home}"`);
@@ -779,6 +825,13 @@ export function buildContent(contentDir: string): BuildResult {
 
     r.summary.stage = stage;
     details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, ...set ? { set } : {}, ...light?.length ? { light } : {}, ...camera?.length ? { camera } : {}, ...reveal?.length ? { reveal } : {}, ...sound?.length ? { sound } : {}, audioFiles });
+  }
+
+  // A place a told event happens in needs somewhere on a map, so the world view can put the
+  // event there. A place deliberately on no map says so (`map: nowhere`) and is not warned about.
+  for (const pid of placesOffMap) {
+    const told = raws.filter((r) => r.summary.place === pid && STATUS_RANK[r.summary.status] >= STATUS_RANK.scripted);
+    if (told.length) R.warn(placeFile.get(pid)!, `has no map: position, but ${told.length} told event${told.length > 1 ? 's happen' : ' happens'} here (add \`map:\`, or \`map: nowhere\` with a comment saying why)`);
   }
 
   // Scripts: every narration as text, so a scripted event can be read before it is staged.

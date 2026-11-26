@@ -3,3 +3,4 @@ name: { en: "Crickhollow", es: "Cricava" }
 summary:
   en: "A small house in Buckland, near Bucklebury, that Frodo bought as a cover for his leaving."
   es: "Una casita en Los Gamos, cerca de Gamoburgo, que Frodo compró para disimular su marcha."
+map: { on: middle-earth, x: -4, z: 1 }   # in Buckland, east of the Brandywine

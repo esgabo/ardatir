@@ -3,3 +3,4 @@ name: { en: Goblin-town, es: Ciudad de los Trasgos }
 summary:
   en: The goblins' caves and tunnels under the High Pass of the Misty Mountains.
   es: Las cuevas y túneles de los trasgos bajo el Paso Alto de las Montañas Nubladas.
+map: { on: middle-earth, x: 38, z: -6 }   # under the High Pass, east of Rivendell

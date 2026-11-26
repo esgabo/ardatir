@@ -3,3 +3,4 @@ name: { en: "The Barrow-downs", es: "Las Quebradas de los Túmulos" }
 summary:
   en: "Grassy hills crowned with ancient graves, haunted by wights."
   es: "Colinas de hierba coronadas de antiguas tumbas, habitadas por tumularios."
+map: { on: middle-earth, x: -1.5, z: 1.5, radius: 2 }   # between the Old Forest and the Road west of Bree

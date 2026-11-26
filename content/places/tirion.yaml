@@ -3,3 +3,4 @@ name: { en: "Tirion", es: "Tirion" }
 summary:
   en: "The white city of the Elves upon the hill of Túna in Valinor."
   es: "La ciudad blanca de los Elfos sobre la colina de Túna, en Valinor."
+map: { on: aman, x: 0, z: 0 }   # upon Túna: the origin of this map

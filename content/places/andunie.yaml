@@ -3,3 +3,4 @@ name: { en: "Andúnië", es: "Andúnië" }
 summary:
   en: "The western haven of Númenor, seat of the Lords of Andúnië."
   es: "El puerto occidental de Númenor, sede de los Señores de Andúnië."
+map: { on: numenor, x: -16, z: -8 }   # the western haven, in the Andustar

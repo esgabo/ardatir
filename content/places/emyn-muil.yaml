@@ -3,3 +3,4 @@ name: { en: "The Emyn Muil", es: "Las Emyn Muil" }
 summary:
   en: "A maze of bare ridges and cliffs east of the Anduin."
   es: "Un laberinto de riscos y acantilados desnudos al este del Anduin."
+map: { on: middle-earth, x: 49, z: 47, radius: 5 }   # the bare ridges round Nen Hithoel

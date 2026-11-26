@@ -132,12 +132,37 @@ export interface Character {
   pronounce?: LocalizedText;
 }
 
+/**
+ * The maps the world view draws. Beleriand sinks at the end of the First Age, so its places
+ * share no coordinate frame with later Middle-earth; Aman and Númenor are their own lands.
+ * See docs/MAP.md.
+ */
+export const MAP_IDS = ['middle-earth', 'beleriand', 'aman', 'numenor'] as const;
+export type MapId = typeof MAP_IDS[number];
+
+/**
+ * A place's position on one map: the ground plane is x/z (y is up, as everywhere in three.js),
+ * +x east and +z south, one unit ten miles. `radius` is how far across a region reaches from
+ * that centre, in the same units; a place with a point and no extent has none. docs/MAP.md.
+ */
+export interface PlacePoint {
+  on: MapId;
+  x: number;
+  z: number;
+  radius?: number;
+}
+
 export interface Place {
   id: string;
   name: LocalizedText;
   summary: LocalizedText;
-  /** Position on Ardatir's own world map, once it exists. */
-  world?: { x: number; z: number };
+  /**
+   * Where the place sits on Ardatir's own maps (`map:` in content/places/, docs/MAP.md). One
+   * entry per map it appears on — the Blue Mountains are on both Beleriand and Middle-earth —
+   * so a world stage picks the entry whose `on` is the map it draws. Missing for a place that
+   * belongs to no frame we draw (`map: nowhere`).
+   */
+  map?: PlacePoint[];
   /** How to say a hard name (`ee-LOO-va-tar`), per language: data/pronounce.ts, docs/DESIGN.md §3.5. */
   pronounce?: LocalizedText;
 }

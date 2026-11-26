@@ -3,3 +3,4 @@ name: { en: The Eagles' Eyrie, es: El nido de las Águilas }
 summary:
   en: The great eagles' ledges high on the eastern side of the Misty Mountains.
   es: Las cornisas de las grandes águilas en lo alto de la ladera oriental de las Montañas Nubladas.
+map: { on: middle-earth, x: 41, z: -5 }   # the eastern flank of the Misty Mountains

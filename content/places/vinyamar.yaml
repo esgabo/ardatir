@@ -3,3 +3,4 @@ name: { en: "Vinyamar", es: "Vinyamar" }
 summary:
   en: "Turgon's first house, under Mount Taras in Nevrast."
   es: "La primera casa de Turgon, al pie del monte Taras, en Nevrast."
+map: { on: beleriand, x: -24, z: 18 }   # under Mount Taras in Nevrast

@@ -3,3 +3,4 @@ name: { en: "Taur-nu-Fuin", es: "Taur-nu-Fuin" }
 summary:
   en: "The Forest under Night, once Dorthonion, haunted by Sauron's evil."
   es: "El Bosque bajo la Noche, antes Dorthonion, infestado por la maldad de Sauron."
+map: { on: beleriand, x: 15, z: 14, radius: 9 }   # the same highland after Morgoth took it

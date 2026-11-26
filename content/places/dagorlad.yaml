@@ -3,3 +3,4 @@ name: { en: "Dagorlad", es: "Dagorlad" }
 summary:
   en: "The Battle Plain before the Black Gate of Mordor."
   es: "La Llanura de la Batalla ante la Puerta Negra de Mordor."
+map: { on: middle-earth, x: 60, z: 56, radius: 6 }   # the plain before the Black Gate

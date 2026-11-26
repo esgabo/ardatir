@@ -3,3 +3,4 @@ name: { en: "Shelob's Lair", es: "La Guarida de Ella-Laraña" }
 summary:
   en: "The dark tunnel beneath Cirith Ungol."
   es: "El oscuro túnel bajo Cirith Ungol."
+map: { on: middle-earth, x: 61.8, z: 64 }   # the tunnel under that pass

@@ -3,3 +3,4 @@ name: { en: "Zirakzigil", es: "Zirakzigil" }
 summary:
   en: "The Silvertine, a peak above Moria where Gandalf and the Balrog fight."
   es: "La cumbre sobre Moria donde Gandalf y el Balrog combaten."
+map: { on: middle-earth, x: 37, z: 23 }   # the Silvertine above Moria

@@ -3,3 +3,4 @@ name: { en: "The Morannon", es: "El Morannon" }
 summary:
   en: "The Black Gate of Mordor."
   es: "La Puerta Negra de Mordor."
+map: { on: middle-earth, x: 62, z: 57 }   # the Black Gate of Mordor

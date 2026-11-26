@@ -3,3 +3,4 @@ name: { en: "Mordor", es: "Mordor" }
 summary:
   en: "The Land of Shadow east of Gondor, Sauron's realm."
   es: "La Tierra de la Sombra al este de Gondor, reino de Sauron."
+map: { on: middle-earth, x: 72, z: 63, radius: 15 }   # the land within the Ephel Dúath and Ered Lithui

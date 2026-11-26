@@ -3,3 +3,4 @@ name: { en: "Orodruin", es: "Orodruin" }
 summary:
   en: "The volcano in Mordor, where the One Ring was forged."
   es: "El volcán de Mordor, donde fue forjado el Anillo Único."
+map: { on: middle-earth, x: 67, z: 62 }   # in the plain of Gorgoroth

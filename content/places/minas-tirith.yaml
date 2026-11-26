@@ -3,3 +3,4 @@ name: { en: "Minas Tirith", es: "Minas Tirith" }
 summary:
   en: "The white city of Gondor, built in seven levels against Mindolluin."
   es: "La ciudad blanca de Gondor, construida en siete niveles contra el Mindolluin."
+map: { on: middle-earth, x: 52, z: 66 }   # against Mindolluin, west of the Anduin

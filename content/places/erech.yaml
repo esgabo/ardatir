@@ -3,3 +3,4 @@ name: { en: "Erech", es: "Erech" }
 summary:
   en: "A hill with a black stone, where the oathbreakers swore their oath."
   es: "Una colina con una piedra negra, donde los traidores prestaron su juramento."
+map: { on: middle-earth, x: 30, z: 70 }   # the hill in Lamedon, south of the mountains

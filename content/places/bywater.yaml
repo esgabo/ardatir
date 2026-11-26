@@ -3,3 +3,4 @@ name: { en: "Bywater", es: "Delagua" }
 summary:
   en: "A village of the Shire, where the hobbits make their stand."
   es: "Una aldea de la Comarca, donde los hobbits hacen frente."
+map: { on: middle-earth, x: -11.8, z: -1 }   # the next village east of Hobbiton

@@ -3,3 +3,4 @@ name: { en: The Pools of Ivrin, es: Los Lagos de Ivrin }
 summary:
   en: Clear pools below the Mountains of Shadow where the river Narog rises.
   es: Lagos cristalinos al pie de las Montañas de la Sombra, donde nace el río Narog.
+map: { on: beleriand, x: -8, z: 22 }   # the pools where Narog rises

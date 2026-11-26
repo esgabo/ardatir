@@ -3,3 +3,4 @@ name: { en: "The Field of Cormallen", es: "Los Campos de Cormallen" }
 summary:
   en: "A green field in Ithilien where the Ring-bearers are honoured."
   es: "Un campo verde de Ithilien donde se honra a los Portadores del Anillo."
+map: { on: middle-earth, x: 56, z: 61 }   # the field in North Ithilien near Cair Andros

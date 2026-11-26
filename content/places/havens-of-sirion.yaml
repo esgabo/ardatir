@@ -3,3 +3,4 @@ name: { en: "The Havens of Sirion", es: "Los Puertos del Sirion" }
 summary:
   en: "The refuge by the sea where the survivors of Doriath and Gondolin gathered."
   es: "El refugio junto al mar donde se reunieron los supervivientes de Doriath y Gondolin."
+map: { on: beleriand, x: 4, z: 48 }   # the Mouths of Sirion on the south coast

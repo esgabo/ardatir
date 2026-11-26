@@ -4,3 +4,4 @@ summary:
   en: "The hidden forest-kingdom of Thingol and Melian, guarded by the Girdle."
   es: "El reino oculto en el bosque de Thingol y Melian, protegido por la Cintura."
 pronounce: { en: DOR-ee-ath, es: DO-ri-az }   # how to say it: syllables, the stressed one in capitals
+map: { on: beleriand, x: 16, z: 32, radius: 10 }   # within the Girdle of Melian

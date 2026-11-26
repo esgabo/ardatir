@@ -3,3 +3,4 @@ name: { en: "Sarn Gebir", es: "Sarn Gebir" }
 summary:
   en: "The rapids of the Anduin in the Emyn Muil."
   es: "Los rápidos del Anduin en las Emyn Muil."
+map: { on: middle-earth, x: 48, z: 45 }   # the rapids above the Emyn Muil

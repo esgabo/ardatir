@@ -3,3 +3,4 @@ name: { en: Mirkwood, es: El Bosque Negro }
 summary:
   en: "A vast, dark forest east of the Anduin, haunted by giant spiders."
   es: "Un bosque inmenso y oscuro al este del Anduin, frecuentado por arañas gigantes."
+map: { on: middle-earth, x: 58, z: 15, radius: 20 }   # Greenwood the Great, east of the Anduin

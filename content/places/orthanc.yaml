@@ -3,3 +3,4 @@ name: { en: "Orthanc", es: "Orthanc" }
 summary:
   en: "Saruman's black tower in the circle of Isengard."
   es: "La torre negra de Saruman en el círculo de Isengard."
+map: { on: middle-earth, x: 26, z: 50 }   # the tower in the ring of Isengard
