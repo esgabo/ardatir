@@ -10,3 +10,6 @@ axis:
   # Y.T. 1501 lands on First Age year 1, so: 1 - 1500 × 9.582 = -14372.
   start: -14372
   yearLength: 9.582
+# As for the Years of the Lamps: the-elder until the Elder Days get an
+# audition of their own (DESIGN §5).
+narrator: the-elder

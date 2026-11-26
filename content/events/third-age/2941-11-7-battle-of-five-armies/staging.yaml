@@ -18,14 +18,14 @@ beats:
 tracks:
   - characterId: thorin
     keyframes:
-      - { t: 0, x: 3.9, z: -4.4, action: idle, thought: { en: "The Arkenstone, in the hands of a thief. Of my own thief.", es: "La Piedra del Arca, en manos de un ladrón. De mi propio ladrón." } }
+      - { t: 0, x: 3.9, z: -4.39, action: idle, thought: { en: "The Arkenstone, in the hands of a thief. Of my own thief.", es: "La Piedra del Arca, en manos de un ladrón. De mi propio ladrón." } }
       - { t: 0.06, x: 3.2, z: -3.7, action: fight }
-      - { t: 0.13, x: 3.5, z: -5.2, action: idle, thought: { en: "Behind the gate I stay, whatever they bring.", es: "Tras la puerta me quedo, traigan lo que traigan." } }
-      - { t: 0.38, x: 3.5, z: -5.2, action: idle, thought: { en: "Goblins at our door. The time for walls is over.", es: "Trasgos a nuestra puerta. Se acabó el tiempo de los muros." } }
-      - { t: 0.44, x: 0.5, z: -3.4, action: run }
-      - { t: 0.5, x: 0.5, z: -3.4, action: fight, thought: { en: "Back, you filth! This is Durin's house!", es: "¡Atrás, escoria! ¡Esta es la casa de Durin!" } }
-      - { t: 0.75, x: 0.5, z: -3.4, action: fight }
-      - { t: 0.88, x: 2.6, z: -4.2, action: hide, thought: { en: "I was carried... and I cannot feel my hands.", es: "Me han traído... y no siento las manos." } }
+      - { t: 0.13, x: 3.35, z: -5.21, action: idle, thought: { en: "Behind the gate I stay, whatever they bring.", es: "Tras la puerta me quedo, traigan lo que traigan." } }
+      - { t: 0.38, x: 3.06, z: -4.98, action: idle, thought: { en: "Goblins at our door. The time for walls is over.", es: "Trasgos a nuestra puerta. Se acabó el tiempo de los muros." } }
+      - { t: 0.44, x: 0.33, z: -3.37, action: run }
+      - { t: 0.5, x: 0.37, z: -3.63, action: fight, thought: { en: "Back, you filth! This is Durin's house!", es: "¡Atrás, escoria! ¡Esta es la casa de Durin!" } }
+      - { t: 0.75, x: 0.33, z: -3.91, action: fight }
+      - { t: 0.88, x: 2.18, z: -4.56, action: hide, thought: { en: "I was carried... and I cannot feel my hands.", es: "Me han traído... y no siento las manos." } }
   - characterId: dain
     keyframes:
       - { t: 0, x: 6.3, z: 2.4, action: idle, thought: { en: "My cousin has shut himself in. I will not leave him alone.", es: "Mi primo se ha encerrado. No lo dejaré solo." } }
@@ -34,40 +34,40 @@ tracks:
       - { t: 0.2, x: 3.6, z: 0.2, action: talk, thought: { en: "Thorin is my kin. I stand with him against all comers.", es: "Thorin es mi pariente. Estoy con él contra quien sea." } }
       - { t: 0.27, x: 1.8, z: -1.2, action: walk }
       - { t: 0.35, x: 1.8, z: -1.2, action: idle, thought: { en: "Goblins instead of elves. Better.", es: "Trasgos en vez de elfos. Mejor así." } }
-      - { t: 0.42, x: 0, z: -2.1, action: run }
-      - { t: 0.5, x: 0, z: -2.1, action: fight }
-      - { t: 0.75, x: 0, z: -2.1, action: fight }
-      - { t: 0.88, x: 4.4, z: -2.9, action: idle, thought: { en: "Thorin, Fíli, Kíli... too high a price.", es: "Thorin, Fíli, Kíli... demasiado caro." } }
+      - { t: 0.42, x: -0.07, z: -1.89, action: run }
+      - { t: 0.5, x: -0.08, z: -1.87, action: fight }
+      - { t: 0.75, x: 0.01, z: -1.44, action: fight }
+      - { t: 0.88, x: 4.61, z: -2.21, action: idle, thought: { en: "Thorin, Fíli, Kíli... too high a price.", es: "Thorin, Fíli, Kíli... demasiado caro." } }
   - characterId: bard
     keyframes:
       - { t: 0, x: 0.5, z: -2.3, action: talk, thought: { en: "Here is your stone, Thorin. Now will you talk?", es: "Aquí tienes tu piedra, Thorin. ¿Hablarás ahora?" } }
-      - { t: 0.13, x: -0.5, z: -1.6, action: idle }
-      - { t: 0.27, x: -0.2, z: -0.2, action: idle, thought: { en: "Old quarrels are not worth our lives today.", es: "Las viejas disputas no valen hoy nuestras vidas." } }
-      - { t: 0.42, x: -1.6, z: -1.5, action: fight }
+      - { t: 0.13, x: -0.44, z: -1.9, action: idle }
+      - { t: 0.27, x: -0.02, z: -0.21, action: idle, thought: { en: "Old quarrels are not worth our lives today.", es: "Las viejas disputas no valen hoy nuestras vidas." } }
+      - { t: 0.42, x: -1.41, z: -1.49, action: fight }
       - { t: 0.75, x: -1.6, z: -1.5, action: fight }
-      - { t: 0.88, x: -1.8, z: -0.6, action: idle, thought: { en: "We have won. But look at the field.", es: "Hemos ganado. Pero mirad el campo." } }
+      - { t: 0.88, x: -1.63, z: -0.69, action: idle, thought: { en: "We have won. But look at the field.", es: "Hemos ganado. Pero mirad el campo." } }
   - characterId: thranduil
     keyframes:
       - { t: 0, x: -1.2, z: -1, action: idle, thought: { en: "If the dwarf will not bargain, we will not retreat.", es: "Si el enano no negocia, no retrocederemos." } }
-      - { t: 0.13, x: -1.4, z: -0.2, action: idle }
-      - { t: 0.27, x: -0.7, z: -1.4, action: idle, thought: { en: "Enemies of the old days stand beside us now.", es: "Los enemigos de antaño están hoy a nuestro lado." } }
-      - { t: 0.42, x: -2.4, z: -0.6, action: fight }
+      - { t: 0.13, x: -1.73, z: -0.4, action: idle }
+      - { t: 0.27, x: -0.96, z: -1.56, action: idle, thought: { en: "Enemies of the old days stand beside us now.", es: "Los enemigos de antaño están hoy a nuestro lado." } }
+      - { t: 0.42, x: -2.59, z: -0.61, action: fight }
       - { t: 0.75, x: -2.4, z: -0.6, action: fight }
-      - { t: 0.88, x: -2.6, z: -0.2, action: idle }
+      - { t: 0.88, x: -2.77, z: -0.11, action: idle }
   - characterId: gandalf
     keyframes:
-      - { t: 0, x: 2.2, z: -3.2, action: talk, thought: { en: "Enough, Thorin! Let the hobbit go.", es: "¡Basta, Thorin! Suelta al hobbit." } }
-      - { t: 0.13, x: 1.4, z: -2.8, action: talk, thought: { en: "Look up! Goblins and wolves are coming. Put your quarrel aside!", es: "¡Mirad arriba! Vienen trasgos y lobos. ¡Dejad la disputa!" } }
+      - { t: 0, x: 2.02, z: -3.27, action: talk, thought: { en: "Enough, Thorin! Let the hobbit go.", es: "¡Basta, Thorin! Suelta al hobbit." } }
+      - { t: 0.13, x: 1.29, z: -2.92, action: talk, thought: { en: "Look up! Goblins and wolves are coming. Put your quarrel aside!", es: "¡Mirad arriba! Vienen trasgos y lobos. ¡Dejad la disputa!" } }
       - { t: 0.27, x: 0.8, z: -2.8, action: talk }
-      - { t: 0.42, x: 0.2, z: -2.7, action: fight }
-      - { t: 0.75, x: 0.2, z: -2.7, action: fight }
-      - { t: 0.88, x: 1.6, z: -3.4, action: idle, thought: { en: "Victory, and so many gone. I did not wish this.", es: "Victoria, y tantos caídos. Yo no quería esto." } }
+      - { t: 0.42, x: 0.16, z: -2.64, action: fight }
+      - { t: 0.75, x: 0.13, z: -2.47, action: fight }
+      - { t: 0.88, x: 2.11, z: -2.99, action: idle, thought: { en: "Victory, and so many gone. I did not wish this.", es: "Victoria, y tantos caídos. Yo no quería esto." } }
   - characterId: bilbo
     model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
-      - { t: 0, x: 2.6, z: -3, action: idle, thought: { en: "He is furious. I may be thrown from the wall.", es: "Está furioso. Puede que me arrojen de la muralla." } }
-      - { t: 0.1, x: 2.6, z: -3, action: idle }
-      - { t: 0.27, x: -5.6, z: 2.2, action: walk, thought: { en: "Up on the hillside, out of everyone's way.", es: "Arriba, en la ladera, fuera del paso de todos." } }
+      - { t: 0, x: 2.78, z: -2.94, action: idle, thought: { en: "He is furious. I may be thrown from the wall.", es: "Está furioso. Puede que me arrojen de la muralla." } }
+      - { t: 0.1, x: 2.85, z: -2.62, action: idle }
+      - { t: 0.27, x: -5.46, z: 2.53, action: walk, thought: { en: "Up on the hillside, out of everyone's way.", es: "Arriba, en la ladera, fuera del paso de todos." } }
       - { t: 0.6, x: -5.6, z: 2.2, action: idle, thought: { en: "Great shapes in the west. The eagles! They are coming!", es: "Grandes siluetas en el oeste. ¡Las águilas! ¡Vienen!" } }
       - { t: 0.67, x: -5.6, z: 2.2, action: idle }
       - { t: 0.69, x: -5.6, z: 2.2, action: hide, thought: { en: "Something hit me. All gone dark...", es: "Algo me ha golpeado. Todo se ha oscurecido..." } }
@@ -78,15 +78,15 @@ tracks:
       - { t: 0.17, x: -5.6, z: -5.6, action: run, thought: { en: "Fall on them! The Mountain is ours!", es: "¡A por ellos! ¡La Montaña será nuestra!" } }
       - { t: 0.27, x: -4.5, z: -4.5, action: walk }
       - { t: 0.42, x: -3, z: -3.4, action: fight, thought: { en: "Break their line!", es: "¡Romped su línea!" } }
-      - { t: 0.7, x: -2.6, z: -3.2, action: fight }
-      - { t: 0.78, x: -2.6, z: -3.2, action: hide, thought: { en: "A bear... a huge bear...", es: "Un oso... un oso enorme..." } }
+      - { t: 0.7, x: -2.77, z: -3.24, action: fight }
+      - { t: 0.78, x: -3.04, z: -3.37, action: hide, thought: { en: "A bear... a huge bear...", es: "Un oso... un oso enorme..." } }
   - characterId: beorn
     keyframes:
       - { t: 0, x: 12, z: -12, action: idle }
       - { t: 0.66, x: 12, z: -12, action: idle }
-      - { t: 0.75, x: -1.8, z: -2.6, action: run, thought: { en: "The goblins will learn what a bear can do.", es: "Los trasgos van a saber lo que puede hacer un oso." } }
-      - { t: 0.78, x: -1.8, z: -2.6, action: fight }
-      - { t: 0.88, x: -1.8, z: -2.6, action: idle }
+      - { t: 0.75, x: -1.92, z: -3.48, action: run, thought: { en: "The goblins will learn what a bear can do.", es: "Los trasgos van a saber lo que puede hacer un oso." } }
+      - { t: 0.78, x: -1.7, z: -2.53, action: fight }
+      - { t: 0.88, x: -1.65, z: -2.48, action: idle }
   - characterId: lord-of-the-eagles
     keyframes:
       - { t: 0, x: -12, z: -12, action: idle }
@@ -96,100 +96,100 @@ tracks:
       - { t: 0.88, x: -5.2, z: -1.8, action: idle }
   - characterId: balin
     keyframes:
-      - { t: 0, x: 4.38, z: -6.45, action: idle, thought: { en: "Behind the gate again. Thorin is in no mood to listen.", es: "Tras la puerta otra vez. Thorin no está para escuchar." } }
-      - { t: 0.35, x: 4.38, z: -6.45, action: idle }
-      - { t: 0.42, x: 1.3, z: -3.95, action: run }
-      - { t: 0.5, x: 1.3, z: -3.95, action: fight }
-      - { t: 0.75, x: 1.3, z: -3.95, action: fight }
-      - { t: 0.88, x: 4, z: -4.2, action: idle, thought: { en: "We held the field, but I would give it back to have them whole.", es: "Ganamos el campo, pero lo daría por tenerlos enteros." } }
+      - { t: 0, x: 4.03, z: -6.79, action: idle, thought: { en: "Behind the gate again. Thorin is in no mood to listen.", es: "Tras la puerta otra vez. Thorin no está para escuchar." } }
+      - { t: 0.35, x: 3.98, z: -6.9, action: idle }
+      - { t: 0.42, x: 0.76, z: -4.41, action: run }
+      - { t: 0.5, x: 0.95, z: -4.04, action: fight }
+      - { t: 0.75, x: 1.19, z: -4.51, action: fight }
+      - { t: 0.88, x: 3.87, z: -4.72, action: idle, thought: { en: "We held the field, but I would give it back to have them whole.", es: "Ganamos el campo, pero lo daría por tenerlos enteros." } }
   - characterId: dwalin
     keyframes:
-      - { t: 0, x: 4.93, z: -6.45, action: idle }
-      - { t: 0.35, x: 4.93, z: -6.45, action: idle }
-      - { t: 0.42, x: 1.9, z: -3.95, action: run }
-      - { t: 0.5, x: 1.9, z: -3.95, action: fight }
-      - { t: 0.75, x: 1.9, z: -3.95, action: fight }
-      - { t: 0.88, x: 3.81, z: -3.5, action: idle }
+      - { t: 0, x: 4.74, z: -6.73, action: idle }
+      - { t: 0.35, x: 4.72, z: -6.9, action: idle }
+      - { t: 0.42, x: 1.88, z: -4.22, action: run }
+      - { t: 0.5, x: 1.61, z: -4.01, action: fight }
+      - { t: 0.75, x: 2.16, z: -3.69, action: fight }
+      - { t: 0.88, x: 4.5, z: -3.16, action: idle }
   - characterId: fili
     keyframes:
-      - { t: 0, x: 5.48, z: -6.45, action: idle }
-      - { t: 0.35, x: 5.48, z: -6.45, action: idle }
-      - { t: 0.42, x: 2.5, z: -3.95, action: run, thought: { en: "For Thorin! Stay close to him!", es: "¡Por Thorin! ¡Quedaos cerca de él!" } }
-      - { t: 0.5, x: 2.5, z: -3.95, action: fight }
-      - { t: 0.75, x: 2.5, z: -3.95, action: fight }
-      - { t: 0.88, x: 1, z: -5.2, action: hide }
+      - { t: 0, x: 5.71, z: -6.74, action: idle }
+      - { t: 0.35, x: 5.69, z: -6.87, action: idle }
+      - { t: 0.42, x: 2.61, z: -4.57, action: run, thought: { en: "For Thorin! Stay close to him!", es: "¡Por Thorin! ¡Quedaos cerca de él!" } }
+      - { t: 0.5, x: 2.4, z: -4.09, action: fight }
+      - { t: 0.75, x: 2.48, z: -5.01, action: fight }
+      - { t: 0.88, x: 0.91, z: -5.68, action: hide }
   - characterId: kili
     keyframes:
-      - { t: 0, x: 6.03, z: -6.45, action: idle }
-      - { t: 0.35, x: 6.03, z: -6.45, action: idle }
-      - { t: 0.42, x: 3.1, z: -3.95, action: run, thought: { en: "No one reaches my uncle while I stand.", es: "Nadie llegará a mi tío mientras yo siga en pie." } }
-      - { t: 0.5, x: 3.1, z: -3.95, action: fight }
-      - { t: 0.75, x: 3.1, z: -3.95, action: fight }
-      - { t: 0.88, x: 1.8, z: -5.6, action: hide }
+      - { t: 0, x: 6.35, z: -6.7, action: idle }
+      - { t: 0.35, x: 6.37, z: -6.85, action: idle }
+      - { t: 0.42, x: 3.4, z: -4.65, action: run, thought: { en: "No one reaches my uncle while I stand.", es: "Nadie llegará a mi tío mientras yo siga en pie." } }
+      - { t: 0.5, x: 3.21, z: -4.12, action: fight }
+      - { t: 0.75, x: 3.25, z: -4.54, action: fight }
+      - { t: 0.88, x: 1.43, z: -6.25, action: hide }
   - characterId: dori
     keyframes:
-      - { t: 0, x: 4.38, z: -5.9, action: idle }
-      - { t: 0.35, x: 4.38, z: -5.9, action: idle }
-      - { t: 0.42, x: 3.7, z: -3.95, action: run }
-      - { t: 0.5, x: 3.7, z: -3.95, action: fight }
-      - { t: 0.75, x: 3.7, z: -3.95, action: fight }
-      - { t: 0.88, x: 1.9, z: -2.99, action: idle }
+      - { t: 0, x: 4.08, z: -5.72, action: idle }
+      - { t: 0.35, x: 4.08, z: -6.06, action: idle }
+      - { t: 0.42, x: 3.86, z: -4.02, action: run }
+      - { t: 0.5, x: 3.91, z: -3.83, action: fight }
+      - { t: 0.75, x: 3.85, z: -3.28, action: fight }
+      - { t: 0.88, x: 2.03, z: -2.12, action: idle }
   - characterId: nori
     keyframes:
-      - { t: 0, x: 4.93, z: -5.9, action: idle }
-      - { t: 0.35, x: 4.93, z: -5.9, action: idle }
-      - { t: 0.42, x: 4.3, z: -3.95, action: run }
-      - { t: 0.5, x: 4.3, z: -3.95, action: fight }
-      - { t: 0.75, x: 4.3, z: -3.95, action: fight }
-      - { t: 0.88, x: 1.39, z: -3.5, action: idle }
+      - { t: 0, x: 4.81, z: -5.81, action: idle }
+      - { t: 0.35, x: 4.77, z: -6.2, action: idle }
+      - { t: 0.42, x: 4.59, z: -4.01, action: run }
+      - { t: 0.5, x: 4.68, z: -3.98, action: fight }
+      - { t: 0.75, x: 4.87, z: -4.58, action: fight }
+      - { t: 0.88, x: 1.33, z: -3.56, action: idle }
   - characterId: ori
     keyframes:
-      - { t: 0, x: 5.48, z: -5.9, action: idle }
-      - { t: 0.35, x: 5.48, z: -5.9, action: idle }
-      - { t: 0.42, x: 1.3, z: -3.25, action: run }
-      - { t: 0.5, x: 1.3, z: -3.25, action: fight }
-      - { t: 0.75, x: 1.3, z: -3.25, action: fight }
-      - { t: 0.88, x: 1.2, z: -4.2, action: idle }
+      - { t: 0, x: 5.68, z: -5.99, action: idle }
+      - { t: 0.35, x: 5.67, z: -5.64, action: idle }
+      - { t: 0.42, x: 1.14, z: -2.98, action: run }
+      - { t: 0.5, x: 0.92, z: -3.06, action: fight }
+      - { t: 0.75, x: 0.92, z: -3.15, action: fight }
+      - { t: 0.88, x: 0.42, z: -4.2, action: idle }
   - characterId: oin
     keyframes:
-      - { t: 0, x: 6.03, z: -5.9, action: idle }
-      - { t: 0.35, x: 6.03, z: -5.9, action: idle }
-      - { t: 0.42, x: 1.9, z: -3.25, action: run }
-      - { t: 0.5, x: 1.9, z: -3.25, action: fight }
-      - { t: 0.75, x: 1.9, z: -3.25, action: fight }
-      - { t: 0.88, x: 1.39, z: -4.9, action: idle }
+      - { t: 0, x: 6.42, z: -5.88, action: idle }
+      - { t: 0.35, x: 6.44, z: -5.69, action: idle }
+      - { t: 0.42, x: 1.77, z: -3.12, action: run }
+      - { t: 0.5, x: 1.67, z: -3.1, action: fight }
+      - { t: 0.75, x: 1.59, z: -2.56, action: fight }
+      - { t: 0.88, x: 1.15, z: -4.34, action: idle }
   - characterId: gloin
     keyframes:
-      - { t: 0, x: 4.38, z: -5.35, action: idle }
-      - { t: 0.35, x: 4.38, z: -5.35, action: idle }
-      - { t: 0.42, x: 2.5, z: -3.25, action: run }
-      - { t: 0.5, x: 2.5, z: -3.25, action: fight }
-      - { t: 0.75, x: 2.5, z: -3.25, action: fight }
-      - { t: 0.88, x: 1.9, z: -5.41, action: idle }
+      - { t: 0, x: 4.05, z: -5.03, action: idle }
+      - { t: 0.35, x: 4.11, z: -4.77, action: idle }
+      - { t: 0.42, x: 2.46, z: -2.51, action: run }
+      - { t: 0.5, x: 2.51, z: -2.98, action: fight }
+      - { t: 0.75, x: 2.27, z: -2.22, action: fight }
+      - { t: 0.88, x: 2.15, z: -5.76, action: idle }
   - characterId: bifur
     keyframes:
-      - { t: 0, x: 4.93, z: -5.35, action: idle }
-      - { t: 0.35, x: 4.93, z: -5.35, action: idle }
-      - { t: 0.42, x: 3.1, z: -3.25, action: run }
-      - { t: 0.5, x: 3.1, z: -3.25, action: fight }
-      - { t: 0.75, x: 3.1, z: -3.25, action: fight }
-      - { t: 0.88, x: 2.6, z: -5.6, action: idle }
+      - { t: 0, x: 4.74, z: -5.09, action: idle }
+      - { t: 0.35, x: 4.85, z: -4.82, action: idle }
+      - { t: 0.42, x: 3.15, z: -2.64, action: run }
+      - { t: 0.5, x: 3.16, z: -3.3, action: fight }
+      - { t: 0.75, x: 3.16, z: -3.81, action: fight }
+      - { t: 0.88, x: 3.01, z: -6.19, action: idle }
   - characterId: bofur
     keyframes:
-      - { t: 0, x: 5.48, z: -5.35, action: idle }
-      - { t: 0.35, x: 5.48, z: -5.35, action: idle }
-      - { t: 0.42, x: 3.7, z: -3.25, action: run }
-      - { t: 0.5, x: 3.7, z: -3.25, action: fight }
-      - { t: 0.75, x: 3.7, z: -3.25, action: fight }
-      - { t: 0.88, x: 3.3, z: -5.41, action: idle }
+      - { t: 0, x: 5.68, z: -5.11, action: idle }
+      - { t: 0.35, x: 5.68, z: -4.84, action: idle }
+      - { t: 0.42, x: 3.95, z: -2.98, action: run }
+      - { t: 0.5, x: 3.86, z: -3.16, action: fight }
+      - { t: 0.75, x: 4.38, z: -2.7, action: fight }
+      - { t: 0.88, x: 3.63, z: -5.77, action: idle }
   - characterId: bombur
     keyframes:
-      - { t: 0, x: 6.03, z: -5.35, action: idle }
-      - { t: 0.35, x: 6.03, z: -5.35, action: idle }
-      - { t: 0.42, x: 4.3, z: -3.25, action: run }
-      - { t: 0.5, x: 4.3, z: -3.25, action: fight }
-      - { t: 0.75, x: 4.3, z: -3.25, action: fight }
-      - { t: 0.88, x: 3.81, z: -4.9, action: idle }
+      - { t: 0, x: 6.37, z: -5.16, action: idle }
+      - { t: 0.35, x: 6.43, z: -4.99, action: idle }
+      - { t: 0.42, x: 4.69, z: -3.28, action: run }
+      - { t: 0.5, x: 4.69, z: -3.29, action: fight }
+      - { t: 0.75, x: 5.02, z: -3.22, action: fight }
+      - { t: 0.88, x: 4.27, z: -5.22, action: idle }
 # The armies (Hobbit ch. 17), drawn as blocks of small figures in their banner colours; the named
 # characters above lead them on their own tracks. Seen from the camera, the Front Gate is on the
 # right, the goblins come down the valley from the far corner, and the allies form below the line

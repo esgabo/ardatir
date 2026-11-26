@@ -7,6 +7,22 @@ light:
   - { t: 0.4, preset: dusk }
   - { t: 0.75, preset: night }
   - { t: 1, preset: night }
+# The shot (#28): in from the valley as they arrive, close for the talk that turns serious, then
+# back out, because this is the last quiet evening of the journey.
+camera:
+  - { t: 0, x: 2.00, z: 1.90, width: 11.4 }
+  - { t: 0.2, x: 0.35, z: 1.15, width: 5.8 }
+  # On the two who are talking, with Bilbo dozing at the near edge of the frame: the point of the
+  # scene is that he overhears it, so he has to be in shot without the shot being about him.
+  - { t: 0.42, x: 1.00, z: -0.40, width: 6.4 }
+  - { t: 0.6, x: 1.00, z: -0.40, width: 6.4 }
+  - { t: 0.82, x: 0.80, z: 0.10, width: 6.8 }
+  - { t: 1, x: -1.10, z: 0.65, width: 9.8 }
+# What the scene does, at the beat it does it (DESIGN §9.5).
+sound:
+  # The company fed and listened to, a year and a road later.
+  - { t: 0.22, cue: pour }
+  - { t: 0.25, cue: clatter, gain: 0.8 }
 narration:
   arrive: 0
   tales: 0.2

@@ -8,6 +8,8 @@ import { createDiorama, groundHeight } from './diorama';
 import { framingAt } from './framing';
 import { createContactShadows, type Spot } from './contact';
 import { gradeFor, graded } from './grade';
+import { cuesBetween, type Walker } from '../sound/cues';
+import { heard, scapeFor } from '../sound/scape';
 import { FILL_FROM, fogRange, lightAt } from './lighting';
 import { QUALITY, type QualitySettings } from './quality';
 import { revealAt } from './reveal';
@@ -90,6 +92,13 @@ export function createDioramaStage(
     figures.set(ch.id, fig);
     scene.add(fig);
   }
+
+  // Who can be heard walking (DESIGN §9.5): the same tracks and the same heights the models use
+  // to pace their gaits, so a footstep lands when a foot does.
+  const walkers: Walker[] = event.tracks.map((track) => ({
+    track,
+    height: FIGURE_HEIGHT * (characters.get(track.characterId)?.scale ?? 1),
+  }));
 
   // glTF models (docs/MODELS.md): the placeholder stands until a character's model has loaded,
   // and stays if it can't load. The loader is its own chunk, fetched only when a model is used.
@@ -189,6 +198,15 @@ export function createDioramaStage(
       contact?.update(spots, 0.3 + 0.32 * Math.min(1, light.sunIntensity / 2.3));
       set?.update(light, ambient, [...figures.values()].filter((f) => f.visible).map((f) => f.position),
         revealAt(event.reveal, t));
+    },
+
+    sound(from, to, eventSeconds) {
+      // The scape wants the hour, and the hour is `lamps` in the light the staging asks for; the
+      // grade tints light and does not touch it, so the ungraded light is the honest input.
+      return {
+        layers: heard(scapeFor(event.place), lightAt(event.light, to)),
+        cues: cuesBetween(event.sound, walkers, from, to, eventSeconds, (a, h) => (GAIT_PACE[a] ?? 0) * h),
+      };
     },
 
     pick(ray) {

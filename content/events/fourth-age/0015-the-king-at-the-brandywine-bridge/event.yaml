@@ -1,0 +1,31 @@
+id: the-king-at-the-brandywine-bridge
+age: fourth-age
+when:
+  # S.R. 1436. Appendix B gives the year only.
+  start: { age: fourth-age, year: 15 }
+  precision: year
+place: the-shire
+# Appendix B says he "greets his friends" without naming them. Merry was Master of Buckland, whose
+# land the Bridge opens on, and Pippin was the Thain; both had been made Counsellors of the
+# North-kingdom two years before, so they are here.
+characters: [ aragorn, sam, elanor, merry, pippin ]
+arcs: [ the-age-of-men ]
+journeys: []
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix B" }
+title:
+  en: The King at the Brandywine Bridge
+  es: El Rey en el Puente del Brandivino
+summary:
+  en: Keeping his own law, King Elessar rides north but stops at the Shire's border, and his friends come out to the Bridge to meet him. He gives Sam the Star of the Dúnedain, and takes Elanor south to serve the Queen.
+  es: Cumpliendo su propia ley, el rey Elessar cabalga al norte pero se detiene en la frontera de la Comarca, y sus amigos salen al Puente a recibirlo. Da a Sam la Estrella de los Dúnedain, y lleva al sur a Elanor para servir a la Reina.
+links:
+  - to: the-shire-is-made-a-free-land
+    type: caused-by
+    note:
+      en: His own edict is why the meeting happens on the bridge and not in Hobbiton.
+      es: Su propia orden es la razón de que el encuentro ocurra en el puente y no en Hobbiton.
+beats:
+  - { id: arrival, label: { en: The King halts at the border, es: El Rey se detiene en la frontera } }
+  - { id: star, label: { en: The Star of the Dúnedain, es: La Estrella de los Dúnedain } }

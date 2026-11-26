@@ -394,6 +394,53 @@ export interface CoverKey {
   amount: number;
 }
 
+/**
+ * The whole vocabulary of one-shot sounds (src/sound/engine.ts). It is small on purpose: each is
+ * a shape the engine can build out of noise and a filter, and a cue nobody can synthesize is a
+ * cue that would simply be silent. It lives here because the content build checks `sound` against
+ * it and the site plays from it.
+ */
+export const CUES = [
+  'step',     // a foot down (never authored: it comes from the gait)
+  'knock',    // knuckles on a door
+  'door',     // a leaf swinging, and its latch
+  'thud',     // something heavy set down, or a fall
+  'clang',    // metal on metal
+  'splash',   // into water
+  'crack',    // wood breaking, a whip, a stone split
+  'whoosh',   // something large moving past
+  'wings',    // one slow wingbeat
+  'rumble',   // stone moving, thunder, a mountain at work
+  'chime',    // a bell, or elvish glass
+  'pour',     // drink into a vessel
+  'clatter',  // crockery and cutlery
+] as const;
+
+export type CueKind = (typeof CUES)[number];
+
+/**
+ * What an author may write in `sound`: everything but a footstep, which comes from the gait and
+ * placed by hand would land where the legs are not.
+ */
+export const AUTHORED_CUES: readonly CueKind[] = CUES.filter((c) => c !== 'step');
+
+/**
+ * A sound that belongs to a moment rather than to a place (staging.yaml `sound`).
+ *
+ * The ambience of an event comes from its place and the hour, with nothing authored (DESIGN §9.5);
+ * what the story *does* — a knock at a door, crockery on a table, a sword, a wingbeat — belongs to
+ * a beat, so the author places it at a `t`, for the same reason the camera and the covers are
+ * authored: a knock that happened because somebody was standing near a door would be a sound
+ * caused by the blocking rather than by the story. Footsteps are the exception, and come free from
+ * the gait. `cue` is one of `CUE_KINDS` in src/sound/cues.ts.
+ */
+export interface SoundKey {
+  t: number;
+  cue: CueKind;
+  /** Louder or softer than that cue's own level (1 by default). */
+  gain?: number;
+}
+
 export interface Beat {
   id: string;
   t: number;
@@ -436,6 +483,8 @@ export interface EventDetail extends EventSummary {
   camera?: CameraKey[];
   /** Covers the set lifts away (staging.yaml `reveal`); without it, the place stays shut. */
   reveal?: CoverKey[];
+  /** One-shot sounds at their moments (staging.yaml `sound`); the ambience needs no authoring. */
+  sound?: SoundKey[];
   audioFiles: Partial<Record<Lang, NarrationAudio>>;
 }
 

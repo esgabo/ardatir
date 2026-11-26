@@ -15,8 +15,8 @@ beats:
 tracks:
   - characterId: thorin
     keyframes:
-      - { t: 0, x: 5, z: 2.6, action: hide }
-      - { t: 0.12, x: 0, z: -3.6, action: walk }
+      - { t: 0, x: 5.09, z: 2.78, action: hide }
+      - { t: 0.12, x: 0.02, z: -3.4, action: walk }
       - { t: 0.14, x: 0, z: -3.6, action: hide }
   - characterId: bilbo
     model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
@@ -32,20 +32,20 @@ tracks:
       - { t: 0, x: -5, z: -2, action: walk }
       - { t: 0.17, x: -1, z: -2.3, action: talk, thought: { en: "Take the Arkenstone, king. Keep it for good.", es: "Toma la Piedra del Arca, rey. Guárdala para siempre." } }
       - { t: 0.35, x: -1, z: -2.3, action: idle }
-      - { t: 0.55, x: -1.7, z: -2.4, action: idle }
-      - { t: 0.72, x: 4.6, z: 0.8, action: walk, thought: { en: "My share, to rebuild Dale. I thank you, Dáin.", es: "Mi parte, para reconstruir Valle. Te lo agradezco, Dáin." } }
+      - { t: 0.55, x: -1.79, z: -2.83, action: idle }
+      - { t: 0.72, x: 4.65, z: 0.35, action: walk, thought: { en: "My share, to rebuild Dale. I thank you, Dáin.", es: "Mi parte, para reconstruir Valle. Te lo agradezco, Dáin." } }
       - { t: 0.88, x: 4, z: 0.5, action: idle }
   - characterId: thranduil
     keyframes:
       - { t: 0, x: 5.5, z: -2.5, action: walk }
       - { t: 0.35, x: 1.1, z: -2.4, action: talk, thought: { en: "Take this blade back, dwarf-king. It will warn of enemies.", es: "Recupera esta espada, rey enano. Avisará de los enemigos." } }
-      - { t: 0.55, x: 1.7, z: -2.4, action: idle, thought: { en: "A feud ends here, over a grave.", es: "Una enemistad termina aquí, junto a una tumba." } }
-      - { t: 0.72, x: 1.6, z: 0.9, action: walk }
+      - { t: 0.55, x: 1.79, z: -1.97, action: idle, thought: { en: "A feud ends here, over a grave.", es: "Una enemistad termina aquí, junto a una tumba." } }
+      - { t: 0.72, x: 1.55, z: 1.35, action: walk }
       - { t: 0.88, x: 1.5, z: 0.5, action: idle, thought: { en: "Let there be friendship between the Mountain and the forest.", es: "Que haya amistad entre la Montaña y el bosque." } }
   - characterId: dain
     keyframes:
-      - { t: 0, x: 4.2, z: 2.6, action: walk, thought: { en: "We carry him home, my cousin and my king.", es: "Lo llevamos a casa, mi primo y mi rey." } }
-      - { t: 0.12, x: 1.2, z: -4.3, action: walk }
+      - { t: 0, x: 4.11, z: 2.42, action: walk, thought: { en: "We carry him home, my cousin and my king.", es: "Lo llevamos a casa, mi primo y mi rey." } }
+      - { t: 0.12, x: 1.18, z: -4.5, action: walk }
       - { t: 0.55, x: 1.2, z: -4.3, action: idle, thought: { en: "Fíli and Kíli beside him. A heavy day.", es: "Fíli y Kíli a su lado. Un día muy pesado." } }
       - { t: 0.58, x: 1.7, z: -4.6, action: idle }
       - { t: 0.72, x: 3.2, z: -0.8, action: talk, thought: { en: "Share the treasure fairly. Bard has earned his part.", es: "Repartamos el tesoro con justicia. Bardo se ha ganado su parte." } }

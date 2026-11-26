@@ -18,9 +18,9 @@ tracks:
     keyframes:
       - { t: 0, x: -5, z: -5, action: idle, thought: { en: "The dwarves are many, but the high ground is mine.", es: "Los enanos son muchos, pero la altura es mía." } }
       - { t: 0.29, x: -3.2, z: -3.2, action: walk }
-      - { t: 0.4, x: -2.6, z: -2.6, action: fight }
-      - { t: 0.55, x: -2.6, z: -2.6, action: fight, thought: { en: "Come to me, sons of dwarf-kings.", es: "Venid a mí, hijos de reyes enanos." } }
-      - { t: 0.62, x: -3, z: -3.5, action: hide }
+      - { t: 0.4, x: -2.62, z: -2.61, action: fight }
+      - { t: 0.55, x: -2.79, z: -2.64, action: fight, thought: { en: "Come to me, sons of dwarf-kings.", es: "Venid a mí, hijos de reyes enanos." } }
+      - { t: 0.62, x: -3.19, z: -3.5, action: hide }
       - { t: 1, x: -3, z: -3.5, action: hide }
   - characterId: thrain
     keyframes:
@@ -28,20 +28,20 @@ tracks:
       - { t: 0.14, x: 4, z: 2.5, action: walk }
       - { t: 0.29, x: 1.8, z: 0.8, action: fight }
       - { t: 0.45, x: 1.5, z: 0.5, action: fight }
-      - { t: 0.57, x: 1, z: 0, action: idle }
-      - { t: 0.71, x: -0.5, z: -1.5, action: talk, thought: { en: "Moria is ours. We take it back today.", es: "Moria es nuestra. La recuperamos hoy." } }
-      - { t: 0.86, x: 0.5, z: 0, action: walk }
-      - { t: 1, x: -5, z: 5.5, action: walk, thought: { en: "West again, and exile. Is there no end?", es: "Otra vez al oeste, al exilio. ¿No acabará nunca?" } }
+      - { t: 0.57, x: 1.29, z: 0, action: idle }
+      - { t: 0.71, x: -0.19, z: -1.7, action: talk, thought: { en: "Moria is ours. We take it back today.", es: "Moria es nuestra. La recuperamos hoy." } }
+      - { t: 0.86, x: 0.34, z: -0.11, action: walk }
+      - { t: 1, x: -5.19, z: 5.47, action: walk, thought: { en: "West again, and exile. Is there no end?", es: "Otra vez al oeste, al exilio. ¿No acabará nunca?" } }
   - characterId: thorin
     keyframes:
       - { t: 0, x: 5.5, z: 1.5, action: idle }
       - { t: 0.14, x: 4.2, z: 1.5, action: walk }
       - { t: 0.29, x: 0.8, z: 0.2, action: fight, thought: { en: "For my grandfather!", es: "¡Por mi abuelo!" } }
       - { t: 0.43, x: 0.5, z: -0.3, action: fight, thought: { en: "My shield is splintered. This oak branch will do.", es: "Mi escudo está astillado. Esta rama de roble servirá." } }
-      - { t: 0.57, x: 0.5, z: -0.8, action: fight }
-      - { t: 0.71, x: -0.5, z: -1, action: idle }
-      - { t: 0.86, x: 0.5, z: 1, action: walk, thought: { en: "So many dead. And still no home.", es: "Tantos muertos. Y aún sin hogar." } }
-      - { t: 1, x: -4.5, z: 5, action: walk }
+      - { t: 0.57, x: 0.21, z: -0.8, action: fight }
+      - { t: 0.71, x: -0.81, z: -0.8, action: idle }
+      - { t: 0.86, x: 0.66, z: 1.11, action: walk, thought: { en: "So many dead. And still no home.", es: "Tantos muertos. Y aún sin hogar." } }
+      - { t: 1, x: -4.31, z: 5.03, action: walk }
   - characterId: frerin
     keyframes:
       - { t: 0, x: 5, z: 5, action: idle }
@@ -55,18 +55,18 @@ tracks:
       - { t: 0, x: 4.5, z: 0, action: idle }
       - { t: 0.14, x: 3.5, z: 0, action: walk }
       - { t: 0.29, x: 0.5, z: -2, action: fight }
-      - { t: 0.5, x: -1.8, z: -2.2, action: fight, thought: { en: "The gate is close. One more push.", es: "La puerta está cerca. Un último empujón." } }
-      - { t: 0.57, x: -2.2, z: -2.3, action: fight }
-      - { t: 0.62, x: -2.2, z: -2.3, action: hide }
-      - { t: 1, x: -2.2, z: -2.3, action: hide }
+      - { t: 0.5, x: -1.68, z: -2.13, action: fight, thought: { en: "The gate is close. One more push.", es: "La puerta está cerca. Un último empujón." } }
+      - { t: 0.57, x: -2.04, z: -2.19, action: fight }
+      - { t: 0.62, x: -2.36, z: -2.19, action: hide }
+      - { t: 1, x: -2.24, z: -2.28, action: hide }
   - characterId: dain
     keyframes:
       - { t: 0, x: 4.5, z: -1.5, action: idle }
       - { t: 0.14, x: 3.5, z: -1.5, action: walk }
       - { t: 0.29, x: 1, z: -2.5, action: fight }
-      - { t: 0.5, x: -1.2, z: -3, action: walk }
-      - { t: 0.57, x: -2.2, z: -3.1, action: fight, thought: { en: "That is my father you struck down.", es: "Ese es mi padre, al que has abatido." } }
-      - { t: 0.66, x: -2.2, z: -3.1, action: fight }
-      - { t: 0.71, x: -1.5, z: -2, action: talk, thought: { en: "Something worse still lives in Moria. We must not go in.", es: "Algo peor aún vive en Moria. No debemos entrar." } }
+      - { t: 0.5, x: -1.19, z: -3.01, action: walk }
+      - { t: 0.57, x: -2.01, z: -3.14, action: fight, thought: { en: "That is my father you struck down.", es: "Ese es mi padre, al que has abatido." } }
+      - { t: 0.66, x: -2.03, z: -3.19, action: fight }
+      - { t: 0.71, x: -1.37, z: -2.06, action: talk, thought: { en: "Something worse still lives in Moria. We must not go in.", es: "Algo peor aún vive en Moria. No debemos entrar." } }
       - { t: 0.86, x: -1.5, z: -2, action: idle }
       - { t: 1, x: 4.5, z: -5, action: walk }

@@ -10,7 +10,7 @@ import { dateSpan, EPS, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../
 import {
   EXTRA_DAYS, LANGS, LIGHT_PRESETS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
-  type CameraKey, type CoverKey, type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText,
+  AUTHORED_CUES, type CameraKey, type CoverKey, type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText, type SoundKey,
   type NarrationAudio, type NarrationSegment, type Narrator, type NarratorVoice, type Place, type Precision, type Span, type StageKind,
   type Status, type StoryDate, type Track, type When,
 } from '../../src/data/types.ts';
@@ -537,7 +537,7 @@ export function buildContent(contentDir: string): BuildResult {
     const s = r.staging;
     if (!s) continue;
     const sf = path.join(r.dir, 'staging.yaml');
-    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies', 'set', 'light', 'camera', 'reveal'], 'staging');
+    keys(sf, s, ['stage', 'duration', 'narration', 'beats', 'tracks', 'armies', 'set', 'light', 'camera', 'reveal', 'sound'], 'staging');
     const stage = String(s.stage) as StageKind;
     if (!STAGES.includes(stage)) R.error(sf, `stage: one of ${STAGES.join(', ')}`);
     if (!(typeof s.duration === 'number' && s.duration > 0)) R.error(sf, 'duration: seconds, a positive number');
@@ -685,6 +685,29 @@ export function buildContent(contentDir: string): BuildResult {
       }
     }
 
+    // One-shot sounds at their moments (types.ts `SoundKey`). The ambience of an event is a
+    // function of its place and the hour and needs nothing here (DESIGN §9.5); this is what the
+    // story does. The vocabulary is closed, because a cue the engine cannot synthesize is a cue
+    // that would simply be silent.
+    let sound: SoundKey[] | undefined;
+    if (s.sound !== undefined) {
+      sound = [];
+      if (!Array.isArray(s.sound) || !s.sound.length) R.error(sf, 'sound: a list of { t, cue }');
+      else {
+        let st = -1;
+        s.sound.forEach((k, i) => {
+          const at = `sound[${i}]`;
+          if (!isObj(k) || typeof k.t !== 'number' || k.t < 0 || k.t > 1) { R.error(sf, `${at}: needs a time t, 0–1`); return; }
+          const cue = AUTHORED_CUES.find((c) => c === k.cue);
+          if (cue === undefined) { R.error(sf, `${at}.cue: one of ${AUTHORED_CUES.join(', ')}`); return; }
+          if (k.gain !== undefined && (typeof k.gain !== 'number' || !(k.gain > 0 && k.gain <= 2))) { R.error(sf, `${at}.gain: louder or softer than the cue's own level, 0–2`); return; }
+          if (k.t < st) R.error(sf, `${at}: t must rise`);
+          st = k.t;
+          sound!.push({ t: k.t, cue, ...k.gain !== undefined ? { gain: k.gain } : {} });
+        });
+      }
+    }
+
     // Recordings: audio/<lang>.yaml + audio/<lang>.<ext>
     const audioFiles: EventDetail['audioFiles'] = {};
     const ad = path.join(r.dir, 'audio');
@@ -755,7 +778,7 @@ export function buildContent(contentDir: string): BuildResult {
     }
 
     r.summary.stage = stage;
-    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, ...set ? { set } : {}, ...light?.length ? { light } : {}, ...camera?.length ? { camera } : {}, ...reveal?.length ? { reveal } : {}, audioFiles });
+    details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, ...set ? { set } : {}, ...light?.length ? { light } : {}, ...camera?.length ? { camera } : {}, ...reveal?.length ? { reveal } : {}, ...sound?.length ? { sound } : {}, audioFiles });
   }
 
   // Scripts: every narration as text, so a scripted event can be read before it is staged.

@@ -23,6 +23,8 @@ import { pickAudio } from './audioChoice';
 import { Sidebar } from './sidebar';
 import { EventClock } from './eventClock';
 import { Narration } from './narration';
+import type { Soundstage } from './sound/engine';
+import { DUCK, SILENCE } from './sound/scape';
 import type { Stage } from './scene/stage';
 import { zoomFor } from './scene/framing';
 import { Opening, openingSeen } from './opening';
@@ -139,6 +141,49 @@ let clock: EventClock;
 let playhead = 0;
 
 /**
+ * The world's own sound (DESIGN §9.5): a place's ambience and the one-shots the staging and the
+ * gaits ask for, synthesized rather than recorded. It is built on the first press of play — a
+ * browser will not start an audio clock without a gesture — and then kept for the session, so
+ * a visitor who never plays anything never fetches the chunk.
+ */
+let soundstage: Soundstage | null = null;
+let soundLoading = false;
+/** Where the sound was told about last frame: the span a footstep may fall in. */
+let soundFrom = 0;
+
+function startSound(): void {
+  if (soundstage) { void soundstage.resume(); return; }
+  if (soundLoading) return;
+  soundLoading = true;
+  void import('./sound/engine')
+    .then(({ Soundstage: S }) => {
+      soundstage = new S();
+      soundstage.setMuted(state.audio === 'off');
+      return soundstage.resume();
+    })
+    .catch((e) => { console.warn('[ardatir] no sound in this browser', e); })
+    .finally(() => { soundLoading = false; });
+}
+
+/** What is heard this frame: the bed, ducked under a voice, and the cues since the last one. */
+function syncSound(): void {
+  const sound = soundstage;
+  if (!sound) return;
+  if (page || !stage?.sound) { sound.set(SILENCE, 0); soundFrom = state.t; return; }
+  const to = state.t;
+  const heardNow = stage.sound(soundFrom, to, clock.duration);
+  soundFrom = to;
+  // Under a voice the world steps back, so the narration is never fighting a river. It steps back
+  // for as long as the recording runs, from its first passage on, because the narrators read an
+  // event nearly end to end and a recording does not tell us where it pauses for breath. An event
+  // with no recording has no voice to duck under and is heard in full.
+  const reading = state.playing && narration.available && !narration.muted && !!clock.segmentAt(playhead);
+  sound.set(heardNow.layers, reading ? DUCK : 1);
+  if (state.playing) for (const cue of heardNow.cues) sound.play(cue);
+  sound.tick();
+}
+
+/**
  * Each zoom level is its own chunk, loaded the first time it is needed, so the front
  * page (the cosmos) never downloads the diorama code and vice versa.
  */
@@ -219,6 +264,7 @@ async function loadStage(load?: StageLoad): Promise<void> {
     controls.maxZoom = 16;
   }
   staged = null; // a new stage: the first frame lands on its framing exactly (keepStaged)
+  soundFrom = state.t; // a new place: no footsteps carried over from the last one
   clock = new EventClock(event, audioLang(event));
   narration = new Narration(event, audioLang(event), clock);
   playhead = clock.secondsAt(state.t);
@@ -548,10 +594,13 @@ function renderStatic(): void {
 
   buildBeats();
 
-  // Sound: shown when the event has any recording. The language button only when there is a
-  // choice to make, or the voice speaks another language than the page.
+  // The language button is shown only when there is a choice to make, or the voice speaks
+  // another language than the page.
   const playing = audioLang(state.event);
-  muteBtn.hidden = !state.event.audio.length;
+  // The control is offered when there is something to hear: a recording, or a diorama, which has
+  // the place's own sound and its footsteps. The cosmos has neither until somebody decides what
+  // the Music sounds like (DESIGN §9.5), and a control that silences silence is a lie.
+  muteBtn.hidden = !state.event.audio.length && state.event.stage !== 'diorama';
   audioBtn.hidden = !state.event.audio.length || (state.event.audio.length < 2 && (!playing || playing === L));
   const shown = playing ?? (state.event.audio.includes(L) ? L : state.event.audio[0]);
   if (shown) {
@@ -700,6 +749,7 @@ function seekTo(t: number): void {
 
 function setPlaying(on: boolean): void {
   if (on && playhead >= clock.duration) { playhead = 0; state.t = 0; }
+  if (on && state.audio !== 'off') startSound();
   state.playing = on;
   if (!on) writeRoute();
   updateDynamic();
@@ -707,7 +757,15 @@ function setPlaying(on: boolean): void {
 
 playBtn.addEventListener('click', () => setPlaying(!state.playing));
 // Muting is "no voice": ?audio=off, the event keeps its own pace (no recording to follow).
-muteBtn.addEventListener('click', () => { state.audio = state.audio === 'off' ? undefined : 'off'; rebuildAudio(); updateDynamic(); });
+// Muting is "nothing to hear": ?audio=off silences the voice (the event keeps its own pace, with
+// no recording to follow) and the world's sound with it, which is what a speaker icon promises.
+muteBtn.addEventListener('click', () => {
+  state.audio = state.audio === 'off' ? undefined : 'off';
+  soundstage?.setMuted(state.audio === 'off');
+  if (state.audio !== 'off' && state.playing) startSound();
+  rebuildAudio();
+  updateDynamic();
+});
 audioBtn.addEventListener('click', () => { nextAudio(); updateDynamic(); });
 scrubber.addEventListener('input', () => { seekTo(Number(scrubber.value) / 1000); });
 scrubber.addEventListener('change', writeRoute);
@@ -957,7 +1015,7 @@ let lastUi = 0;
 function frame(): void {
   const dt = Math.min(frameClock.getDelta(), 0.1);
   requestAnimationFrame(frame);
-  if (page) { narration.sync(playhead, false); return; } // hidden under a page: nothing to draw
+  if (page) { narration.sync(playhead, false); syncSound(); return; } // hidden under a page: nothing to draw
   ambient += dt;
   if (state.playing) {
     playhead = Math.min(playhead + dt, clock.duration);
@@ -965,6 +1023,7 @@ function frame(): void {
     if (playhead >= clock.duration) setPlaying(false);
   }
   narration.sync(playhead, state.playing);
+  syncSound();
   renderNarration();
   stage.update(state.t, ambient, clock.duration);
   keepStaged();   // the author's shot for this moment

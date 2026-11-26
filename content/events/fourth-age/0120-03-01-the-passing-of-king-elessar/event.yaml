@@ -1,0 +1,28 @@
+id: the-passing-of-king-elessar
+age: fourth-age
+when:
+  # Fo.A. 120 (S.R. 1541), 1 March. Appendix B gives the day.
+  start: { age: fourth-age, year: 120, month: 3, day: 1 }
+  precision: day
+place: minas-tirith
+characters: [ aragorn, arwen, eldarion ]
+arcs: [ the-last-of-the-fellowship ]
+journeys: []
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix A (Aragorn and Arwen)" }
+title:
+  en: The Passing of King Elessar
+  es: La partida del rey Elessar
+summary:
+  en: At two hundred and ten years old, Aragorn chooses his hour, gives the crown to Eldarion, and lays down his life while he is still himself. Arwen cannot follow where he goes, and begs him to stay; he will not.
+  es: A los doscientos diez años, Aragorn elige su hora, entrega la corona a Eldarion y rinde la vida mientras sigue siendo él mismo. Arwen no puede seguirlo a donde él va, y le ruega que se quede; él no accede.
+links:
+  - to: wedding-of-aragorn-and-arwen
+    type: caused-by
+    note:
+      en: The day she married him she chose a mortal life; this is the day the choice comes due.
+      es: El día en que se casó con él escogió una vida mortal; éste es el día en que la elección se cobra.
+beats:
+  - { id: crown, label: { en: The crown to Eldarion, es: La corona a Eldarion } }
+  - { id: farewell, label: { en: Farewell, es: Despedida } }

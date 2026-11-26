@@ -1,0 +1,30 @@
+id: celeborn-leaves-middle-earth
+age: fourth-age
+when:
+  # Appendix B: Celeborn went to dwell in Rivendell after Galadriel sailed, and "there is no record
+  # of the day when at last he sought the Grey Havens". We place him after Arwen, whose death
+  # emptied Lothlórien in the telling, and claim no better than approximate. See `note`.
+  start: { age: fourth-age, year: 121 }
+  precision: approximate
+place: grey-havens
+characters: [ celeborn ]
+arcs: [ the-last-of-the-fellowship ]
+journeys: []
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Appendix B" }
+title:
+  en: Celeborn Leaves Middle-earth
+  es: Celeborn deja la Tierra Media
+summary:
+  en: Galadriel has sailed, Lothlórien stands empty and Rivendell is almost so. At some day no one wrote down, Celeborn rides to the Grey Havens and takes ship, and the last living memory of the Elder Days goes with him.
+  es: Galadriel ha zarpado, Lothlórien está vacía y Rivendel casi lo está. Un día que nadie anotó, Celeborn cabalga a los Puertos Grises y embarca, y con él se va la última memoria viva de los Días Antiguos.
+note:
+  en: Tolkien never dated this. Appendix B says only that there is no record of the day Celeborn sought the Havens, so this scene is placed after Arwen's death and marked as a guess, not a date.
+  es: Tolkien nunca lo fechó. El Apéndice B dice sólo que no hay constancia del día en que Celeborn buscó los Puertos, así que esta escena se sitúa tras la muerte de Arwen y se marca como conjetura, no como fecha.
+links:
+  - to: arwen-on-cerin-amroth
+    type: concurrent
+    note:
+      en: His granddaughter dies in the wood he once kept; after that there is nothing in Middle-earth he came for.
+      es: Su nieta muere en el bosque que él guardó; después de eso, nada queda en la Tierra Media por lo que él viniera.

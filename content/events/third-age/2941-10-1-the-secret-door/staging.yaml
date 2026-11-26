@@ -16,115 +16,115 @@ tracks:
   - characterId: bilbo
     model: characters/bilbo/bilbo-travel.glb   # Dwalin's hood and cloak, from the road out of Hobbiton (ch. 2)
     keyframes:
-      - { t: 0, x: 4.2, z: 3.2, action: walk, thought: { en: "Burned and bare. And somewhere in there, a dragon.", es: "Todo quemado y pelado. Y por ahí dentro, un dragón." } }
-      - { t: 0.16, x: 0.4, z: -3.5, action: idle, thought: { en: "A grey stone against the wall. This must be the place.", es: "Una piedra gris junto a la pared. Este debe de ser el lugar." } }
-      - { t: 0.34, x: 0.6, z: -3.3, action: hide, thought: { en: "Someone ought to keep watching the west.", es: "Alguien tiene que seguir mirando al oeste." } }
-      - { t: 0.54, x: 0.6, z: -3.3, action: hide, thought: { en: "A thrush with a snail. Rather rude, tapping like that.", es: "Un zorzal con un caracol. Qué descaro, golpeando así." } }
-      - { t: 0.7, x: 0.6, z: -3.3, action: talk, thought: { en: "A keyhole! Thorin, Thorin, the key!", es: "¡Una cerradura! ¡Thorin, Thorin, la llave!" } }
-      - { t: 0.84, x: 2.8, z: -3.2, action: idle, thought: { en: "It is open. It is really open.", es: "Está abierta. Está de verdad abierta." } }
+      - { t: 0, x: 4.26, z: 2.8, action: walk, thought: { en: "Burned and bare. And somewhere in there, a dragon.", es: "Todo quemado y pelado. Y por ahí dentro, un dragón." } }
+      - { t: 0.16, x: 0.13, z: -3.75, action: idle, thought: { en: "A grey stone against the wall. This must be the place.", es: "Una piedra gris junto a la pared. Este debe de ser el lugar." } }
+      - { t: 0.34, x: 0.44, z: -3.19, action: hide, thought: { en: "Someone ought to keep watching the west.", es: "Alguien tiene que seguir mirando al oeste." } }
+      - { t: 0.54, x: 0.4, z: -3.46, action: hide, thought: { en: "A thrush with a snail. Rather rude, tapping like that.", es: "Un zorzal con un caracol. Qué descaro, golpeando así." } }
+      - { t: 0.7, x: 0.94, z: -3.49, action: talk, thought: { en: "A keyhole! Thorin, Thorin, the key!", es: "¡Una cerradura! ¡Thorin, Thorin, la llave!" } }
+      - { t: 0.84, x: 3.14, z: -3.17, action: idle, thought: { en: "It is open. It is really open.", es: "Está abierta. Está de verdad abierta." } }
   - characterId: thorin
     keyframes:
-      - { t: 0, x: 5.5, z: 3.5, action: walk, thought: { en: "The Mountain. After all these years.", es: "La Montaña. Después de tantos años." } }
-      - { t: 0.16, x: 3.2, z: -1.2, action: idle }
-      - { t: 0.34, x: -3.5, z: -3.8, action: fight, thought: { en: "Open, curse you. Open.", es: "Ábrete, maldita. Ábrete." } }
+      - { t: 0, x: 5.55, z: 3.28, action: walk, thought: { en: "The Mountain. After all these years.", es: "La Montaña. Después de tantos años." } }
+      - { t: 0.16, x: 3.28, z: -1.67, action: idle }
+      - { t: 0.34, x: -3.86, z: -3.66, action: fight, thought: { en: "Open, curse you. Open.", es: "Ábrete, maldita. Ábrete." } }
       - { t: 0.54, x: -3.6, z: -2.5, action: hide, thought: { en: "Dead end. Was it all for nothing?", es: "Un callejón sin salida. ¿Todo para nada?" } }
       - { t: 0.66, x: -3.6, z: -2.5, action: hide }
-      - { t: 0.74, x: 0.3, z: -3.6, action: run }
-      - { t: 0.8, x: 0.3, z: -3.6, action: fight, thought: { en: "My father left me this key. Turn, I beg you.", es: "Mi padre me dejó esta llave. Gira, te lo ruego." } }
-      - { t: 0.84, x: 0.3, z: -3.6, action: fight }
+      - { t: 0.74, x: 0.23, z: -3.87, action: run }
+      - { t: 0.8, x: 0.52, z: -3.69, action: fight, thought: { en: "My father left me this key. Turn, I beg you.", es: "Mi padre me dejó esta llave. Gira, te lo ruego." } }
+      - { t: 0.84, x: 0.36, z: -3.3, action: fight }
   - characterId: balin
     keyframes:
-      - { t: 0, x: 4.18, z: 4.45, action: idle, thought: { en: "Dale in ruins. How did it come to this?", es: "Valle en ruinas. ¿Cómo hemos llegado a esto?" } }
-      - { t: 0.16, x: 2.2, z: 0.2, action: idle }
-      - { t: 0.34, x: -2.75, z: -4.8, action: fight }
-      - { t: 0.54, x: 2.4, z: 0.2, action: hide }
-      - { t: 0.7, x: 2.3, z: 0.2, action: idle }
-      - { t: 0.84, x: -2.75, z: -4.5, action: fight }
+      - { t: 0, x: 4.05, z: 3.35, action: idle, thought: { en: "Dale in ruins. How did it come to this?", es: "Valle en ruinas. ¿Cómo hemos llegado a esto?" } }
+      - { t: 0.16, x: 1.71, z: -0.14, action: idle }
+      - { t: 0.34, x: -3.91, z: -4.95, action: fight }
+      - { t: 0.54, x: 2.03, z: -0.05, action: hide }
+      - { t: 0.7, x: 1.73, z: -0.03, action: idle }
+      - { t: 0.84, x: -3.75, z: -5.04, action: fight }
   - characterId: dwalin
     keyframes:
-      - { t: 0, x: 4.72, z: 4.45, action: idle }
-      - { t: 0.16, x: 1.91, z: 1.3, action: idle, thought: { en: "The wall, the stone... it has to be here.", es: "La pared, la piedra... tiene que ser aquí." } }
-      - { t: 0.34, x: -2.25, z: -4.8, action: fight }
-      - { t: 0.54, x: 2.08, z: 1.4, action: hide }
-      - { t: 0.7, x: 1.99, z: 1.35, action: idle }
-      - { t: 0.84, x: -2.25, z: -4.5, action: fight }
+      - { t: 0, x: 4.67, z: 3.57, action: idle }
+      - { t: 0.16, x: 2.35, z: 1.02, action: idle, thought: { en: "The wall, the stone... it has to be here.", es: "La pared, la piedra... tiene que ser aquí." } }
+      - { t: 0.34, x: -1.83, z: -5.61, action: fight }
+      - { t: 0.54, x: 2.36, z: 0.78, action: hide }
+      - { t: 0.7, x: 1.98, z: 1.2, action: idle }
+      - { t: 0.84, x: -2.6, z: -3.92, action: fight }
   - characterId: fili
     keyframes:
-      - { t: 0, x: 5.28, z: 4.45, action: idle }
-      - { t: 0.16, x: 1.1, z: 2.11, action: idle }
-      - { t: 0.34, x: -1.75, z: -4.8, action: fight }
-      - { t: 0.54, x: 1.2, z: 2.28, action: hide }
-      - { t: 0.7, x: 1.15, z: 2.19, action: idle }
-      - { t: 0.84, x: -1.75, z: -4.5, action: fight, thought: { en: "Everyone push! Together!", es: "¡Todos a empujar! ¡A la vez!" } }
+      - { t: 0, x: 5.32, z: 3.92, action: idle }
+      - { t: 0.16, x: 1.27, z: 2.52, action: idle }
+      - { t: 0.34, x: -2.05, z: -4.5, action: fight }
+      - { t: 0.54, x: 1.71, z: 2.55, action: hide }
+      - { t: 0.7, x: 1.88, z: 2.37, action: idle }
+      - { t: 0.84, x: -1.33, z: -4.47, action: fight, thought: { en: "Everyone push! Together!", es: "¡Todos a empujar! ¡A la vez!" } }
   - characterId: kili
     keyframes:
-      - { t: 0, x: 5.83, z: 4.45, action: idle }
-      - { t: 0.16, x: 0, z: 2.4, action: idle }
-      - { t: 0.34, x: -1.25, z: -4.8, action: fight }
-      - { t: 0.54, x: 0, z: 2.6, action: hide }
-      - { t: 0.7, x: 0, z: 2.5, action: idle }
-      - { t: 0.84, x: -1.25, z: -4.5, action: fight }
+      - { t: 0, x: 6.9, z: 5.04, action: idle }
+      - { t: 0.16, x: 0.19, z: 3.54, action: idle }
+      - { t: 0.34, x: -1.38, z: -3, action: fight }
+      - { t: 0.54, x: 0, z: 3.62, action: hide }
+      - { t: 0.7, x: -0.02, z: 3.49, action: idle }
+      - { t: 0.84, x: -1.38, z: -3.16, action: fight }
   - characterId: dori
     keyframes:
-      - { t: 0, x: 4.18, z: 5, action: idle }
-      - { t: 0.16, x: -1.1, z: 2.11, action: idle }
-      - { t: 0.34, x: -0.75, z: -4.8, action: fight }
-      - { t: 0.54, x: -1.2, z: 2.28, action: hide }
-      - { t: 0.7, x: -1.15, z: 2.19, action: idle }
-      - { t: 0.84, x: -0.75, z: -4.5, action: fight }
+      - { t: 0, x: 3.79, z: 5.5, action: idle }
+      - { t: 0.16, x: -1.6, z: 2.74, action: idle }
+      - { t: 0.34, x: -0.64, z: -3.63, action: fight }
+      - { t: 0.54, x: -1.73, z: 2.8, action: hide }
+      - { t: 0.7, x: -1.56, z: 2.59, action: idle }
+      - { t: 0.84, x: -0.5, z: -3.67, action: fight }
   - characterId: nori
     keyframes:
-      - { t: 0, x: 4.72, z: 5, action: idle }
-      - { t: 0.16, x: -1.91, z: 1.3, action: idle }
-      - { t: 0.34, x: -0.25, z: -4.8, action: fight }
-      - { t: 0.54, x: -2.08, z: 1.4, action: hide }
-      - { t: 0.7, x: -1.99, z: 1.35, action: idle }
-      - { t: 0.84, x: -0.25, z: -4.5, action: fight }
+      - { t: 0, x: 3.76, z: 4.7, action: idle }
+      - { t: 0.16, x: -2.1, z: 1.47, action: idle }
+      - { t: 0.34, x: 0.34, z: -4.85, action: fight }
+      - { t: 0.54, x: -2.17, z: 1.26, action: hide }
+      - { t: 0.7, x: -2.25, z: 1.53, action: idle }
+      - { t: 0.84, x: -0.51, z: -5.1, action: fight }
   - characterId: ori
     keyframes:
-      - { t: 0, x: 5.28, z: 5, action: idle }
-      - { t: 0.16, x: -2.2, z: 0.2, action: idle }
-      - { t: 0.34, x: 0.25, z: -4.8, action: fight }
-      - { t: 0.54, x: -2.4, z: 0.2, action: hide }
-      - { t: 0.7, x: -2.3, z: 0.2, action: idle }
-      - { t: 0.84, x: 0.25, z: -4.5, action: fight }
+      - { t: 0, x: 5.14, z: 5.82, action: idle }
+      - { t: 0.16, x: -2.37, z: -0.31, action: idle }
+      - { t: 0.34, x: -0.08, z: -6.06, action: fight }
+      - { t: 0.54, x: -2.6, z: -0.47, action: hide }
+      - { t: 0.7, x: -2.35, z: -1.05, action: idle }
+      - { t: 0.84, x: 0.17, z: -5.3, action: fight }
   - characterId: oin
     keyframes:
-      - { t: 0, x: 5.83, z: 5, action: idle }
-      - { t: 0.16, x: -1.91, z: -0.9, action: idle }
-      - { t: 0.34, x: 0.75, z: -4.8, action: fight }
-      - { t: 0.54, x: -2.08, z: -1, action: hide }
-      - { t: 0.7, x: -1.99, z: -0.95, action: idle }
-      - { t: 0.84, x: 0.75, z: -4.5, action: fight }
+      - { t: 0, x: 5.49, z: 5.28, action: idle }
+      - { t: 0.16, x: -1.88, z: -0.89, action: idle }
+      - { t: 0.34, x: 0.74, z: -5.63, action: fight }
+      - { t: 0.54, x: -1.84, z: -1.25, action: hide }
+      - { t: 0.7, x: -2.03, z: -1.7, action: idle }
+      - { t: 0.84, x: 0.96, z: -5.32, action: fight }
   - characterId: gloin
     keyframes:
-      - { t: 0, x: 4.18, z: 5.55, action: idle }
-      - { t: 0.16, x: -1.1, z: -1.71, action: idle }
-      - { t: 0.34, x: 1.25, z: -4.8, action: fight }
-      - { t: 0.54, x: -1.2, z: -1.88, action: hide, thought: { en: "Days of waiting. Was the key a joke?", es: "Días de espera. ¿Era la llave una broma?" } }
-      - { t: 0.7, x: -1.15, z: -1.79, action: idle }
-      - { t: 0.84, x: 1.25, z: -4.5, action: fight }
+      - { t: 0, x: 2.92, z: 5.2, action: idle }
+      - { t: 0.16, x: -1.57, z: -2.29, action: idle }
+      - { t: 0.34, x: 1.44, z: -5.7, action: fight }
+      - { t: 0.54, x: -1.26, z: -2.22, action: hide, thought: { en: "Days of waiting. Was the key a joke?", es: "Días de espera. ¿Era la llave una broma?" } }
+      - { t: 0.7, x: -0.7, z: -1.5, action: idle }
+      - { t: 0.84, x: 1.67, z: -3.94, action: fight }
   - characterId: bifur
     keyframes:
-      - { t: 0, x: 4.72, z: 5.55, action: idle }
-      - { t: 0.16, x: 0, z: -2, action: idle }
-      - { t: 0.34, x: 1.75, z: -4.8, action: fight }
-      - { t: 0.54, x: 0, z: -2.2, action: hide }
-      - { t: 0.7, x: 0, z: -2.1, action: idle }
-      - { t: 0.84, x: 1.75, z: -4.5, action: fight }
+      - { t: 0, x: 4.32, z: 5.11, action: idle }
+      - { t: 0.16, x: -0.31, z: -2.35, action: idle }
+      - { t: 0.34, x: 2.13, z: -4.29, action: fight }
+      - { t: 0.54, x: 0.22, z: -1.88, action: hide }
+      - { t: 0.7, x: 0.09, z: -2.09, action: idle }
+      - { t: 0.84, x: 1.84, z: -4.88, action: fight }
   - characterId: bofur
     keyframes:
-      - { t: 0, x: 5.28, z: 5.55, action: idle }
-      - { t: 0.16, x: 1.1, z: -1.71, action: idle }
-      - { t: 0.34, x: 2.25, z: -4.8, action: fight }
-      - { t: 0.54, x: 1.2, z: -1.88, action: hide }
-      - { t: 0.7, x: 1.15, z: -1.79, action: idle }
-      - { t: 0.84, x: 2.25, z: -4.5, action: fight }
+      - { t: 0, x: 5.81, z: 5.84, action: idle }
+      - { t: 0.16, x: 2.29, z: -2.43, action: idle }
+      - { t: 0.34, x: 2.46, z: -5.03, action: fight }
+      - { t: 0.54, x: 1.39, z: -1.91, action: hide }
+      - { t: 0.7, x: 0.69, z: -1.54, action: idle }
+      - { t: 0.84, x: 2.33, z: -4.41, action: fight }
   - characterId: bombur
     keyframes:
-      - { t: 0, x: 5.83, z: 5.55, action: idle }
-      - { t: 0.16, x: 1.91, z: -0.9, action: idle }
-      - { t: 0.34, x: 2.75, z: -4.8, action: fight, thought: { en: "Picks do nothing. Solid rock, solid disappointment.", es: "Los picos no hacen nada. Roca maciza, decepción maciza." } }
-      - { t: 0.54, x: 2.08, z: -1, action: hide }
-      - { t: 0.7, x: 1.99, z: -0.95, action: idle }
-      - { t: 0.84, x: 2.75, z: -4.5, action: fight }
+      - { t: 0, x: 6.9, z: 6.54, action: idle }
+      - { t: 0.16, x: 2.68, z: -0.33, action: idle }
+      - { t: 0.34, x: 3.03, z: -4.68, action: fight, thought: { en: "Picks do nothing. Solid rock, solid disappointment.", es: "Los picos no hacen nada. Roca maciza, decepción maciza." } }
+      - { t: 0.54, x: 2.1, z: -1, action: hide }
+      - { t: 0.7, x: 2.17, z: -0.99, action: idle }
+      - { t: 0.84, x: 3.35, z: -4.63, action: fight }

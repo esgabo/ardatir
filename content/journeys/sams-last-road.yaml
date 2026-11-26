@@ -1,0 +1,9 @@
+id: sams-last-road
+title: { en: "Sam's Last Road", es: "El último camino de Sam" }
+characters: [ sam ]
+# Out of Bag End on 22 September Fo.A. 61 (S.R. 1482), west to the Tower Hills where Elanor was
+# waiting, and on to the Havens. Only the first date is recorded; the rest is her family's telling.
+waypoints:
+  - { place: bag-end, date: { age: fourth-age, year: 61, month: 9, day: 22 }, precision: day }
+  - { place: tower-hills, date: { age: fourth-age, year: 61, month: 9 }, precision: month }
+  - { place: grey-havens, date: { age: fourth-age, year: 61 }, precision: approximate }
