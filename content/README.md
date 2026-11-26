@@ -423,6 +423,7 @@ A family tree is drawn from **one edge, `parents`** (`docs/DESIGN.md` §3.6, §4
 parents: [ finwe, indis ]   # order carries no meaning; list only the parents the sources name
 spouse: [ miriel, indis ]   # a list, in the order they were married (Finwë: Míriel, then Indis)
 betrothed: [ ]              # only for a betrothal that never became a marriage: rare
+twin: elrohir               # optional: born together, which parentage cannot say (symmetric)
 kin:                        # only what parentage cannot say (closed list below)
   - { id: thingol, as: foster-parent }
 house: { en: Durin's Folk, es: El Pueblo de Durin }   # on a founder, where the books name the house their own way
@@ -430,7 +431,8 @@ house: { en: Durin's Folk, es: El Pueblo de Durin }   # on a founder, where the 
 
 - **List the parents you were told about**, one or two. There is no placeholder for a parent the sources never name: the tree draws a single stem, and an empty box would be a claim about somebody we know nothing of. `father:`/`mother:` do not exist — characters have no gender field, on purpose.
 - `spouse` and `betrothed` are **symmetric**: write them once, on either side, and the build adds the reverse (like event links). Two parents who are also spouses are drawn as a couple; two who are not are drawn as two stems meeting.
-- `kin` is for relations **parentage cannot express**, and its vocabulary is closed and checked: `ancestor`, `descendant`, `cousin` (where no common ancestor is in our content), `kin` (related, and the sources say no more), `foster-parent`, `fosterling`. They are drawn as a dotted tie and never count as a generation.
+- `twin` is a single id, symmetric like `spouse`, and the only reason it exists is that twins have exactly the same parents as any other siblings, so the fact cannot be derived. It must name someone who shares a parent with them. It is **not** a `kin` word: a twin *is* a sibling and stands in that band; the view says it in words (*Elladan, twin of Elrohir* / *Elladan y Elrohir, gemelos*) rather than drawing a different shape.
+- `kin` is for relations **parentage cannot express**, and its vocabulary is closed and checked: `ancestor`, `descendant`, `cousin` (where no common ancestor is in our content), `kin` (related, and the sources say no more), `foster-parent`, `fosterling`. They are drawn as a dotted tie and never count as a generation. It is load-bearing, not a fallback: the sources give Dori, Nori, Ori, Bifur, Bofur and Bombur no parentage at all, so six of the thirteen dwarves of Thorin's Company stand in Durin's line only as `as: kin`.
 - `house` is the one authored thing about a house: there is no `content/houses/`, since the members are derived and the usual name comes from a template (*The House of Finwë*). Give it only where the books name it otherwise.
 - **Migrating an old `kin` entry:** anything derivable — `brother`, `sister`, `father`, `son`, `grandfather`, `grandson`, `uncle`, `nephew` — becomes `parents` on the people in between and is then deleted; `wife`, `husband` and today's one `betrothed` become `spouse`; `cousin` becomes `parents` on both where the common ancestor is in our content, and stays `kin` where it is not; `kin` stays. The build warns, with the replacement named, until the last of the 36 files is migrated; then an un-migrated word is an error. The full table is in `docs/DESIGN.md` §4.11.
 

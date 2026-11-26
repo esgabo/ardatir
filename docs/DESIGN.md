@@ -199,6 +199,11 @@ the same restraint lanes keep with their cap of eight.
   hang from the middle of that tie. A person whose other parent the sources never name hangs from
   a single stem, and **no empty box is ever drawn for a parent we are not told about**: silence is
   shown as silence, exactly as an undated event shows only its honest range (§4.4).
+- **Twins are said, not drawn** (`twin`, §4.11). A generation band already stands siblings side by
+  side, so the geometry has nothing left to add: the two stems leave the parents' tie at one point
+  before splitting, which reads as *born together*, and the card carries the word — *Elladan, twin
+  of Elrohir* / *Elladan y Elrohir, gemelos*. For Elrond's sons it is close to the only thing the
+  texts say about them, and a tree that could not say it would be missing their whole story.
 - **Half-siblings are drawn as half-siblings**, because in this story almost nothing matters more:
   Fëanor and Fingolfin share a father and not a mother, and most of the First Age comes out of
   that fact. They hang from the shared parent alone, not from a couple's tie, and the card says
@@ -229,7 +234,10 @@ the same restraint lanes keep with their cap of eight.
   Galadriel and six above Gil-galad.* We do **not** print cousin degrees. English and Spanish do
   not cut them the same way, *second cousin once removed* is jargon a newcomer cannot use, and the
   sentence is both truer and friendlier. A `kin` tie the parentage graph cannot derive (§4.11) is
-  said in its own words and drawn as a dotted tie, never a stem.
+  said in its own words and drawn as a dotted tie, never a stem. That is how **six of the thirteen
+  dwarves of Thorin's Company** stand in a view of Durin's line at all: the sources give Dori,
+  Nori, Ori, Bifur, Bofur and Bombur no parentage, only *of Durin's race, kinsmen of Thorin*, and
+  six dotted ties saying exactly that is better than six characters quietly absent (§4.11).
 
 **The half-elven crossing is the reason to build this at all.** Elrond and Elros are brothers of
 two different `kind`s, Elros chose the fate of Men and Elrond the Elves, and sixty-odd generations
@@ -716,6 +724,11 @@ Why a list, and not `father:` / `mother:`:
   a couple with their children under the tie, and two who are not are drawn as two stems meeting.
 - There is no placeholder for an unnamed parent, and none is wanted. A box with nothing in it is a
   claim about a person we know nothing about; the tree draws a single stem instead (§3.6).
+- **Fíli and Kíli settle it from the other side.** They reach Thorin only through Dís, their
+  mother and his sister, and the sources never name her husband. With a list, `parents: [ dis ]`
+  is the whole truth and the tree draws one stem up to Dís and on to Thráin. With `father:` and
+  `mother:`, the two nephews whose uncle leads the company would need an empty `father:` to say
+  nothing at all.
 
 **Everything else is derived by the build, never authored.** Children, siblings, half-siblings
 (one shared parent, flagged), ancestors, descendants, cousins, uncles, nephews, generation depth
@@ -750,7 +763,52 @@ a word the view cannot draw is silently nothing on the screen:
 | `foster-parent` / `fosterling` | raised them, or was raised by them | **not descent at all**, and the texts care about it enormously: Túrin in Thingol's halls, Aragorn in Elrond's, Frodo as Bilbo's heir |
 
 A `kin` tie is drawn as a dotted tie, never a stem, and never counts as a generation. So fostering
-can sit in a tree without pretending to be blood, which is the whole reason to keep the field.
+can sit in a tree without pretending to be blood.
+
+**The decisive case is already in our content, and it is `as: kin`.** `dori`, `nori` and `ori`
+carry that word today, and it is the most accurate entry in the whole set: Appendix A says only
+that they are of Durin's race and remote kinsmen of Thorin, and gives no parentage at all for them
+or for Bifur, Bofur and Bombur. **Six of the thirteen dwarves of Thorin's Company therefore have
+no computable place in any tree** — and they are not obscure names in a table, they are six
+characters the project has already written and will certainly stage. A parentage-only model would
+drop them out of a view of Durin's line in silence, which is the worst way for content to go
+missing: nothing on the screen says anybody is absent. With `kin` they hang off the line as six
+dotted ties saying exactly what the book says, *of Durin's race, kinsmen of Thorin, and no more
+than that*. That is the argument for keeping the field: not a vague-relation escape hatch, but the
+only honest way to draw a company half of whose members the sources leave unplaced.
+
+**Twins are their own key, because parentage cannot reach them.** Twins have exactly the same
+parents as any other siblings, so twinhood is **unrecoverable from the edges** — and for Elladan
+and Elrohir it is very nearly the only thing the texts ever say about them. So:
+
+```yaml
+twin: elrohir                    # on Elladan; symmetric, and the build adds the reverse
+```
+
+- **One key, a single id**, symmetric like `spouse`, with the reverse derived and marked
+  `reverse: true`. The texts have no triplets, so a list would be a shape kept ready for nobody;
+  it can become one later without changing a drawn thing.
+- **Not a `kin` word.** The closed list above is for relations that are *not* descent and are
+  drawn as a dotted tie outside the generations. A twin **is** a sibling, derived as one from
+  `parents` and standing in that band; twinhood only refines it. Putting it in `kin` would draw
+  Elladan and Elrohir as cousins-by-another-name and leave their real sibling edge beside it,
+  saying the same thing twice in two different shapes.
+- **Not `twins: [[a, b]]` on the parent.** It would put a fact about two people in a third
+  person's file, and a pair whose parent the sources never name — which is exactly the Dís case
+  above — would have nowhere to live.
+- **The build checks** that a twin shares at least one parent with their twin (otherwise it is an
+  error, not a drawing), that the pair is mutual, and that nobody is their own twin.
+- **In the view** (§3.6) the geometry barely moves, and should not: a generation row already puts
+  siblings side by side, so the fact belongs in the words. The one cheap bit of drawing worth
+  having is that the two stems leave the parents' tie at a single point before splitting, which
+  reads as *born together*; the card says the rest. Our three pairs are Elladan and Elrohir,
+  Amrod and Amras, and Eluréd and Elurín, and none of the five has a file yet, so nothing needs
+  migrating.
+- **In both languages**, by the convention `kinPhrase` already keeps for relations whose gender we
+  do not store (§3.2): English *{a}, twin of {b}*, Spanish the gender-neutral plural *{a} y {b},
+  gemelos*, exactly as `kin_sibling` and `kin_cousin` are written. Spanish also has *mellizos* for
+  twins who are not identical; the sources never say which these are, so we use the ordinary word
+  and claim nothing more.
 
 #### Migration: what happens to the thirteen words in use
 
@@ -1266,7 +1324,7 @@ music of all is sung, is still silent.
 | 2026-11-15 | Where a figure stands (#81): a keyframe's `y` says how high above the walkable ground a character is, so one placed on a log, a bench or a doorstep is not buried in it; crowding is a **build warning**, not a push-apart at render time, because a figure's place must stay a pure function of `t` and who stands in front of whom is the author's composition (§9.2). |
 | 2026-11-15 | The render look (#76): a soft second light that comes up as the sun goes down, so a night scene can be seen; haze tinted toward the background, never toward a bright sky, so the far edge of a tile recedes instead of dissolving; a grade per place applied to **the light, not the pixels** (no post-processing pass: a second render of the frame is the first thing to fail on a phone), where a place that takes light away gets the soft light back, and the background takes only a third of the tint so the void stays dark; contact shadows under figures, because at this scale where a figure touches says more than the shadow behind it; one quality setting turning the shadow map, pixel ratio and effect counts down together, guessed from the device and overridable with `?quality=` (§9.1). |
 | 2026-11-09 | Factions (#18): one file per side in `content/factions/` (name, banner colour, kind, summary, leaders), reused across battles; battles list `sides` as groups of allied factions; staging places `armies` (faction, size, keyframes) as instanced blocks of small figures in the faction's colour, named characters keeping their own tracks; one being who comes alone (Beorn) is a character, a host (the Eagles) a faction. First example: the Battle of Five Armies (§2, §4.9). |
-| 2026-11-26 | **Family trees** (#89): a third cross-view, drawn from **one authored edge, `parents: [a, b]`** — a list and not `father:`/`mother:`, because characters have no gender field by decision and one named parent must stay writable without an empty box for the other. Siblings, half-siblings, cousins, uncles, descendants and generation depth are **derived by the build**, never authored; `spouse` (a list, in the order married) and `betrothed` are separate, since a tree draws couples but marriage is not descent; `kin` survives narrowed to a closed, build-checked list of what parentage cannot say (`ancestor`, `descendant`, `cousin`, `kin`, `foster-parent`, `fosterling`), drawn as a dotted tie. Dates come from the event that declares them (`born:`/`died:` on `event.yaml`, at the event's honest range) or, for the hundreds Appendix A gives that will never be a scene, from the character — and an explicit date outside its event's range is an error. Silence is silence: no `died` draws no end, so an elf is never drawn as dead, and `fate` says in a sentence what happened instead. The view is **generation rows, never a time axis** (immortals break the axis and the lanes already own time), one character centred with two generations each way and growth in the URL (`#/kin/<id>?up=&down=&also=`); one layout for all four race shapes, because the shapes are in the edges; no new rail item. A house is derived from the graph, not a content kind (§3.6, §4.11). |
+| 2026-11-26 | **Family trees** (#89): a third cross-view, drawn from **one authored edge, `parents: [a, b]`** — a list and not `father:`/`mother:`, because characters have no gender field by decision and one named parent must stay writable without an empty box for the other. Siblings, half-siblings, cousins, uncles, descendants and generation depth are **derived by the build**, never authored; `spouse` (a list, in the order married) and `betrothed` are separate, since a tree draws couples but marriage is not descent; `kin` survives narrowed to a closed, build-checked list of what parentage cannot say (`ancestor`, `descendant`, `cousin`, `kin`, `foster-parent`, `fosterling`), drawn as a dotted tie. Dates come from the event that declares them (`born:`/`died:` on `event.yaml`, at the event's honest range) or, for the hundreds Appendix A gives that will never be a scene, from the character — and an explicit date outside its event's range is an error. Silence is silence: no `died` draws no end, so an elf is never drawn as dead, and `fate` says in a sentence what happened instead. The view is **generation rows, never a time axis** (immortals break the axis and the lanes already own time), one character centred with two generations each way and growth in the URL (`#/kin/<id>?up=&down=&also=`); one layout for all four race shapes, because the shapes are in the edges; no new rail item. **Twins get their own symmetric key** (`twin`), since twinhood has the same parents as any other siblinghood and so is unrecoverable from the edges — said in words, not drawn, and the one fact the texts give about Elrond's sons. A house is derived from the graph, not a content kind (§3.6, §4.11). |
 | 2026-11-26 | **Narration at arc scale** (#88): the world view's content is an arc's own telling over the map of its age — how a war moved across a country — because a map-scale overview is by definition not one scene and so cannot be an event. An arc with a telling becomes a folder (`arc.yaml` + `narration.yaml` + `staging.yaml` + `audio/`) and runs through the same four-word status pipeline, independent of its events'; it is read by the narrator of its first event's age (`narratedBy` when its events cross ages). The clock, the recordings and the authored `camera` are the event machinery unchanged; new are **`hosts`** (a body of people as a mark on a map: `mark` from a closed list, `weight` 1–5 rather than a count of soldiers, keyframes naming places, `faction` or a plain `label` for refugees) and **`roads`** (a journey painted along its waypoints, so an untold leg reads as a stretch of road with nothing on it). The arc's events are pinned from their places and need no authoring; `scenes` says only when the telling reaches each. No `light`, `sound` or `reveal` at map scale, and arcs stay off the time axis: an arc's `t` is narration time, not history (§4.10). |
 
 ## 12. Open questions
