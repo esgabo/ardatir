@@ -1,0 +1,43 @@
+name: CI
+
+# Every change is checked before it merges. deploy.yml runs the same checks on main, but only
+# after a merge: a pull request got no checks at all until this workflow existed (#90).
+on:
+  pull_request:
+  # Also on main, so a failing pull request has a known-good base to compare against.
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A new push to a branch supersedes the run in flight; main's runs are all kept.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  check:
+    name: content, tests, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm # keyed on package-lock.json
+      - run: npm ci
+
+      # Content errors fail here. Content *warnings* are the bar too, and `npm test` is what
+      # enforces them: tests/build.test.ts's "the real content > is valid, with no warnings"
+      # asserts the warning list is empty, with no allowances. This step is still worth its six
+      # seconds: it runs the CLI the docs tell people to run, including writeContent() and the
+      # model copying that the test's buildContent() never reaches.
+      - name: Validate content
+        run: npm run content
+
+      - run: npm test
+
+      # Typechecks, then builds. CI=true also makes an over-budget chunk fail (vite.config.ts).
+      - run: npm run build
