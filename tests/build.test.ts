@@ -8,6 +8,7 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { buildContent, type BuildResult } from '../scripts/content/build.ts';
 import { narrationHash, passageHash } from '../scripts/narration/text.ts';
 import { nearness } from '../src/data/calendar.ts';
+import { KIN_WORDS } from '../src/data/types.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
 const FIXTURE = path.join(import.meta.dirname, 'fixtures/valid/content');
@@ -37,6 +38,20 @@ const FORETOLD: Change[] = [
 ];
 
 const GANDALF = 'characters/gandalf.yaml';
+// Parentage (#89, docs/DESIGN.md §4.11). The fixture's hobbits carry a small family: Mungo →
+// Bungo and Longo, Bungo married to Belladonna, and Bilbo their child. The extra relations the
+// cases below add (a second marriage, a pair of twins) are invented for the fixture.
+const BILBO = 'characters/bilbo.yaml';
+const BUNGO = 'characters/bungo.yaml';
+const MUNGO = 'characters/mungo.yaml';
+const char = (id: string, yaml: string): Change => ({
+  file: `characters/${id}.yaml`,
+  write: `id: ${id}\nname: { en: ${id}, es: ${id} }\nkind: hobbit\nsummary: { en: A hobbit., es: Un hobbit. }\n${yaml}`,
+});
+/** A half-sibling for Bilbo: a second marriage of Bungo's, and a child of it. */
+const HALF: Change[] = [char('laura', 'spouse: [ bungo ]\n'), char('dudo', 'parents: [ bungo, laura ]\n')];
+/** A pair of twins, which parentage cannot reach: the one fact that must be authored. */
+const TWINS: Change[] = [char('ponto', 'parents: [ bungo, belladonna ]\ntwin: porto\n'), char('porto', 'parents: [ bungo, belladonna ]\n')];
 const TEST_KIT = 'kits/test-place/test-place.glb';
 const SET_AND_LIGHT = `set: ${TEST_KIT}\nlight:\n  - { t: 0, preset: morning }\n  - { t: 0.6, preset: dusk }\n`
   + 'camera:\n  - { t: 0, x: 0, z: 0, width: 12 }\n  - { t: 0.5, x: -1.5, z: -1, width: 3.4 }\n'
@@ -93,6 +108,38 @@ describe('the real content', () => {
     expect(r.warnings.filter((w) => !known.test(w))).toEqual([]);
   });
 
+  it('has migrated every `kin` word, and derives what those words used to state (#89)', () => {
+    // The closed vocabulary (docs/DESIGN.md §4.11) is an error now that the 36 files are migrated,
+    // so the only words left are the ones parentage cannot say.
+    for (const c of r.index.characters) for (const k of c.kin ?? []) {
+      expect(KIN_WORDS as readonly string[], `${c.id} → ${k.id}`).toContain(k.as);
+    }
+    expect(r.warnings.filter((w) => /\bkin\b/.test(w))).toEqual([]);
+    const f = r.index.family;
+    // Thorin's brother and his sister Dís, who used to be `brother` and nothing at all.
+    expect(f.thorin.siblings.map((s) => s.id).sort()).toEqual(['dis', 'frerin']);
+    // Fíli and Kíli reach Thorin only through Dís, and their father is unnamed in any source.
+    expect(f.fili.parents).toEqual(['dis']);
+    expect(f.fili.siblings.map((s) => s.id)).toEqual(['kili']);
+    expect(f.dis.children.sort()).toEqual(['fili', 'kili']);
+    // Éomer's `uncle` ran through Théodwyn, who had no file; now it is two sibling edges.
+    expect(f.theoden.siblings.map((s) => s.id)).toEqual(['theodwyn']);
+    expect(f.eomer.parents.sort()).toEqual(['eomund', 'theodwyn']);
+    // The marriages the old `kin` could not hold, with the reverse derived on the other side.
+    expect(f.turin.spouses).toEqual([{ id: 'nienor' }]);
+    expect(f.nienor.spouses).toEqual([{ id: 'turin', reverse: true }]);
+    expect(f.nienor.siblings.map((s) => s.id)).toEqual(['turin']);
+    expect(f.aragorn.spouses).toEqual([{ id: 'arwen', reverse: true }]);
+    // Bofur and Bombur: brothers in the published Hobbit, and no source names a parent of either.
+    expect(f.bofur.kin).toEqual([{ id: 'bombur', as: 'sibling' }, { id: 'bifur', as: 'cousin' }]);
+    // Durin's line is one house, and generation depth counts rows, not years.
+    expect(r.index.houses.find((h) => h.members.includes('thorin'))!.members)
+      .toEqual(['dis', 'fili', 'frerin', 'kili', 'thorin', 'thrain', 'thror']);
+    expect(f.thror.generation).toBe(0);
+    expect(f.fili.generation).toBe(3);
+    // A character no parentage edge touches stands in no house at all.
+    expect(f.gandalf.house).toBeUndefined();
+  });
 
   it('places every best guess inside its honest range', () => {
     for (const e of r.index.events) if (e.span) {
@@ -218,6 +265,74 @@ describe('the valid fixture', () => {
   it('keeps a character\'s home', () => {
     expect(r.index.characters.find((c) => c.id === 'bilbo')!.home).toBe('bag-end');
     expect(r.index.characters.find((c) => c.id === 'gandalf')!.home).toBeUndefined();
+  });
+
+  it('derives the family from the one authored edge, with the reverses marked (#89)', () => {
+    const f = r.index.family;
+    expect(f.bilbo.parents).toEqual(['bungo', 'belladonna']);
+    expect(f.bungo.children).toEqual(['bilbo']);
+    expect(f.bungo.siblings).toEqual([{ id: 'longo', half: false, shared: ['mungo'] }]);
+    expect(f.bungo.spouses).toEqual([{ id: 'belladonna' }]);
+    expect(f.belladonna.spouses).toEqual([{ id: 'bungo', reverse: true }]);
+    expect(f.bilbo.siblings).toEqual([]);
+    // Generation rows, counted from the people the content gives no parents: never a date.
+    expect(f.mungo.generation).toBe(0);
+    expect(f.bungo.generation).toBe(1);
+    expect(f.bilbo.generation).toBe(2);
+    // The house is the part of the graph, named where the books name it (`house:` on the founder).
+    expect(r.index.houses).toEqual([{ id: 'mungo', name: { en: 'The Bagginses', es: 'Los Bolsón' }, members: ['belladonna', 'bilbo', 'bungo', 'longo', 'mungo'] }]);
+    expect(f.bilbo.house).toBe('mungo');
+    // Gandalf stands in no tree, and still has an entry.
+    expect(f.gandalf).toMatchObject({ parents: [], children: [], siblings: [], generation: 0 });
+  });
+
+  it('derives half-siblings as half-siblings, and says which parent they share', () => {
+    const ok = buildWith(HALF);
+    expect(ok.errors).toEqual([]);
+    expect(ok.warnings).toEqual([]);
+    expect(ok.index.family.bilbo.siblings).toEqual([{ id: 'dudo', half: true, shared: ['bungo'] }]);
+    expect(ok.index.family.dudo.siblings).toEqual([{ id: 'bilbo', half: true, shared: ['bungo'] }]);
+  });
+
+  it('carries a twin both ways, as a refinement of the sibling edge', () => {
+    const ok = buildWith(TWINS);
+    expect(ok.errors).toEqual([]);
+    expect(ok.warnings).toEqual([]);
+    const f = ok.index.family;
+    expect(f.ponto.twin).toEqual({ id: 'porto' });
+    expect(f.porto.twin).toEqual({ id: 'ponto', reverse: true });
+    expect(f.ponto.siblings.find((s) => s.id === 'porto')).toMatchObject({ twin: true, half: false });
+    expect(f.bilbo.siblings.find((s) => s.id === 'ponto')!.twin).toBeUndefined();
+  });
+
+  it('takes a character\'s dates from the event that declares them, at the event\'s honest range', () => {
+    const ok = buildWith([{ file: LETTERS, replace: ['status: outline', 'status: outline\nborn: [ bilbo ]'] }]);
+    expect(ok.errors).toEqual([]);
+    const bilbo = ok.index.characters.find((c) => c.id === 'bilbo')!;
+    expect(bilbo.born!.event).toBe('moon-letters');
+    expect(bilbo.born!.precision).toBe('day');
+    expect(bilbo.born!.span).toEqual(ok.index.events.find((e) => e.id === 'moon-letters')!.span);
+    // Silence is silence: nothing infers a death.
+    expect(bilbo.died).toBeUndefined();
+  });
+
+  it('keeps a date the character states for a life no scene of ours tells', () => {
+    const bungo = r.index.characters.find((c) => c.id === 'bungo')!;
+    expect(bungo.born!.date).toEqual({ age: 'third-age', year: 2846 });
+    expect(bungo.born!.event).toBeUndefined();
+    expect(bungo.died!.precision).toBe('year');
+    expect(bungo.born!.span!.to).toBeLessThan(bungo.died!.span!.from);
+    // An elf nobody says died is never given an end.
+    expect(r.index.characters.find((c) => c.id === 'belladonna')!.died).toBeUndefined();
+  });
+
+  it('lets a genealogy character have no scene at all', () => {
+    // Mungo is in no event and on no journey, and that is the whole point of his file.
+    expect(r.index.byCharacter.mungo).toEqual([]);
+    expect(r.warnings).toEqual([]);
+    // Take him out of the tree and the warning comes back.
+    const off = buildWith([{ file: 'characters/longo.yaml', replace: ['parents: [ mungo ]\n', ''] }, { file: BUNGO, replace: ['parents: [ mungo ]\n', ''] }]);
+    expect(off.warnings.some((w) => w.includes('characters/mungo.yaml: appears in no event or journey')), off.warnings.join('\n')).toBe(true);
   });
 
   it('adds reverse links and derived lookups', () => {
@@ -509,6 +624,31 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'a sound without a time', changes: [withSet('sound:\n  - { cue: knock }\n')], error: 'sound[0]: needs a time t, 0–1' },
   { name: 'sound keys out of order', changes: [withSet('sound:\n  - { t: 0.6, cue: knock }\n  - { t: 0.2, cue: door }\n')], error: 'sound[1]: t must rise' },
   { name: 'a sound louder than anything should be', changes: [withSet('sound:\n  - { t: 0.3, cue: knock, gain: 4 }\n')], error: "sound[0].gain: louder or softer than the cue's own level, 0–2" },
+  // Parentage: the one authored edge, and everything checked about it (docs/DESIGN.md §4.11).
+  { name: 'an unknown parent', changes: [{ file: BILBO, replace: ['[ bungo, belladonna ]', '[ bungo, bilba ]'] }], error: 'parents: unknown character "bilba"' },
+  { name: 'three parents', changes: [{ file: BILBO, replace: ['[ bungo, belladonna ]', '[ bungo, belladonna, mungo ]'] }], error: 'parents: at most two' },
+  { name: 'the same parent twice', changes: [{ file: BILBO, replace: ['[ bungo, belladonna ]', '[ bungo, bungo ]'] }], error: 'parents: "bungo" is listed twice' },
+  { name: 'a character who is their own parent', changes: [{ file: BILBO, replace: ['[ bungo, belladonna ]', '[ bilbo ]'] }], error: 'parents: a character cannot be their own parents' },
+  { name: 'a parentage cycle', changes: [{ file: MUNGO, replace: ['kind: hobbit', 'kind: hobbit\nparents: [ bilbo ]'] }], error: 'a parentage cycle (' },
+  { name: 'a spouse who is also a parent', changes: [{ file: BILBO, replace: ['home: bag-end', 'spouse: [ bungo ]\nhome: bag-end'] }], error: 'spouse: "bungo" is also a parent or child of "bilbo"' },
+  { name: 'an unknown spouse', changes: [{ file: BUNGO, replace: ['spouse: [ belladonna ]', 'spouse: [ bellazonna ]'] }], error: 'spouse: unknown character "bellazonna"' },
+  { name: 'a twin who shares no parent', changes: [{ file: BILBO, replace: ['home: bag-end', 'twin: gandalf\nhome: bag-end'] }], error: 'twin: "gandalf" shares no parent with "bilbo"' },
+  { name: 'a twin who is not mutual', changes: [...TWINS, char('porto', 'parents: [ bungo, belladonna ]\ntwin: bilbo\n')], error: 'twin: "porto" is the twin of "bilbo", not of "ponto"' },
+  { name: 'a character who is their own twin', changes: [{ file: BILBO, replace: ['home: bag-end', 'twin: bilbo\nhome: bag-end'] }], error: 'twin: a character cannot be their own twin' },
+  { name: 'an unknown kin', changes: [{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: bungus, as: kin }\nhome: bag-end'] }], error: 'kin: unknown character "bungus"' },
+  { name: 'a birth declared for someone not in the scene', changes: [{ file: LETTERS, replace: ['status: outline', 'status: outline\nborn: [ bungo ]'] }], error: 'born: "bungo" is not in the event\'s characters' },
+  { name: 'a death declared for someone not in the scene', changes: [{ file: LETTERS, replace: ['status: outline', 'status: outline\ndied: [ bungo ]'] }], error: 'died: "bungo" is not in the event\'s characters' },
+  { name: 'two events declaring one birth', changes: [
+    { file: LETTERS, replace: ['status: outline', 'status: outline\nborn: [ bilbo ]'] },
+    { file: `${PARTY}/event.yaml`, replace: ['status: staged', 'status: staged\nborn: [ bilbo ]'] },
+  ], error: 'already declares this birth of "bilbo"' },
+  { name: 'a stated date outside the event that declares it', changes: [
+    { file: LETTERS, replace: ['status: outline', 'status: outline\nborn: [ bilbo ]'] },
+    { file: BILBO, replace: ['home: bag-end', 'born: { date: { age: third-age, year: 2890 }, precision: year }\nhome: bag-end'] },
+  ], error: 'born: outside the honest range of "moon-letters", which declares this birth' },
+  { name: 'a `kin` word the closed list has not got', changes: [{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: bungo, as: father }\nhome: bag-end'] }], error: 'kin[0].as: "father" is derived from `parents:` now — put the parentage on the child' },
+  { name: 'a `kin` word nothing can draw', changes: [{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: gandalf, as: friend }\nhome: bag-end'] }], error: 'kin[0].as: "friend" is not one of ancestor, descendant, cousin, sibling, kin, foster-parent, fosterling' },
+  { name: 'born after died', changes: [{ file: BUNGO, replace: ['year: 2846', 'year: 2990'] }], error: 'born: after `died`' },
   { name: 'recording start past its end', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 0, tea: 25 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: needs a second within the recording' },
 ];
 
@@ -519,6 +659,24 @@ describe('broken content', () => {
       expect(r.errors.some((e) => (typeof c.error === 'string' ? e.includes(c.error) : c.error.test(e))), r.errors.join('\n') || '(no errors)').toBe(true);
     });
   }
+
+  it('warns when a `kin` entry says what the parentage already says', () => {
+    const r = buildWith([{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: mungo, as: ancestor }\nhome: bag-end'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('kin[0]: "mungo" is already the grandparent of "bilbo" by `parents:`; delete this entry')), r.warnings.join('\n')).toBe(true);
+  });
+
+  it('keeps a `kin` entry the parentage cannot reach', () => {
+    const r = buildWith([{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: gandalf, as: kin }\nhome: bag-end'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings).toEqual([]);
+  });
+
+  it('warns when a parent is born after their child, rather than refusing it', () => {
+    const r = buildWith([{ file: BUNGO, replace: ['year: 2846', 'year: 2920'] }, { file: BILBO, replace: ['home: bag-end', 'born: { date: { age: third-age, year: 2890 }, precision: year }\nhome: bag-end'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('parents: "bungo" is born after "bilbo"')), r.warnings.join('\n')).toBe(true);
+  });
 
   it('warns when a told event\'s place has no position on any map', () => {
     const r = buildWith([{ file: 'places/bag-end.yaml', replace: ['map: { on: middle-earth, x: -12.2, z: -1.3 }\n', ''] }]);

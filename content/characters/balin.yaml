@@ -6,6 +6,5 @@ summary:
   es: "Antiguo compañero de la casa de Thrór, el más amable de los enanos con Bilbo."
 color: "#b05a3a"
 scale: 1.28
-kin:
-  - { id: dwalin, as: brother }
+parents: [ fundin ]
 model: characters/balin/balin.glb

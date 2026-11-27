@@ -79,6 +79,7 @@ assets/              models: characters/<id>/<id>.glb (+ .blend source), kits/<k
 scripts/content/
   build.ts           load + validate content/, place on the time axis, reverse links, lookups, character lanes
   factions.ts        factions, a battle's `sides` and its staging `armies` (read and checked for build.ts); byFaction
+  kin.ts             parentage: `parents`, `spouse`, `betrothed`, `twin`, the closed `kin` list, `born`/`died`/`fate`/`house` (read and checked for build.ts); derives children, siblings, half-siblings, generation depth and the houses into `index.family` (#89)
   models.ts          `model:` paths: exists, loadable .glb, MODEL_BUDGETS per asset type; copies into public/data/models/
   graph.ts           `npm run graph`: the content as a graph — untold journey legs, a life's scenes left unjoined, two parties in one place, lives in pieces, threads let go; an authoring report to out/graph.md, no site weight (#88)
 scripts/models/
@@ -134,6 +135,7 @@ src/
   reader.ts          an event's page, for events that can't be watched yet (DESIGN §3.4)
   lanes.ts           character lanes: lives side by side, crossings, kin suggestions (DESIGN §3.2)
   laneRows.ts        the lanes as rows (story order, legs, gaps), search ranking, initials: pure, tested
+  kinGraph.ts        the parentage graph: siblings, half-siblings, ancestors, descendants, cousins, uncles, generation depth, the nearest common ancestor, the houses: pure, tested
   timeCursor.ts      the time cursor page: the ages, the finer scale, likely / possibly, where everyone is (DESIGN §3.1)
   moment.ts          a moment: readable URL path ⇄ date and precision, its span, an event's moment: pure, tested
   timeAxis.ts        the control as data: age segments, scales and ticks, picking, keyboard steps: pure, tested
@@ -166,6 +168,7 @@ src/
 - **A covered place opens because the staging says so.** A kit names what can be lifted (`cover-<name>` objects); `reveal` in `staging.yaml` says how far each has lifted at `t` (`revealAt`, pure), and `sets.ts` raises it and fades it together. The build checks every name against the `cover-*` objects the kit's `.glb` actually has, so a typo is an error and not a scene that silently stays shut. Never make a reveal follow the camera. See `docs/DESIGN.md` §9.4.
 - **A figure stands where the staging puts it, and nowhere else.** `groundHeight` gives the kit's walkable `terrain` under (x, z); a keyframe's `y` adds whatever the author says they are standing *on* (a log, a bench, a doorstep). Nothing pushes figures apart at render time: that would make a figure's place depend on the other figures instead of on `t`, so two figures in one spot is a build warning (`crowding` in `src/timeline.ts`) and the author moves the keyframe. See `docs/DESIGN.md` §9.2.
 - **The sound is built, not played back.** A place's ambience is `heard(scapeFor(place), light)` and runs on the audio clock, as shimmer runs on `ambient`; everything the story does — a footstep, a knock — is a `Cue` decided purely from the pair of moments it falls between, so a scrub cannot double one and a deep link cannot miss one. A stage reports what is heard (`Stage.sound`) and makes no noise itself, exactly as it moves no camera. Nothing is fetched and no audio clock starts until somebody presses play unmuted.
+- **A family tree is derived, never authored.** `parents` is the only descent edge in `content/`; children, siblings, half-siblings, ancestors, descendants, cousins, uncles, generation depth and the houses are computed in `src/kinGraph.ts` (pure) and derived into `index.family` by `scripts/content/kin.ts`, exactly as `byCharacter` and `lanes` are. If a relation can be computed from parentage it is not a field, and the build errors on a `kin` word outside the closed list (`KIN_WORDS`), naming its replacement. `spouse`, `betrothed` and `twin` are symmetric: written once, reversed by the build and marked `reverse: true`. A birth or death comes from the event that declares it (`born:`/`died:` on `event.yaml`, at the event's honest range) or from the character's own `born:`/`died:`; where both exist they must agree, and no `died` means no end — nothing infers one. See `docs/DESIGN.md` §3.6 and §4.11.
 - **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.

@@ -6,5 +6,4 @@ summary:
   es: "Rey de Valle tras Brand, que expulsa al enemigo de Valle."
 color: "#5a4a7a"
 scale: 1.8
-kin:
-  - { id: brand, as: father }
+parents: [ brand ]

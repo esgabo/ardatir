@@ -100,10 +100,88 @@ export interface Narrator {
   voices: Partial<Record<Lang, NarratorVoice>>;
 }
 
+/**
+ * The closed list of `kin` words: exactly what parentage cannot say (docs/DESIGN.md §4.11).
+ * Everything a tree can derive from `parents` is not a field, so `brother`, `father` and the
+ * rest are gone, and a word outside this list is an error naming its replacement. `sibling` is
+ * here for the one case §4.11's table misses: Bofur and Bombur are brothers in the published
+ * *Hobbit* and no source gives either of them a parent, so the fact is unrecoverable from the
+ * edges, exactly as `dori`/`nori`/`ori`'s `kin` is.
+ */
+export const KIN_WORDS = ['ancestor', 'descendant', 'cousin', 'sibling', 'kin', 'foster-parent', 'fosterling'] as const;
+export type KinWord = (typeof KIN_WORDS)[number];
+
 export interface Kin {
   id: string;
-  /** Relation keyword, e.g. "cousin", "sister". */
+  /**
+   * Relation keyword: one of KIN_WORDS. Typed as a string while the 36 files written against the
+   * open vocabulary are migrated (§4.11), since an un-migrated word is a warning, not an error.
+   */
   as: string;
+}
+
+/**
+ * A birth or a death: the date as written (by the character, or by the event that declares it),
+ * its honest range, and the event that declares it where one does. Silence is silence — a
+ * character with no `died` has none, and nothing may infer one (§4.11).
+ */
+export interface LifeDate {
+  date?: StoryDate;
+  precision?: Precision;
+  /** The honest range on the shared axis (src/data/calendar.ts). */
+  span?: Span;
+  /** The event whose `born:`/`died:` names this character, when one does. */
+  event?: string;
+}
+
+/** One side of a family tie. `reverse` marks the side the build derived, as event links do (§4.5). */
+export interface FamilyTie {
+  id: string;
+  reverse?: boolean;
+}
+
+/** A sibling, derived from `parents`: `half` when one parent is shared and each has another (§4.11). */
+export interface FamilySibling extends FamilyTie {
+  half: boolean;
+  /** The parents the two share. */
+  shared: string[];
+  /** Born together: the one sibling fact parentage cannot reach, so it is authored (`twin`). */
+  twin?: boolean;
+}
+
+/**
+ * A character's family, derived by the build from `parents`, `spouse`, `betrothed` and `twin`
+ * (docs/DESIGN.md §4.11). Nothing here is authored but the parents, the spouses, the betrothals
+ * and the twin: children, siblings, half-siblings, generation depth and the house are
+ * consequences, exactly as a character's events are.
+ */
+export interface Family {
+  /** Authored: 0–2 parents, order meaningless. */
+  parents: string[];
+  /** Derived from everyone else's `parents`, in content order. */
+  children: string[];
+  /** Authored where written, in the order married; the other side is derived and marked. */
+  spouses: FamilyTie[];
+  betrothed: FamilyTie[];
+  /** Authored on one side, derived on the other. */
+  twin?: FamilyTie;
+  siblings: FamilySibling[];
+  /** Authored, and only for what parentage cannot say. */
+  kin: Kin[];
+  /** 0 for a character whose parents the content does not give, one more than the deepest parent. */
+  generation: number;
+  /** The house they stand in: the id of the part of the parentage graph (its eldest member). */
+  house?: string;
+}
+
+/** A house: a connected part of the parentage graph, named by the books where they name it (§4.11). */
+export interface House {
+  /** The eldest known member of this part of the graph, or the one carrying `house:`. */
+  id: string;
+  /** From `house:` on the founder, where the books name it their own way (*Durin's Folk*). */
+  name?: LocalizedText;
+  /** Every member, in content order. */
+  members: string[];
 }
 
 export interface Character {
@@ -118,6 +196,22 @@ export interface Character {
   /** Relative height (1 = hobbit-sized), keeps film-like proportions between races. */
   scale?: number;
   kin?: Kin[];
+  /** 0, 1 or 2 known parents, order meaningless: the one edge a family tree is drawn from (§4.11). */
+  parents?: string[];
+  /** Spouses in the order they were married; symmetric, the other side derived (§4.11). */
+  spouse?: string[];
+  /** A betrothal that never became a marriage: rare, and symmetric too. */
+  betrothed?: string[];
+  /** Born together with this character: symmetric, and unrecoverable from `parents` (§4.11). */
+  twin?: string;
+  /** From the character's own `born:`, or from the event that declares the birth. */
+  born?: LifeDate;
+  /** Likewise — and left out entirely when the sources do not say they died. */
+  died?: LifeDate;
+  /** One sentence for a life that ended in something other than a death (the Choice of the Half-elven). */
+  fate?: LocalizedText;
+  /** On a founder, where the books name their house their own way (*Durin's Folk*). */
+  house?: LocalizedText;
   /**
    * Where a character who doesn't travel lives (Tom Bombadil: the Old Forest). The time cursor
    * shows them there when no journey of theirs covers the moment, within the span of their events.
@@ -542,4 +636,12 @@ export interface ContentIndex {
   factions: Faction[];
   /** Derived: each faction's battles (events whose `sides` name it), in story order. */
   byFaction: Record<string, string[]>;
+  /**
+   * Each character's family (docs/DESIGN.md §3.6, §4.11), derived from the authored `parents`,
+   * `spouse`, `betrothed` and `twin` with the reverses marked — exactly as byCharacter and lanes
+   * are derived. Every character has an entry, even one with no kin at all.
+   */
+  family: Record<string, Family>;
+  /** Derived: the connected parts of the parentage graph. */
+  houses: House[];
 }

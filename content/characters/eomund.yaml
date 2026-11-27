@@ -1,0 +1,7 @@
+id: eomund
+name: { en: Éomund, es: Éomund }
+kind: man
+summary:
+  en: "Chief Marshal of the Mark, father of Éomer and Éowyn, slain by orcs on the eastern borders."
+  es: "Mariscal mayor de la Marca, padre de Éomer y Éowyn, muerto por orcos en las fronteras del este."
+spouse: [ theodwyn ]

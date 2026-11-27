@@ -10,6 +10,7 @@ import { dateSpan, EPS, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../
 import {
   EXTRA_DAYS, LANGS, LIGHT_PRESETS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
   type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
+  type Family, type House,
   AUTHORED_CUES, type CameraKey, type CoverKey, type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText, type SoundKey,
   MAP_IDS, type MapId, type PlacePoint,
   type NarrationAudio, type NarrationSegment, type Narrator, type NarratorVoice, type Place, type Precision, type Span, type StageKind,
@@ -20,6 +21,7 @@ import type { Lexicon } from '../narration/pronounce.ts';
 import { pronounceProblem } from '../../src/data/pronounce.ts';
 import { crowding } from '../../src/timeline.ts';
 import { battlesByFaction, readArmies, readFactions, readSides } from './factions.ts';
+import { deriveFamily, FAMILY_KEYS, type LifeDeclaration, readFamily, readLifeEvents, standsInParentage } from './kin.ts';
 import { checkSources, coverNames, readModel } from './models.ts';
 
 export interface BuildResult {
@@ -264,29 +266,32 @@ export function buildContent(contentDir: string): BuildResult {
   };
 
   // ---------- characters, places, arcs ----------
+  // What the parentage reader borrows from this build (scripts/content/kin.ts).
+  const KC = { error: R.error.bind(R), warn: R.warn.bind(R), keys, text, strList, date, precision, ages: ageMap };
+  const lifeDeclarations: LifeDeclaration[] = [];
   const characters: Character[] = [];
   const charIds = new Set<string>();
   const charFile = new Map<string, string>();
   for (const f of yamlFiles(path.join(contentDir, 'characters'))) {
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'kin', 'home', 'model', 'pronounce'], 'character');
+    keys(f, o, ['id', 'name', 'kind', 'summary', 'color', 'scale', 'home', 'model', 'pronounce', ...FAMILY_KEYS], 'character');
     const cid = id(f, o.id, charIds, 'character');
     if (!cid) continue;
     if (typeof o.kind !== 'string') R.error(f, 'kind: required (hobbit, elf, man, ...)');
     if (o.color !== undefined && !/^#[0-9a-f]{6}$/i.test(String(o.color))) R.error(f, 'color: use #rrggbb');
     if (o.scale !== undefined && !(typeof o.scale === 'number' && o.scale > 0)) R.error(f, 'scale: a positive number');
-    const kin = Array.isArray(o.kin) ? o.kin.filter(isObj).map((k) => ({ id: String(k.id), as: String(k.as) })) : undefined;
     if (o.home !== undefined && typeof o.home !== 'string') R.error(f, 'home: a place id');
     const model = o.model === undefined ? undefined : readModel(R, f, o.model, 'model', assetsDir, copies, 'characters');
     characters.push({
       id: cid, name: text(f, o.name, 'name')!, kind: String(o.kind), summary: text(f, o.summary, 'summary')!,
-      ...o.color ? { color: String(o.color) } : {}, ...o.scale ? { scale: Number(o.scale) } : {}, ...kin ? { kin } : {},
+      ...o.color ? { color: String(o.color) } : {}, ...o.scale ? { scale: Number(o.scale) } : {},
       ...typeof o.home === 'string' ? { home: o.home } : {}, ...model ? { model } : {}, ...say(pronounce(f, o.pronounce)),
+      // Parentage and the keys beside it (scripts/content/kin.ts, docs/DESIGN.md §4.11).
+      ...readFamily(KC, f, cid, o),
     });
     charFile.set(cid, f);
   }
-  for (const c of characters) for (const k of c.kin ?? []) if (!charIds.has(k.id)) R.error(charFile.get(c.id)!, `kin: unknown character "${k.id}"`);
 
   /**
    * `map:` on a place: where it sits on each of the maps the world view draws (docs/MAP.md).
@@ -420,7 +425,7 @@ export function buildContent(contentDir: string): BuildResult {
     const f = path.join(dir, 'event.yaml');
     const o = readYaml(f);
     if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'pronounce', 'summary', 'note', 'links', 'beats', 'sides'], 'event');
+    keys(f, o, ['id', 'age', 'when', 'place', 'characters', 'arcs', 'journeys', 'tags', 'status', 'source', 'foretoldBy', 'title', 'pronounce', 'summary', 'note', 'links', 'beats', 'sides', 'born', 'died'], 'event');
     const eid = id(f, o.id, eventIds, 'event');
     if (!eid) continue;
     const folder = path.basename(dir);
@@ -456,6 +461,9 @@ export function buildContent(contentDir: string): BuildResult {
     if (place && !placeIds.has(place)) R.error(f, `place: unknown place "${place}"`);
     const chars = strList(f, o.characters, 'characters');
     for (const c of chars) if (!charIds.has(c)) R.error(f, `characters: unknown character "${c}"`);
+    // Whose life begins or ends in this scene (docs/DESIGN.md §4.11).
+    const declared = readLifeEvents(KC, f, o, chars);
+    if (declared.born.length || declared.died.length) lifeDeclarations.push({ event: eid, file: f, ...declared });
     const evArcs = strList(f, o.arcs, 'arcs');
     for (const a of evArcs) if (!arcIds.has(a)) R.error(f, `arcs: unknown arc "${a}"`);
     const evJourneys = strList(f, o.journeys, 'journeys');
@@ -868,7 +876,14 @@ export function buildContent(contentDir: string): BuildResult {
     if (spans.length) a.span = { from: Math.min(...spans.map((s) => s.from)), to: Math.max(...spans.map((s) => s.to)) };
     if (!a.events.length) R.warn(path.join(contentDir, 'arcs', `${a.id}.yaml`), 'no events belong to this arc yet');
   }
-  for (const c of characters) if (!byCharacter[c.id].length && !journeys.some((j) => j.characters.includes(c.id))) R.warn(charFile.get(c.id)!, 'appears in no event or journey');
+  // The family graph: children, siblings, half-siblings, generation depth, houses (kin.ts, §4.11).
+  const { family, houses }: { family: Record<string, Family>; houses: House[] } = deriveFamily(KC, characters, charFile, events, lifeDeclarations);
+  // A character who stands in the parentage graph may honestly have no scene: a grandparent
+  // written to join two families is the whole point of the tree, not a loose end.
+  for (const c of characters) {
+    if (byCharacter[c.id].length || journeys.some((j) => j.characters.includes(c.id)) || standsInParentage(family[c.id])) continue;
+    R.warn(charFile.get(c.id)!, 'appears in no event or journey');
+  }
 
   const byFaction = battlesByFaction(factions, events);
   for (const x of factions) if (!byFaction[x.id].length) R.warn(path.join(contentDir, 'factions', `${x.id}.yaml`), 'fights in no battle yet (no event lists it in `sides`)');
@@ -888,7 +903,7 @@ export function buildContent(contentDir: string): BuildResult {
   const lanes = characterLanes(characters.map((c) => c.id), events, journeys, new Set(ages.filter((a) => a.foretold).map((a) => a.id)));
 
   return {
-    index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes, factions, byFaction },
+    index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes, factions, byFaction, family, houses },
     details, scripts, narrators, pronunciation, eventDirs: Object.fromEntries(raws.map((r) => [r.summary.id, r.dir])), copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
   };
 }

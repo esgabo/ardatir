@@ -1,0 +1,8 @@
+id: bungo
+name: { en: Bungo Baggins, es: Bungo Bolsón }
+kind: hobbit
+summary: { en: A hobbit who built a hole., es: Un hobbit que excavó un agujero. }
+parents: [ mungo ]
+spouse: [ belladonna ]        # symmetric: the build adds the reverse on Belladonna
+born: { date: { age: third-age, year: 2846 }, precision: year }
+died: { date: { age: third-age, year: 2926 }, precision: year }

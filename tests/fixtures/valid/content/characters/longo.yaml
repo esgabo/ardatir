@@ -1,0 +1,5 @@
+id: longo
+name: { en: Longo Baggins, es: Longo Bolsón }
+kind: hobbit
+summary: { en: A hobbit., es: Un hobbit. }
+parents: [ mungo ]
