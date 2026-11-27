@@ -1,8 +1,5 @@
 # The Fall of Gondolin, told over the map of Beleriand (docs/DESIGN.md §4.10).
 #
-# DESIGN SAMPLE. The content build does not read arcs/<id>/ yet, so nothing here is validated.
-# See README.md in this folder.
-#
 # Our own words throughout. Sources: The Silmarillion, "Of Turgon and the Building of Gondolin"
 # and "Of Tuor and the Fall of Gondolin"; the city's defence and the flight over the cleft follow
 # the published Silmarillion, not the early Book of Lost Tales version.
@@ -13,16 +10,16 @@
   es: En el valle de Tumladen, dentro de un anillo de montañas con un solo paso vigilado, Turgon levantó una ciudad y la ocultó. Durante casi cuatrocientos años ningún camino llevaba a Gondolin, y ningún enemigo supo dónde estaba.
 
 - id: tuor
-  en: Then Ulmo, Lord of Waters, sent a man to the hidden gate. Tuor came up out of Nevrast with the elf Voronwë, and gave Turgon a warning from the sea: leave the city, for its doom is near. The king thought of all he had built, and kept his gates shut.
-  es: Entonces Ulmo, Señor de las Aguas, envió a un hombre a la puerta oculta. Tuor llegó desde Nevrast con el elfo Voronwë y dio a Turgon una advertencia venida del mar: abandona la ciudad, porque su ruina está cerca. El rey pensó en todo lo que había construido, y mantuvo cerradas sus puertas.
+  en: "Then Ulmo, Lord of Waters, sent a man to the hidden gate. Tuor came up out of Nevrast with the elf Voronwë, and gave Turgon a warning from the sea: leave the city, for its doom is near. The king thought of all he had built, and kept his gates shut."
+  es: "Entonces Ulmo, Señor de las Aguas, envió a un hombre a la puerta oculta. Tuor llegó desde Nevrast con el elfo Voronwë y dio a Turgon una advertencia venida del mar: abandona la ciudad, porque su ruina está cerca. El rey pensó en todo lo que había construido, y mantuvo cerradas sus puertas."
 
 - id: treason
   en: The secret did not fall to spies. Maeglin, the king's nephew, was taken by orcs while mining beyond the hills, and brought before Morgoth in Angband. He went home alive, having sold the way in for Idril and a crown.
   es: El secreto no cayó por los espías. Maeglin, sobrino del rey, fue capturado por los orcos mientras excavaba más allá de las colinas, y llevado ante Morgoth en Angband. Volvió a casa con vida, después de haber vendido el camino a cambio de Idril y una corona.
 
 - id: assault
-  en: A year later, on the night the city kept its summer festival with its people on the walls watching for the sunrise, the north went red. Morgoth's host came over the Encircling Mountains in the dark: orcs without number, balrogs, and dragons of iron and fire.
-  es: Un año después, la noche en que la ciudad celebraba su fiesta de verano con su gente en las murallas esperando el amanecer, el norte se puso rojo. La hueste de Morgoth cruzó las Montañas Circundantes en la oscuridad: orcos sin número, balrogs y dragones de hierro y de fuego.
+  en: "A year later, on the night the city kept its summer festival with its people on the walls watching for the sunrise, the north went red. Morgoth's host came over the Encircling Mountains in the dark: orcs without number, balrogs, and dragons of iron and fire."
+  es: "Un año después, la noche en que la ciudad celebraba su fiesta de verano con su gente en las murallas esperando el amanecer, el norte se puso rojo. La hueste de Morgoth cruzó las Montañas Circundantes en la oscuridad: orcos sin número, balrogs y dragones de hierro y de fuego."
 
 - id: city
   en: Gondolin was built to be defended, and it was. The fighting went street by street, fountain by fountain, and the captains of the city fell holding them. Ecthelion met the lord of the balrogs at the king's square, and the two of them died there together.

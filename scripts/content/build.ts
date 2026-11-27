@@ -9,7 +9,7 @@ import YAML from 'yaml';
 import { dateSpan, EPS, hasOverlithe, ONE_DAY, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
   EXTRA_DAYS, LANGS, LIGHT_PRESETS, LINK_TYPES, PRECISIONS, SEASONS, STATUSES,
-  type Age, type Arc, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
+  type Age, type Arc, type ArcDetail, type AtReason, type Beat, type Character, type ContentIndex, type EventDetail, type EventLink,
   type Family, type House,
   AUTHORED_CUES, type CameraKey, type CoverKey, type EventScript, type EventSummary, type Journey, type Keyframe, type Lang, type LaneEntry, type LightKey, type LightPreset, type LinkType, type LocalizedText, type SoundKey,
   MAP_IDS, type MapId, type PlacePoint,
@@ -20,6 +20,7 @@ import { narrationHash, passageHash, TEXT_HASH } from '../narration/text.ts';
 import type { Lexicon } from '../narration/pronounce.ts';
 import { pronounceProblem } from '../../src/data/pronounce.ts';
 import { crowding } from '../../src/timeline.ts';
+import { factionsInArcs, readArcs, resolveArcTellings, type ArcContext } from './arcs.ts';
 import { battlesByFaction, readArmies, readFactions, readSides } from './factions.ts';
 import { deriveFamily, FAMILY_KEYS, type LifeDeclaration, readFamily, readLifeEvents, standsInParentage } from './kin.ts';
 import { checkSources, coverNames, readModel } from './models.ts';
@@ -40,6 +41,10 @@ export interface BuildResult {
   pronunciation: Lexicon;
   /** Each event's folder, by event id (for the narration pipeline). */
   eventDirs: Record<string, string>;
+  /** Every arc that tells its own story over the map (docs/DESIGN.md §4.10). */
+  arcDetails: ArcDetail[];
+  /** Each telling arc's folder, by arc id (for the narration pipeline). */
+  arcDirs: Record<string, string>;
 }
 
 const REVERSE: Record<LinkType, LinkType> = {
@@ -132,8 +137,57 @@ export function buildContent(contentDir: string): BuildResult {
     if (seen.has(v)) R.error(file, `duplicate ${kind} id "${v}"`);
     seen.add(v);
     const base = path.basename(file, '.yaml');
-    if (base !== 'event' && base !== v) R.warn(file, `file name should match its id "${v}"`);
+    // `events/<key>-<id>/event.yaml` and `arcs/<id>/arc.yaml` are named after what they are;
+    // their folder carries the id, and that is checked where they are read.
+    if (base !== 'event' && base !== 'arc' && base !== v) R.warn(file, `file name should match its id "${v}"`);
     return v;
+  };
+
+  /**
+   * narration.yaml: the passages of a script, in order, with their words in each language.
+   * Shared by events and by an arc that tells its own story (docs/DESIGN.md §4.10), so the
+   * recording pipeline sees exactly the same shape for both.
+   */
+  const readNarration = (nf: string): NarrationSegment[] | undefined => {
+    if (!fs.existsSync(nf)) return undefined;
+    const n = readYaml(nf);
+    if (!Array.isArray(n)) { R.error(nf, 'expected a list of passages'); return undefined; }
+    const seen = new Set<string>();
+    const out: NarrationSegment[] = [];
+    n.forEach((p, i) => {
+      if (!isObj(p) || typeof p.id !== 'string') { R.error(nf, `[${i}]: expected { id, en, es }`); return; }
+      if (seen.has(p.id)) R.error(nf, `duplicate passage id "${p.id}"`);
+      seen.add(p.id);
+      const { id: pid, ...txt } = p;
+      out.push({ id: pid as string, t: 0, text: text(nf, txt, `passage "${pid}"`)! });
+    });
+    return out;
+  };
+
+  /** `narration:` in a staging: where each passage belongs in the animation, rising. */
+  const passageTimes = (sf: string, s: Obj, narration: NarrationSegment[]) => {
+    const nt = isObj(s.narration) ? s.narration : {};
+    for (const k of Object.keys(nt)) if (!narration.some((p) => p.id === k)) R.error(sf, `narration: no passage "${k}" in narration.yaml`);
+    let last = -1;
+    for (const p of narration) {
+      const t = nt[p.id];
+      if (typeof t !== 'number' || t < 0 || t > 1) { R.error(sf, `narration.${p.id}: needs a time 0–1`); continue; }
+      if (t < last) R.error(sf, `narration.${p.id}: starts before the passage before it`);
+      p.t = last = t;
+    }
+  };
+
+  /** `beats:` in a staging, against the beats declared beside it (an event.yaml or an arc.yaml). */
+  const beatTimes = (sf: string, s: Obj, beatsRaw: { id: string; label: LocalizedText }[], declaredIn: string): Beat[] => {
+    const bt = isObj(s.beats) ? s.beats : {};
+    for (const k of Object.keys(bt)) if (!beatsRaw.some((b) => b.id === k)) R.error(sf, `beats: no beat "${k}" in ${declaredIn}`);
+    const beats: Beat[] = [];
+    for (const b of beatsRaw) {
+      const t = bt[b.id];
+      if (typeof t !== 'number' || t < 0 || t > 1) { R.error(sf, `beats.${b.id}: needs a time 0–1`); continue; }
+      beats.push({ id: b.id, t, label: b.label });
+    }
+    return beats;
   };
 
   // ---------- narrators (content/narrators/README.md) ----------
@@ -265,6 +319,83 @@ export function buildContent(contentDir: string): BuildResult {
     return p;
   };
 
+  /**
+   * The recordings beside a script: `audio/<lang>.yaml` (duration, per-passage starts, the
+   * hashes that tie a take to the words it read) and the recording itself. Shared by events and
+   * by an arc that tells its own story, which records through the same pipeline (§4.10).
+   * `narratorAge` is the age whose narrator should have read it; `outDir` where it is served from.
+   */
+  const readRecordings = (ad: string, narration: NarrationSegment[], narratorAge: string | undefined, outDir: string) => {
+    const audioFiles: Partial<Record<Lang, NarrationAudio>> = {};
+    const langs: Lang[] = [];
+    if (fs.existsSync(ad)) {
+      for (const lang of LANGS) {
+        const meta = path.join(ad, `${lang}.yaml`);
+        const file = AUDIO_EXT.map((e) => path.join(ad, lang + e)).find((p) => fs.existsSync(p));
+        if (!fs.existsSync(meta) && !file) continue;
+        if (!file) { R.error(meta, 'timing file without a recording next to it'); continue; }
+        if (!fs.existsSync(meta)) { R.error(file, `recording without ${lang}.yaml (duration and starts)`); continue; }
+        const m = readYaml(meta);
+        if (!isObj(m) || !(typeof m.duration === 'number' && m.duration > 0)) { R.error(meta, 'duration: seconds, a positive number'); continue; }
+        // textHash ties the recording to the words it reads (content/README.md, "Recordings").
+        const hash = narrationHash(narration, lang);
+        if (m.textHash === undefined) R.warn(meta, `textHash: missing, so the build can't tell if the recording still matches narration.yaml (text now ${hash})`);
+        else if (typeof m.textHash !== 'string' || !TEXT_HASH.test(m.textHash)) R.error(meta, 'textHash: expected sha256: and 16 hex digits');
+        else if (m.textHash !== hash) R.warn(meta, `stale recording: narration.yaml changed since it was recorded (textHash ${m.textHash}, text now ${hash}); re-record with npm run narration:export -- --changed`);
+        // Per passage: which ones changed since recording (the pipeline re-records only those).
+        if (m.passages !== undefined) {
+          if (!isObj(m.passages)) R.error(meta, 'passages: expected { <passage id>: <hash> }');
+          else for (const p of narration) {
+            const h = m.passages[p.id];
+            const now = passageHash(p, lang);
+            if (h === undefined) R.warn(meta, `stale passage "${p.id}": not in this recording`);
+            else if (h !== now) R.warn(meta, `stale passage "${p.id}": its words changed since recording (now ${now})`);
+          }
+        }
+        // Who read it: a changed voice (a new version) or another narrator makes it stale too.
+        if (m.narrator !== undefined) {
+          const nr = isObj(m.narrator) ? m.narrator : {};
+          const ageNarrator = narratorAge ? ageMap.get(narratorAge)?.narrator : undefined;
+          const current = narrators.find((n) => n.id === nr.id)?.voices[lang]?.version;
+          if (typeof nr.id !== 'string' || !Number.isInteger(nr.version)) R.error(meta, 'narrator: expected { id, version }');
+          else if (ageNarrator && nr.id !== ageNarrator) R.warn(meta, `recorded by ${nr.id}, but the age's narrator is ${ageNarrator}; re-record`);
+          else if (current !== undefined && current !== nr.version) R.warn(meta, `stale recording: recorded with ${nr.id} v${nr.version}, now v${current}; re-record`);
+        }
+        let starts: number[] | undefined;
+        if (m.starts !== undefined) {
+          const st = isObj(m.starts) ? m.starts : {};
+          starts = [];
+          // Passages added or removed since recording: an ordinary script edit, so warn and fall
+          // back to stretching the animation to the recording, rather than failing the build.
+          const extra = Object.keys(st).filter((k) => !narration.some((p) => p.id === k));
+          const missing = narration.filter((p) => st[p.id] === undefined).map((p) => p.id);
+          if (extra.length || missing.length) {
+            R.warn(meta, `stale recording: passages were added or removed since it was recorded (${[...missing.map((x) => `+${x}`), ...extra.map((x) => `-${x}`)].join(', ')}); its timing is ignored until re-recorded with npm run narration:render -- --changed`);
+            starts = undefined;
+          }
+          let prev = -1;
+          for (const p of starts ? narration : []) {
+            const v = st[p.id];
+            if (typeof v !== 'number' || v < 0 || v > (m.duration as number)) { R.error(meta, `starts.${p.id}: needs a second within the recording`); starts = undefined; break; }
+            if (v < prev) R.error(meta, `starts.${p.id}: earlier than the passage before it`);
+            starts!.push(prev = v);
+          }
+        }
+        const ext = path.extname(file);
+        const out = `${outDir}/${lang}${ext}`;
+        copies.push({ from: file, to: out });
+        const rec: NarrationAudio = { src: out, duration: m.duration as number, ...starts ? { starts } : {} };
+        audioFiles[lang as Lang] = rec;
+        langs.push(lang as Lang);
+      }
+      for (const f of fs.readdirSync(ad)) {
+        const base = path.basename(f, path.extname(f));
+        if (!(LANGS as readonly string[]).includes(base)) R.warn(path.join(ad, f), 'unexpected file; name recordings <lang>.mp3 with <lang>.yaml');
+      }
+    }
+    return { audioFiles, langs };
+  };
+
   // ---------- characters, places, arcs ----------
   // What the parentage reader borrows from this build (scripts/content/kin.ts).
   const KC = { error: R.error.bind(R), warn: R.warn.bind(R), keys, text, strList, date, precision, ages: ageMap };
@@ -355,15 +486,16 @@ export function buildContent(contentDir: string): BuildResult {
   const factions = readFactions(FC, contentDir, charIds);
   const factionIds = new Set(factions.map((x) => x.id));
 
-  const arcs: Arc[] = [];
-  const arcIds = new Set<string>();
-  for (const f of yamlFiles(path.join(contentDir, 'arcs'))) {
-    const o = readYaml(f);
-    if (!isObj(o)) { R.error(f, 'expected a mapping'); continue; }
-    keys(f, o, ['id', 'title', 'summary'], 'arc');
-    const aid = id(f, o.id, arcIds, 'arc');
-    if (aid) arcs.push({ id: aid, title: text(f, o.title, 'title')!, summary: text(f, o.summary, 'summary')!, events: [] });
-  }
+  // Arcs: a grouping (arcs/<id>.yaml), or an arc that tells its own story over the map of its age
+  // (arcs/<id>/: scripts/content/arcs.ts, docs/DESIGN.md §4.10). The telling is resolved below,
+  // once every event is known: its `scenes` are the arc's own events, in the arc's story order.
+  const AC: ArcContext = {
+    error: R.error.bind(R), warn: R.warn.bind(R), readYaml, yamlFiles, keys, text, id,
+    readNarration, passageTimes, beatTimes, readRecordings,
+  };
+  const arcRaws = readArcs(AC, contentDir, ageIds);
+  const arcs: Arc[] = arcRaws.map((a) => a.arc);
+  const arcIds = new Set(arcs.map((a) => a.id));
 
   // ---------- journeys ----------
   const journeys: Journey[] = [];
@@ -506,23 +638,7 @@ export function buildContent(contentDir: string): BuildResult {
     const note = o.note !== undefined ? text(f, o.note, 'note') : undefined;
 
     // narration.yaml
-    const nf = path.join(dir, 'narration.yaml');
-    let narration: NarrationSegment[] | undefined;
-    if (fs.existsSync(nf)) {
-      const n = readYaml(nf);
-      if (!Array.isArray(n)) R.error(nf, 'expected a list of passages');
-      else {
-        const seen = new Set<string>();
-        narration = [];
-        n.forEach((p, i) => {
-          if (!isObj(p) || typeof p.id !== 'string') { R.error(nf, `[${i}]: expected { id, en, es }`); return; }
-          if (seen.has(p.id)) R.error(nf, `duplicate passage id "${p.id}"`);
-          seen.add(p.id);
-          const { id: pid, ...txt } = p;
-          narration!.push({ id: pid as string, t: 0, text: text(nf, txt, `passage "${pid}"`)! });
-        });
-      }
-    }
+    const narration = readNarration(path.join(dir, 'narration.yaml'));
 
     // staging.yaml (read now, resolved after all events are known)
     const sf = path.join(dir, 'staging.yaml');
@@ -596,27 +712,10 @@ export function buildContent(contentDir: string): BuildResult {
     if (!STAGES.includes(stage)) R.error(sf, `stage: one of ${STAGES.join(', ')}`);
     if (!(typeof s.duration === 'number' && s.duration > 0)) R.error(sf, 'duration: seconds, a positive number');
 
-    // Narration timings.
+    // Narration and beat timings.
     const narration = (r.narration ?? []).map((p) => ({ ...p }));
-    const nt = isObj(s.narration) ? s.narration : {};
-    for (const k of Object.keys(nt)) if (!narration.some((p) => p.id === k)) R.error(sf, `narration: no passage "${k}" in narration.yaml`);
-    let last = -1;
-    for (const p of narration) {
-      const t = nt[p.id];
-      if (typeof t !== 'number' || t < 0 || t > 1) { R.error(sf, `narration.${p.id}: needs a time 0–1`); continue; }
-      if (t < last) R.error(sf, `narration.${p.id}: starts before the passage before it`);
-      p.t = last = t;
-    }
-
-    // Beat timings.
-    const bt = isObj(s.beats) ? s.beats : {};
-    for (const k of Object.keys(bt)) if (!r.beatsRaw.some((b) => b.id === k)) R.error(sf, `beats: no beat "${k}" in event.yaml`);
-    const beats: Beat[] = [];
-    for (const b of r.beatsRaw) {
-      const t = bt[b.id];
-      if (typeof t !== 'number' || t < 0 || t > 1) { R.error(sf, `beats.${b.id}: needs a time 0–1`); continue; }
-      beats.push({ id: b.id, t, label: b.label });
-    }
+    passageTimes(sf, s, narration);
+    const beats = beatTimes(sf, s, r.beatsRaw, 'event.yaml');
 
     // Tracks.
     const tracks: Track[] = [];
@@ -763,73 +862,9 @@ export function buildContent(contentDir: string): BuildResult {
     }
 
     // Recordings: audio/<lang>.yaml + audio/<lang>.<ext>
-    const audioFiles: EventDetail['audioFiles'] = {};
-    const ad = path.join(r.dir, 'audio');
-    if (fs.existsSync(ad)) {
-      for (const lang of LANGS) {
-        const meta = path.join(ad, `${lang}.yaml`);
-        const file = AUDIO_EXT.map((e) => path.join(ad, lang + e)).find((p) => fs.existsSync(p));
-        if (!fs.existsSync(meta) && !file) continue;
-        if (!file) { R.error(meta, 'timing file without a recording next to it'); continue; }
-        if (!fs.existsSync(meta)) { R.error(file, `recording without ${lang}.yaml (duration and starts)`); continue; }
-        const m = readYaml(meta);
-        if (!isObj(m) || !(typeof m.duration === 'number' && m.duration > 0)) { R.error(meta, 'duration: seconds, a positive number'); continue; }
-        // textHash ties the recording to the words it reads (content/README.md, "Recordings").
-        const hash = narrationHash(narration, lang);
-        if (m.textHash === undefined) R.warn(meta, `textHash: missing, so the build can't tell if the recording still matches narration.yaml (text now ${hash})`);
-        else if (typeof m.textHash !== 'string' || !TEXT_HASH.test(m.textHash)) R.error(meta, 'textHash: expected sha256: and 16 hex digits');
-        else if (m.textHash !== hash) R.warn(meta, `stale recording: narration.yaml changed since it was recorded (textHash ${m.textHash}, text now ${hash}); re-record with npm run narration:export -- --changed`);
-        // Per passage: which ones changed since recording (the pipeline re-records only those).
-        if (m.passages !== undefined) {
-          if (!isObj(m.passages)) R.error(meta, 'passages: expected { <passage id>: <hash> }');
-          else for (const p of narration) {
-            const h = m.passages[p.id];
-            const now = passageHash(p, lang);
-            if (h === undefined) R.warn(meta, `stale passage "${p.id}": not in this recording`);
-            else if (h !== now) R.warn(meta, `stale passage "${p.id}": its words changed since recording (now ${now})`);
-          }
-        }
-        // Who read it: a changed voice (a new version) or another narrator makes it stale too.
-        if (m.narrator !== undefined) {
-          const nr = isObj(m.narrator) ? m.narrator : {};
-          const ageNarrator = ageMap.get(r.summary.age)?.narrator;
-          const current = narrators.find((n) => n.id === nr.id)?.voices[lang]?.version;
-          if (typeof nr.id !== 'string' || !Number.isInteger(nr.version)) R.error(meta, 'narrator: expected { id, version }');
-          else if (ageNarrator && nr.id !== ageNarrator) R.warn(meta, `recorded by ${nr.id}, but the age's narrator is ${ageNarrator}; re-record`);
-          else if (current !== undefined && current !== nr.version) R.warn(meta, `stale recording: recorded with ${nr.id} v${nr.version}, now v${current}; re-record`);
-        }
-        let starts: number[] | undefined;
-        if (m.starts !== undefined) {
-          const st = isObj(m.starts) ? m.starts : {};
-          starts = [];
-          // Passages added or removed since recording: an ordinary script edit, so warn and fall
-          // back to stretching the animation to the recording, rather than failing the build.
-          const extra = Object.keys(st).filter((k) => !narration.some((p) => p.id === k));
-          const missing = narration.filter((p) => st[p.id] === undefined).map((p) => p.id);
-          if (extra.length || missing.length) {
-            R.warn(meta, `stale recording: passages were added or removed since it was recorded (${[...missing.map((x) => `+${x}`), ...extra.map((x) => `-${x}`)].join(', ')}); its timing is ignored until re-recorded with npm run narration:render -- --changed`);
-            starts = undefined;
-          }
-          let prev = -1;
-          for (const p of starts ? narration : []) {
-            const v = st[p.id];
-            if (typeof v !== 'number' || v < 0 || v > (m.duration as number)) { R.error(meta, `starts.${p.id}: needs a second within the recording`); starts = undefined; break; }
-            if (v < prev) R.error(meta, `starts.${p.id}: earlier than the passage before it`);
-            starts!.push(prev = v);
-          }
-        }
-        const ext = path.extname(file);
-        const out = `data/audio/${r.summary.id}/${lang}${ext}`;
-        copies.push({ from: file, to: out });
-        const rec: NarrationAudio = { src: out, duration: m.duration as number, ...starts ? { starts } : {} };
-        audioFiles[lang as Lang] = rec;
-        r.summary.audio.push(lang as Lang);
-      }
-      for (const f of fs.readdirSync(ad)) {
-        const base = path.basename(f, path.extname(f));
-        if (!(LANGS as readonly string[]).includes(base)) R.warn(path.join(ad, f), 'unexpected file; name recordings <lang>.mp3 with <lang>.yaml');
-      }
-    }
+    const rec = readRecordings(path.join(r.dir, 'audio'), narration, r.summary.age, `data/audio/${r.summary.id}`);
+    const audioFiles = rec.audioFiles;
+    r.summary.audio.push(...rec.langs);
 
     r.summary.stage = stage;
     details.push({ ...r.summary, stage, durationSeconds: Number(s.duration), narration, beats, tracks, ...armies ? { armies } : {}, ...set ? { set } : {}, ...light?.length ? { light } : {}, ...camera?.length ? { camera } : {}, ...reveal?.length ? { reveal } : {}, ...sound?.length ? { sound } : {}, audioFiles });
@@ -871,10 +906,24 @@ export function buildContent(contentDir: string): BuildResult {
       }
     }
   }
+  const arcFile = new Map(arcRaws.map((a) => [a.arc.id, a.file]));
   for (const a of arcs) {
     const spans = a.events.map((id) => byId.get(id)!.summary.span).filter((s): s is Span => !!s);
     if (spans.length) a.span = { from: Math.min(...spans.map((s) => s.from)), to: Math.max(...spans.map((s) => s.to)) };
-    if (!a.events.length) R.warn(path.join(contentDir, 'arcs', `${a.id}.yaml`), 'no events belong to this arc yet');
+    if (!a.events.length) R.warn(arcFile.get(a.id)!, 'no events belong to this arc yet');
+  }
+  // An arc that tells: its map, its framing, its hosts and roads, and the checks that need the
+  // rest of the content (§4.10). An arc's `t` is narration time, not history, so nothing of this
+  // reaches the time axis or the lanes.
+  const eventById = new Map(events.map((e) => [e.id, e]));
+  const arcDetails = resolveArcTellings(AC, arcRaws, {
+    events: eventById, places: new Map(places.map((p) => [p.id, p])), journeys: journeyMap, factionIds,
+    ageOfEvent: (id) => eventById.get(id)?.age,
+  });
+  // The telling as text, under the arc's own namespace: an arc and an event can never record
+  // over each other (`arc/<id>`, §4.10).
+  for (const a of arcRaws) {
+    if (a.narration?.length) scripts.push({ id: `arc/${a.arc.id}`, passages: a.narration.map((p) => ({ id: p.id, text: p.text })) });
   }
   // The family graph: children, siblings, half-siblings, generation depth, houses (kin.ts, §4.11).
   const { family, houses }: { family: Record<string, Family>; houses: House[] } = deriveFamily(KC, characters, charFile, events, lifeDeclarations);
@@ -886,7 +935,14 @@ export function buildContent(contentDir: string): BuildResult {
   }
 
   const byFaction = battlesByFaction(factions, events);
-  for (const x of factions) if (!byFaction[x.id].length) R.warn(path.join(contentDir, 'factions', `${x.id}.yaml`), 'fights in no battle yet (no event lists it in `sides`)');
+  // Being named by an arc's `hosts` is a reason to exist, exactly as being on a battle's `sides`
+  // is: the host of Angband marches across the map of the Fall of Gondolin without a battle of
+  // its own in the content (§4.10).
+  const inArcs = factionsInArcs(arcDetails);
+  for (const x of factions) {
+    if (byFaction[x.id].length || inArcs.has(x.id)) continue;
+    R.warn(path.join(contentDir, 'factions', `${x.id}.yaml`), 'fights in no battle yet (no event lists it in `sides`, and no arc\'s telling names it in `hosts`)');
+  }
 
   for (const [k, n] of R.missingByFile) {
     const [file, lang] = k.split('|');
@@ -904,7 +960,9 @@ export function buildContent(contentDir: string): BuildResult {
 
   return {
     index: { ages, characters, places, arcs, journeys, events, byCharacter, byPlace, lanes, factions, byFaction, family, houses },
-    details, scripts, narrators, pronunciation, eventDirs: Object.fromEntries(raws.map((r) => [r.summary.id, r.dir])), copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
+    details, scripts, narrators, pronunciation, eventDirs: Object.fromEntries(raws.map((r) => [r.summary.id, r.dir])),
+    arcDetails, arcDirs: Object.fromEntries(arcRaws.filter((a) => a.dir).map((a) => [a.arc.id, a.dir!])),
+    copies, errors: R.errors, warnings: R.warnings, missing: R.missing,
   };
 }
 
@@ -1086,9 +1144,16 @@ export function writeContent(result: BuildResult, publicDir: string): void {
   fs.rmSync(out, { recursive: true, force: true });
   fs.mkdirSync(path.join(out, 'events'), { recursive: true });
   fs.mkdirSync(path.join(out, 'scripts'), { recursive: true });
+  fs.mkdirSync(path.join(out, 'arcs'), { recursive: true });
   fs.writeFileSync(path.join(out, 'index.json'), JSON.stringify(result.index));
   for (const d of result.details) fs.writeFileSync(path.join(out, 'events', `${d.id}.json`), JSON.stringify(d));
-  for (const s of result.scripts) fs.writeFileSync(path.join(out, 'scripts', `${s.id}.json`), JSON.stringify(s));
+  for (const d of result.arcDetails) fs.writeFileSync(path.join(out, 'arcs', `${d.id}.json`), JSON.stringify(d));
+  // A script id may be namespaced (`arc/<id>`, §4.10), so it can name a folder of its own.
+  for (const s of result.scripts) {
+    const f = path.join(out, 'scripts', `${s.id}.json`);
+    fs.mkdirSync(path.dirname(f), { recursive: true });
+    fs.writeFileSync(f, JSON.stringify(s));
+  }
   for (const c of result.copies) {
     const to = path.join(publicDir, c.to);
     fs.mkdirSync(path.dirname(to), { recursive: true });
@@ -1102,7 +1167,7 @@ export function describe(result: BuildResult): string {
   const by = (s: Status) => ev.filter((e) => e.status === s).length;
   const lines = [
     `content: ${ev.length} events (${by('outline')} outline, ${by('scripted')} scripted, ${by('staged')} staged, ${by('animated')} animated), ` +
-    `${result.index.characters.length} characters, ${result.index.places.length} places, ${result.index.arcs.length} arcs, ${result.index.journeys.length} journeys, ${result.index.factions.length} factions`,
+    `${result.index.characters.length} characters, ${result.index.places.length} places, ${result.index.arcs.length} arcs (${result.arcDetails.length} told over the map), ${result.index.journeys.length} journeys, ${result.index.factions.length} factions`,
   ];
   for (const [l, n] of Object.entries(result.missing)) lines.push(`translations: ${n} texts missing "${l}"`);
   for (const w of result.warnings) lines.push(`  warning  ${w}`);

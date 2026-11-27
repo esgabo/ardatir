@@ -5,7 +5,7 @@ when:
   precision: day
 place: bag-end
 characters: [ bilbo, gandalf ]
-arcs: [ the-quest ]
+arcs: [ the-quest, the-ride ]
 journeys: [ the-road ]
 status: staged
 sides: [ [ bagginses ], [ sackville-bagginses ] ]

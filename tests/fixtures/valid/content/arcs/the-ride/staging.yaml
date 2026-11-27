@@ -1,0 +1,24 @@
+map: middle-earth
+duration: 30
+narration: { start: 0, east: 0.5 }
+beats: { out: 0.2 }
+camera:
+  - { t: 0, x: 0, z: 0, width: 80 }
+  - { t: 0.6, x: 34, z: -7, width: 20 }
+scenes: { the-party: 0.1, leaving: 0.6 }
+hosts:
+  - faction: bagginses
+    mark: column
+    weight: 2
+    keyframes:
+      - { t: 0.1, at: bag-end, action: hold }
+      - { t: 0.5, x: 10, z: -4, action: march, mark: trickle, weight: 1 }
+      - { t: 0.6, at: rivendell, action: hold }
+  - label: { en: The guests, es: Los invitados }
+    color: "#8fb6c8"
+    mark: trickle
+    weight: 1
+    keyframes:
+      - { t: 0, at: bag-end, action: hold }
+roads:
+  - { journey: the-road, from: 0.2, to: 0.8 }

@@ -284,6 +284,22 @@ export interface Arc {
   /** Derived: the arc's events in chronological order. */
   events: string[];
   span?: Span;
+  /**
+   * The telling's own status (docs/DESIGN.md §4.10), through the same four words an event runs
+   * and **independent of its events'**: `outline` for an arc that is only a grouping (one flat
+   * file), `scripted` once it has a narration.yaml, `staged` once it plays over the map.
+   */
+  status: Status;
+  /** The chapters the telling is drawn from; cited, never quoted. */
+  sources?: { book: string; chapter?: string | number }[];
+  /** Whose voice tells it: authored only where the arc's events cross ages (§4.10, §5). */
+  narratedBy?: string;
+  /** Derived: the age whose narrator reads the telling (`narratedBy`, else the first event's age). */
+  voiceOf?: string;
+  /** Which map the telling plays on (staging.yaml `map`), for an arc that has a staging. */
+  map?: MapId;
+  /** Which languages this arc has a recording in. */
+  audio?: Lang[];
 }
 
 export interface Waypoint {
@@ -465,6 +481,66 @@ export interface Army {
   keyframes: ArmyKeyframe[];
 }
 
+/**
+ * A body of people at map scale (an arc's staging.yaml `hosts`, docs/DESIGN.md §4.10).
+ *
+ * A tile `army` is a block of small figures with a count and legs; across a country a host is a
+ * **mark on a map**, and a thousand orcs and ten thousand differ in how much of the country they
+ * fill, not in how many bodies can be counted. So the map has its own closed vocabulary, and
+ * `armies` stays honest at tile scale.
+ */
+export const HOST_MARKS = ['column', 'mass', 'swarm', 'trickle', 'fleet', 'flight'] as const;
+export type HostMark = (typeof HOST_MARKS)[number];
+/** What a host does on the way to a keyframe. `hold` and `fight` happen where it stands; `fade` thins the mark to nothing. */
+export const HOST_ACTIONS = ['march', 'ride', 'sail', 'fly', 'flee', 'hold', 'fight', 'fade'] as const;
+export type HostAction = (typeof HOST_ACTIONS)[number];
+/** How much of the country a mark fills, 1 to 5. Never a count of soldiers (§4.4 applies to numbers too). */
+export const HOST_WEIGHTS = [1, 2, 3, 4, 5] as const;
+
+/**
+ * Where a host is at a moment of an arc's telling. Exactly one of `at` (a place, whose `map:`
+ * coordinates the map already knows) or `x`/`z` (a point that is no place: a pass, a river
+ * crossing, open sea), in map units. A keyframe may change the host's `mark` or `weight` from
+ * there on: a column that arrives and becomes a mass besieging a city is one body of people.
+ */
+export interface HostKeyframe {
+  t: number;
+  /** A place id (preferred wherever a place exists). */
+  at?: string;
+  x?: number;
+  z?: number;
+  action?: HostAction;
+  mark?: HostMark;
+  weight?: number;
+}
+
+/** A host on the map: a faction (its name and banner colour) or its own `label` and `color`, never both. */
+export interface Host {
+  faction?: string;
+  label?: LocalizedText;
+  color?: string;
+  mark: HostMark;
+  weight: number;
+  keyframes: HostKeyframe[];
+}
+
+/**
+ * A journey painted along its waypoints inside an arc's telling (`roads`): nothing before
+ * `from`, painting itself between `from` and `to`, the whole road after. A leg with no event on
+ * it is plain road, which is how the map says which parts of a journey we have told.
+ */
+export interface Road {
+  journey: string;
+  from: number;
+  to: number;
+}
+
+/** When the telling reaches one of the arc's events: it lights at `t` and stays lit. */
+export interface ArcScene {
+  event: string;
+  t: number;
+}
+
 /** The light of a diorama at a moment (src/scene/lighting.ts has the look of each). */
 export const LIGHT_PRESETS = ['dawn', 'morning', 'day', 'evening', 'dusk', 'night'] as const;
 export type LightPreset = (typeof LIGHT_PRESETS)[number];
@@ -604,6 +680,29 @@ export interface EventDetail extends EventSummary {
   reveal?: CoverKey[];
   /** One-shot sounds at their moments (staging.yaml `sound`); the ambience needs no authoring. */
   sound?: SoundKey[];
+  audioFiles: Partial<Record<Lang, NarrationAudio>>;
+}
+
+/**
+ * An arc that tells its own story over the map (data/arcs/<id>.json, docs/DESIGN.md §4.10):
+ * the event machinery at map scale. One clock, passages at a `t`, an authored `camera` — and no
+ * `light`, `sound` or `reveal`, because a map is not a place and a country has no hour.
+ */
+export interface ArcDetail extends Arc {
+  /** Which map it plays on. */
+  map: MapId;
+  /** Length when no recording exists for the current language, in seconds. */
+  durationSeconds: number;
+  narration: NarrationSegment[];
+  beats: Beat[];
+  /** How the view sweeps the map, in map units (as an event's `camera`, §9.3). */
+  camera?: CameraKey[];
+  /** When the telling reaches each of the arc's events; the rest are drawn hollow from the first frame. */
+  scenes: ArcScene[];
+  /** Bodies of people moving over the country. */
+  hosts: Host[];
+  /** Journeys painted along their waypoints. */
+  roads: Road[];
   audioFiles: Partial<Record<Lang, NarrationAudio>>;
 }
 

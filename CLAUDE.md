@@ -73,11 +73,13 @@ Requires Node 22. Recording narration also needs `ffmpeg` and the homelab Voice 
 content/             THE SOURCE OF TRUTH (YAML); see content/README.md
   ages/ characters/ places/ arcs/ journeys/ factions/ narrators/   pronunciation.yaml   (factions: sides in battles)
   places/<id>.yaml     `map:` coordinates on one of four maps: docs/MAP.md
-  arcs/<id>/           an arc that tells its own story over the map: narration.yaml + staging.yaml (docs/DESIGN.md §4.10)
+  arcs/<id>.yaml       an arc that only groups scenes; it promotes to a folder the day it tells
+  arcs/<id>/           an arc that tells its own story over the map: arc.yaml + narration.yaml + staging.yaml (+ audio/) (docs/DESIGN.md §4.10)
   events/<age>/<sort-key>-<id>/  event.yaml, narration.yaml, staging.yaml, audio/<lang>.{mp3,yaml}
 assets/              models: characters/<id>/<id>.glb (+ .blend source), kits/<kit>/, props/<id>/; see docs/MODELS.md
 scripts/content/
   build.ts           load + validate content/, place on the time axis, reverse links, lookups, character lanes
+  arcs.ts            arcs: a flat grouping or a folder that tells over the map — `map`, `camera`, `scenes`, `hosts`, `roads`, the status against the files, every place on the arc's map (read and checked for build.ts)
   factions.ts        factions, a battle's `sides` and its staging `armies` (read and checked for build.ts); byFaction
   kin.ts             parentage: `parents`, `spouse`, `betrothed`, `twin`, the closed `kin` list, `born`/`died`/`fate`/`house` (read and checked for build.ts); derives children, siblings, half-siblings, generation depth and the houses into `index.family` (#89)
   models.ts          `model:` paths: exists, loadable .glb, MODEL_BUDGETS per asset type; copies into public/data/models/
@@ -99,7 +101,7 @@ scripts/narration/
   pronounce.ts       respelling names from content/pronunciation.yaml (pure)
   report.ts, ffmpeg.ts       the listening page; ffmpeg for the CLIs only
 vite.config.ts       runs the content build on start (fails `npm run build` on errors) and on change in dev
-public/data/         GENERATED (gitignored): index.json, events/<id>.json, scripts/<id>.json, audio/<id>/<lang>.mp3, models/<path>.glb
+public/data/         GENERATED (gitignored): index.json, events/<id>.json, arcs/<id>.json, scripts/<id>.json (an arc's is scripts/arc/<id>.json), audio/<id>/<lang>.mp3 (an arc's is audio/arc/<id>/<lang>.mp3), models/<path>.glb
 src/
   data/types.ts      the compiled data model the site loads (EventSummary, EventDetail, ContentIndex)
   data/calendar.ts   the shared time axis: dates → spans, precision, overlaps (used by build and site)
@@ -169,6 +171,7 @@ src/
 - **A figure stands where the staging puts it, and nowhere else.** `groundHeight` gives the kit's walkable `terrain` under (x, z); a keyframe's `y` adds whatever the author says they are standing *on* (a log, a bench, a doorstep). Nothing pushes figures apart at render time: that would make a figure's place depend on the other figures instead of on `t`, so two figures in one spot is a build warning (`crowding` in `src/timeline.ts`) and the author moves the keyframe. See `docs/DESIGN.md` §9.2.
 - **The sound is built, not played back.** A place's ambience is `heard(scapeFor(place), light)` and runs on the audio clock, as shimmer runs on `ambient`; everything the story does — a footstep, a knock — is a `Cue` decided purely from the pair of moments it falls between, so a scrub cannot double one and a deep link cannot miss one. A stage reports what is heard (`Stage.sound`) and makes no noise itself, exactly as it moves no camera. Nothing is fetched and no audio clock starts until somebody presses play unmuted.
 - **A family tree is derived, never authored.** `parents` is the only descent edge in `content/`; children, siblings, half-siblings, ancestors, descendants, cousins, uncles, generation depth and the houses are computed in `src/kinGraph.ts` (pure) and derived into `index.family` by `scripts/content/kin.ts`, exactly as `byCharacter` and `lanes` are. If a relation can be computed from parentage it is not a field, and the build errors on a `kin` word outside the closed list (`KIN_WORDS`), naming its replacement. `spouse`, `betrothed` and `twin` are symmetric: written once, reversed by the build and marked `reverse: true`. A birth or death comes from the event that declares it (`born:`/`died:` on `event.yaml`, at the event's honest range) or from the character's own `born:`/`died:`; where both exist they must agree, and no `died` means no end — nothing infers one. See `docs/DESIGN.md` §3.6 and §4.11.
+- **An arc that tells runs on the event machinery, unchanged.** `arcs/<id>/` is read like an event's folder (`arc.yaml` + `narration.yaml` + `staging.yaml` + `audio/`), through the same four-word status pipeline, the same `narration.yaml` shape and the same `textHash` discipline, so the recording pipeline sees no difference; its narration lives in its own namespace (`arc/<id>`), and an arc id that collides with an event id is an error. Everything visible is a pure function of `t` and the clock is the one clock, as for an event — but an arc's `t` is **narration time, not history**: nothing of a telling reaches the time axis or the lanes. At map scale there is no `light`, `sound`, `reveal`, `set` or `tracks` (a country has no hour and a map no lid); a body of people is a `hosts` mark with a `weight` of 1–5, never a count, and a place named by `scenes`, `hosts` or `roads` must carry coordinates for the map the arc names (`scripts/content/arcs.ts`, docs/DESIGN.md §4.10).
 - **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.

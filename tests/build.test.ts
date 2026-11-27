@@ -37,6 +37,22 @@ const FORETOLD: Change[] = [
   ].join('\n') },
 ];
 
+/** The fixture's arc that tells its own story over the map (docs/DESIGN.md §4.10). */
+const RIDE = 'arcs/the-ride/arc.yaml';
+const RIDE_STAGING = 'arcs/the-ride/staging.yaml';
+
+/**
+ * The fixture without its telling: for the cases that take a place off the map, which an arc
+ * played over that map is right to refuse (§4.10).
+ */
+const NO_TELLING: Change[] = [
+  { file: RIDE, remove: true },
+  { file: 'arcs/the-ride/narration.yaml', remove: true },
+  { file: RIDE_STAGING, remove: true },
+  { file: `${PARTY}/event.yaml`, replace: ['arcs: [ the-quest, the-ride ]', 'arcs: [ the-quest ]'] },
+  { file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['arcs: [ the-quest, the-ride ]', 'arcs: [ the-quest ]'] },
+];
+
 const GANDALF = 'characters/gandalf.yaml';
 // Parentage (#89, docs/DESIGN.md §4.11). The fixture's hobbits carry a small family: Mungo →
 // Bungo and Longo, Bungo married to Belladonna, and Bilbo their child. The extra relations the
@@ -81,7 +97,13 @@ function buildWith(changes: Change[]): BuildResult {
   fs.cpSync(ASSETS, path.join(dir, '../assets'), { recursive: true });
   for (const c of changes) {
     const f = path.join(dir, c.file);
-    if ('remove' in c) fs.rmSync(f);
+    if ('remove' in c) {
+      fs.rmSync(f);
+      // An empty folder would still be read (an arc folder with no arc.yaml is an error), so a
+      // case that removes the last file in one removes the folder with it.
+      const d = path.dirname(f);
+      if (d !== dir && !fs.readdirSync(d).length) fs.rmdirSync(d);
+    }
     else if ('write' in c) { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, c.write); }
     else {
       const s = fs.readFileSync(f, 'utf8');
@@ -350,7 +372,8 @@ describe('the valid fixture', () => {
   });
 
   it('writes a readable script for every event with narration, staged or not', () => {
-    expect(r.scripts.map((s) => s.id)).toEqual(['the-party']);
+    // An arc that tells is read as text the same way, under its own namespace (§4.10).
+    expect(r.scripts.map((s) => s.id)).toEqual(['the-party', 'arc/the-ride']);
     const ok = buildWith([
       { file: LETTERS, replace: ['status: outline', 'status: scripted'] },
       { file: 'events/third-age/2941-06-moon-letters/narration.yaml', write: '- id: runes\n  en: The runes shine under the moon.\n  es: Las runas brillan bajo la luna.\n- id: door\n  en: A door, on Durin\'s Day.\n  es: Una puerta, el Día de Durin.\n' },
@@ -444,6 +467,67 @@ describe('the valid fixture', () => {
     expect(r.index.byFaction).toEqual({ bagginses: ['the-party'], 'sackville-bagginses': ['the-party'] });
     const d = r.details.find((x) => x.id === 'the-party')!;
     expect(d.armies).toEqual([{ faction: 'bagginses', size: 'small', keyframes: [{ t: 0, x: -3, z: 2 }, { t: 0.5, x: -1, z: 1, action: 'walk' }] }]);
+  });
+
+  // Arcs that tell their own story over the map (docs/DESIGN.md §4.10).
+  it('reads an arc that tells: its map, its framing, its scenes, hosts and roads', () => {
+    const arc = r.index.arcs.find((a) => a.id === 'the-ride')!;
+    expect(arc.status).toBe('staged');
+    expect(arc.map).toBe('middle-earth');
+    // A voice belongs to an age, and both of this arc's events are in one.
+    expect(arc.voiceOf).toBe('third-age');
+    expect(arc.narratedBy).toBeUndefined();
+    expect(arc.sources).toEqual([{ book: 'the-hobbit', chapter: 3 }]);
+    // The events are derived, exactly as a grouping arc's are.
+    expect(arc.events).toEqual(['the-party', 'leaving']);
+    // A grouping stays an outline with nothing more to read.
+    expect(r.index.arcs.find((a) => a.id === 'the-quest')!.status).toBe('outline');
+
+    const d = r.arcDetails.find((a) => a.id === 'the-ride')!;
+    expect(r.arcDetails).toHaveLength(1);
+    expect(d.durationSeconds).toBe(30);
+    expect(d.narration.map((x) => [x.id, x.t])).toEqual([['start', 0], ['east', 0.5]]);
+    expect(d.beats).toEqual([{ id: 'out', t: 0.2, label: { en: 'Out of the Shire', es: 'Fuera de la Comarca' } }]);
+    expect(d.camera).toEqual([{ t: 0, x: 0, z: 0, width: 80 }, { t: 0.6, x: 34, z: -7, width: 20 }]);
+    // `scenes` says only when the telling reaches each event, and comes back in story order.
+    expect(d.scenes).toEqual([{ event: 'the-party', t: 0.1 }, { event: 'leaving', t: 0.6 }]);
+    expect(d.hosts[0]).toEqual({
+      faction: 'bagginses', mark: 'column', weight: 2,
+      keyframes: [
+        { t: 0.1, at: 'bag-end', action: 'hold' },
+        { t: 0.5, x: 10, z: -4, action: 'march', mark: 'trickle', weight: 1 },
+        { t: 0.6, at: 'rivendell', action: 'hold' },
+      ],
+    });
+    expect(d.hosts[1]).toEqual({
+      label: { en: 'The guests', es: 'Los invitados' }, color: '#8fb6c8', mark: 'trickle', weight: 1,
+      keyframes: [{ t: 0, at: 'bag-end', action: 'hold' }],
+    });
+    expect(d.roads).toEqual([{ journey: 'the-road', from: 0.2, to: 0.8 }]);
+    expect(d.audioFiles).toEqual({});
+  });
+
+  it('writes an arc\'s script in its own namespace, so no recording can land on an event\'s', () => {
+    const script = r.scripts.find((x) => x.id === 'arc/the-ride')!;
+    expect(script.passages.map((p) => p.id)).toEqual(['start', 'east']);
+    expect(r.arcDirs['the-ride']).toMatch(/arcs[/\\]the-ride$/);
+  });
+
+  it('reads an arc\'s recording through the same pipeline an event\'s goes through', () => {
+    const ok = buildWith([
+      { file: 'arcs/the-ride/audio/en.yaml', write: 'duration: 40\nstarts: { start: 0.5, east: 21 }\n' },
+      { file: 'arcs/the-ride/audio/en.mp3', write: '' }, // created for the test only; never committed
+    ]);
+    expect(ok.errors).toEqual([]);
+    const d = ok.arcDetails.find((a) => a.id === 'the-ride')!;
+    expect(d.audioFiles.en).toEqual({ src: 'data/audio/arc/the-ride/en.mp3', duration: 40, starts: [0.5, 21] });
+    expect(d.audio).toEqual(['en']);
+  });
+
+  it('keeps an arc\'s telling off the time axis and out of the lanes', () => {
+    // An arc's `t` is narration time, not history (§4.10), so nothing of it reaches either.
+    expect(JSON.stringify(r.index.lanes)).not.toContain('the-ride');
+    expect(r.index.events.some((e) => (e as unknown as { arc?: string }).arc !== undefined)).toBe(false);
   });
 
   it('links the test model to its character and per-event overrides, and copies it once', () => {
@@ -552,6 +636,50 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'unknown extra day', changes: [{ file: LETTERS, replace: ['day: 1-lithe', 'day: midsummer'] }], error: 'day: 1–30, or one of 2-yule, 1-lithe, midyear, overlithe, 2-lithe, 1-yule' },
   { name: 'extra day with a month', changes: [{ file: LETTERS, replace: ['day: 1-lithe', 'month: 6, day: 1-lithe'] }], error: '"1-lithe" is outside the months; remove the month or season' },
   { name: 'Overlithe in a common year', changes: [{ file: LETTERS, replace: ['day: 1-lithe', 'day: overlithe'] }], error: '2941 is not a leap year, so it has no Overlithe' },
+
+  // Arcs that tell their own story over the map (docs/DESIGN.md §4.10)
+  { name: 'an arc that is both a flat file and a folder', changes: [{ file: 'arcs/the-ride.yaml', write: 'id: the-ride\ntitle: { en: The Ride, es: La Cabalgada }\nsummary: { en: X., es: X. }\n' }], error: 'also exists as arcs/the-ride.yaml: an arc is either one flat file or a folder' },
+  { name: 'an arc folder with no arc.yaml', changes: [{ file: RIDE, remove: true }], error: 'an arc folder needs an arc.yaml' },
+  { name: 'an arc status the pipeline has not got', changes: [{ file: RIDE, replace: ['status: staged', 'status: finished'] }], error: 'status: one of outline, scripted, staged, animated' },
+  { name: 'a scripted arc with no narration.yaml', changes: [{ file: 'arcs/the-quest.yaml', replace: ['summary:', 'status: scripted\nsummary:'] }], error: 'status "scripted" needs a narration.yaml' },
+  { name: 'a staged arc with no staging.yaml', changes: [{ file: RIDE_STAGING, remove: true }], error: 'status "staged" needs a staging.yaml' },
+  { name: 'an arc narrated by an age that does not exist', changes: [{ file: RIDE, replace: ['status: staged', 'status: staged\nnarratedBy: fifth-age'] }], error: 'narratedBy: unknown age "fifth-age"' },
+  { name: 'an arc id that collides with an event id', changes: [{ file: RIDE, replace: ['id: the-ride', 'id: leaving'] }], error: 'an arc that tells cannot share an id with an event ("leaving")' },
+  { name: 'an arc beat with no time', changes: [{ file: RIDE_STAGING, replace: ['beats: { out: 0.2 }', 'beats: { away: 0.2 }'] }], error: 'beats: no beat "away" in arc.yaml' },
+  { name: 'an arc on no map we draw', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: arda'] }], error: 'map: one of middle-earth, beleriand, aman, numenor (got "arda")' },
+  { name: 'an arc telling with no duration', changes: [{ file: RIDE_STAGING, replace: ['duration: 30', 'duration: 0'] }], error: 'duration: seconds, a positive number' },
+  { name: 'light at map scale', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: middle-earth\nlight:\n  - { t: 0, preset: dawn }'] }], error: 'light: not at map scale' },
+  { name: 'sound at map scale', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: middle-earth\nsound:\n  - { t: 0, cue: knock }'] }], error: 'sound: not at map scale' },
+  { name: 'reveal at map scale', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: middle-earth\nreveal:\n  - { t: 0, cover: roof, amount: 1 }'] }], error: 'reveal: not at map scale' },
+  { name: 'armies at map scale', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: middle-earth\narmies: []'] }], error: 'armies: not at map scale' },
+  // `camera` is the event's framing at a different scale, so only its limits change.
+  { name: 'an arc camera pointed off every map', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0, x: 0, z: 0, width: 80 }', '{ t: 0, x: 900, z: 0, width: 80 }'] }], error: 'camera[0]: x and z are a point on the map, within ±500 units' },
+  { name: 'an arc camera holding no ground', changes: [{ file: RIDE_STAGING, replace: ['width: 80', 'width: 0'] }], error: 'camera[0].width: how much ground to hold in frame, 1 to 1000 map units' },
+  // `scenes`: the arc's own events, when the telling reaches each
+  { name: 'a scene that is not an event of the arc', changes: [{ file: RIDE_STAGING, replace: ['the-party: 0.1', 'moon-letters: 0.1'] }], error: 'scenes: "moon-letters" is not an event of this arc' },
+  { name: 'a scene at no time', changes: [{ file: RIDE_STAGING, replace: ['the-party: 0.1', 'the-party: 1.4'] }], error: 'scenes.the-party: needs a time 0–1' },
+  { name: 'scenes out of the arc\'s story order', changes: [{ file: RIDE_STAGING, replace: ['scenes: { the-party: 0.1, leaving: 0.6 }', 'scenes: { the-party: 0.6, leaving: 0.1 }'] }], error: 'scenes.leaving: at 0.1, before "the-party" at 0.6, which comes earlier in the arc\'s story order' },
+  { name: 'an arc event whose place is on another map', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: beleriand'] }], error: 'the arc\'s event "the-party": "bag-end" has no position on the beleriand map' },
+  { name: 'an arc event with no place at all', changes: [{ file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['place: rivendell\n', ''] }], error: 'the arc\'s event "leaving" has no place, so the map cannot pin it' },
+  // `hosts`: a body of people as a mark on the map
+  { name: 'a host that is both a faction and a label', changes: [{ file: RIDE_STAGING, replace: ['  - faction: bagginses\n', '  - faction: bagginses\n    label: { en: X, es: X }\n    color: "#8fb6c8"\n'] }], error: 'hosts[0]: a faction, or a label and a color of its own — never both' },
+  { name: 'a host that is neither', changes: [{ file: RIDE_STAGING, replace: ['  - faction: bagginses\n', '  - \n'] }], error: 'hosts[0]: needs a faction, or a label and a color of its own' },
+  { name: 'a host of an unknown faction', changes: [{ file: RIDE_STAGING, replace: ['faction: bagginses', 'faction: tooks'] }], error: 'hosts[0].faction: unknown faction "tooks"' },
+  { name: 'a labelled host with no colour', changes: [{ file: RIDE_STAGING, replace: ['    color: "#8fb6c8"\n', ''] }], error: 'hosts[1].color: the colour to draw it in, as #rrggbb' },
+  { name: 'a mark the map cannot draw', changes: [{ file: RIDE_STAGING, replace: ['mark: column', 'mark: horde'] }], error: 'hosts[0].mark: one of column, mass, swarm, trickle, fleet, flight' },
+  { name: 'a host weight that is a count of soldiers', changes: [{ file: RIDE_STAGING, replace: ['weight: 2', 'weight: 8000'] }], error: 'hosts[0].weight: 1 to 5 — how much of the country the mark fills, never a number of soldiers' },
+  { name: 'a host with no weight', changes: [{ file: RIDE_STAGING, replace: ['    weight: 2\n', ''] }], error: 'hosts[0].weight: 1 to 5' },
+  { name: 'a host with no keyframes', changes: [{ file: RIDE_STAGING, replace: ['    keyframes:\n      - { t: 0.1, at: bag-end, action: hold }\n', '    keyframes: []\n'] }], error: 'hosts[0].keyframes: at least one { t, at | x + z, action }' },
+  { name: 'a host keyframe at a place and a point at once', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.1, at: bag-end, action: hold }', '{ t: 0.1, at: bag-end, x: 1, z: 2, action: hold }'] }], error: 'hosts[0].keyframes[0]: exactly one of `at` (a place) or `x`/`z`' },
+  { name: 'a host keyframe nowhere at all', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.1, at: bag-end, action: hold }', '{ t: 0.1, action: hold }'] }], error: 'hosts[0].keyframes[0]: exactly one of `at` (a place) or `x`/`z`' },
+  { name: 'a host keyframe at an unknown place', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.1, at: bag-end, action: hold }', '{ t: 0.1, at: hobbiton, action: hold }'] }], error: 'hosts[0].keyframes[0].at: unknown place "hobbiton"' },
+  { name: 'a host keyframe off every map', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.5, x: 10, z: -4, action: march, mark: trickle, weight: 1 }', '{ t: 0.5, x: 900, z: -4, action: march }'] }], error: 'hosts[0].keyframes[1].x: 900 is off every map' },
+  { name: 'a host doing something the map has no word for', changes: [{ file: RIDE_STAGING, replace: ['action: march', 'action: walk'] }], error: 'hosts[0].keyframes[1].action: one of march, ride, sail, fly, flee, hold, fight, fade' },
+  { name: 'host keyframes out of order', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.6, at: rivendell, action: hold }', '{ t: 0.2, at: rivendell, action: hold }'] }], error: 'hosts[0].keyframes[2]: t must rise from 0 to 1' },
+  // `roads`: a journey painted along its waypoints
+  { name: 'a road along an unknown journey', changes: [{ file: RIDE_STAGING, replace: ['journey: the-road', 'journey: the-sea'] }], error: 'roads[0].journey: unknown journey "the-sea"' },
+  { name: 'a road that ends before it starts', changes: [{ file: RIDE_STAGING, replace: ['from: 0.2, to: 0.8', 'from: 0.8, to: 0.2'] }], error: 'roads[0]: from (0.8) must come before to (0.2)' },
+  { name: 'a road outside the telling', changes: [{ file: RIDE_STAGING, replace: ['from: 0.2, to: 0.8', 'from: 0.2, to: 1.8'] }], error: 'roads[0].to: a time 0–1' },
 
   // Journeys
   { name: 'journey with one waypoint', changes: [{ file: ROAD, replace: ['  - { place: bag-end, date: { age: third-age, year: 2941, month: 4, day: 26 }, precision: day }\n', ''] }], error: 'a journey needs at least two waypoints' },
@@ -678,14 +806,53 @@ describe('broken content', () => {
     expect(r.warnings.some((w) => w.includes('parents: "bungo" is born after "bilbo"')), r.warnings.join('\n')).toBe(true);
   });
 
+  it('warns when a telling arc\'s events cross ages and it names no voice', () => {
+    // A voice belongs to an age (§5), so an arc whose scenes span two has to choose.
+    const crossing: Change[] = [{ file: 'events/before-time/0000-the-music/event.yaml', replace: ['characters: []', 'characters: []\nplace: bag-end\narcs: [ the-ride ]'] }];
+    const r = buildWith(crossing);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('its events cross ages (before-time, third-age), so say whose voice tells it')), r.warnings.join('\n')).toBe(true);
+    // Naming the age settles it, and that is the voice the telling is read in.
+    const named = buildWith([...crossing, { file: RIDE, replace: ['status: staged', 'status: staged\nnarratedBy: third-age'] }]);
+    expect(named.warnings.filter((w) => w.includes('cross ages'))).toEqual([]);
+    expect(named.index.arcs.find((a) => a.id === 'the-ride')!.voiceOf).toBe('third-age');
+  });
+
+  it('counts being named by an arc\'s telling as a reason for a faction to exist', () => {
+    // Being in a telling is a reason to exist, exactly as being on a battle's sides is (§4.10).
+    const faction: Change = { file: 'factions/the-watch.yaml', write: 'id: the-watch\nname: { en: The Watch, es: La Guardia }\ncolor: "#404a5a"\nkind: hobbit\nsummary: { en: Shirriffs., es: Alguaciles. }\n' };
+    const alone = buildWith([faction]);
+    expect(alone.warnings.some((w) => w.includes('factions/the-watch.yaml: fights in no battle yet'))).toBe(true);
+    const inArc = buildWith([faction, { file: RIDE_STAGING, replace: ['  - faction: bagginses\n', '  - faction: the-watch\n'] }]);
+    expect(inArc.errors).toEqual([]);
+    expect(inArc.warnings).toEqual([]);
+  });
+
+  it('warns, rather than refusing, when a painted road runs through a place nobody has placed', () => {
+    // The scenes and the hosts are the telling's own; a journey is written for its own sake.
+    const r = buildWith([{ file: ROAD, replace: ['place: rivendell', 'place: woody-end'] }, { file: 'places/woody-end.yaml', write: 'id: woody-end\nname: { en: Woody End, es: Frontera del Bosque }\nsummary: { en: Woods., es: Bosques. }\n' }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('roads[0]: waypoints[1]: "woody-end" has no position on the middle-earth map')), r.warnings.join('\n')).toBe(true);
+  });
+
+  it('warns when an arc folder is not named after its id', () => {
+    const r = buildWith([
+      { file: RIDE, replace: ['id: the-ride', 'id: the-walk'] },
+      { file: `${PARTY}/event.yaml`, replace: ['the-quest, the-ride', 'the-quest, the-walk'] },
+      { file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['the-quest, the-ride', 'the-quest, the-walk'] },
+    ]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('folder "the-ride" should be named after its id "the-walk"')), r.warnings.join('\n')).toBe(true);
+  });
+
   it('warns when a told event\'s place has no position on any map', () => {
-    const r = buildWith([{ file: 'places/bag-end.yaml', replace: ['map: { on: middle-earth, x: -12.2, z: -1.3 }\n', ''] }]);
+    const r = buildWith([...NO_TELLING, { file: 'places/bag-end.yaml', replace: ['map: { on: middle-earth, x: -12.2, z: -1.3 }\n', ''] }]);
     expect(r.errors).toEqual([]);
     expect(r.warnings.some((w) => w.includes('places/bag-end.yaml: has no map: position, but 1 told event happens here')), r.warnings.join('\n')).toBe(true);
   });
 
   it('does not warn about a place deliberately on no map', () => {
-    const r = buildWith([{ file: 'places/bag-end.yaml', replace: ['map: { on: middle-earth, x: -12.2, z: -1.3 }', 'map: nowhere'] }]);
+    const r = buildWith([...NO_TELLING, { file: 'places/bag-end.yaml', replace: ['map: { on: middle-earth, x: -12.2, z: -1.3 }', 'map: nowhere'] }]);
     expect(r.errors).toEqual([]);
     expect(r.warnings).toEqual([]);
     expect(r.index.places.find((p) => p.id === 'bag-end')!.map).toBeUndefined();
@@ -883,7 +1050,7 @@ describe('broken content', () => {
   });
 
   it('warns about missing Spanish and unknown fields', () => {
-    const r = buildWith([{ file: 'places/rivendell.yaml', write: 'id: rivendell\nname: { en: Rivendell }\nsummary: { en: A house., es: Una casa. }\nheight: 3\n' }]);
+    const r = buildWith([...NO_TELLING, { file: 'places/rivendell.yaml', write: 'id: rivendell\nname: { en: Rivendell }\nsummary: { en: A house., es: Una casa. }\nheight: 3\n' }]);
     expect(r.errors).toEqual([]);
     expect(r.missing.es).toBe(1);
     expect(r.warnings.some((w) => w.includes('unknown field "height"'))).toBe(true);

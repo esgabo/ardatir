@@ -1,7 +1,7 @@
 # The Fall of Gondolin over the map of Beleriand (docs/DESIGN.md §4.10).
 #
-# DESIGN SAMPLE. The content build does not read arcs/<id>/ yet, so nothing here is validated and
-# nothing here is served. See README.md in this folder for what the build must learn to read it.
+# This arc's status is `staged` and independent of its events': the telling plays over the map
+# while all thirteen of its scenes are still outlines or scripts.
 #
 # Coordinates are the map frame in content/places/ (docs/MAP.md): one unit ten miles, +x east,
 # +z south, Angband's gates at the origin. Gondolin is (8, 24), the Havens of Sirion (4, 48),
@@ -59,9 +59,8 @@ scenes:
 
 hosts:
   # Morgoth's host: out of Angband across Ard-galen, over the Encircling Mountains in the dark,
-  # a column until it is inside the city and a mass while it sacks it. It needs a faction file
-  # (factions/host-of-angband.yaml, with Morgoth and Gothmog as leaders); none is added here,
-  # because until an arc's staging is read the build would warn about a faction in no battle.
+  # a column until it is inside the city and a mass while it sacks it. It fights no battle of our
+  # own content, so being named here is what its faction file exists for (§4.10).
   - faction: host-of-angband
     mark: column
     weight: 4
