@@ -1,0 +1,8 @@
+id: elronds-last-ride
+title: { en: "Elrond's Last Ride", es: "La última cabalgada de Elrond" }
+characters: [ elrond ]
+# He rides out of Rivendell with Galadriel and Bilbo and takes ship at the Grey Havens on
+# 29 September 3021. Appendix B dates the sailing; the setting out is only within that month.
+waypoints:
+  - { place: rivendell, date: { age: third-age, year: 3021, month: 9 }, precision: month }
+  - { place: grey-havens, date: { age: third-age, year: 3021, month: 9, day: 29 }, precision: day }

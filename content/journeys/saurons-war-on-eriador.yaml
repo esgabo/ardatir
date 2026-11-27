@@ -1,0 +1,11 @@
+id: saurons-war-on-eriador
+title: { en: "Sauron's War on Eriador", es: "La guerra de Sauron contra Eriador" }
+characters: [ sauron ]
+# Appendix B: he attacks Eriador in 1693, lays Ost-in-Edhil waste in 1697, is broken by the
+# fleets of Numenor at the Gulf of Lhun in 1700 and withdraws to Mordor, where the sources
+# leave him with nothing told until the Nine first appear about 2251.
+waypoints:
+  - { place: eregion, date: { age: second-age, year: 1693 }, precision: year }
+  - { place: ost-in-edhil, date: { age: second-age, year: 1697 }, precision: year }
+  - { place: grey-havens, date: { age: second-age, year: 1700 }, end: { age: second-age, year: 1701 }, precision: year }
+  - { place: mordor, date: { age: second-age, year: 1701 }, end: { age: second-age, year: 2251 }, precision: year, endPrecision: approximate }

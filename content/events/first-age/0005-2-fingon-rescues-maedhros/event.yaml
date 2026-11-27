@@ -6,6 +6,7 @@ when:
 place: thangorodrim
 characters: [ fingon, maedhros, melkor ]
 arcs: [ the-flight-of-the-noldor ]
+journeys: [ morgoths-return-to-the-north ]
 tags: [ silmarillion ]
 status: scripted
 source: { book: the-silmarillion, chapter: "Of the Return of the Noldor" }

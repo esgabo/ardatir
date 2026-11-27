@@ -1,0 +1,10 @@
+id: saurons-years-in-numenor
+title: { en: "Sauron's Years in Numenor", es: "Los años de Sauron en Númenor" }
+characters: [ sauron ]
+# Appendix B: Ar-Pharazon lands at Umbar in 3261 and brings Sauron captive to Armenelos, where
+# he rises from hostage to the King's counsellor; he sails with the Great Armament in 3319 and
+# his body perishes in the Downfall. Only his stay in the city and the end of it are dated.
+waypoints:
+  - { place: umbar, date: { age: second-age, year: 3261 }, precision: year }
+  - { place: armenelos, date: { age: second-age, year: 3262 }, end: { age: second-age, year: 3319 }, precision: year }
+  - { place: numenor, date: { age: second-age, year: 3319 }, precision: year }

@@ -1,0 +1,13 @@
+id: morgoths-return-to-the-north
+title: { en: "Morgoth's Return to the North", es: "El regreso de Morgoth al norte" }
+characters: [ melkor ]
+# After the darkening of the Trees he crossed the Grinding Ice with Ungoliant and came back
+# to Angband, and the sources never take him out of it again until the host of the Valar
+# dragged him from its pits at the end of the Age. Hence one long waypoint: the battles
+# fought in his name across Beleriand were fought by his captains, and the years of the
+# crossing itself are not given closer than the darkening at one end and Feanor's landing
+# at the other.
+waypoints:
+  - { place: valinor, date: { age: years-of-the-trees, year: 1495 }, precision: year }
+  - { place: helcaraxe, date: { age: years-of-the-trees, year: 1495 }, precision: year }
+  - { place: angband, date: { age: years-of-the-trees, year: 1496 }, end: { age: first-age, year: 587 }, precision: year }

@@ -16,3 +16,14 @@ title: { en: "The Entmoot", es: "La Asamblea de los Ents" }
 summary:
   en: "The Ents gather in the dell of Derndingle to deliberate. It takes them three days of slow speech to decide that they cannot stay out of the war."
   es: "Los Ents se reúnen en el hoyo de Derndingle para deliberar. Les lleva tres días de lento hablar decidir que no pueden quedar al margen de la guerra."
+links:
+  - to: merry-and-pippin-meet-treebeard
+    type: caused-by
+    note:
+      en: "The hobbits' news of Saruman's axes is what makes Treebeard call the Ents together."
+      es: "Las noticias de los hobbits sobre las hachas de Saruman son lo que hace que Bárbol convoque a los Ents."
+  - to: aragorn-meets-gandalf-the-white
+    type: concurrent
+    note:
+      en: "While the Ents take three days to make up their minds, Gandalf meets his friends elsewhere in the same wood, and neither party knows of the other."
+      es: "Mientras los Ents tardan tres días en decidirse, Gandalf se encuentra con sus amigos en otro lugar del mismo bosque, y ninguno de los dos grupos sabe del otro."

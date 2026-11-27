@@ -6,6 +6,7 @@ when:
 place: angband
 characters: [ maedhros, melkor ]
 arcs: [ the-flight-of-the-noldor ]
+journeys: [ morgoths-return-to-the-north ]
 tags: [ silmarillion ]
 status: scripted
 source: { book: the-silmarillion, chapter: "Of the Return of the Noldor" }
@@ -13,3 +14,9 @@ title: { en: "Maedhros is taken by Morgoth", es: "Morgoth captura a Maedhros" }
 summary:
   en: "Lured to a parley by Morgoth's false offer, Maedhros is seized and hung by his wrist from a cliff of Thangorodrim."
   es: "Atraído a un parlamento por la falsa oferta de Morgoth, Maedhros es apresado y colgado de la muñeca en un precipicio de Thangorodrim."
+links:
+  - to: dagor-nuin-giliath
+    type: caused-by
+    note:
+      en: "With Feanor dead of his wounds after the battle, Morgoth offers terms to his eldest son and springs the trap."
+      es: "Muerto Fëanor de sus heridas tras la batalla, Morgoth ofrece condiciones a su hijo mayor y cierra la trampa."

@@ -7,6 +7,7 @@ when:
 place: armenelos
 characters: [ sauron, ar-pharazon ]
 arcs: [ the-downfall-of-numenor ]
+journeys: [ saurons-years-in-numenor ]
 tags: [ silmarillion ]
 status: scripted
 source: { book: the-silmarillion, chapter: "Akallabêth" }

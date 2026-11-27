@@ -6,6 +6,7 @@ when:
 place: pelennor-fields
 characters: [ theoden, eowyn, merry, witch-king, aragorn, legolas, gimli, gandalf ]
 arcs: [ the-war-of-the-ring ]
+journeys: [ aragorn-legolas-and-gimlis-road, merrys-ride-with-theoden ]
 tags: [ lord-of-the-rings, battle ]
 status: scripted
 source: { book: the-return-of-the-king, chapter: The Battle of the Pelennor Fields }
@@ -24,3 +25,8 @@ links:
     note:
       en: In the same days, the war reaches the North.
       es: En esos mismos días, la guerra llega al Norte.
+  - to: siege-of-minas-tirith-begins
+    type: caused-by
+    note:
+      en: "The Rohirrim ride to break the siege, and the battle is fought on the fields where the host had sat down around the city."
+      es: "Los Rohirrim cabalgan para romper el asedio, y la batalla se libra en los campos donde la hueste se había asentado en torno a la ciudad."

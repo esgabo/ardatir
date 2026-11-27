@@ -14,3 +14,9 @@ title: { en: "Aragorn Chooses to Follow the Orcs", es: "Aragorn decide seguir a 
 summary:
   en: "Finding Frodo and Sam gone, Aragorn thinks hard and then lets the Ring-bearer go his way. He sets out with Legolas and Gimli to rescue Merry and Pippin."
   es: "Al no hallar a Frodo y a Sam, Aragorn medita hondamente y deja que el Portador siga su camino. Parte con Legolas y Gimli a rescatar a Merry y a Pippin."
+links:
+  - to: frodo-leaves-the-fellowship
+    type: caused-by
+    note:
+      en: "A boat and two packs are missing, and that settles it: the Ring-bearer is beyond his help now."
+      es: "Falta una barca y dos mochilas, y eso lo decide: el Portador ya está fuera de su alcance."

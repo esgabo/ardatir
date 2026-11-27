@@ -8,7 +8,7 @@ when:
 place: shelobs-lair
 characters: [ frodo, sam, gollum, shelob ]
 arcs: [ the-war-of-the-ring, the-ringbearers-road ]
-journeys: [ the-ring-to-mordor ]
+journeys: [ the-ring-to-mordor, gollum-follows-the-ring ]
 tags: [ lord-of-the-rings, the-ring ]
 status: scripted
 source: { book: the-two-towers, chapter: "Shelob's Lair" }

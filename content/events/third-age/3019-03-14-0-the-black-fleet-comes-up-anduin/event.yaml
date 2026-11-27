@@ -1,0 +1,33 @@
+id: the-black-fleet-comes-up-anduin
+age: third-age
+when:
+  # Appendix B puts the taking of the ships at Pelargir on 13 March and their coming to the
+  # Harlond on 15 March; the voyage fills the night and the day between.
+  start: { age: third-age, year: 3019, month: 3, day: 13 }
+  end: { age: third-age, year: 3019, month: 3, day: 14 }
+  precision: day
+place: pelargir
+characters: [ aragorn, legolas, gimli, halbarad ]
+arcs: [ the-war-of-the-ring ]
+journeys: [ aragorn-legolas-and-gimlis-road ]
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "The Last Debate" }
+title: { en: "The Black Fleet Comes up Anduin", es: "La flota negra remonta el Anduin" }
+note:
+  en: "Nobody in the story watches this voyage: it is told afterwards, in Legolas and Gimli's account of where they had been. The scene is pinned at Pelargir, the port the fleet sails from, because we draw no place for the open river."
+  es: "Nadie en la historia ve este viaje: se cuenta después, en el relato que hacen Legolas y Gimli de dónde habían estado. La escena se sitúa en Pelargir, el puerto del que parte la flota, porque no dibujamos ningún lugar para el río abierto."
+summary:
+  en: "The captured ships of Umbar are manned by the freed slaves who rowed them and by the men of the southern fiefs, and turned north against the current. For two days and a night a black fleet carries the heir of Isildur toward a city that believes it is watching its death sail in."
+  es: "Las naves capturadas de Umbar son tripuladas por los esclavos liberados que las remaban y por los hombres de los feudos del sur, y vuelven la proa al norte contra la corriente. Durante dos días y una noche una flota negra lleva al heredero de Isildur hacia una ciudad que cree ver llegar su propia muerte."
+links:
+  - to: battle-of-pelargir
+    type: caused-by
+    note:
+      en: "The ships were taken at Pelargir the day before; without them the southern host could not reach the battle in time."
+      es: "Las naves fueron capturadas en Pelargir el día anterior; sin ellas la hueste del sur no habría llegado a tiempo a la batalla."
+  - to: siege-of-minas-tirith-begins
+    type: concurrent
+    note:
+      en: "While the fleet rows north, the city it is sailing to is being closed in; the watchers on the walls, when they see the black sails, take them for the last stroke of the siege."
+      es: "Mientras la flota rema hacia el norte, la ciudad a la que se dirige está siendo cercada; los vigías de las murallas, al ver las velas negras, las toman por el último golpe del asedio."

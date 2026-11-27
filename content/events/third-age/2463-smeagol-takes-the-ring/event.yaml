@@ -20,3 +20,9 @@ beats:
   - { id: murder, label: { en: "Sméagol takes it", es: "Sméagol se lo queda" } }
   - { id: exile, label: { en: "Driven out", es: "Expulsado" } }
   - { id: dark, label: { en: "Under the mountains", es: "Bajo las montañas" } }
+links:
+  - to: isildur-cuts-the-ring-from-sauron
+    type: enabled-by
+    note:
+      en: "The ring in the river is the one Isildur cut from Sauron's hand and lost when he was slain; it lay in the water until somebody came fishing."
+      es: "El anillo del río es el que Isildur cortó de la mano de Sauron y perdió al morir; quedó en el agua hasta que alguien fue a pescar."

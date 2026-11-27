@@ -6,7 +6,7 @@ when:
 place: grey-havens
 characters: [ frodo, bilbo, gandalf, elrond, galadriel, sam, merry, pippin ]
 arcs: [ the-war-of-the-ring, after-the-war ]
-journeys: [ to-the-grey-havens ]
+journeys: [ to-the-grey-havens, elronds-last-ride ]
 tags: [ lord-of-the-rings ]
 status: scripted
 source: { book: the-return-of-the-king, chapter: "The Grey Havens" }

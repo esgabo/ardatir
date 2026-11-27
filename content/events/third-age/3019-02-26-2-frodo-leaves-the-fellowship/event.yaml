@@ -14,3 +14,19 @@ title: { en: "Frodo Leaves the Fellowship", es: "Frodo deja la Comunidad" }
 summary:
   en: "Frodo decides to go on alone to Mordor and slips a boat into the river. Sam, wading and half-drowning after him, will not be left behind."
   es: "Frodo decide seguir solo a Mordor y echa una barca al río. Sam, vadeando casi ahogado tras él, no se deja abandonar."
+links:
+  - to: boromir-tries-to-take-the-ring
+    type: caused-by
+    note:
+      en: "Boromir's hands on the Ring decide him: the Company is no longer a safe place to carry it."
+      es: "Las manos de Boromir sobre el Anillo lo deciden: la Compañía ya no es un lugar seguro para llevarlo."
+  - to: death-of-boromir
+    type: concurrent
+    note:
+      en: "While Frodo and Sam row for the eastern shore, the Orcs fall on the Company behind them and Boromir dies defending the other two hobbits."
+      es: "Mientras Frodo y Sam reman hacia la orilla oriental, los orcos caen sobre la Compañía a sus espaldas y Boromir muere defendiendo a los otros dos hobbits."
+  - to: boromirs-funeral-boat
+    type: concurrent
+    note:
+      en: "Two boats leave the same shore within the hour: one carries the Ring east, the other carries Boromir down to the falls."
+      es: "Dos barcas dejan la misma orilla en la misma hora: una lleva el Anillo al este, la otra lleva a Boromir hacia las cascadas."

@@ -6,7 +6,7 @@ when:
 place: angband
 characters: [ beren, luthien, melkor, carcharoth ]
 arcs: [ beren-and-luthien ]
-journeys: [ berens-quest ]
+journeys: [ berens-quest, morgoths-return-to-the-north ]
 tags: [ silmarillion ]
 status: scripted
 source: { book: the-silmarillion, chapter: "Of Beren and Lúthien" }

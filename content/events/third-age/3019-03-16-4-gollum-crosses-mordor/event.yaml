@@ -1,0 +1,53 @@
+id: gollum-crosses-mordor
+age: third-age
+when:
+  # His own road already dates these days (the journey `gollum-follows-the-ring`): out of the
+  # pass after Shelob's lair, and in Mordor until he falls on them on the mountain on 25 March.
+  start: { age: third-age, year: 3019, month: 3, day: 16 }
+  end: { age: third-age, year: 3019, month: 3, day: 24 }
+  precision: day
+place: mordor
+characters: [ gollum ]
+arcs: [ the-war-of-the-ring, the-ringbearers-road ]
+journeys: [ gollum-follows-the-ring ]
+tags: [ lord-of-the-rings, the-ring ]
+status: scripted
+source: { book: the-return-of-the-king, chapter: "Mount Doom" }
+title: { en: "Gollum Crosses Mordor", es: "Gollum cruza Mordor" }
+note:
+  en: "No one follows Gollum through these nine days. What the books say is that he was behind them the whole way, that Sam twice caught sight of a crawling shape, and that he was waiting on the mountain at the end; the scene shows no more than that."
+  es: "Nadie sigue a Gollum durante estos nueve días. Lo que dicen los libros es que estuvo detrás de ellos todo el camino, que Sam vislumbró dos veces una forma que se arrastraba, y que al final esperaba en la montaña; la escena no muestra más que eso."
+summary:
+  en: "Beaten off at Shelob's lair, Gollum does not give up. For nine days he crawls after the Ring across the plains of Mordor, unseen and nearly starving, keeping just far enough back not to be caught."
+  es: "Rechazado en el antro de Ella-Laraña, Gollum no se rinde. Durante nueve días se arrastra tras el Anillo por las llanuras de Mordor, sin ser visto y medio muerto de hambre, quedándose lo bastante atrás para que no lo atrapen."
+links:
+  - to: shelobs-lair
+    type: caused-by
+    note:
+      en: "His ambush failed and Sam drove him off; following is all that is left to him."
+      es: "Su emboscada fracasó y Sam lo ahuyentó; seguirlos es lo único que le queda."
+  - to: the-ring-is-destroyed
+    type: enables
+    note:
+      en: "He is on the mountain at the end only because he never stopped following, and his last grab for the Ring is what sends it into the fire."
+      es: "Está en la montaña al final solo porque nunca dejó de seguirlos, y su último zarpazo por el Anillo es lo que lo envía al fuego."
+  - to: frodo-and-sam-in-the-morgai
+    type: concurrent
+    note:
+      en: "They come down into the Morgai with him already behind them."
+      es: "Bajan al Morgai con él ya detrás de ellos."
+  - to: frodo-and-sam-among-the-orcs
+    type: concurrent
+    note:
+      en: "While the two are swept along in an orc-company, he keeps clear of the road and waits for them to come off it."
+      es: "Mientras a los dos se los lleva una compañía de orcos, él se mantiene lejos del camino y espera a que lo dejen."
+  - to: frodo-and-sam-turn-south
+    type: concurrent
+    note:
+      en: "They turn toward the mountain, and so does he."
+      es: "Ellos vuelven hacia la montaña, y él también."
+  - to: frodo-and-sam-cast-away-their-gear
+    type: concurrent
+    note:
+      en: "They throw away everything they do not need for the last climb; he is close enough now to see them do it."
+      es: "Tiran todo lo que no necesitan para la última subida; él ya está lo bastante cerca para verlo."

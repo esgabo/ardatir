@@ -6,6 +6,7 @@ when:
 place: valinor
 characters: [ melkor, manwe, mandos ]
 arcs: [  ]
+journeys: [ melkors-chaining-and-release ]
 tags: [ silmarillion ]
 status: scripted
 source: { book: the-silmarillion, chapter: "Of Fëanor and the Unchaining of Melkor" }
