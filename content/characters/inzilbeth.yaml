@@ -1,0 +1,9 @@
+id: inzilbeth
+name: { en: "Inzilbêth", es: "Inzilbêth" }
+kind: man
+summary:
+  en: "Ar-Gimilzôr's queen, secretly of the Faithful, who raised her elder son Inziladûn in her own belief and was never reconciled with her husband."
+  es: "Reina de Ar-Gimilzôr, en secreto de los Fieles, que crió a su hijo mayor Inziladûn en su propia creencia y nunca se reconcilió con su esposo."
+parents: [ lindorie ]
+spouse: [ ar-gimilzor ]
+pronounce: { en: in-ZIL-beth, es: in-ZIL-bez }

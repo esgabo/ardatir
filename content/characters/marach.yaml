@@ -1,0 +1,7 @@
+id: marach
+name: { en: "Marach", es: "Marach" }
+kind: man
+summary:
+  en: "Leader of the third and greatest host of Men to cross into Beleriand, from whom the House of Hador came."
+  es: "Jefe de la tercera y mayor hueste de Hombres que pasó a Beleriand, de quien vino la Casa de Hador."
+# The table of the House of Hador begins with him: his own parents are simply unrecorded.

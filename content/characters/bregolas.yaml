@@ -1,0 +1,7 @@
+id: bregolas
+name: { en: "Bregolas", es: "Bregolas" }
+kind: man
+summary:
+  en: "Bregor's elder son and lord of the House of Bëor, slain in the Bragollach with the greater part of his people."
+  es: "Hijo mayor de Bregor y señor de la Casa de Bëor, muerto en el Bragollach con la mayor parte de su gente."
+parents: [ bregor ]

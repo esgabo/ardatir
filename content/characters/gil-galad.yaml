@@ -7,3 +7,6 @@ summary:
 color: "#5a7a9a"
 scale: 1.95
 pronounce: { en: gil-GA-lad, es: gil-GA-lad }   # how to say it: syllables, the stressed one in capitals
+# The published Silmarillion and Appendix B make him Fingon's son, and that is the version we
+# tell; the later writings instead make him the son of Orodreth, and so Angrod's grandson.
+parents: [ fingon ]

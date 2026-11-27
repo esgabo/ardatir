@@ -1,0 +1,7 @@
+id: tar-calmacil
+name: { en: "Tar-Calmacil", es: "Tar-Calmacil" }
+kind: man
+summary:
+  en: "King of Númenor, a captain who won wide lands on the coasts of Middle-earth before he took the sceptre."
+  es: "Rey de Númenor, un capitán que ganó vastas tierras en las costas de la Tierra Media antes de tomar el cetro."
+parents: [ tar-alcarin ]

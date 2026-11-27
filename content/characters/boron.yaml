@@ -1,0 +1,7 @@
+id: boron
+name: { en: "Boron", es: "Boron" }
+kind: man
+summary:
+  en: "Baran's son, third lord of the House of Bëor."
+  es: "Hijo de Baran, tercer señor de la Casa de Bëor."
+parents: [ baran ]

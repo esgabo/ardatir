@@ -1,0 +1,7 @@
+id: hamfast-gamgee-the-younger
+name: { en: "Hamfast Gamgee the younger", es: "Hamfast Gamyi el joven" }
+kind: hobbit
+summary:
+  en: "A son of Sam and Rosie, named for his grandfather the Gaffer."
+  es: "Un hijo de Sam y Rosita, llamado así por su abuelo el Tío."
+parents: [ sam, rosie ]

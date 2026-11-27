@@ -1,0 +1,7 @@
+id: tar-anarion
+name: { en: "Tar-Anárion", es: "Tar-Anárion" }
+kind: man
+summary:
+  en: "King of Númenor, son of the first Ruling Queen; two elder sisters refused the sceptre before it came to him."
+  es: "Rey de Númenor, hijo de la primera Reina Gobernante; dos hermanas mayores rehusaron el cetro antes de que llegara a él."
+parents: [ hallacar, tar-ancalime ]

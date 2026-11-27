@@ -1,0 +1,7 @@
+id: arador
+name: { en: "Arador", es: "Arador" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain, Aragorn's grandfather, taken and killed by hill-trolls north of Rivendell."
+  es: "Caudillo de los Dúnedain, abuelo de Aragorn, apresado y muerto por trolls de las colinas al norte de Rivendel."
+parents: [ argonui ]

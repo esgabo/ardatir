@@ -1,0 +1,7 @@
+id: arveleg-ii
+name: { en: "Arveleg II", es: "Arveleg II" }
+kind: man
+summary:
+  en: "King of Arthedain of the Northern Line; Appendix A keeps little of him beyond his name."
+  es: "Rey de Arthedain de la Línea del Norte; el Apéndice A guarda poco de él más que su nombre."
+parents: [ arvegil ]

@@ -6,3 +6,4 @@ summary:
   es: "Caudillo de los Fieles de Númenor, que huyó de la Caída y fundó Arnor y Gondor."
 color: "#7a6a4a"
 scale: 2
+parents: [ amandil ]

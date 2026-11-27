@@ -1,0 +1,7 @@
+id: belladonna-took
+name: { en: "Belladonna Took", es: "Belladonna Tuk" }
+kind: hobbit
+summary:
+  en: "A daughter of the Old Took who married Bungo Baggins and became Bilbo's mother; whatever was unrespectable in him was said to come from her side."
+  es: "Hija del Viejo Tuk que se casó con Bungo Bolsón y fue la madre de Bilbo; lo poco respetable que había en él se decía que venía de su lado."
+parents: [ gerontius-took, adamanta-chubb ]

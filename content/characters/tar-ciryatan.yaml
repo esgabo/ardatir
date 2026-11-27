@@ -1,0 +1,8 @@
+id: tar-ciryatan
+name: { en: "Tar-Ciryatan", es: "Tar-Ciryatan" }
+kind: man
+summary:
+  en: "The Shipbuilder, a strong and greedy king who sent his fleets to take tribute from the coasts of Middle-earth instead of gifts."
+  es: "El Constructor de Naves, un rey fuerte y codicioso que envió sus flotas a tomar tributo de las costas de la Tierra Media en lugar de dones."
+parents: [ tar-minastir ]
+pronounce: { en: tar-kir-YA-tan, es: tar-ki-ria-TAN }

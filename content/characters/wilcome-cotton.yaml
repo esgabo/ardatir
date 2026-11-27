@@ -1,0 +1,7 @@
+id: wilcome-cotton
+name: { en: "Wilcome Cotton (Jolly)", es: "Wilcome Coto (Jolly)" }
+kind: hobbit
+summary:
+  en: "One of Rosie's brothers, who came out with the hobbits of Bywater against the ruffians."
+  es: "Uno de los hermanos de Rosita, que salió con los hobbits de Delagua contra los bandidos."
+parents: [ tolman-cotton, lily-brown ]

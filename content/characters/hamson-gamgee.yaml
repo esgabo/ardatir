@@ -1,0 +1,7 @@
+id: hamson-gamgee
+name: { en: "Hamson Gamgee", es: "Hamson Gamyi" }
+kind: hobbit
+summary:
+  en: "Sam's eldest brother, who went north to Tighfield to learn the family trade of rope-making."
+  es: "El hermano mayor de Sam, que se fue al norte, a Tighfield, a aprender el oficio familiar de cordelero."
+parents: [ hamfast-gamgee, bell-goodchild ]

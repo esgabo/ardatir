@@ -1,0 +1,7 @@
+id: arathorn-i
+name: { en: "Arathorn I", es: "Arathorn I" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain, son of Arassuil; the first of the two to bear the name."
+  es: "Caudillo de los Dúnedain, hijo de Arassuil; el primero de los dos que llevaron ese nombre."
+parents: [ arassuil ]

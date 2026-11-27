@@ -1,0 +1,8 @@
+id: rosamunda-took
+name: { en: "Rosamunda Took", es: "Rosamunda Tuk" }
+kind: hobbit
+summary:
+  en: "Odovacar Bolger's wife, mother of Fatty and of Estella; the Took in the Bolger line."
+  es: "Esposa de Odovacar Bolger, madre de Gordo y de Estella; la Tuk de la rama Bolger."
+# Appendix C does not place her among the Old Took's own children, and this pass does not guess at her father.
+spouse: [ odovacar-bolger ]

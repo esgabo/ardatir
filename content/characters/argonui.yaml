@@ -1,0 +1,7 @@
+id: argonui
+name: { en: "Argonui", es: "Argonui" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain of the North, Aragorn's great-grandfather."
+  es: "Caudillo de los Dúnedain del Norte, bisabuelo de Aragorn."
+parents: [ arathorn-i ]

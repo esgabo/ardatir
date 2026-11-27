@@ -1,0 +1,7 @@
+id: ponto-baggins
+name: { en: "Ponto Baggins", es: "Ponto Bolsón" }
+kind: hobbit
+summary:
+  en: "A son of Balbo, whose daughter Rosa married into the Tooks and so stands behind Merry and Pippin."
+  es: "Un hijo de Balbo, cuya hija Rosa se casó con los Tuk y está por tanto detrás de Merry y Pippin."
+parents: [ balbo-baggins, berylla-boffin ]

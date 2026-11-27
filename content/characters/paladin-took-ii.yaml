@@ -1,0 +1,8 @@
+id: paladin-took-ii
+name: { en: "Paladin Took II", es: "Paladin Tuk II" }
+kind: hobbit
+summary:
+  en: "Pippin's father, a farmer of the Whitwell country who became Thain of the Shire and raised the Tooklanders against Saruman's men."
+  es: "El padre de Pippin, un granjero de la comarca de Whitwell que llegó a ser Thain de la Comarca y levantó a los Tuk contra los hombres de Saruman."
+parents: [ adalgrim-took ]
+spouse: [ eglantine-banks ]

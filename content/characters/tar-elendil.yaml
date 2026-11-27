@@ -1,0 +1,7 @@
+id: tar-elendil
+name: { en: "Tar-Elendil", es: "Tar-Elendil" }
+kind: man
+summary:
+  en: "King of Númenor, learned in the stars and in old tales; from his daughter Silmariën came the Lords of Andúnië and so Elendil."
+  es: "Rey de Númenor, docto en las estrellas y en las viejas historias; de su hija Silmariën vinieron los Señores de Andúnië y por tanto Elendil."
+parents: [ tar-amandil ]

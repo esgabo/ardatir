@@ -1,0 +1,8 @@
+id: elrohir
+name: { en: "Elrohir", es: "Elrohir" }
+kind: elf
+summary:
+  en: "Elrond's son, twin to Elladan, who rode with the Grey Company to the Paths of the Dead and on to the Pelennor."
+  es: "Hijo de Elrond, gemelo de Elladan, que cabalgó con la Compañía Gris hasta los Senderos de los Muertos y después al Pelennor."
+parents: [ elrond, celebrian ]
+pronounce: { en: el-ROH-heer, es: el-RO-jir }

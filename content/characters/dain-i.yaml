@@ -1,0 +1,8 @@
+id: dain-i
+name: { en: "Dáin I", es: "Dáin I" }
+kind: dwarf
+summary:
+  en: "King of Durin's Folk, slain with his son Frór at the door of his hall by a cold-drake; his people then scattered, and Thrór led them back to Erebor."
+  es: "Rey del Pueblo de Durin, muerto con su hijo Frór a la puerta de su sala por un dragón del frío; su pueblo se dispersó entonces, y Thrór los llevó de vuelta a Erebor."
+parents: [ nain-ii ]
+# No mother appears anywhere in Durin's line: Appendix A says Dís is the only dwarf-woman the histories name.

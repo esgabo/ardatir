@@ -4,7 +4,7 @@ kind: man
 summary:
   en: King of Rohan, who leads the Rohirrim to the relief of Minas Tirith.
   es: Rey de Rohan, que conduce a los Rohirrim en auxilio de Minas Tirith.
-parents: [ thengel ]
+parents: [ thengel, morwen-of-lossarnach ]
 color: "#7a6a3a"
 scale: 1.8
 pronounce: { en: THAY-o-den, es: ZÉ-o-den }   # how to say it: syllables, the stressed one in capitals

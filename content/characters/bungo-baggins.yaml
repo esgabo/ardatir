@@ -1,0 +1,8 @@
+id: bungo-baggins
+name: { en: "Bungo Baggins", es: "Bungo Bolsón" }
+kind: hobbit
+summary:
+  en: "Bilbo's father, a solid and prosperous hobbit who dug Bag End into the Hill for his wife and spent the rest of his days in it."
+  es: "El padre de Bilbo, un hobbit sólido y próspero que cavó Bolsón Cerrado en la Colina para su esposa y pasó en él el resto de sus días."
+parents: [ mungo-baggins, laura-grubb ]
+spouse: [ belladonna-took ]

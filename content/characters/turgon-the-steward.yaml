@@ -1,0 +1,7 @@
+id: turgon-the-steward
+name: { en: "Turgon the Steward", es: "Turgon el Senescal" }
+kind: man
+summary:
+  en: "Ruling Steward of Gondor in the years when Sauron returned openly to Mordor; not Turgon of Gondolin."
+  es: "Senescal Regente de Gondor en los años en que Sauron regresó abiertamente a Mordor; no es Turgon de Gondolin."
+parents: [ turin-ii ]

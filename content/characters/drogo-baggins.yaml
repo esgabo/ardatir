@@ -1,0 +1,8 @@
+id: drogo-baggins
+name: { en: "Drogo Baggins", es: "Drogo Bolsón" }
+kind: hobbit
+summary:
+  en: "Frodo's father, a quiet hobbit who married into Buckland and was drowned in the Brandywine with his wife while their son was still small."
+  es: "El padre de Frodo, un hobbit discreto que se casó con una Brandigamo y se ahogó en el Brandivino con su esposa cuando su hijo era aún pequeño."
+parents: [ fosco-baggins, ruby-bolger ]
+spouse: [ primula-brandybuck ]

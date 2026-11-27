@@ -1,0 +1,8 @@
+id: gloin-the-elder
+name: { en: "Glóin", es: "Glóin" }
+kind: dwarf
+summary:
+  en: "King of Durin's Folk in the Grey Mountains, son of Thorin I; not the Glóin of Thorin Oakenshield's company, who came eight generations after him."
+  es: "Rey del Pueblo de Durin en las Montañas Grises, hijo de Thorin I; no es el Glóin de la compañía de Thorin Escudo de Roble, que vino ocho generaciones después."
+parents: [ thorin-i ]
+# No mother appears anywhere in Durin's line: Appendix A says Dís is the only dwarf-woman the histories name.

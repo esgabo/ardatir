@@ -1,0 +1,7 @@
+id: belen
+name: { en: "Belen", es: "Belen" }
+kind: man
+summary:
+  en: "Bëor's younger son, of the first Men to cross into Beleriand."
+  es: "Hijo menor de Bëor, de los primeros Hombres que pasaron a Beleriand."
+parents: [ beor ]

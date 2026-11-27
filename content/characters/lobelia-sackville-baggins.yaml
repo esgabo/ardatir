@@ -1,0 +1,7 @@
+id: lobelia-sackville-baggins
+name: { en: "Lobelia Sackville-Baggins", es: "Lobelia Sacovilla-Bolsón" }
+kind: hobbit
+summary:
+  en: "A Bracegirdle by birth and sharp-tongued by habit, who coveted Bag End for forty years and ended her days thought better of for standing up to the ruffians."
+  es: "Ciñatiesa de nacimiento y de lengua afilada por costumbre, codició Bolsón Cerrado durante cuarenta años y acabó sus días mejor considerada por haber hecho frente a los bandidos."
+# Appendix C gives her as a Bracegirdle; her father's name is not something this pass could vouch for, so no parentage is claimed.

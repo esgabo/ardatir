@@ -1,0 +1,7 @@
+id: urwen
+name: { en: "Urwen (Lalaith)", es: "Urwen (Lalaith)" }
+kind: man
+summary:
+  en: "Túrin's little sister, called Lalaith for her laughter, who died of a plague out of Angband before her fourth year was out."
+  es: "La hermana pequeña de Túrin, llamada Lalaith por su risa, que murió de una peste venida de Angband antes de cumplir cuatro años."
+parents: [ hurin, morwen ]

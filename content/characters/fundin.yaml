@@ -4,3 +4,4 @@ kind: dwarf
 summary:
   en: "Of Durin's line, father of Balin and Dwalin."
   es: "Del linaje de Durin, padre de Balin y Dwalin."
+parents: [ farin ]

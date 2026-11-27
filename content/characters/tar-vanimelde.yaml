@@ -1,0 +1,8 @@
+id: tar-vanimelde
+name: { en: "Tar-Vanimeldë", es: "Tar-Vanimeldë" }
+kind: man
+summary:
+  en: "The third Ruling Queen of Númenor, who cared more for music and dancing than for rule, and let her husband govern in her name."
+  es: "La tercera Reina Gobernante de Númenor, que amó más la música y la danza que el gobierno, y dejó que su esposo gobernara en su nombre."
+parents: [ tar-telemmaite ]
+spouse: [ herucalmo ]

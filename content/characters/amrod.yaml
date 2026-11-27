@@ -1,0 +1,9 @@
+id: amrod
+name: { en: "Amrod", es: "Amrod" }
+kind: elf
+summary:
+  en: "One of Fëanor's twin youngest sons, who hunted the wide lands of East Beleriand with his brother."
+  es: "Uno de los hijos menores gemelos de Fëanor, que cazaba con su hermano en las amplias tierras de Beleriand oriental."
+parents: [ feanor, nerdanel ]
+twin: amras
+# No wife of any of Fëanor's seven sons is named in any source, save that Curufin's was Celebrimbor's mother.

@@ -1,0 +1,8 @@
+id: largo-baggins
+name: { en: "Largo Baggins", es: "Largo Bolsón" }
+kind: hobbit
+summary:
+  en: "A son of Balbo and Frodo's great-grandfather, of the branch that settled away from the Hill."
+  es: "Hijo de Balbo y bisabuelo de Frodo, de la rama que se asentó lejos de la Colina."
+parents: [ balbo-baggins, berylla-boffin ]
+spouse: [ tanta-hornblower ]

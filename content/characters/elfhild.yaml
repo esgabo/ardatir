@@ -1,0 +1,7 @@
+id: elfhild
+name: { en: "Elfhild", es: "Elfhild" }
+kind: man
+summary:
+  en: "Théoden's wife, who died giving birth to their only son Théodred; the king never married again."
+  es: "Esposa de Théoden, que murió al dar a luz a su único hijo, Théodred; el rey no volvió a casarse."
+spouse: [ theoden ]

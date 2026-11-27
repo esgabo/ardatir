@@ -1,0 +1,7 @@
+id: handir
+name: { en: "Handir", es: "Handir" }
+kind: man
+summary:
+  en: "Haldir and Glóredhel's son, chieftain of Brethil, slain by orcs in his own woods; Brandir's father."
+  es: "Hijo de Haldir y Glóredhel, caudillo de Brethil, muerto por orcos en sus propios bosques; padre de Brandir."
+parents: [ haldir, gloredhel ]

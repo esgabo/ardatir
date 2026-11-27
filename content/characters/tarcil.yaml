@@ -1,0 +1,7 @@
+id: tarcil
+name: { en: "Tarcil", es: "Tarcil" }
+kind: man
+summary:
+  en: "King of Arnor of the Northern Line; Appendix A keeps little of him beyond his name and his years."
+  es: "Rey de Arnor de la Línea del Norte; el Apéndice A guarda poco de él más que su nombre y sus años."
+parents: [ arantar ]

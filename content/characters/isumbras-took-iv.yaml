@@ -1,0 +1,7 @@
+id: isumbras-took-iv
+name: { en: "Isumbras Took IV", es: "Isumbras Tuk IV" }
+kind: hobbit
+summary:
+  en: "A son of the Old Took and Thain in his turn, from whom the Thainship passed down to Ferumbras."
+  es: "Hijo del Viejo Tuk y Thain a su vez, de quien el cargo de Thain pasó hasta Ferumbras."
+parents: [ gerontius-took, adamanta-chubb ]

@@ -150,15 +150,20 @@ describe('the real content', () => {
     // The marriages the old `kin` could not hold, with the reverse derived on the other side.
     expect(f.turin.spouses).toEqual([{ id: 'nienor' }]);
     expect(f.nienor.spouses).toEqual([{ id: 'turin', reverse: true }]);
-    expect(f.nienor.siblings.map((s) => s.id)).toEqual(['turin']);
+    expect(f.nienor.siblings.map((s) => s.id)).toContain('turin');
     expect(f.aragorn.spouses).toEqual([{ id: 'arwen', reverse: true }]);
     // Bofur and Bombur: brothers in the published Hobbit, and no source names a parent of either.
     expect(f.bofur.kin).toEqual([{ id: 'bombur', as: 'sibling' }, { id: 'bifur', as: 'cousin' }]);
-    // Durin's line is one house, and generation depth counts rows, not years.
-    expect(r.index.houses.find((h) => h.members.includes('thorin'))!.members)
-      .toEqual(['dis', 'fili', 'frerin', 'kili', 'thorin', 'thrain', 'thror']);
-    expect(f.thror.generation).toBe(0);
-    expect(f.fili.generation).toBe(3);
+    // Durin's line is one house. Asserted by membership rather than by the whole list, because
+    // the list grows every time somebody authors another dwarf and a test that has to be edited
+    // to add content stops being a test of anything.
+    const durin = r.index.houses.find((h) => h.members.includes('thorin'))!;
+    expect(durin.members).toEqual(expect.arrayContaining(['dis', 'fili', 'frerin', 'kili', 'thorin', 'thrain', 'thror']));
+    expect(durin.members).not.toContain('bilbo');
+    // Generation depth counts rows from the house's root, not years: Fíli stands three below
+    // Thrór whatever is authored above him, and the whole line is one unbroken descent.
+    expect(f.fili.generation - f.thror.generation).toBe(3);
+    expect(f.thror.generation).toBeGreaterThanOrEqual(0);
     // A character no parentage edge touches stands in no house at all.
     expect(f.gandalf.house).toBeUndefined();
   });

@@ -1,0 +1,9 @@
+id: numendil
+name: { en: "Númendil", es: "Númendil" }
+kind: man
+summary:
+  en: "Lord of Andúnië in the days of Tar-Palantír, and Amandil's father."
+  es: "Señor de Andúnië en los días de Tar-Palantír, y padre de Amandil."
+# The Lords of Andúnië between Valandil and Númendil are not individually named, so no parentage is claimed.
+kin:
+  - { id: valandil-of-andunie, as: ancestor }   # the descent is asserted; the Lords between the two are not named

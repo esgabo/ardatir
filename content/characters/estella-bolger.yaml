@@ -1,0 +1,8 @@
+id: estella-bolger
+name: { en: "Estella Bolger", es: "Estella Bolger" }
+kind: hobbit
+summary:
+  en: "Fatty Bolger's sister, who married Merry Brandybuck and became Mistress of Buckland."
+  es: "Hermana de Gordo Bolger, que se casó con Merry Brandigamo y fue señora de Los Gamos."
+parents: [ odovacar-bolger, rosamunda-took ]
+spouse: [ merry ]

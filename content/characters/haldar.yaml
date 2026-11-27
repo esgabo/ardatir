@@ -1,0 +1,7 @@
+id: haldar
+name: { en: "Haldar", es: "Haldar" }
+kind: man
+summary:
+  en: "Haldad's son, slain with his father at the stockade in Thargelion."
+  es: "Hijo de Haldad, muerto con su padre en la estacada de Thargelion."
+parents: [ haldad ]

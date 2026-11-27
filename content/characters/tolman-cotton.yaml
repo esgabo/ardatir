@@ -1,0 +1,8 @@
+id: tolman-cotton
+name: { en: "Tolman Cotton (Farmer Cotton)", es: "Tolman Coto (el granjero Coto)" }
+kind: hobbit
+summary:
+  en: "A farmer of Bywater and Rosie's father, who raised the Shire-folk at the Battle of Bywater and had little patience with ruffians."
+  es: "Un granjero de Delagua y el padre de Rosita, que levantó a la gente de la Comarca en la Batalla de Delagua y tuvo poca paciencia con los bandidos."
+# Appendix C's Cotton grandparents were not something this pass could vouch for, so no parentage is claimed.
+spouse: [ lily-brown ]

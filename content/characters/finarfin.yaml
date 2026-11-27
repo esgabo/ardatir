@@ -6,3 +6,4 @@ summary:
   es: "El apacible hijo menor de Finwë, que volvió atrás tras la Sentencia de Mandos y gobernó a los Noldor que se quedaron."
 color: "#5a7a9a"
 scale: 1.85
+parents: [ finwe, indis ]

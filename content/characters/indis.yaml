@@ -1,0 +1,8 @@
+id: indis
+name: { en: "Indis", es: "Indis" }
+kind: elf
+summary:
+  en: "A lady of the Vanyar and the kindred of Ingwë, who became Finwë's second wife and the mother of Fingolfin and Finarfin."
+  es: "Una dama de los Vanyar y del linaje de Ingwë, que fue la segunda esposa de Finwë y la madre de Fingolfin y Finarfin."
+# The texts call her near kin of Ingwë rather than his daughter, so no parentage is claimed.
+spouse: [ finwe ]

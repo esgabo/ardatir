@@ -1,0 +1,7 @@
+id: ruby-gamgee
+name: { en: "Ruby Gamgee", es: "Ruby Gamyi" }
+kind: hobbit
+summary:
+  en: "A daughter of Sam and Rosie."
+  es: "Una hija de Sam y Rosita."
+parents: [ sam, rosie ]

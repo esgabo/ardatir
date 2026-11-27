@@ -1,0 +1,7 @@
+id: erendis
+name: { en: "Erendis", es: "Erendis" }
+kind: man
+summary:
+  en: "Tar-Aldarion's wife, who loved the land and the trees and could not bear that the sea took him again and again; their quarrel broke the royal house apart."
+  es: "Esposa de Tar-Aldarion, que amaba la tierra y los árboles y no pudo soportar que el mar lo arrebatara una y otra vez; su desavenencia quebró la casa real."
+spouse: [ tar-aldarion ]

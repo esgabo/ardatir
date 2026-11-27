@@ -1,0 +1,9 @@
+id: nerdanel
+name: { en: "Nerdanel", es: "Nerdanel" }
+kind: elf
+summary:
+  en: "Mahtan's daughter and Fëanor's wife, a maker of likenesses in stone, patient where he was fierce; the mother of his seven sons, and the one voice that could sometimes turn him."
+  es: "Hija de Mahtan y esposa de Fëanor, escultora de figuras en piedra, paciente donde él era vehemente; madre de sus siete hijos y la única voz que a veces lograba desviarlo."
+parents: [ mahtan ]
+spouse: [ feanor ]
+pronounce: { en: NER-da-nel, es: ner-da-NEL }

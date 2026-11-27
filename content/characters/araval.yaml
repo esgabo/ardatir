@@ -1,0 +1,7 @@
+id: araval
+name: { en: "Araval", es: "Araval" }
+kind: man
+summary:
+  en: "King of Arthedain, son of Arveleg II."
+  es: "Rey de Arthedain, hijo de Arveleg II."
+parents: [ arveleg-ii ]

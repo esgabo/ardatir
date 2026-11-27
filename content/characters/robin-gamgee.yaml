@@ -1,0 +1,7 @@
+id: robin-gamgee
+name: { en: "Robin Gamgee", es: "Robin Gamyi" }
+kind: hobbit
+summary:
+  en: "A son of Sam and Rosie."
+  es: "Un hijo de Sam y Rosita."
+parents: [ sam, rosie ]

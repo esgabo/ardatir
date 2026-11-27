@@ -1,0 +1,8 @@
+id: esmeralda-took
+name: { en: "Esmeralda Took", es: "Esmeralda Tuk" }
+kind: hobbit
+summary:
+  en: "Adalgrim's daughter, who married Saradoc Brandybuck and became Merry's mother and Mistress of Buckland."
+  es: "Hija de Adalgrim, que se casó con Saradoc Brandigamo y fue la madre de Merry y señora de Los Gamos."
+parents: [ adalgrim-took ]
+spouse: [ saradoc-brandybuck ]

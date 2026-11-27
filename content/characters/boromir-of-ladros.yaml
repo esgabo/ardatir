@@ -1,0 +1,7 @@
+id: boromir-of-ladros
+name: { en: "Boromir of Ladros", es: "Boromir de Ladros" }
+kind: man
+summary:
+  en: "The first lord of the House of Bëor to hold Ladros in Dorthonion, given him by the sons of Finarfin; not the Boromir of Gondor, who bore his name an age and a half later."
+  es: "El primer señor de la Casa de Bëor que gobernó Ladros en Dorthonion, concedida por los hijos de Finarfin; no es el Boromir de Gondor, que llevó su nombre una edad y media después."
+parents: [ boron ]

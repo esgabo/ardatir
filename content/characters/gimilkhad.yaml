@@ -1,0 +1,8 @@
+id: gimilkhad
+name: { en: "Gimilkhâd", es: "Gimilkhâd" }
+kind: man
+summary:
+  en: "Ar-Gimilzôr's younger son, leader of the King's Men against his brother Tar-Palantír, and father of Ar-Pharazôn."
+  es: "Hijo menor de Ar-Gimilzôr, caudillo de los Hombres del Rey contra su hermano Tar-Palantír, y padre de Ar-Pharazôn."
+parents: [ ar-gimilzor, inzilbeth ]
+pronounce: { en: GIM-il-khad, es: gui-mil-JAD }

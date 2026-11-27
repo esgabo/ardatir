@@ -1,0 +1,8 @@
+id: rorimac-brandybuck
+name: { en: "Rorimac Brandybuck", es: "Rorimac Brandigamo" }
+kind: hobbit
+summary:
+  en: "Master of Buckland, known in his long old age as Old Rory; Frodo's uncle, and the uncle who kept him at Brandy Hall after his parents drowned."
+  es: "Señor de Los Gamos, conocido en su larga vejez como el viejo Rory; tío de Frodo, y el tío que lo tuvo en Casa Brandi después de que sus padres se ahogaran."
+parents: [ gorbadoc-brandybuck, mirabella-took ]
+spouse: [ menegilda-goold ]

@@ -1,0 +1,7 @@
+id: donnamira-took
+name: { en: "Donnamira Took", es: "Donnamira Tuk" }
+kind: hobbit
+summary:
+  en: "A daughter of the Old Took, who married into the Boffins."
+  es: "Hija del Viejo Tuk, que se casó con los Boffin."
+parents: [ gerontius-took, adamanta-chubb ]

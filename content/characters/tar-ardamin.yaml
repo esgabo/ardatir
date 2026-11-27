@@ -1,0 +1,7 @@
+id: tar-ardamin
+name: { en: "Tar-Ardamin", es: "Tar-Ardamin" }
+kind: man
+summary:
+  en: "King of Númenor; the Line of Elros names him, and Appendix A's king-list leaves him out, a disagreement between the two texts that is not resolved."
+  es: "Rey de Númenor; el Linaje de Elros lo nombra, y la lista de reyes del Apéndice A lo omite, una discrepancia entre ambos textos que no está resuelta."
+parents: [ tar-calmacil ]

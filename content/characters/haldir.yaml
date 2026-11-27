@@ -1,0 +1,7 @@
+id: haldir
+name: { en: "Haldir", es: "Haldir" }
+kind: man
+summary:
+  en: "Halmir's son and chieftain of Brethil, who married Glóredhel of the House of Hador and fell in the Nirnaeth Arnoediad."
+  es: "Hijo de Halmir y caudillo de Brethil, que se casó con Glóredhel de la Casa de Hador y cayó en el Nirnaeth Arnoediad."
+parents: [ halmir ]

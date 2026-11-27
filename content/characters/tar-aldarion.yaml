@@ -6,3 +6,5 @@ summary:
   es: "El Rey Marinero de Númenor, que amó el mar y las costas de la Tierra Media y trabó amistad con Gil-galad."
 color: "#7a6a4a"
 scale: 2
+parents: [ tar-meneldur, almarian ]
+spouse: [ erendis ]

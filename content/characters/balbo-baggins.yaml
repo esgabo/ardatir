@@ -1,0 +1,8 @@
+id: balbo-baggins
+name: { en: "Balbo Baggins", es: "Balbo Bolsón" }
+kind: hobbit
+summary:
+  en: "The eldest Baggins the family records reach back to, and the head of the five branches that come after him."
+  es: "El Bolsón más antiguo al que llegan los registros de la familia, y cabeza de las cinco ramas que vienen después."
+# Appendix C begins the Baggins tree with him: his own parents are simply unrecorded.
+spouse: [ berylla-boffin ]

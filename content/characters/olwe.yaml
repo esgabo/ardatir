@@ -1,0 +1,9 @@
+id: olwe
+name: { en: "Olwë", es: "Olwë" }
+kind: elf
+summary:
+  en: "Lord of the Teleri who led his people over Sea to Alqualondë, and brother of Elwë whom the Sindar called Thingol."
+  es: "Señor de los Teleri que condujo a su pueblo sobre el Mar hasta Alqualondë, y hermano de Elwë, a quien los Sindar llamaron Thingol."
+kin:
+  - { id: thingol, as: sibling }   # the texts say plainly they were brothers and name no parent of either
+pronounce: { en: OL-weh, es: OL-ue }

@@ -6,5 +6,8 @@ summary:
   es: "Hija de Elrond, que se casa con Aragorn y elige una vida mortal por él."
 color: "#4a4a6a"
 scale: 1.8
-parents: [ elrond ]
 spouse: [ aragorn ]
+parents: [ elrond, celebrian ]
+fate:
+  en: "Given the Choice of the Half-elven, she took the fate of Men for Aragorn's sake, and gave up the ships into the West."
+  es: "Puesta ante ella la Elección de los Medio Elfos, tomó el destino de los Hombres por amor a Aragorn y renunció a los navíos del Oeste."

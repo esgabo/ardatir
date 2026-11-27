@@ -1,0 +1,7 @@
+id: halmir
+name: { en: "Halmir", es: "Halmir" }
+kind: man
+summary:
+  en: "Chieftain of the Haladin of Brethil, who joined his axes to the elves of Doriath against the orcs that came down Sirion."
+  es: "Caudillo de los Haladin de Brethil, que unió sus hachas a los elfos de Doriath contra los orcos que bajaron por el Sirion."
+parents: [ haldan ]

@@ -1,0 +1,7 @@
+id: hamfast-of-gamwich
+name: { en: "Hamfast of Gamwich", es: "Hamfast de Gamwich" }
+kind: hobbit
+summary:
+  en: "The earliest of Sam's forefathers the family remembered, a hobbit of the village of Gamwich from which the name Gamgee was worn down."
+  es: "El más antiguo de los antepasados de Sam que la familia recordaba, un hobbit de la aldea de Gamwich de cuyo nombre se desgastó el de Gamyi."
+# Appendix C begins the Gamgee tree with him: his own parents are simply unrecorded.

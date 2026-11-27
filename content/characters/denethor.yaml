@@ -6,3 +6,4 @@ summary:
   es: "Senescal de Gondor, orgulloso y sombrío, que gobierna la ciudad en ausencia del rey."
 color: "#6a6a7a"
 scale: 1.8
+parents: [ ecthelion-ii ]

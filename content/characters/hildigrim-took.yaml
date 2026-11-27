@@ -1,0 +1,8 @@
+id: hildigrim-took
+name: { en: "Hildigrim Took", es: "Hildigrim Tuk" }
+kind: hobbit
+summary:
+  en: "A son of the Old Took who married Rosa Baggins; Merry and Pippin both come down from him."
+  es: "Hijo del Viejo Tuk que se casó con Rosa Bolsón; tanto Merry como Pippin descienden de él."
+parents: [ gerontius-took, adamanta-chubb ]
+spouse: [ rosa-baggins ]

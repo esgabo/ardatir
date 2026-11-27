@@ -6,3 +6,4 @@ summary:
   es: Un Enano de la Montaña Solitaria, miembro de la Compañía del Anillo.
 color: "#7a4a2e"
 scale: 1.3
+parents: [ gloin ]

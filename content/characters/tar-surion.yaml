@@ -1,0 +1,7 @@
+id: tar-surion
+name: { en: "Tar-Súrion", es: "Tar-Súrion" }
+kind: man
+summary:
+  en: "King of Númenor, the youngest child of Tar-Anárion, who took the sceptre when his sisters would not."
+  es: "Rey de Númenor, el hijo menor de Tar-Anárion, que tomó el cetro cuando sus hermanas no quisieron."
+parents: [ tar-anarion ]

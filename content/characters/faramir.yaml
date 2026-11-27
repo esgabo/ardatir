@@ -6,5 +6,5 @@ summary:
   es: "Hermano menor de Boromir, capitán de Gondor, de trato amable y sabio."
 color: "#5a6a4a"
 scale: 1.8
-parents: [ denethor ]
+parents: [ denethor, finduilas-of-dol-amroth ]
 spouse: [ eowyn ]

@@ -1,0 +1,7 @@
+id: meneldil
+name: { en: "Meneldil", es: "Meneldil" }
+kind: man
+summary:
+  en: "Anárion's son, the first king to rule Gondor alone after the Last Alliance; the kings of the South descend from him."
+  es: "Hijo de Anárion, el primer rey que gobernó Gondor en solitario tras la Última Alianza; de él descienden los reyes del Sur."
+parents: [ anarion ]

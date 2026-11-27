@@ -320,6 +320,10 @@ const UI = {
   kin_ancestor: { en: '{a}, ancestor of {b}', es: '{a}, de los antepasados de {b}' },
   kin_descendant: { en: '{a}, descendant of {b}', es: '{a}, descendiente de {b}' },
   kin_kin: { en: '{a}, kin of {b}', es: '{a}, pariente de {b}' },
+  // Fostering is not descent and not marriage, so it is said as what it is: who raised whom.
+  // Spanish takes no gender from the person, as everywhere here, so the phrasing avoids it.
+  'kin_foster-parent': { en: '{a}, who raised {b}', es: '{a}, quien crió a {b}' },
+  kin_fosterling: { en: '{a}, raised by {b}', es: '{a}, criado por {b}' },
   // Battles: their sides (factions)
   against: { en: 'against', es: 'contra' },
   sidesTitle: { en: 'The sides', es: 'Los bandos' },

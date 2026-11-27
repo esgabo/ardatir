@@ -1,0 +1,7 @@
+id: bilbo-gamgee
+name: { en: "Bilbo Gamgee", es: "Bilbo Gamyi" }
+kind: hobbit
+summary:
+  en: "A son of Sam and Rosie, named for the old hobbit of Bag End."
+  es: "Un hijo de Sam y Rosita, llamado así por el viejo hobbit de Bolsón Cerrado."
+parents: [ sam, rosie ]

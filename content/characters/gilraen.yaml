@@ -1,0 +1,8 @@
+id: gilraen
+name: { en: "Gilraen", es: "Gilraen" }
+kind: man
+summary:
+  en: "Aragorn's mother, who brought her small son to Rivendell for safety and kept his name and lineage secret from him for twenty years; she went back to her own people before he came into his own."
+  es: "La madre de Aragorn, que llevó a su pequeño hijo a Rivendel para ponerlo a salvo y le ocultó su nombre y su linaje durante veinte años; regresó con su propia gente antes de que él recibiera lo suyo."
+parents: [ dirhael, ivorwen ]
+pronounce: { en: GIL-rye-en, es: guil-RA-en }

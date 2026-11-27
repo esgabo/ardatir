@@ -1,0 +1,7 @@
+id: arassuil
+name: { en: "Arassuil", es: "Arassuil" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain in days when orcs multiplied in Eriador and troubled the lands west of the mountains."
+  es: "Caudillo de los Dúnedain en días en que los orcos se multiplicaron en Eriador y hostigaron las tierras al oeste de las montañas."
+parents: [ arahad-ii ]

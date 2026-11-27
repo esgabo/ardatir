@@ -1,0 +1,7 @@
+id: magor
+name: { en: "Magor", es: "Magor" }
+kind: man
+summary:
+  en: "Malach's son, who led his people north into Hithlum and the lands that became Dor-lómin."
+  es: "Hijo de Malach, que condujo a su pueblo al norte, a Hithlum y a las tierras que llegaron a ser Dor-lómin."
+parents: [ malach ]

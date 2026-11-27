@@ -1,0 +1,7 @@
+id: amaranth-brandybuck
+name: { en: "Amaranth Brandybuck", es: "Amaranth Brandigamo" }
+kind: hobbit
+summary:
+  en: "A daughter of Gorbadoc and Mirabella, and one of Frodo's many aunts at Brandy Hall."
+  es: "Hija de Gorbadoc y Mirabella, y una de las muchas tías de Frodo en Casa Brandi."
+parents: [ gorbadoc-brandybuck, mirabella-took ]

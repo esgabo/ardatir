@@ -1,0 +1,9 @@
+id: earwen
+name: { en: "Eärwen", es: "Eärwen" }
+kind: elf
+summary:
+  en: "Olwë's daughter of Alqualondë, who married Finarfin; the Telerin blood of her children is why Finrod and Galadriel were kin to the king of Doriath."
+  es: "Hija de Olwë de Alqualondë, que se casó con Finarfin; la sangre telerin de sus hijos es la razón de que Finrod y Galadriel fueran parientes del rey de Doriath."
+parents: [ olwe ]
+spouse: [ finarfin ]
+pronounce: { en: eh-AR-wen, es: e-AR-uen }

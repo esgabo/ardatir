@@ -1,0 +1,8 @@
+id: dirhael
+name: { en: "Dírhael", es: "Dírhael" }
+kind: man
+summary:
+  en: "Gilraen's father, a man of the Dúnedain who thought his daughter too young to be given to Arathorn."
+  es: "El padre de Gilraen, un hombre de los Dúnedain que juzgó a su hija demasiado joven para ser entregada a Arathorn."
+spouse: [ ivorwen ]
+pronounce: { en: DEER-hile, es: DÍR-jael }

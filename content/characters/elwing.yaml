@@ -6,3 +6,4 @@ summary:
   es: "Nieta de Beren y Lúthien, portadora del Silmaril y esposa de Eärendil."
 color: "#5a7a9a"
 scale: 1.75
+parents: [ dior, nimloth ]

@@ -1,0 +1,8 @@
+id: morwen-of-lossarnach
+name: { en: "Morwen of Lossarnach", es: "Morwen de Lossarnach" }
+kind: man
+summary:
+  en: "A tall lady of Gondor whom Thengel married in his exile, called Steelsheen in the Mark; the mother of Théoden, Théodwyn and three daughters, and Éowyn's grandmother."
+  es: "Una dama alta de Gondor con quien Thengel se casó en su exilio, llamada en la Marca Acerada; madre de Théoden, Théodwyn y tres hijas, y abuela de Éowyn."
+spouse: [ thengel ]
+# Not Morwen Eledhwen, Húrin's wife, who bore the name in the First Age.

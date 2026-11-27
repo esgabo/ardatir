@@ -1,0 +1,7 @@
+id: celebrindor
+name: { en: "Celebrindor", es: "Celebrindor" }
+kind: man
+summary:
+  en: "King of Arthedain, son of Celepharn."
+  es: "Rey de Arthedain, hijo de Celepharn."
+parents: [ celepharn ]

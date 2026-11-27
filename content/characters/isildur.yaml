@@ -7,3 +7,4 @@ summary:
 color: "#7a6a4a"
 scale: 1.9
 pronounce: { en: ee-SIL-door, es: i-SIL-dur }   # how to say it: syllables, the stressed one in capitals
+parents: [ elendil ]

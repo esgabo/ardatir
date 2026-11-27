@@ -1,0 +1,12 @@
+id: elured
+name: { en: "Eluréd", es: "Eluréd" }
+kind: elf
+summary:
+  en: "A son of Dior and Nimloth, twin to Elurín; the followers of Celegorm left the two boys in the winter woods, and no tale tells what became of them."
+  es: "Hijo de Dior y Nimloth, gemelo de Elurín; los seguidores de Celegorm dejaron a los dos niños en los bosques invernales, y ningún relato cuenta qué fue de ellos."
+parents: [ dior, nimloth ]
+twin: elurin
+pronounce: { en: e-loo-RED, es: e-lu-RED }
+fate:
+  en: "No source says that he died: the tale simply loses him in the woods, and so his end is unknown."
+  es: "Ninguna fuente dice que muriera: el relato simplemente lo pierde en los bosques, y así su final es desconocido."

@@ -6,3 +6,4 @@ summary:
   es: "Hermano menor de Húrin y padre de Tuor."
 color: "#7a6a4a"
 scale: 1.8
+parents: [ galdor, hareth ]

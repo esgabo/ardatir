@@ -1,0 +1,7 @@
+id: hildifons-took
+name: { en: "Hildifons Took", es: "Hildifons Tuk" }
+kind: hobbit
+summary:
+  en: "A son of the Old Took who went off on a journey one day and never came back."
+  es: "Hijo del Viejo Tuk que un día partió de viaje y nunca regresó."
+parents: [ gerontius-took, adamanta-chubb ]

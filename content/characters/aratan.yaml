@@ -1,0 +1,7 @@
+id: aratan
+name: { en: "Aratan", es: "Aratan" }
+kind: man
+summary:
+  en: "A son of Isildur, slain with him at the Gladden Fields."
+  es: "Hijo de Isildur, muerto con él en los Campos Gladios."
+parents: [ isildur ]

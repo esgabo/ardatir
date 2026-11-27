@@ -1,0 +1,7 @@
+id: tolman-gamgee
+name: { en: "Tolman Gamgee", es: "Tolman Gamyi" }
+kind: hobbit
+summary:
+  en: "The youngest of Sam and Rosie's thirteen children, named for Rosie's father the farmer."
+  es: "El menor de los trece hijos de Sam y Rosita, llamado así por el padre de Rosita, el granjero."
+parents: [ sam, rosie ]

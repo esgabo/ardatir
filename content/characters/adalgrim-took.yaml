@@ -1,0 +1,7 @@
+id: adalgrim-took
+name: { en: "Adalgrim Took", es: "Adalgrim Tuk" }
+kind: hobbit
+summary:
+  en: "Hildigrim and Rosa's son; Merry's mother and Pippin's father were both his children, which is why the two cousins grew up as close as brothers."
+  es: "Hijo de Hildigrim y Rosa; la madre de Merry y el padre de Pippin fueron ambos hijos suyos, y por eso los dos primos crecieron tan unidos como hermanos."
+parents: [ hildigrim-took, rosa-baggins ]

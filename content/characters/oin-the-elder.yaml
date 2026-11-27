@@ -1,0 +1,8 @@
+id: oin-the-elder
+name: { en: "Óin", es: "Óin" }
+kind: dwarf
+summary:
+  en: "King of Durin's Folk in the Grey Mountains; not the Óin of Thorin Oakenshield's company."
+  es: "Rey del Pueblo de Durin en las Montañas Grises; no es el Óin de la compañía de Thorin Escudo de Roble."
+parents: [ gloin-the-elder ]
+# No mother appears anywhere in Durin's line: Appendix A says Dís is the only dwarf-woman the histories name.

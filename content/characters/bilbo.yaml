@@ -9,3 +9,7 @@ summary:
 color: "#c9a46a"
 scale: 1
 model: characters/bilbo/bilbo.glb
+parents: [ bungo-baggins, belladonna-took ]
+fate:
+  en: "He did not die in the Shire: at a hundred and thirty-one he rode to the Grey Havens and passed over Sea with the Ring-bearers."
+  es: "No murió en la Comarca: a los ciento treinta y un años cabalgó hasta los Puertos Grises y partió sobre el Mar con los Portadores del Anillo."

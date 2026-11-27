@@ -1,0 +1,8 @@
+id: tar-telperien
+name: { en: "Tar-Telperiën", es: "Tar-Telperiën" }
+kind: man
+summary:
+  en: "The second Ruling Queen of Númenor, who reigned long, never married, and left no children."
+  es: "La segunda Reina Gobernante de Númenor, que reinó mucho tiempo, nunca se casó y no dejó hijos."
+parents: [ tar-surion ]
+pronounce: { en: tar-tel-PEH-ree-en, es: tar-tel-PE-ri-en }

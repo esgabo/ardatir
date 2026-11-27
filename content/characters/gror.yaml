@@ -1,0 +1,8 @@
+id: gror
+name: { en: "Grór", es: "Grór" }
+kind: dwarf
+summary:
+  en: "A son of Dáin I, who took his people east to the Iron Hills and founded the lordship his grandson Dáin Ironfoot held."
+  es: "Hijo de Dáin I, que llevó a su gente al este, a las Colinas de Hierro, y fundó el señorío que tuvo su nieto Dáin Pie de Hierro."
+parents: [ dain-i ]
+# No mother appears anywhere in Durin's line: Appendix A says Dís is the only dwarf-woman the histories name.

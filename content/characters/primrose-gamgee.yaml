@@ -1,0 +1,7 @@
+id: primrose-gamgee
+name: { en: "Primrose Gamgee", es: "Primrose Gamyi" }
+kind: hobbit
+summary:
+  en: "A daughter of Sam and Rosie, one of the flower-names Sam gave his daughters."
+  es: "Una hija de Sam y Rosita, uno de los nombres de flor que Sam dio a sus hijas."
+parents: [ sam, rosie ]

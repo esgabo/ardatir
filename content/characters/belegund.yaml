@@ -1,0 +1,7 @@
+id: belegund
+name: { en: "Belegund", es: "Belegund" }
+kind: man
+summary:
+  en: "Bregolas's son and one of Barahir's outlaws; Rían's father, and so Tuor's grandfather."
+  es: "Hijo de Bregolas y uno de los proscritos de Barahir; padre de Rían y por tanto abuelo de Tuor."
+parents: [ bregolas ]

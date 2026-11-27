@@ -1,0 +1,7 @@
+id: arveleg-i
+name: { en: "Arveleg I", es: "Arveleg I" }
+kind: man
+summary:
+  en: "King of Arthedain, who drove the enemy back out of Cardolan and was slain at last when Angmar took the tower of Amon Sûl."
+  es: "Rey de Arthedain, que expulsó al enemigo de Cardolan y al fin fue muerto cuando Angmar tomó la torre de Amon Sûl."
+parents: [ argeleb-i ]

@@ -1,0 +1,7 @@
+id: aravir
+name: { en: "Aravir", es: "Aravir" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain, son of Aranuir."
+  es: "Caudillo de los Dúnedain, hijo de Aranuir."
+parents: [ aranuir ]

@@ -6,3 +6,4 @@ summary:
   es: "Hijo de Beren y Lúthien y heredero de Thingol, muerto en Doriath por el Silmaril."
 color: "#5a7a9a"
 scale: 1.85
+parents: [ beren, luthien ]

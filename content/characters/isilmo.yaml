@@ -1,0 +1,7 @@
+id: isilmo
+name: { en: "Isilmo", es: "Isilmo" }
+kind: man
+summary:
+  en: "Tar-Súrion's son, through whom the sceptre passed to his own son when his sister the queen died childless."
+  es: "Hijo de Tar-Súrion, por quien el cetro pasó a su propio hijo cuando su hermana la reina murió sin descendencia."
+parents: [ tar-surion ]

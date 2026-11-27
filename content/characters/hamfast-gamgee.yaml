@@ -1,0 +1,8 @@
+id: hamfast-gamgee
+name: { en: "Hamfast Gamgee (the Gaffer)", es: "Hamfast Gamyi (el Tío)" }
+kind: hobbit
+summary:
+  en: "Sam's father, gardener at Bag End before him, full of weather-lore and firm opinions and a great respect for cabbages and potatoes."
+  es: "El padre de Sam, jardinero de Bolsón Cerrado antes que él, lleno de saberes sobre el tiempo, de opiniones firmes y de un gran respeto por las coles y las patatas."
+parents: [ hobson-gamgee ]
+spouse: [ bell-goodchild ]

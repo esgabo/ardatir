@@ -11,7 +11,7 @@ import {
 } from '../../src/data/types.ts';
 import { EPS, overlaps, whenSpan } from '../../src/data/calendar.ts';
 import {
-  derivedRelation, generations, houses as houseParts, kinGraph, parentageCycle, siblings,
+  derivedRelation, descendants, generations, houses as houseParts, kinGraph, parentageCycle, siblings,
   type KinGraph,
 } from '../../src/kinGraph.ts';
 
@@ -234,7 +234,14 @@ export function deriveFamily(
     for (const extra of named.slice(1)) {
       C.warn(fileOf(extra), `house: "${named[0]}" already names this house; one name per house (the members are derived)`);
     }
-    const eldest = [...members].sort((a, b) => (depth.get(a) ?? 0) - (depth.get(b) ?? 0) || a.localeCompare(b))[0];
+    // Among the shallowest members, the one the house actually descends from -- i.e. with the
+    // most descendants -- not whichever sorts first. A spouse who married in stands at depth 0
+    // too, and naming Rohan's house after Theodwyn's husband or the Noldor's after a queen of
+    // Numenor who married into it reads as a mistake, because it is one.
+    const reach = (id: string) => descendants(graph, id).length;
+    const eldest = [...members].sort((a, b) => (depth.get(a) ?? 0) - (depth.get(b) ?? 0)
+      || reach(b) - reach(a)
+      || a.localeCompare(b))[0];
     const id = named[0] ?? eldest;
     houses.push({ id, ...byId.get(id)?.house ? { name: byId.get(id)!.house! } : {}, members });
     for (const m of members) family[m].house = id;
@@ -252,6 +259,10 @@ export function deriveFamily(
           : `kin[${i}].as: "${k.as}" is not one of ${KIN_WORDS.join(', ')}; a word the tree cannot draw is nothing on the screen (docs/DESIGN.md §4.11)`);
         return;
       }
+      // Fostering is never a consequence of descent -- Frodo is Bilbo's cousin *and* his
+      // fosterling, and the second fact is the one §4.11 keeps the word for -- so a derived
+      // relation never makes it a duplicate.
+      if (NEVER_DERIVED.has(k.as)) return;
       // Still in the list, but the parentage now says it: the migration's own end marker.
       const derived = derivedRelation(graph, c.id, k.id);
       if (derived) C.warn(f, `kin[${i}]: "${k.id}" is already the ${derived} of "${c.id}" by \`parents:\`; delete this entry`);
@@ -312,4 +323,20 @@ export function deriveFamily(
  * scene — a hobbit grandparent exists to join two families — so they are exempt from the
  * "appears in no event or journey" warning.
  */
-export const standsInParentage = (f: Family | undefined): boolean => !!f && (!!f.parents.length || !!f.children.length);
+/**
+ * Does a parentage edge, or a tie that stands in for one, reach this character? Such a character
+ * needs no scene: a hobbit grandparent exists to join two families. `ancestor`/`descendant` and
+ * `foster-parent`/`fosterling` count, because §4.11 names exactly those for the people parentage
+ * cannot reach -- Durin I, who awoke and was not begotten and whose heirs descend through
+ * generations no source names, and Frodo, who is Bilbo's heir and not his son. A `cousin` or `kin`
+ * tie does not count: it joins two people already in the graph rather than anchoring one to it.
+ */
+export const standsInParentage = (f: Family | undefined): boolean => !!f
+  && (!!f.parents.length || !!f.children.length
+    || (f.kin ?? []).some((k) => STANDS_IN.has(k.as)));
+
+/** Ties that put somebody in the graph on their own (docs/DESIGN.md §4.11). */
+const STANDS_IN = new Set(['ancestor', 'descendant', 'foster-parent', 'fosterling']);
+
+/** Words descent cannot restate, so a derived relation never duplicates them. */
+const NEVER_DERIVED = new Set(['foster-parent', 'fosterling']);

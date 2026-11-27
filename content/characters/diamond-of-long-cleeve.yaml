@@ -1,0 +1,7 @@
+id: diamond-of-long-cleeve
+name: { en: "Diamond of Long Cleeve", es: "Diamond de Long Cleeve" }
+kind: hobbit
+summary:
+  en: "A hobbit of the North Moors whom Pippin married after the war; the mother of his son Faramir."
+  es: "Una hobbit de los Páramos del Norte con quien Pippin se casó después de la guerra; madre de su hijo Faramir."
+spouse: [ pippin ]

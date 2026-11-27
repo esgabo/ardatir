@@ -6,5 +6,4 @@ summary:
   es: Hijo de Huor, enviado por Ulmo a la ciudad oculta de Gondolin.
 color: "#3a6a8a"
 scale: 1.85
-kin:
-  - { id: turin, as: cousin }
+parents: [ huor, rian ]

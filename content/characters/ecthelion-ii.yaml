@@ -1,0 +1,8 @@
+id: ecthelion-ii
+name: { en: "Ecthelion II", es: "Ecthelion II" }
+kind: man
+summary:
+  en: "Ruling Steward of Gondor, Denethor's father, who took counsel from Gandalf and from a captain out of the North who called himself Thorongil."
+  es: "Senescal Regente de Gondor, padre de Denethor, que tomó consejo de Gandalf y de un capitán venido del Norte que se llamaba Thorongil."
+parents: [ turgon-the-steward ]
+pronounce: { en: ek-THEL-ee-on, es: ek-TE-li-on }

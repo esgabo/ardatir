@@ -1,0 +1,8 @@
+id: mirabella-took
+name: { en: "Mirabella Took", es: "Mirabella Tuk" }
+kind: hobbit
+summary:
+  en: "The youngest daughter of the Old Took, who married Gorbadoc Brandybuck and was Frodo's grandmother."
+  es: "La hija menor del Viejo Tuk, que se casó con Gorbadoc Brandigamo y fue la abuela de Frodo."
+parents: [ gerontius-took, adamanta-chubb ]
+spouse: [ gorbadoc-brandybuck ]

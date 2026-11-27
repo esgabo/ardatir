@@ -6,3 +6,5 @@ summary:
   es: "Rey de Númenor y acerbo enemigo de los Fieles, que prohibió las lenguas élficas y rechazó a los Eldar."
 color: "#7a6a4a"
 scale: 2
+parents: [ ar-sakalthor ]
+spouse: [ inzilbeth ]

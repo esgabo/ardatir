@@ -6,3 +6,7 @@ summary:
   es: Heredero de Isildur, un Montaraz del Norte que viaja al sur para reclamar la corona de Gondor.
 color: "#4a5a3c"
 scale: 1.85
+parents: [ arathorn-ii, gilraen ]
+fate:
+  en: "He laid down his life of his own will at the end of his long reign, as the kings of Númenor had done before the shadow fell on them."
+  es: "Entregó su vida por propia voluntad al final de su largo reinado, como habían hecho los reyes de Númenor antes de que la sombra cayera sobre ellos."

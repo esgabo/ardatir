@@ -1,0 +1,8 @@
+id: mungo-baggins
+name: { en: "Mungo Baggins", es: "Mungo Bolsón" }
+kind: hobbit
+summary:
+  en: "Balbo's eldest son and Bilbo's grandfather, head of the senior Baggins line."
+  es: "Hijo mayor de Balbo y abuelo de Bilbo, cabeza de la rama mayor de los Bolsón."
+parents: [ balbo-baggins, berylla-boffin ]
+spouse: [ laura-grubb ]

@@ -1,0 +1,7 @@
+id: arvegil
+name: { en: "Arvegil", es: "Arvegil" }
+kind: man
+summary:
+  en: "King of Arthedain, son of Argeleb II."
+  es: "Rey de Arthedain, hijo de Argeleb II."
+parents: [ argeleb-ii ]

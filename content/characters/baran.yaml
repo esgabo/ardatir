@@ -1,0 +1,7 @@
+id: baran
+name: { en: "Baran", es: "Baran" }
+kind: man
+summary:
+  en: "Bëor's elder son, who led the folk of his house in Estolad after his father went into Finrod's service."
+  es: "Hijo mayor de Bëor, que condujo a la gente de su casa en Estolad después de que su padre entrara al servicio de Finrod."
+parents: [ beor ]

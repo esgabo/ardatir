@@ -6,3 +6,4 @@ summary:
   es: "Hijo de Finarfin, fundador de Nargothrond y el primer señor Elfo que se hizo amigo de los Hombres."
 color: "#5a7a9a"
 scale: 1.85
+parents: [ finarfin, earwen ]

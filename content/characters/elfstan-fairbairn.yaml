@@ -1,0 +1,7 @@
+id: elfstan-fairbairn
+name: { en: "Elfstan Fairbairn", es: "Elfstan Fairbairn" }
+kind: hobbit
+summary:
+  en: "Elanor and Fastred's son, the first of the Fairbairns of the Towers, who kept the Red Book in the Westmarch after his grandfather's house."
+  es: "Hijo de Elanor y Fastred, el primero de los Fairbairn de las Torres, que guardó el Libro Rojo en la Marca del Oeste después de la casa de su abuelo."
+parents: [ fastred, elanor ]

@@ -1,0 +1,8 @@
+id: silmarien
+name: { en: "Silmariën", es: "Silmariën" }
+kind: man
+summary:
+  en: "Tar-Elendil's eldest daughter, born before the law allowed a daughter to rule; the Ring of Barahir and the lordship of Andúnië came down through her, and after fifty generations so did Aragorn."
+  es: "La hija mayor de Tar-Elendil, nacida antes de que la ley permitiera reinar a una hija; el Anillo de Barahir y el señorío de Andúnië descendieron por ella, y cincuenta generaciones después también Aragorn."
+parents: [ tar-elendil ]
+spouse: [ elatan ]

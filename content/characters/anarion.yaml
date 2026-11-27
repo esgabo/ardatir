@@ -6,3 +6,4 @@ summary:
   es: "Hijo menor de Elendil, cogobernante de Gondor, muerto durante el sitio de Barad-dûr."
 color: "#7a6a4a"
 scale: 1.9
+parents: [ elendil ]

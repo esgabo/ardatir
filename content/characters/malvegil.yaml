@@ -1,0 +1,7 @@
+id: malvegil
+name: { en: "Malvegil", es: "Malvegil" }
+kind: man
+summary:
+  en: "King of Arthedain, in whose days the shadow first gathered in Angmar north of the mountains."
+  es: "Rey de Arthedain, en cuyos días la sombra se congregó por primera vez en Angmar, al norte de las montañas."
+parents: [ celebrindor ]

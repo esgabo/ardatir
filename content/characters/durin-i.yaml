@@ -1,0 +1,13 @@
+id: durin-i
+name: { en: "Durin the Deathless", es: "Durin el Inmortal" }
+kind: dwarf
+summary:
+  en: "Eldest of the Seven Fathers of the Dwarves, who woke alone under Gundabad and founded Khazad-dûm; his line held it while it stood, and six kings after him bore his name."
+  es: "El mayor de los Siete Padres de los Enanos, que despertó solo bajo Gundabad y fundó Khazad-dûm; su linaje la gobernó mientras se mantuvo en pie, y seis reyes después de él llevaron su nombre."
+pronounce: { en: DOO-rin, es: DU-rin }
+# He has no parents by nature, not by omission: he woke, and was not begotten. That is a
+# different silence from Durin VI's, whose forebears are simply unrecorded -- and because the
+# generations between the two are not named, the only honest edge between them is the asserted
+# descent, never invented people to stand in the gap (docs/DESIGN.md §4.11).
+kin:
+  - { id: durin-vi, as: descendant }
