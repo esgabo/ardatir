@@ -51,11 +51,18 @@ function chunkBudgets(): Plugin {
     name: 'ardatir-chunk-budgets',
     apply: 'build',
     generateBundle(_, bundle) {
+      const over: string[] = [];
       for (const c of Object.values(bundle)) {
         if (c.type !== 'chunk') continue;
         const kb = Buffer.byteLength(c.code) / 1000, max = CHUNK_BUDGETS[c.name] ?? CHUNK_BUDGET;
-        if (kb > max) this.warn(`chunk "${c.name}" is ${kb.toFixed(0)} kB, over its ${max} kB budget (vite.config.ts): split it with a dynamic import()`);
+        if (kb > max) over.push(`chunk "${c.name}" is ${kb.toFixed(0)} kB, over its ${max} kB budget (vite.config.ts): split it with a dynamic import()`);
       }
+      // A warning is enough for someone watching a build; nobody reads CI's log, so there the
+      // budget has to fail or it isn't a budget. All of them at once: fixing one chunk by moving
+      // code into another shouldn't need a second run to find out.
+      if (!over.length) return;
+      if (process.env.CI) this.error(over.join('\n'));
+      for (const msg of over) this.warn(msg);
     },
   };
 }
