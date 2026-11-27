@@ -82,15 +82,12 @@ describe('the real content', () => {
 
   it('is valid, with no warnings', () => {
     expect(r.errors).toEqual([]);
-    // Until the Third Age narrator is auditioned (docs/superpowers/plans/2026-11-10-narration-voices.md).
-    // Only Before Time has a narrator so far; the other ages get theirs at audition.
-    // Crowding (#81) is a backlog the check itself uncovered: twenty of the staged events were
-    // written before anything looked at whether two figures share a spot, and most of what is
-    // left is companies of fourteen crossing a small tile. Restaging them is composition work,
-    // one scene at a time, so the warnings stand as the list of what to go through, and this
-    // allows them rather than pretending they are not there.
-    const known = /^content\/ages\/[\w-]+\.yaml: has staged events but no narrator|(stand inside|walk through) each other at t|more pairs of figures overlapping/;
-    expect(r.warnings.filter((w) => !known.test(w))).toEqual([]);
+    // No allowances. This test carried two for a while — every age but Before Time was missing a
+    // narrator, and every company of fourteen crossing a small tile had figures standing inside
+    // each other (#81, #83) — and an allowance is a list of what to go through, not a pass: it
+    // stops the bar catching a new one. Both lists are empty now (#58, #59, #83), so the bar is
+    // the whole of what the build says. Anything added here needs the same justification.
+    expect(r.warnings).toEqual([]);
   });
 
 
