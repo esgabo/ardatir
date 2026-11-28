@@ -14,6 +14,8 @@ import { encodeWav } from '../scripts/narration/wav.ts';
 
 const FIXTURE = path.join(import.meta.dirname, 'fixtures/valid/content');
 const PARTY = 'events/third-age/2941-04-26-the-party';
+/** The fixture's arc that tells its own story over the map (DESIGN §4.10). */
+const RIDE = 'arcs/the-ride';
 const VOICE = 'narrators/the-voice.yaml';
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ardatir-publish-'));
 afterAll(() => fs.rmSync(tmp, { recursive: true, force: true }));
@@ -50,14 +52,14 @@ const pub = (content: string, cacheDir: string, accept: string[] = [], rejects: 
   publish(buildContent(content), { lang: ['en'], accept: new Set(accept), rejects: new Set(rejects), cacheDir }, copyEncoder);
 const renderAgain = (content: string, cacheDir: string, rejects: string[] = []) =>
   render(buildContent(content), studio(), () => Buffer.from('ref'), { lang: ['en'], changed: false, cacheDir, rejects: new Set(rejects) });
-const changedJobs = (content: string) => jobs(buildContent(content), { lang: ['en'], changed: true }).map((j) => j.event);
+const changedJobs = (content: string) => jobs(buildContent(content), { lang: ['en'], changed: true }).map((j) => j.id);
 const meta = (content: string) => YAML.parse(fs.readFileSync(path.join(content, PARTY, 'audio/en.yaml'), 'utf8'));
 
 describe('publish', () => {
   it('writes timings that land each passage', async () => {
     const { content, cacheDir } = await rendered();
     const [r] = await pub(content, cacheDir);
-    expect(r).toMatchObject({ event: 'the-party', lang: 'en', written: true, blockedBy: [] });
+    expect(r).toMatchObject({ id: 'the-party', kind: 'event', lang: 'en', written: true, blockedBy: [] });
     const m = meta(content);
     const door = 0.8, tea = door + secondsFor(DOOR) + 0.8;
     expect(m.starts.door).toBeCloseTo(door, 3);
@@ -66,6 +68,49 @@ describe('publish', () => {
     expect(m.narrator).toEqual({ id: 'the-voice', version: 1 });
     expect(Object.keys(m.passages)).toEqual(['door', 'tea']);
     expect(fs.existsSync(path.join(content, PARTY, 'audio/en.mp3'))).toBe(true);
+  });
+
+  it('writes an arc\'s telling into its own folder, with the hash the build checks', async () => {
+    const { content, cacheDir } = await rendered();
+    const results = await pub(content, cacheDir);
+    const r = results.find((x) => x.kind === 'arc')!;
+    expect(r).toMatchObject({ id: 'the-ride', lang: 'en', written: true, blockedBy: [] });
+    const m = YAML.parse(fs.readFileSync(path.join(content, RIDE, 'audio/en.yaml'), 'utf8'));
+    expect(Object.keys(m.starts)).toEqual(['start', 'east']);
+    expect(m.starts.start).toBeCloseTo(0.8, 3);
+    expect(m.narrator).toEqual({ id: 'the-voice', version: 1 });
+    expect(m.textHash).toMatch(/^sha256:[0-9a-f]{16}$/);
+    expect(fs.existsSync(path.join(content, RIDE, 'audio/en.mp3'))).toBe(true);
+    // The build reads it through the same implementation: no complaint, and it is served.
+    const b = buildContent(content);
+    expect([b.errors, b.warnings]).toEqual([[], []]);
+    expect(b.arcDetails.find((a) => a.id === 'the-ride')!.audioFiles.en)
+      .toMatchObject({ src: 'data/audio/arc/the-ride/en.mp3', starts: [m.starts.start, m.starts.east] });
+  });
+
+  it('an arc\'s edited passage goes stale, holds publishing, and publishes again once re-rendered', async () => {
+    const { content, cacheDir } = await rendered();
+    await pub(content, cacheDir);
+    expect(changedJobs(content)).toEqual([]);
+    const nf = path.join(content, RIDE, 'narration.yaml');
+    fs.writeFileSync(nf, fs.readFileSync(nf, 'utf8').replace('The road runs east.', 'The road runs on east.'));
+    // The build names the stale passage; publishing is held until the take exists.
+    expect(buildContent(content).warnings.join('\n')).toMatch(/stale passage "east"/);
+    expect(changedJobs(content)).toEqual(['the-ride']);
+    const held = (await pub(content, cacheDir)).find((x) => x.kind === 'arc')!;
+    expect(held).toMatchObject({ written: false, blockedBy: ['the-ride/east'] });
+    await renderAgain(content, cacheDir);
+    expect((await pub(content, cacheDir)).find((x) => x.kind === 'arc')!.written).toBe(true);
+    expect(buildContent(content).warnings).toEqual([]);
+  });
+
+  it('accepts a flagged arc take by its bare id', async () => {
+    const { content, cacheDir } = await rendered({ garble: (t) => t.startsWith('The road') });
+    const held = (await pub(content, cacheDir)).find((x) => x.kind === 'arc')!;
+    expect(held).toMatchObject({ written: false, blockedBy: ['the-ride/east'] });
+    expect(fs.existsSync(path.join(content, RIDE, 'audio'))).toBe(false);
+    const ok = (await pub(content, cacheDir, ['the-ride/east'])).find((x) => x.kind === 'arc')!;
+    expect(ok.written).toBe(true);
   });
 
   it('leaves no recording behind when encoding fails (a lone mp3 fails the build)', async () => {

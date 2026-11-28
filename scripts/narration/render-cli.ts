@@ -1,10 +1,13 @@
-// npm run narration:render -- [--only <event>] [--age <age>] [--lang en] [--changed]
+// npm run narration:render -- [--only <id>] [--age <age>] [--lang en] [--changed]
 //
 // Renders every passage that needs it on the Voice Studio (VOICESTUDIO_URL,
 // VOICESTUDIO_API_KEY; docs/LOCAL.md), checks each take, and writes a listening page to
-// out/narration/report.html. Takes are cached in out/narration-cache/, so a failed run
-// resumes where it stopped. Reject a take by adding `event/passage` to
-// out/narration/rejects.txt and running again. Publish with npm run narration:publish.
+// out/narration/report.html. Staged events and the arcs that tell their own story over the map
+// alike (DESIGN §4.10); an arc is read by the narrator of the age its `voiceOf` names, so
+// --only and --age take an arc as they take an event. Takes are cached in out/narration-cache/
+// (an arc's under arc/<id>/), so a failed run resumes where it stopped. Reject a take by adding
+// `<id>/<passage>` to out/narration/rejects.txt and running again.
+// Publish with npm run narration:publish.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -67,12 +70,15 @@ const takes = await render(content, vs, reference, {
   only: args!.only, age: args!.age, lang: langs, changed: args!.changed, cacheDir, rejects, onReject, log: (l) => console.log(l),
 }).catch((e: Error) => fail(e.message));
 
-// A narrator still earning trust gets a bigger sample: fewer than 3 published events.
-const published = (narrator: string) => content.index.events.filter((e) => {
-  const f = path.join(content.eventDirs[e.id], 'audio');
+// A narrator still earning trust gets a bigger sample: fewer than 3 published recordings,
+// an arc's telling counting as one of them.
+const readBy = (dir: string, narrator: string) => {
+  const f = path.join(dir, 'audio');
   return fs.existsSync(f) && fs.readdirSync(f).some((x) => x.endsWith('.yaml')
     && (YAML.parse(fs.readFileSync(path.join(f, x), 'utf8')) as { narrator?: { id?: string } } | null)?.narrator?.id === narrator);
-}).length;
+};
+const published = (narrator: string) =>
+  [...Object.values(content.eventDirs), ...Object.values(content.arcDirs)].filter((d) => readBy(d, narrator)).length;
 const report = path.join(outDir, 'report.html');
 writeReport(takes, report, (id) => (published(id) < 3 ? 10 : 5));
 const flagged = takes.filter((t) => t.flags.length).length;
