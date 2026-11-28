@@ -48,7 +48,7 @@ const encode: Encoder = async (wav, out) => {
   if (Math.abs(got - want) > SLACK) throw new Error(`${path.relative(root, out)}: encoded ${got.toFixed(3)} s, expected ${want.toFixed(3)} s; starts would drift`);
 };
 
-// Takes the author rejected and render hasn't replaced yet hold their event back.
+// Takes the author rejected and render hasn't replaced yet hold their telling back.
 const rejectsFile = path.join(root, 'out', 'narration', 'rejects.txt');
 const rejects = new Set(fs.existsSync(rejectsFile) ? fs.readFileSync(rejectsFile, 'utf8').split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#')) : []);
 const results = await publish(content, { only: args!.only, age: args!.age, lang: langs, accept: new Set(args!.accept ?? []), rejects, cacheDir: path.join(root, 'out', 'narration-cache') }, encode);

@@ -19,9 +19,9 @@ npm run preview    # serve dist/ at http://localhost:4173
 npm run content    # validate content/ and write public/data/ (dev and build also do this)
 npm run graph      # the stories content/ knows but doesn't tell yet → out/graph.md
 npm test           # vitest: calendar, best guesses, event clock, armies, content validation (tests/)
-npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event>, --lang es, --changed)
+npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event or arc>, --lang es, --changed)
 npm run narration:render   # render passages on the Voice Studio, check them, write out/narration/report.html (--only, --age, --lang, --changed)
-npm run narration:publish  # join checked takes into audio/<lang>.mp3 + .yaml (--accept <event>/<passage> for a flagged take you listened to)
+npm run narration:publish  # join checked takes into audio/<lang>.mp3 + .yaml (--accept <event or arc>/<passage> for a flagged take you listened to)
 npm run model:pack -- <export.glb> characters/<id>/<id>.glb   # meshopt-compress a Blender export into assets/ (docs/MODELS.md)
 ```
 
@@ -91,10 +91,11 @@ scripts/models/
   cli.ts             `npm run content`
 tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
 scripts/narration/
-  export.ts          `npm run narration:export`: scripts per event and language for the Voice Studio
-  text.ts            a passage's text per language; `textHash` and `passageHash` that mark a recording stale
+  export.ts          `npm run narration:export`: scripts per telling and language for the Voice Studio
+  text.ts            a passage's text per language; `textHash` and `passageHash` that mark a recording stale; `scriptId`, the one namespace an event and an arc's telling share (`arc/<id>`)
   render.ts, render-cli.ts   `npm run narration:render`: passages on the Voice Studio, cached, checked, retried
   publish.ts, publish-cli.ts `npm run narration:publish`: checked takes → audio/<lang>.mp3 + .yaml
+  (all three walk staged events and the arcs that tell their own story alike: one job per telling, an arc read by the narrator of the age its `voiceOf` names, exported and cached under `arc/<id>`, published into content/arcs/<id>/audio/; `--only` and `--accept` take the bare id)
   voicestudio.ts     the Voice Studio client (clone a narrator's reference, transcribe)
   checks.ts          the automatic checks on a take: words, names, pace, length, clipping, silence (pure)
   wav.ts             WAV in/out, joining with gaps, audio statistics (pure)
