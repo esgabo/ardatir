@@ -6,3 +6,4 @@ summary:
   es: "Segundo hijo de Fëanor, gran cantor que sobrevivió a sus hermanos."
 color: "#5a7a9a"
 scale: 1.85
+parents: [ feanor, nerdanel ]

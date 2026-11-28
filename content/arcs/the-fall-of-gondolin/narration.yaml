@@ -1,0 +1,46 @@
+# The Fall of Gondolin, told over the map of Beleriand (docs/DESIGN.md §4.10).
+#
+# Our own words throughout. Sources: The Silmarillion, "Of Turgon and the Building of Gondolin"
+# and "Of Tuor and the Fall of Gondolin"; the city's defence and the flight over the cleft follow
+# the published Silmarillion, not the early Book of Lost Tales version.
+# Read by the narrator of the First Age (the arc's first event is Turgon founding the city).
+
+- id: hidden
+  en: In the vale of Tumladen, inside a ring of mountains with one guarded way in, Turgon raised a city and hid it. For near four hundred years no road led to Gondolin, and no enemy knew where it stood.
+  es: En el valle de Tumladen, dentro de un anillo de montañas con un solo paso vigilado, Turgon levantó una ciudad y la ocultó. Durante casi cuatrocientos años ningún camino llevaba a Gondolin, y ningún enemigo supo dónde estaba.
+
+- id: tuor
+  en: "Then Ulmo, Lord of Waters, sent a man to the hidden gate. Tuor came up out of Nevrast with the elf Voronwë, and gave Turgon a warning from the sea: leave the city, for its doom is near. The king thought of all he had built, and kept his gates shut."
+  es: "Entonces Ulmo, Señor de las Aguas, envió a un hombre a la puerta oculta. Tuor llegó desde Nevrast con el elfo Voronwë y dio a Turgon una advertencia venida del mar: abandona la ciudad, porque su ruina está cerca. El rey pensó en todo lo que había construido, y mantuvo cerradas sus puertas."
+
+- id: treason
+  en: The secret did not fall to spies. Maeglin, the king's nephew, was taken by orcs while mining beyond the hills, and brought before Morgoth in Angband. He went home alive, having sold the way in for Idril and a crown.
+  es: El secreto no cayó por los espías. Maeglin, sobrino del rey, fue capturado por los orcos mientras excavaba más allá de las colinas, y llevado ante Morgoth en Angband. Volvió a casa con vida, después de haber vendido el camino a cambio de Idril y una corona.
+
+- id: assault
+  en: "A year later, on the night the city kept its summer festival with its people on the walls watching for the sunrise, the north went red. Morgoth's host came over the Encircling Mountains in the dark: orcs without number, balrogs, and dragons of iron and fire."
+  es: "Un año después, la noche en que la ciudad celebraba su fiesta de verano con su gente en las murallas esperando el amanecer, el norte se puso rojo. La hueste de Morgoth cruzó las Montañas Circundantes en la oscuridad: orcos sin número, balrogs y dragones de hierro y de fuego."
+
+- id: city
+  en: Gondolin was built to be defended, and it was. The fighting went street by street, fountain by fountain, and the captains of the city fell holding them. Ecthelion met the lord of the balrogs at the king's square, and the two of them died there together.
+  es: Gondolin se construyó para ser defendida, y lo fue. Se luchó calle por calle, fuente por fuente, y los capitanes de la ciudad cayeron defendiéndolas. Ecthelion se enfrentó al señor de los balrogs en la plaza del rey, y allí murieron los dos juntos.
+
+- id: tower
+  en: Tuor begged the king to come away. Turgon would not leave the city he had made, and sent his people to follow Tuor instead. His tower came down in fire with him in it, and the king of the hidden kingdom was lost with his crown.
+  es: Tuor rogó al rey que huyera. Turgon no quiso abandonar la ciudad que había hecho, y en su lugar mandó a su gente seguir a Tuor. Su torre se derrumbó en llamas con él dentro, y el rey del reino oculto se perdió con su corona.
+
+- id: secret
+  en: Idril had foreseen this, and had a passage dug from her house under the plain. Tuor gathered the women, the children and the wounded, and led them down out of the burning city while the enemy sacked it above their heads.
+  es: Idril lo había previsto, y había hecho cavar un pasadizo desde su casa por debajo de la llanura. Tuor reunió a las mujeres, a los niños y a los heridos, y los sacó de la ciudad en llamas mientras el enemigo la saqueaba sobre sus cabezas.
+
+- id: cleft
+  en: Their road out was a high, narrow cleft in the northern wall, and the enemy was waiting in it. There Glorfindel fought a balrog on the edge of the drop, and both went over; the eagles drove the orcs off the heights, and the eagles carried him up to be buried in the pass.
+  es: Su salida era una grieta alta y estrecha en la muralla del norte, y el enemigo los esperaba allí. En ese lugar Glorfindel luchó contra un balrog al borde del precipicio, y los dos cayeron; las águilas ahuyentaron a los orcos de las alturas, y fueron ellas quienes lo subieron para enterrarlo en el paso.
+
+- id: havens
+  en: What was left of Gondolin came down the long valley of Sirion to the sea, and joined the survivors of Doriath at the Havens. Two ruined kingdoms made one small people on the shore, and among its children was Eärendil, Tuor's son.
+  es: Lo que quedaba de Gondolin bajó por el largo valle del Sirion hasta el mar, y se unió a los supervivientes de Doriath en los Puertos. Dos reinos arruinados formaron un pueblo pequeño en la costa, y entre sus niños estaba Eärendil, el hijo de Tuor.
+
+- id: after
+  en: So the last of the hidden kingdoms ended, and Morgoth held Beleriand from the mountains to the sea. But the boy on that beach would build a ship, and carry its grief west to the Valar; and that is how the fall of Gondolin saved the world it ended.
+  es: Así terminó el último de los reinos ocultos, y Morgoth dominó Beleriand desde las montañas hasta el mar. Pero el niño de aquella playa construiría una nave y llevaría su dolor al oeste, ante los Valar; y así fue como la caída de Gondolin salvó al mundo que acabó con ella.

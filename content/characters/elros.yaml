@@ -6,3 +6,7 @@ summary:
   es: "Hermano gemelo de Elrond, que eligió una vida mortal y fue el primer rey de Númenor."
 color: "#7a6a4a"
 scale: 1.8
+parents: [ earendil, elwing ]
+fate:
+  en: "Given the Choice of the Half-elven, he took the fate of Men, and so death came to his line and to all Númenor after him."
+  es: "Puesta ante él la Elección de los Medio Elfos, tomó el destino de los Hombres, y así la muerte llegó a su linaje y a toda Númenor tras él."

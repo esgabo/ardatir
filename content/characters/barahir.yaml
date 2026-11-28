@@ -6,3 +6,4 @@ summary:
   es: "Caudillo de la Casa de Bëor, salvó la vida de Finrod y recibió el Anillo que lleva su nombre."
 color: "#7a6a4a"
 scale: 1.8
+parents: [ bregor ]

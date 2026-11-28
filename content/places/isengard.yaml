@@ -3,3 +3,4 @@ name: { en: "Isengard", es: "Isengard" }
 summary:
   en: "Saruman's fortress-valley, ringed by a wall of stone."
   es: "El valle-fortaleza de Saruman, rodeado de un muro de piedra."
+map: { on: middle-earth, x: 26, z: 50 }   # the Nan Curunír below the Gap

@@ -1,0 +1,8 @@
+id: durin-vi
+name: { en: "Durin VI", es: "Durin VI" }
+kind: dwarf
+summary:
+  en: "King of Khazad-dûm in its last days, slain by the Balrog that woke under the mountains; the Dwarves named him for Durin the Deathless, whose line he came of."
+  es: "Rey de Khazad-dûm en sus últimos días, muerto por el Balrog que despertó bajo las montañas; los Enanos lo llamaron así por Durin el Inmortal, de cuyo linaje descendía."
+# Appendix A names no parent of his: the generations between him and Durin the Deathless are
+# simply not recorded, so the line in our content begins here.

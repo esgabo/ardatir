@@ -1,0 +1,7 @@
+id: angrod
+name: { en: "Angrod", es: "Angrod" }
+kind: elf
+summary:
+  en: "A son of Finarfin who held the northern slopes of Dorthonion with his brother Aegnor, and fell there when the Bragollach broke the leaguer of Angband."
+  es: "Hijo de Finarfin que guardó las laderas septentrionales de Dorthonion con su hermano Aegnor, y allí cayó cuando el Bragollach rompió el sitio de Angband."
+parents: [ finarfin, earwen ]

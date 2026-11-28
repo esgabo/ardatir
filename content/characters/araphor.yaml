@@ -1,0 +1,7 @@
+id: araphor
+name: { en: "Araphor", es: "Araphor" }
+kind: man
+summary:
+  en: "King of Arthedain, scarcely grown when Angmar came against Fornost; with Círdan's help he held the hill and turned the siege back."
+  es: "Rey de Arthedain, apenas crecido cuando Angmar vino contra Fornost; con la ayuda de Círdan mantuvo la colina y hizo retroceder el sitio."
+parents: [ arveleg-i ]

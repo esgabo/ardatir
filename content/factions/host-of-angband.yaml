@@ -1,0 +1,11 @@
+id: host-of-angband
+name: { en: The Host of Angband, es: La hueste de Angband }
+color: "#6e2a26"
+kind: orc
+# The Silmarillion, "Of Tuor and the Fall of Gondolin": what came over the Encircling Mountains
+# was orcs without number, balrogs and dragons, sent out of Angband under Gothmog by Morgoth
+# himself, who never left his fortress.
+summary:
+  en: "Morgoth's armies out of Angband: orcs without number, balrogs and dragons, sent against the kingdoms of Beleriand."
+  es: "Los ejércitos de Morgoth salidos de Angband: orcos sin número, balrogs y dragones, enviados contra los reinos de Beleriand."
+leaders: [ melkor, gothmog ]

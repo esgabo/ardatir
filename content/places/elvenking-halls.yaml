@@ -3,3 +3,4 @@ name: { en: The Elvenking's Halls, es: Las estancias del Rey Elfo }
 summary:
   en: A cave-palace of the Wood-elves beside the Forest River.
   es: "Un palacio en una cueva de los Elfos del Bosque, junto al Río del Bosque."
+map: { on: middle-earth, x: 66, z: -8 }   # north-east Mirkwood, beside the Forest River

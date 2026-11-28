@@ -1,0 +1,7 @@
+id: tarondor-of-arnor
+name: { en: "Tarondor of Arnor", es: "Tarondor de Arnor" }
+kind: man
+summary:
+  en: "King of Arnor, son of Tarcil; not the Tarondor who ruled in Gondor long after him."
+  es: "Rey de Arnor, hijo de Tarcil; no es el Tarondor que gobernó en Gondor mucho después."
+parents: [ tarcil ]

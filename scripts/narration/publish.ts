@@ -1,6 +1,8 @@
-// narration:publish: join an event's checked takes into one recording with a fixed gap
+// narration:publish: join a telling's checked takes into one recording with a fixed gap
 // between passages, and write audio/<lang>.mp3 + audio/<lang>.yaml into its folder:
 // duration, the exact second each passage starts, the text and narrator it was made from.
+// An event's folder is content/events/<age>/<key>-<id>/, an arc's content/arcs/<id>/ (§4.10);
+// the build reads both through one implementation, so its staleness checks work on either.
 // See the narration voices design, §5.2.
 
 import fs from 'node:fs';
@@ -9,16 +11,19 @@ import YAML from 'yaml';
 import type { BuildResult } from '../content/build.ts';
 import type { Lang } from '../../src/data/types.ts';
 import { jobs, passageKeys, readRecording, readTake, recordingCurrent, takePath } from './render.ts';
-import { narrationHash, passageHash } from './text.ts';
+import { narrationHash, passageHash, type ScriptKind } from './text.ts';
 import { encodeWav, joinWithGaps, parseWav } from './wav.ts';
 
 /** WAV in, mp3 file out. The real one is ffmpeg with loudness normalisation (publish-cli.ts). */
 export type Encoder = (wav: Buffer, outMp3: string) => Promise<void>;
 
 export interface PublishResult {
-  event: string; lang: Lang; duration: number; starts: Record<string, number>;
+  /** The event or arc, by its bare id. */
+  id: string;
+  kind: ScriptKind;
+  lang: Lang; duration: number; starts: Record<string, number>;
   written: boolean;
-  /** "event/passage" with no current take, or a flagged take not accepted. */
+  /** "<event or arc>/<passage>" with no current take, or a flagged take not accepted. */
   blockedBy: string[];
   /** The recording in the folder already matches; nothing was written. */
   upToDate?: boolean;
@@ -33,7 +38,7 @@ export async function publish(
 ): Promise<PublishResult[]> {
   const results: PublishResult[] = [];
   for (const j of jobs(content, { ...o, changed: false })) {
-    const base = { event: j.event, lang: j.lang, duration: 0, starts: {} };
+    const base = { id: j.id, kind: j.kind, lang: j.lang, duration: 0, starts: {} };
     const keys = passageKeys(j, content.pronunciation);
     const takes = keys.map((k) => readTake(takePath(o.cacheDir, j, k.passage.id, k.key)));
     const takeIds = Object.fromEntries(keys.map((k, i) => [k.passage.id, `${k.key}@${takes[i]?.seed}`]));
@@ -44,7 +49,7 @@ export async function publish(
       results.push({ ...base, written: false, blockedBy: [], upToDate: true });
       continue;
     }
-    const id = (k: (typeof keys)[number]) => `${j.event}/${k.passage.id}`;
+    const id = (k: (typeof keys)[number]) => `${j.id}/${k.passage.id}`;
     const blockedBy = keys
       .filter((k, i) => !takes[i] || o.rejects?.has(id(k)) || (takes[i]!.flags.length && !o.accept.has(id(k))))
       .map(id);

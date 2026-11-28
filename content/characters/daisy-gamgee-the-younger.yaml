@@ -1,0 +1,7 @@
+id: daisy-gamgee-the-younger
+name: { en: "Daisy Gamgee the younger", es: "Daisy Gamyi la joven" }
+kind: hobbit
+summary:
+  en: "A daughter of Sam and Rosie, named for her father's sister."
+  es: "Una hija de Sam y Rosita, llamada así por la hermana de su padre."
+parents: [ sam, rosie ]

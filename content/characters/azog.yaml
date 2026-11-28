@@ -6,5 +6,3 @@ summary:
   es: "El señor orco de Moria, asesino de Thrór."
 color: "#5a5a4a"
 scale: 2.0
-kin:
-  - { id: bolg, as: son }

@@ -3,3 +3,4 @@ name: { en: "Parth Galen", es: "Parth Galen" }
 summary:
   en: "A green lawn on the western shore of Nen Hithoel, below Amon Hen."
   es: "Un prado verde en la orilla occidental de Nen Hithoel, al pie de Amon Hen."
+map: { on: middle-earth, x: 48.5, z: 50 }   # the lawn below Amon Hen

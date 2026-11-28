@@ -1,0 +1,9 @@
+id: gloredhel
+name: { en: "Glóredhel", es: "Glóredhel" }
+kind: man
+summary:
+  en: "Hador's daughter, who married Haldir of the Haladin and so tied the two houses of Men together."
+  es: "Hija de Hador, que se casó con Haldir de los Haladin y unió así las dos casas de los Hombres."
+parents: [ hador ]
+spouse: [ haldir ]
+pronounce: { en: GLOR-eth-el, es: GLO-re-del }

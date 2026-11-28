@@ -1,0 +1,8 @@
+id: elrond-brings-arwen-to-gondor
+title: { en: "Elrond Brings Arwen to Gondor", es: "Elrond lleva a Arwen a Gondor" }
+characters: [ elrond, arwen ]
+# Appendix B dates the arrival (1 Lithe) and the wedding (Mid-year's Day), not the setting out,
+# so the first waypoint claims only the season.
+waypoints:
+  - { place: rivendell, date: { age: third-age, year: 3019, season: spring }, precision: season }
+  - { place: minas-tirith, date: { age: third-age, year: 3019, day: 1-lithe }, end: { age: third-age, year: 3019, day: midyear }, precision: day }

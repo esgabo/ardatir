@@ -7,3 +7,9 @@ summary:
 color: "#5a5a8a"
 scale: 1.9
 model: characters/elrond/elrond.glb
+parents: [ earendil, elwing ]
+twin: elros
+spouse: [ celebrian ]
+fate:
+  en: "He did not die: at the end of the Third Age he took ship from the Grey Havens and passed over Sea."
+  es: "No murió: al final de la Tercera Edad se embarcó en los Puertos Grises y partió sobre el Mar."

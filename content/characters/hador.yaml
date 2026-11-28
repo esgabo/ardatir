@@ -1,0 +1,8 @@
+id: hador
+name: { en: "Hador Lórindol", es: "Hador Lórindol" }
+kind: man
+summary:
+  en: "Golden-head, lord of Dor-lómin and vassal of Fingolfin, who gave his house its name and fell defending Fingolfin's rearguard at Eithel Sirion."
+  es: "Cabeza de Oro, señor de Dor-lómin y vasallo de Fingolfin, que dio su nombre a la casa y cayó defendiendo la retaguardia de Fingolfin en Eithel Sirion."
+parents: [ hathol ]
+pronounce: { en: HA-dor lo-RIN-dol, es: JA-dor lo-RIN-dol }

@@ -6,6 +6,10 @@ summary:
   es: "Señor de Lothlórien, esposo de Galadriel."
 color: "#b8c0c8"
 scale: 1.9
-kin:
-  - { id: galadriel, as: wife }
+spouse: [ galadriel ]
 pronounce: { en: KEL-eh-born, es: KE-le-born }   # how to say it: syllables, the stressed one in capitals
+# The sources disagree on his father (Galadhon son of Elmo in Unfinished Tales, a Telerin elf
+# of Alqualondë in a late version), so no parentage is claimed; the kinship to Thingol is what
+# the published Silmarillion supports.
+kin:
+  - { id: thingol, as: kin }

@@ -1,0 +1,7 @@
+id: madoc-brandybuck
+name: { en: "Madoc Brandybuck", es: "Madoc Brandigamo" }
+kind: hobbit
+summary:
+  en: "Master of Buckland after Gormadoc, called Proudneck."
+  es: "Señor de Los Gamos después de Gormadoc, llamado Proudneck."
+parents: [ gormadoc-brandybuck, malva-headstrong ]

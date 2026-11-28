@@ -6,7 +6,5 @@ summary:
   es: "Sobrino de Thorin, joven, de vista aguda y rápido."
 color: "#c9a040"
 scale: 1.25
-kin:
-  - { id: kili, as: brother }
-  - { id: thorin, as: uncle }
+parents: [ dis ]
 model: characters/fili/fili.glb

@@ -3,3 +3,4 @@ name: { en: "Hobbiton", es: "Hobbiton" }
 summary:
   en: "The village below Bag End, in the heart of the Shire."
   es: "La aldea al pie de Bolsón Cerrado, en el corazón de la Comarca."
+map: { on: middle-earth, x: -12, z: -1 }   # about 120 miles west of Bree, a little north of the Road

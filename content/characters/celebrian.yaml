@@ -1,0 +1,12 @@
+id: celebrian
+name: { en: "Celebrían", es: "Celebrían" }
+kind: elf
+summary:
+  en: "Daughter of Celeborn and Galadriel and wife of Elrond, mother of Elladan, Elrohir and Arwen; waylaid by orcs in the mountains, she was healed of the wound but not of the memory."
+  es: "Hija de Celeborn y Galadriel y esposa de Elrond, madre de Elladan, Elrohir y Arwen; asaltada por orcos en las montañas, sanó de la herida pero no del recuerdo."
+parents: [ celeborn, galadriel ]
+spouse: [ elrond ]
+pronounce: { en: ke-le-BREE-an, es: ke-le-BRI-an }
+fate:
+  en: "She did not die: she took ship over Sea in the year after her hurt, and passed out of Middle-earth."
+  es: "No murió: se embarcó hacia el Oeste el año siguiente a su herida y dejó la Tierra Media."

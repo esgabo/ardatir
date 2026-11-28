@@ -3,3 +3,4 @@ name: { en: "The Pelóri", es: "Las Pelóri" }   # es: the article and gender ar
 summary:
   en: "The Mountains of Valinor, the great wall the Valar raised along the eastern shore of Aman."
   es: "Las Montañas de Valinor, la gran muralla que los Valar alzaron a lo largo de la costa oriental de Aman."
+map: { on: aman, x: 2, z: 0, radius: 30 }   # the mountain wall, running north and south

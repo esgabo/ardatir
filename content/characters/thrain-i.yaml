@@ -1,0 +1,8 @@
+id: thrain-i
+name: { en: "Thráin I", es: "Thráin I" }
+kind: dwarf
+summary:
+  en: "The king who led Durin's Folk out of Moria and first dwelt under the Lonely Mountain, where he found the Arkenstone."
+  es: "El rey que condujo al Pueblo de Durin fuera de Moria y habitó por primera vez bajo la Montaña Solitaria, donde halló la Piedra del Arca."
+parents: [ nain-i ]
+# No mother appears anywhere in Durin's line: Appendix A says Dís is the only dwarf-woman the histories name.

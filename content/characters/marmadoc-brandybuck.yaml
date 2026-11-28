@@ -1,0 +1,8 @@
+id: marmadoc-brandybuck
+name: { en: "Marmadoc Brandybuck", es: "Marmadoc Brandigamo" }
+kind: hobbit
+summary:
+  en: "Master of Buckland, called Masterful, and Frodo's great-grandfather."
+  es: "Señor de Los Gamos, llamado Masterful, y bisabuelo de Frodo."
+parents: [ madoc-brandybuck ]
+spouse: [ adaldrida-bolger ]

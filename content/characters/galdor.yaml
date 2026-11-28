@@ -1,0 +1,8 @@
+id: galdor
+name: { en: "Galdor the Tall", es: "Galdor el Alto" }
+kind: man
+summary:
+  en: "Hador's son and lord of Dor-lómin, father of Húrin and Huor, slain at Eithel Sirion by an arrow."
+  es: "Hijo de Hador y señor de Dor-lómin, padre de Húrin y Huor, muerto en Eithel Sirion por una flecha."
+parents: [ hador ]
+spouse: [ hareth ]

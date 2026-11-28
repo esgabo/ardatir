@@ -1,0 +1,7 @@
+id: elendur-of-arnor
+name: { en: "Elendur of Arnor", es: "Elendur de Arnor" }
+kind: man
+summary:
+  en: "King of Arnor, son of Valandur; he shares his name with Isildur's eldest son, who fell at the Gladden Fields."
+  es: "Rey de Arnor, hijo de Valandur; comparte el nombre con el hijo mayor de Isildur, que cayó en los Campos Gladios."
+parents: [ valandur ]

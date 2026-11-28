@@ -3,3 +3,6 @@ name: { en: "The Blue Mountains", es: "Las Montañas Azules" }
 summary:
   en: "The western mountains where Durin's folk made a new home in exile."
   es: "Las montañas occidentales donde el pueblo de Durin halló un nuevo hogar en el exilio."
+map:
+  - { on: middle-earth, x: -33, z: 0, radius: 15 }   # the Blue Mountains west of the Shire
+  - { on: beleriand, x: 38, z: 26, radius: 18 }   # the same range, as Beleriand’s eastern wall

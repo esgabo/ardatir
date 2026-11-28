@@ -1,0 +1,7 @@
+id: gorbadoc-brandybuck
+name: { en: "Gorbadoc Brandybuck", es: "Gorbadoc Brandigamo" }
+kind: hobbit
+summary:
+  en: "Master of Buckland, called Broadbelt, who married Mirabella Took and kept so generous a table that Bilbo's parents were glad to visit; Frodo's grandfather."
+  es: "Señor de Los Gamos, llamado Broadbelt, que se casó con Mirabella Tuk y tenía una mesa tan generosa que los padres de Bilbo gustaban de visitarla; abuelo de Frodo."
+parents: [ marmadoc-brandybuck, adaldrida-bolger ]

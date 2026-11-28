@@ -1,0 +1,8 @@
+id: longo-baggins
+name: { en: "Longo Baggins", es: "Longo Bolsón" }
+kind: hobbit
+summary:
+  en: "Bungo's brother and Otho's father, through whom the Sackville-Bagginses came by their claim on Bag End."
+  es: "Hermano de Bungo y padre de Otho, por quien los Sacovilla-Bolsón adquirieron su pretensión sobre Bolsón Cerrado."
+parents: [ mungo-baggins, laura-grubb ]
+spouse: [ camellia-sackville ]

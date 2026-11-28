@@ -1,0 +1,7 @@
+id: daisy-gamgee
+name: { en: "Daisy Gamgee", es: "Daisy Gamyi" }
+kind: hobbit
+summary:
+  en: "One of Sam's elder sisters."
+  es: "Una de las hermanas mayores de Sam."
+parents: [ hamfast-gamgee, bell-goodchild ]

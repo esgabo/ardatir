@@ -19,3 +19,8 @@ links:
     note:
       en: "Doriath is without its protection."
       es: "Doriath pierde su protección."
+  - to: beren-wins-back-the-nauglamir
+    type: enabled-by
+    note:
+      en: "The Silmaril is in Doriath because Beren took it back from the Dwarves and it passed to Dior; that is what the sons of Feanor come for."
+      es: "El Silmaril está en Doriath porque Beren lo recuperó de los Enanos y pasó a Dior; es lo que vienen a buscar los hijos de Fëanor."

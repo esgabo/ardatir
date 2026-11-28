@@ -38,3 +38,15 @@ export function passageHash(p: Passage, lang: Lang): string {
 }
 
 export const TEXT_HASH = /^sha256:[0-9a-f]{16}$/;
+
+/** What a narration belongs to: an event, or an arc that tells its own story (DESIGN §4.10). */
+export type ScriptKind = 'event' | 'arc';
+
+/**
+ * A narration's id in the one namespace events and arcs share: an event is its own id, an arc
+ * is `arc/<id>`. Everything the pipeline keys by a script — `data/scripts/`, `out/narration/`,
+ * the take cache, the report — uses this, so an arc's telling can never be recorded over an
+ * event's (§4.10). Bare ids are distinct too (the build errors on an arc that shares an id with
+ * an event), so `--only`, `--accept` and `out/narration/rejects.txt` take the bare id.
+ */
+export const scriptId = (kind: ScriptKind, id: string): string => (kind === 'arc' ? `arc/${id}` : id);

@@ -1,0 +1,21 @@
+# The Fall of Gondolin: a grouping of thirteen scenes that also tells its own story over the map
+# of Beleriand (narration.yaml + staging.yaml, docs/DESIGN.md §4.10).
+#
+# No `narratedBy`: every event of this arc is in the First Age, so the telling is read by the
+# First Age's narrator (a voice belongs to an age, never to a story: §5).
+id: the-fall-of-gondolin
+title: { en: The Fall of Gondolin, es: La Caída de Gondolin }
+summary:
+  en: Tuor's coming to the hidden city, his years there, and its betrayal and ruin.
+  es: La llegada de Tuor a la ciudad oculta, sus años allí, y su traición y ruina.
+status: staged
+sources:
+  - { book: the-silmarillion, chapter: "Of Turgon and the Building of Gondolin" }
+  - { book: the-silmarillion, chapter: "Of Tuor and the Fall of Gondolin" }
+beats:
+  - { id: treason, label: { en: Maeglin is taken, es: Maeglin es capturado } }
+  - { id: assault, label: { en: The host comes over the mountains, es: La hueste cruza las montañas } }
+  - { id: tower,   label: { en: Turgon's tower falls, es: Cae la torre de Turgon } }
+  - { id: flight,  label: { en: Out by the secret way, es: Salida por el pasadizo } }
+  - { id: cleft,   label: { en: The Eagles' Cleft, es: La grieta de las Águilas } }
+  - { id: havens,  label: { en: The Havens of Sirion, es: Los Puertos del Sirion } }

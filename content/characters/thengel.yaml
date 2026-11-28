@@ -1,0 +1,7 @@
+id: thengel
+name: { en: Thengel, es: Thengel }
+kind: man
+summary:
+  en: "King of the Mark before his son Théoden."
+  es: "Rey de la Marca antes de su hijo Théoden."
+house: { en: "The House of Eorl", es: "La Casa de Eorl" }

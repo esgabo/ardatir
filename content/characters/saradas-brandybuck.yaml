@@ -1,0 +1,7 @@
+id: saradas-brandybuck
+name: { en: "Saradas Brandybuck", es: "Saradas Brandigamo" }
+kind: hobbit
+summary:
+  en: "A son of Gorbadoc and Mirabella, of the crowded Brandybuck household."
+  es: "Hijo de Gorbadoc y Mirabella, de la concurrida casa de los Brandigamo."
+parents: [ gorbadoc-brandybuck, mirabella-took ]

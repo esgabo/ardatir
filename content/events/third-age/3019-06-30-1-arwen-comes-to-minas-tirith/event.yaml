@@ -7,7 +7,7 @@ when:
 place: minas-tirith
 characters: [ arwen, aragorn, elrond ]
 arcs: [ the-war-of-the-ring, after-the-war ]
-journeys: [  ]
+journeys: [ elrond-brings-arwen-to-gondor ]
 tags: [ lord-of-the-rings ]
 status: scripted
 source: { book: the-return-of-the-king, chapter: "The Steward and the King" }

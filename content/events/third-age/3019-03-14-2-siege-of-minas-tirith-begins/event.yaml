@@ -14,3 +14,9 @@ title: { en: "The Siege of Minas Tirith Begins", es: "Comienza el asedio de Mina
 summary:
   en: "The dark host closes the ring about the city. Engines hurl fire and the severed heads of fallen men, while Denethor, mad with grief, sits beside the wounded Faramir."
   es: "La hueste oscura cierra el cerco en torno a la ciudad. Las máquinas lanzan fuego y las cabezas de los caídos, mientras Denethor, loco de dolor, vela junto al herido Faramir."
+links:
+  - to: faramir-falls-at-the-causeway
+    type: caused-by
+    note:
+      en: "With the wall of the Pelennor overrun and Faramir carried in dying, nothing stands between the host and the city."
+      es: "Con el muro del Pelennor desbordado y Faramir traído moribundo, nada se interpone entre la hueste y la ciudad."

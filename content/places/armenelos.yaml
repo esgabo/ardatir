@@ -3,3 +3,4 @@ name: { en: "Armenelos", es: "Armenelos" }
 summary:
   en: "The royal city of Númenor."
   es: "La ciudad real de Númenor."
+map: { on: numenor, x: 0, z: 0 }   # the royal city: the origin of this map

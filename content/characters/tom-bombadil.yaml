@@ -7,5 +7,4 @@ summary:
   es: "El alegre y antiquísimo señor de los bosques y las aguas entre el Bosque Viejo y las Quebradas de los Túmulos, que se llama a sí mismo el Más Viejo, más antiguo que cualquier río o árbol que conozca. Los Elfos lo llaman Iarwain Ben-adar, el más viejo, sin padre; los Enanos, Forn, y los Hombres del Norte, Orald. El Anillo no tiene poder sobre él, ni él lo desea."
 color: "#c0a030"
 scale: 1.2
-kin:
-  - { id: goldberry, as: wife }
+spouse: [ goldberry ]

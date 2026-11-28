@@ -5,3 +5,4 @@ name:
 summary:
   en: A comfortable hobbit-hole dug into the Hill at Hobbiton, home of Bilbo Baggins.
   es: Una cómoda madriguera hobbit excavada en la Colina de Hobbiton, hogar de Bilbo Bolsón.
+map: { on: middle-earth, x: -12.2, z: -1.3 }   # the Hill above Hobbiton

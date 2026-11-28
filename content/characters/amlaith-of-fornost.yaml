@@ -1,0 +1,7 @@
+id: amlaith-of-fornost
+name: { en: "Amlaith of Fornost", es: "Amlaith de Fornost" }
+kind: man
+summary:
+  en: "Eärendur's eldest son and the first King of Arthedain, who kept the heirlooms of Isildur when the North-kingdom was divided."
+  es: "Hijo mayor de Eärendur y primer rey de Arthedain, que conservó las reliquias de Isildur cuando el Reino del Norte fue dividido."
+parents: [ earendur-of-arnor ]

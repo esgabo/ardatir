@@ -14,3 +14,9 @@ title: { en: "The Pyre of Denethor", es: "La pira de Denethor" }
 summary:
   en: "Denethor, believing both his sons lost, prepares a pyre. Pippin brings Gandalf and Beregond to stop him, and Faramir is dragged from the flames, but the Steward burns alone."
   es: "Denethor, creyéndose sin hijos, prepara una pira. Pippin trae a Gandalf y Beregond para detenerlo, y Faramir es sacado de las llamas, pero el Senescal arde solo."
+links:
+  - to: faramir-falls-at-the-causeway
+    type: caused-by
+    note:
+      en: "Faramir's wound is what breaks the Steward: he believes his last son dead."
+      es: "La herida de Faramir es lo que quiebra al Senescal: cree muerto a su último hijo."

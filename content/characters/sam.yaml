@@ -6,3 +6,8 @@ summary:
   es: Jardinero de Frodo y su leal compañero hasta el Monte del Destino.
 color: "#8a7a4a"
 scale: 1
+parents: [ hamfast-gamgee, bell-goodchild ]
+spouse: [ rosie ]
+fate:
+  en: "After Rosie died he gave the Red Book to his daughter and rode to the Towers, and it is held that he too passed over Sea, the last of the Ring-bearers."
+  es: "Después de morir Rosita entregó el Libro Rojo a su hija y cabalgó hacia las Torres, y se sostiene que él también partió sobre el Mar, el último de los Portadores del Anillo."

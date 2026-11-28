@@ -6,3 +6,5 @@ summary:
   es: "Esposa de Húrin y madre de Túrin y Nienor, orgullosa y firme en el dolor."
 color: "#7a6a4a"
 scale: 1.7
+parents: [ baragund ]
+spouse: [ hurin ]

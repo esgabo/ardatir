@@ -1,0 +1,7 @@
+id: primula-brandybuck
+name: { en: "Primula Brandybuck", es: "Primula Brandigamo" }
+kind: hobbit
+summary:
+  en: "Frodo's mother, the youngest of Mirabella's daughters, drowned with her husband in the Brandywine while boating."
+  es: "La madre de Frodo, la menor de las hijas de Mirabella, ahogada con su marido en el Brandivino mientras paseaban en barca."
+parents: [ gorbadoc-brandybuck, mirabella-took ]

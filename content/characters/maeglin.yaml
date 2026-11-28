@@ -6,3 +6,4 @@ summary:
   es: "Sobrino de Turgon, maestro de minas y metales, que traicionó a Gondolin por deseo de Idril."
 color: "#5a7a9a"
 scale: 1.85
+parents: [ eol, aredhel ]

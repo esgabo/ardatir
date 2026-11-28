@@ -1,0 +1,7 @@
+id: hobson-gamgee
+name: { en: "Hobson Gamgee (Roper Gamgee)", es: "Hobson Gamyi (el Cordelero)" }
+kind: hobbit
+summary:
+  en: "Sam's grandfather, a rope-maker of Tighfield, and the first of the family the Shire called Gamgee."
+  es: "El abuelo de Sam, cordelero de Tighfield, y el primero de la familia al que la Comarca llamó Gamyi."
+parents: [ wiseman-gamwich ]

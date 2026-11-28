@@ -1,0 +1,8 @@
+id: mungo
+name: { en: Mungo Baggins, es: Mungo Bolsón }
+kind: hobbit
+summary: { en: A hobbit of an older generation., es: Un hobbit de una generación anterior. }
+# A genealogy hobbit: no scene of his own, and the tree is the whole reason he has a file (§4.11).
+house: { en: The Bagginses, es: Los Bolsón }
+born: { date: { age: third-age, year: 2807 }, precision: year }
+died: { date: { age: third-age, year: 2900 }, precision: year }

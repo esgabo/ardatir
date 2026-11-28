@@ -1,0 +1,8 @@
+id: tar-telemmaite
+name: { en: "Tar-Telemmaitë", es: "Tar-Telemmaitë" }
+kind: man
+summary:
+  en: "King of Númenor, called Silver-handed for his hunger after silver."
+  es: "Rey de Númenor, llamado Mano de Plata por su afán de plata."
+parents: [ tar-ancalimon ]
+pronounce: { en: tar-tel-EM-my-teh, es: tar-te-lem-MÁI-te }

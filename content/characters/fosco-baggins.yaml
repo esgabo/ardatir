@@ -1,0 +1,8 @@
+id: fosco-baggins
+name: { en: "Fosco Baggins", es: "Fosco Bolsón" }
+kind: hobbit
+summary:
+  en: "Frodo's grandfather, a son of Largo, of the quieter Baggins branch away from the Hill."
+  es: "Abuelo de Frodo, hijo de Largo, de la rama más discreta de los Bolsón, lejos de la Colina."
+parents: [ largo-baggins, tanta-hornblower ]
+spouse: [ ruby-bolger ]

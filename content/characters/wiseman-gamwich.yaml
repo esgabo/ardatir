@@ -1,0 +1,7 @@
+id: wiseman-gamwich
+name: { en: "Wiseman Gamwich", es: "Wiseman Gamwich" }
+kind: hobbit
+summary:
+  en: "Hamfast's son, of the family that moved from Gamwich down to Tighfield."
+  es: "Hijo de Hamfast, de la familia que se trasladó de Gamwich a Tighfield."
+parents: [ hamfast-of-gamwich ]

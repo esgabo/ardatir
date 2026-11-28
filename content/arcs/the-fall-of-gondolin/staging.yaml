@@ -1,0 +1,108 @@
+# The Fall of Gondolin over the map of Beleriand (docs/DESIGN.md §4.10).
+#
+# This arc's status is `staged` and independent of its events': the telling plays over the map
+# while all thirteen of its scenes are still outlines or scripts.
+#
+# Coordinates are the map frame in content/places/ (docs/MAP.md): one unit ten miles, +x east,
+# +z south, Angband's gates at the origin. Gondolin is (8, 24), the Havens of Sirion (4, 48),
+# and the whole land is centred near (6, 24) with a radius of 25.
+
+map: beleriand
+duration: 140
+
+narration:
+  hidden: 0
+  tuor: 0.12
+  treason: 0.26
+  assault: 0.4
+  city: 0.5
+  tower: 0.58
+  secret: 0.64
+  cleft: 0.76
+  havens: 0.88
+  after: 0.96
+
+beats:
+  treason: 0.26
+  assault: 0.4
+  tower: 0.58
+  flight: 0.64
+  cleft: 0.76
+  havens: 0.88
+
+# The whole land, then in on the ring of mountains; north to Angband for the treason; back over
+# the Echoriath with the host; close on the city while it burns; out along Sirion to the sea.
+camera:
+  - { t: 0, x: 6, z: 24, width: 54 }
+  - { t: 0.06, x: 8, z: 24, width: 12 }
+  - { t: 0.12, x: -6, z: 21, width: 38 }
+  - { t: 0.2, x: 8, z: 24, width: 12 }
+  - { t: 0.26, x: 4, z: 10, width: 30 }
+  - { t: 0.4, x: 7, z: 18, width: 16 }
+  - { t: 0.5, x: 8, z: 24, width: 6 }
+  - { t: 0.64, x: 8, z: 23, width: 8 }
+  - { t: 0.76, x: 7, z: 20, width: 7 }
+  - { t: 0.88, x: 6, z: 36, width: 30 }
+  - { t: 0.96, x: 6, z: 26, width: 52 }
+
+# Which of the arc's thirteen events the telling reaches, and when. The six it does not stop at
+# (Aredhel, Maeglin's coming, Huor and Húrin at the Nirnaeth, the pools of Ivrin, Tuor's wedding,
+# Eärendil's birth) stay on the map as hollow diamonds.
+scenes:
+  turgon-founds-gondolin: 0.02
+  tuor-meets-ulmo: 0.12
+  tuor-reaches-gondolin: 0.18
+  maeglin-betrays-gondolin: 0.26
+  fall-of-gondolin: 0.42
+  tuor-leads-the-survivors-from-gondolin: 0.64
+  tuor-and-idril-reach-the-havens: 0.9
+
+hosts:
+  # Morgoth's host: out of Angband across Ard-galen, over the Encircling Mountains in the dark,
+  # a column until it is inside the city and a mass while it sacks it. It fights no battle of our
+  # own content, so being named here is what its faction file exists for (§4.10).
+  - faction: host-of-angband
+    mark: column
+    weight: 4
+    keyframes:
+      - { t: 0.3, at: angband, action: hold }
+      - { t: 0.37, x: 4, z: 12, action: march }
+      - { t: 0.41, x: 7, z: 19, action: march }
+      - { t: 0.44, at: gondolin, action: fight, mark: mass }
+      - { t: 0.72, at: gondolin, action: hold }
+      - { t: 0.75, x: 7, z: 20, action: march, mark: column, weight: 2 }
+      - { t: 0.8, x: 7, z: 20, action: fight }
+      - { t: 0.86, at: gondolin, action: hold, mark: mass, weight: 4 }
+
+  # What is left of the city: out under the plain, up to the cleft in the northern wall, held
+  # there while Glorfindel buys them the pass, then the long road down Sirion to the sea. Not a
+  # side in anybody's battle, so it carries its own name and colour rather than a faction.
+  - label: { en: The survivors of Gondolin, es: Los supervivientes de Gondolin }
+    color: "#8fb6c8"
+    mark: trickle
+    weight: 1
+    keyframes:
+      - { t: 0.64, at: gondolin, action: hold }
+      - { t: 0.7, x: 8, z: 22, action: flee }
+      - { t: 0.76, x: 7, z: 20, action: flee }
+      - { t: 0.82, x: 7, z: 20, action: hold }
+      - { t: 0.88, x: 6, z: 34, action: flee }
+      - { t: 0.93, at: havens-of-sirion, action: march }
+      - { t: 1, at: havens-of-sirion, action: hold }
+
+  # The eagles of the Crissaegrim come off their own peaks, clear the heights, and are gone.
+  - label: { en: The eagles of the Crissaegrim, es: Las águilas de Crissaegrim }
+    color: "#c8b273"
+    mark: flight
+    weight: 1
+    keyframes:
+      - { t: 0.76, x: 5, z: 18, action: fly }
+      - { t: 0.8, x: 7, z: 20, action: fight }
+      - { t: 0.86, x: 5, z: 18, action: fade }
+
+# Tuor's road in, then the refugees' road out. The flight's own waypoints are Gondolin and the
+# Havens, so the whole middle of it is plain road with nothing on it: the cleft is told as a scene
+# of the flight event, not as a stop of its own, and the map says as much without a word.
+roads:
+  - { journey: tuors-road-to-gondolin, from: 0.12, to: 0.2 }
+  - { journey: the-flight-from-gondolin, from: 0.64, to: 0.93 }

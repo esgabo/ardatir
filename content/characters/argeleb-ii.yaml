@@ -1,0 +1,7 @@
+id: argeleb-ii
+name: { en: "Argeleb II", es: "Argeleb II" }
+kind: man
+summary:
+  en: "King of Arthedain, who gave the land beyond the Baranduin to the wandering hobbits; the Shire counts its years from his grant."
+  es: "Rey de Arthedain, que concedió a los hobbits errantes la tierra más allá del Baranduin; la Comarca cuenta sus años desde esa concesión."
+parents: [ araphor ]

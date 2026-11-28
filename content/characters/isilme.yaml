@@ -1,0 +1,7 @@
+id: isilme
+name: { en: "Isilmë", es: "Isilmë" }
+kind: man
+summary:
+  en: "A daughter of Tar-Elendil, sister of Silmariën and of Tar-Meneldur."
+  es: "Hija de Tar-Elendil, hermana de Silmariën y de Tar-Meneldur."
+parents: [ tar-elendil ]

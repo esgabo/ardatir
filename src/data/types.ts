@@ -100,10 +100,88 @@ export interface Narrator {
   voices: Partial<Record<Lang, NarratorVoice>>;
 }
 
+/**
+ * The closed list of `kin` words: exactly what parentage cannot say (docs/DESIGN.md §4.11).
+ * Everything a tree can derive from `parents` is not a field, so `brother`, `father` and the
+ * rest are gone, and a word outside this list is an error naming its replacement. `sibling` is
+ * here for the one case §4.11's table misses: Bofur and Bombur are brothers in the published
+ * *Hobbit* and no source gives either of them a parent, so the fact is unrecoverable from the
+ * edges, exactly as `dori`/`nori`/`ori`'s `kin` is.
+ */
+export const KIN_WORDS = ['ancestor', 'descendant', 'cousin', 'sibling', 'kin', 'foster-parent', 'fosterling'] as const;
+export type KinWord = (typeof KIN_WORDS)[number];
+
 export interface Kin {
   id: string;
-  /** Relation keyword, e.g. "cousin", "sister". */
+  /**
+   * Relation keyword: one of KIN_WORDS. Typed as a string while the 36 files written against the
+   * open vocabulary are migrated (§4.11), since an un-migrated word is a warning, not an error.
+   */
   as: string;
+}
+
+/**
+ * A birth or a death: the date as written (by the character, or by the event that declares it),
+ * its honest range, and the event that declares it where one does. Silence is silence — a
+ * character with no `died` has none, and nothing may infer one (§4.11).
+ */
+export interface LifeDate {
+  date?: StoryDate;
+  precision?: Precision;
+  /** The honest range on the shared axis (src/data/calendar.ts). */
+  span?: Span;
+  /** The event whose `born:`/`died:` names this character, when one does. */
+  event?: string;
+}
+
+/** One side of a family tie. `reverse` marks the side the build derived, as event links do (§4.5). */
+export interface FamilyTie {
+  id: string;
+  reverse?: boolean;
+}
+
+/** A sibling, derived from `parents`: `half` when one parent is shared and each has another (§4.11). */
+export interface FamilySibling extends FamilyTie {
+  half: boolean;
+  /** The parents the two share. */
+  shared: string[];
+  /** Born together: the one sibling fact parentage cannot reach, so it is authored (`twin`). */
+  twin?: boolean;
+}
+
+/**
+ * A character's family, derived by the build from `parents`, `spouse`, `betrothed` and `twin`
+ * (docs/DESIGN.md §4.11). Nothing here is authored but the parents, the spouses, the betrothals
+ * and the twin: children, siblings, half-siblings, generation depth and the house are
+ * consequences, exactly as a character's events are.
+ */
+export interface Family {
+  /** Authored: 0–2 parents, order meaningless. */
+  parents: string[];
+  /** Derived from everyone else's `parents`, in content order. */
+  children: string[];
+  /** Authored where written, in the order married; the other side is derived and marked. */
+  spouses: FamilyTie[];
+  betrothed: FamilyTie[];
+  /** Authored on one side, derived on the other. */
+  twin?: FamilyTie;
+  siblings: FamilySibling[];
+  /** Authored, and only for what parentage cannot say. */
+  kin: Kin[];
+  /** 0 for a character whose parents the content does not give, one more than the deepest parent. */
+  generation: number;
+  /** The house they stand in: the id of the part of the parentage graph (its eldest member). */
+  house?: string;
+}
+
+/** A house: a connected part of the parentage graph, named by the books where they name it (§4.11). */
+export interface House {
+  /** The eldest known member of this part of the graph, or the one carrying `house:`. */
+  id: string;
+  /** From `house:` on the founder, where the books name it their own way (*Durin's Folk*). */
+  name?: LocalizedText;
+  /** Every member, in content order. */
+  members: string[];
 }
 
 export interface Character {
@@ -118,6 +196,22 @@ export interface Character {
   /** Relative height (1 = hobbit-sized), keeps film-like proportions between races. */
   scale?: number;
   kin?: Kin[];
+  /** 0, 1 or 2 known parents, order meaningless: the one edge a family tree is drawn from (§4.11). */
+  parents?: string[];
+  /** Spouses in the order they were married; symmetric, the other side derived (§4.11). */
+  spouse?: string[];
+  /** A betrothal that never became a marriage: rare, and symmetric too. */
+  betrothed?: string[];
+  /** Born together with this character: symmetric, and unrecoverable from `parents` (§4.11). */
+  twin?: string;
+  /** From the character's own `born:`, or from the event that declares the birth. */
+  born?: LifeDate;
+  /** Likewise — and left out entirely when the sources do not say they died. */
+  died?: LifeDate;
+  /** One sentence for a life that ended in something other than a death (the Choice of the Half-elven). */
+  fate?: LocalizedText;
+  /** On a founder, where the books name their house their own way (*Durin's Folk*). */
+  house?: LocalizedText;
   /**
    * Where a character who doesn't travel lives (Tom Bombadil: the Old Forest). The time cursor
    * shows them there when no journey of theirs covers the moment, within the span of their events.
@@ -132,12 +226,37 @@ export interface Character {
   pronounce?: LocalizedText;
 }
 
+/**
+ * The maps the world view draws. Beleriand sinks at the end of the First Age, so its places
+ * share no coordinate frame with later Middle-earth; Aman and Númenor are their own lands.
+ * See docs/MAP.md.
+ */
+export const MAP_IDS = ['middle-earth', 'beleriand', 'aman', 'numenor'] as const;
+export type MapId = typeof MAP_IDS[number];
+
+/**
+ * A place's position on one map: the ground plane is x/z (y is up, as everywhere in three.js),
+ * +x east and +z south, one unit ten miles. `radius` is how far across a region reaches from
+ * that centre, in the same units; a place with a point and no extent has none. docs/MAP.md.
+ */
+export interface PlacePoint {
+  on: MapId;
+  x: number;
+  z: number;
+  radius?: number;
+}
+
 export interface Place {
   id: string;
   name: LocalizedText;
   summary: LocalizedText;
-  /** Position on Ardatir's own world map, once it exists. */
-  world?: { x: number; z: number };
+  /**
+   * Where the place sits on Ardatir's own maps (`map:` in content/places/, docs/MAP.md). One
+   * entry per map it appears on — the Blue Mountains are on both Beleriand and Middle-earth —
+   * so a world stage picks the entry whose `on` is the map it draws. Missing for a place that
+   * belongs to no frame we draw (`map: nowhere`).
+   */
+  map?: PlacePoint[];
   /** How to say a hard name (`ee-LOO-va-tar`), per language: data/pronounce.ts, docs/DESIGN.md §3.5. */
   pronounce?: LocalizedText;
 }
@@ -165,6 +284,22 @@ export interface Arc {
   /** Derived: the arc's events in chronological order. */
   events: string[];
   span?: Span;
+  /**
+   * The telling's own status (docs/DESIGN.md §4.10), through the same four words an event runs
+   * and **independent of its events'**: `outline` for an arc that is only a grouping (one flat
+   * file), `scripted` once it has a narration.yaml, `staged` once it plays over the map.
+   */
+  status: Status;
+  /** The chapters the telling is drawn from; cited, never quoted. */
+  sources?: { book: string; chapter?: string | number }[];
+  /** Whose voice tells it: authored only where the arc's events cross ages (§4.10, §5). */
+  narratedBy?: string;
+  /** Derived: the age whose narrator reads the telling (`narratedBy`, else the first event's age). */
+  voiceOf?: string;
+  /** Which map the telling plays on (staging.yaml `map`), for an arc that has a staging. */
+  map?: MapId;
+  /** Which languages this arc has a recording in. */
+  audio?: Lang[];
 }
 
 export interface Waypoint {
@@ -346,6 +481,66 @@ export interface Army {
   keyframes: ArmyKeyframe[];
 }
 
+/**
+ * A body of people at map scale (an arc's staging.yaml `hosts`, docs/DESIGN.md §4.10).
+ *
+ * A tile `army` is a block of small figures with a count and legs; across a country a host is a
+ * **mark on a map**, and a thousand orcs and ten thousand differ in how much of the country they
+ * fill, not in how many bodies can be counted. So the map has its own closed vocabulary, and
+ * `armies` stays honest at tile scale.
+ */
+export const HOST_MARKS = ['column', 'mass', 'swarm', 'trickle', 'fleet', 'flight'] as const;
+export type HostMark = (typeof HOST_MARKS)[number];
+/** What a host does on the way to a keyframe. `hold` and `fight` happen where it stands; `fade` thins the mark to nothing. */
+export const HOST_ACTIONS = ['march', 'ride', 'sail', 'fly', 'flee', 'hold', 'fight', 'fade'] as const;
+export type HostAction = (typeof HOST_ACTIONS)[number];
+/** How much of the country a mark fills, 1 to 5. Never a count of soldiers (§4.4 applies to numbers too). */
+export const HOST_WEIGHTS = [1, 2, 3, 4, 5] as const;
+
+/**
+ * Where a host is at a moment of an arc's telling. Exactly one of `at` (a place, whose `map:`
+ * coordinates the map already knows) or `x`/`z` (a point that is no place: a pass, a river
+ * crossing, open sea), in map units. A keyframe may change the host's `mark` or `weight` from
+ * there on: a column that arrives and becomes a mass besieging a city is one body of people.
+ */
+export interface HostKeyframe {
+  t: number;
+  /** A place id (preferred wherever a place exists). */
+  at?: string;
+  x?: number;
+  z?: number;
+  action?: HostAction;
+  mark?: HostMark;
+  weight?: number;
+}
+
+/** A host on the map: a faction (its name and banner colour) or its own `label` and `color`, never both. */
+export interface Host {
+  faction?: string;
+  label?: LocalizedText;
+  color?: string;
+  mark: HostMark;
+  weight: number;
+  keyframes: HostKeyframe[];
+}
+
+/**
+ * A journey painted along its waypoints inside an arc's telling (`roads`): nothing before
+ * `from`, painting itself between `from` and `to`, the whole road after. A leg with no event on
+ * it is plain road, which is how the map says which parts of a journey we have told.
+ */
+export interface Road {
+  journey: string;
+  from: number;
+  to: number;
+}
+
+/** When the telling reaches one of the arc's events: it lights at `t` and stays lit. */
+export interface ArcScene {
+  event: string;
+  t: number;
+}
+
 /** The light of a diorama at a moment (src/scene/lighting.ts has the look of each). */
 export const LIGHT_PRESETS = ['dawn', 'morning', 'day', 'evening', 'dusk', 'night'] as const;
 export type LightPreset = (typeof LIGHT_PRESETS)[number];
@@ -488,6 +683,29 @@ export interface EventDetail extends EventSummary {
   audioFiles: Partial<Record<Lang, NarrationAudio>>;
 }
 
+/**
+ * An arc that tells its own story over the map (data/arcs/<id>.json, docs/DESIGN.md §4.10):
+ * the event machinery at map scale. One clock, passages at a `t`, an authored `camera` — and no
+ * `light`, `sound` or `reveal`, because a map is not a place and a country has no hour.
+ */
+export interface ArcDetail extends Arc {
+  /** Which map it plays on. */
+  map: MapId;
+  /** Length when no recording exists for the current language, in seconds. */
+  durationSeconds: number;
+  narration: NarrationSegment[];
+  beats: Beat[];
+  /** How the view sweeps the map, in map units (as an event's `camera`, §9.3). */
+  camera?: CameraKey[];
+  /** When the telling reaches each of the arc's events; the rest are drawn hollow from the first frame. */
+  scenes: ArcScene[];
+  /** Bodies of people moving over the country. */
+  hosts: Host[];
+  /** Journeys painted along their waypoints. */
+  roads: Road[];
+  audioFiles: Partial<Record<Lang, NarrationAudio>>;
+}
+
 /** data/scripts/<id>.json: an event's narration as text, for every event that has a narration.yaml. */
 export interface EventScript {
   id: string;
@@ -517,4 +735,12 @@ export interface ContentIndex {
   factions: Faction[];
   /** Derived: each faction's battles (events whose `sides` name it), in story order. */
   byFaction: Record<string, string[]>;
+  /**
+   * Each character's family (docs/DESIGN.md §3.6, §4.11), derived from the authored `parents`,
+   * `spouse`, `betrothed` and `twin` with the reverses marked — exactly as byCharacter and lanes
+   * are derived. Every character has an entry, even one with no kin at all.
+   */
+  family: Record<string, Family>;
+  /** Derived: the connected parts of the parentage graph. */
+  houses: House[];
 }

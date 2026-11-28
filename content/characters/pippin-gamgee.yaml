@@ -1,0 +1,7 @@
+id: pippin-gamgee
+name: { en: "Pippin Gamgee", es: "Pippin Gamyi" }
+kind: hobbit
+summary:
+  en: "A son of Sam and Rosie, named for Peregrin Took."
+  es: "Un hijo de Sam y Rosita, llamado así por Peregrin Tuk."
+parents: [ sam, rosie ]

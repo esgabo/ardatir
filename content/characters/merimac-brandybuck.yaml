@@ -1,0 +1,7 @@
+id: merimac-brandybuck
+name: { en: "Merimac Brandybuck", es: "Merimac Brandigamo" }
+kind: hobbit
+summary:
+  en: "Saradoc's brother and Merry's uncle, of Brandy Hall."
+  es: "Hermano de Saradoc y tío de Merry, de Casa Brandi."
+parents: [ rorimac-brandybuck, menegilda-goold ]

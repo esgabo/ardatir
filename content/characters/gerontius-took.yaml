@@ -1,0 +1,8 @@
+id: gerontius-took
+name: { en: "Gerontius Took (the Old Took)", es: "Gerontius Tuk (el Viejo Tuk)" }
+kind: hobbit
+summary:
+  en: "Thain of the Shire and the longest-lived hobbit of his day, remembered for his twelve children and for the parties he gave; Bilbo's grandfather on his mother's side."
+  es: "Thain de la Comarca y el hobbit más longevo de su tiempo, recordado por sus doce hijos y por las fiestas que daba; abuelo materno de Bilbo."
+# Appendix C gives his children but this pass could not vouch for his own father or the Thains above him, so no parentage is claimed.
+spouse: [ adamanta-chubb ]

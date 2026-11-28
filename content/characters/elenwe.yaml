@@ -1,0 +1,8 @@
+id: elenwe
+name: { en: "Elenwë", es: "Elenwë" }
+kind: elf
+summary:
+  en: "Turgon's wife, lost in the grinding ice of the Helcaraxë on the long march from Aman; Idril's mother."
+  es: "Esposa de Turgon, perdida en el hielo quebrantado del Helcaraxë durante la larga marcha desde Aman; madre de Idril."
+spouse: [ turgon ]
+pronounce: { en: EL-en-weh, es: e-LEN-ue }

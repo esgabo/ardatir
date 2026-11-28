@@ -1,0 +1,7 @@
+id: carl-cotton
+name: { en: "Carl Cotton (Nibs)", es: "Carl Coto (Nibs)" }
+kind: hobbit
+summary:
+  en: "The youngest of Rosie's brothers."
+  es: "El menor de los hermanos de Rosita."
+parents: [ tolman-cotton, lily-brown ]

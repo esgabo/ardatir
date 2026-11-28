@@ -1,0 +1,7 @@
+id: aranarth
+name: { en: "Aranarth", es: "Aranarth" }
+kind: man
+summary:
+  en: "Arvedui's son and the first Chieftain of the Dúnedain, who would not take the title of king over a kingdom that was gone, and gave the heirlooms of the North into Elrond's keeping."
+  es: "Hijo de Arvedui y primer Caudillo de los Dúnedain, que no quiso tomar el título de rey sobre un reino que ya no existía, y entregó las reliquias del Norte a la custodia de Elrond."
+parents: [ arvedui, firiel ]

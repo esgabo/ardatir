@@ -6,6 +6,7 @@ when:
 place: angband
 characters: [ melkor ]
 arcs: [ the-war-of-wrath ]
+journeys: [ morgoths-return-to-the-north ]
 tags: [ silmarillion ]
 status: scripted
 source: { book: the-silmarillion, chapter: "Of the Voyage of Eärendil and the War of Wrath" }

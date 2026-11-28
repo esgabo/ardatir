@@ -1,0 +1,9 @@
+id: finduilas-of-dol-amroth
+name: { en: "Finduilas of Dol Amroth", es: "Finduilas de Dol Amroth" }
+kind: man
+summary:
+  en: "Imrahil's sister and Denethor's wife, mother of Boromir and Faramir; she withered away from the sea air she had grown up in and died young, and her husband grew grimmer after her."
+  es: "Hermana de Imrahil y esposa de Denethor, madre de Boromir y Faramir; se consumió lejos del aire marino en que había crecido y murió joven, y su esposo se volvió más sombrío tras ella."
+parents: [ adrahil-ii ]
+spouse: [ denethor ]
+# Not the Finduilas of Nargothrond, Orodreth's daughter, who bore the name an age and a half before.

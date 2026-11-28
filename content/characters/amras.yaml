@@ -1,0 +1,9 @@
+id: amras
+name: { en: "Amras", es: "Amras" }
+kind: elf
+summary:
+  en: "One of Fëanor's twin youngest sons, who rode with his brother in the east and fell with him at the Havens of Sirion."
+  es: "Uno de los hijos menores gemelos de Fëanor, que cabalgó con su hermano en el este y cayó con él en los Puertos del Sirion."
+parents: [ feanor, nerdanel ]
+twin: amrod
+# No wife of any of Fëanor's seven sons is named in any source, save that Curufin's was Celebrimbor's mother.

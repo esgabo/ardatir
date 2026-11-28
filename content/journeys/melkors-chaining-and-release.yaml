@@ -1,0 +1,13 @@
+id: melkors-chaining-and-release
+title: { en: "Melkor's Chaining and Release", es: "El encadenamiento y la liberación de Melkor" }
+characters: [ melkor ]
+# Only what the Annals date: taken out of Utumno, three ages in the Halls of Mandos, the
+# pardon and the years he walked free in Valinor and went among the Noldor in Tirion, and
+# his return at the darkening of the Trees. Between about 1490 and 1495 he fled north out
+# of Valinor and came back with Ungoliant; that road runs through Araman, which is on none
+# of the four maps we draw (docs/MAP.md), so it is not a waypoint here.
+waypoints:
+  - { place: utumno, date: { age: years-of-the-trees, year: 1100 }, precision: year }
+  - { place: valinor, date: { age: years-of-the-trees, year: 1100 }, end: { age: years-of-the-trees, year: 1400 }, precision: year }
+  - { place: tirion, date: { age: years-of-the-trees, year: 1410 }, end: { age: years-of-the-trees, year: 1490 }, precision: year }
+  - { place: valinor, date: { age: years-of-the-trees, year: 1495 }, precision: year }

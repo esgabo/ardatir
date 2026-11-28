@@ -6,3 +6,11 @@ summary:
   es: Heredero de Bilbo, que lleva el Anillo Único a Mordor para destruirlo.
 color: "#6a7a5a"
 scale: 1
+parents: [ drogo-baggins, primula-brandybuck ]
+# Bilbo adopted him and made him his heir, which is neither descent nor marriage: they are
+# cousins twice over as well, and that is the lesser of the two facts (docs/DESIGN.md §4.11).
+kin:
+  - { id: bilbo, as: foster-parent }
+fate:
+  en: "He did not die in Middle-earth: his wound would not heal, and he was given passage over Sea with the keepers of the Three Rings."
+  es: "No murió en la Tierra Media: su herida no sanaba, y le fue concedido el paso sobre el Mar con los guardianes de los Tres Anillos."

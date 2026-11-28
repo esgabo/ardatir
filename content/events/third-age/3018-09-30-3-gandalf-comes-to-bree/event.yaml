@@ -1,0 +1,30 @@
+id: gandalf-comes-to-bree
+age: third-age
+when:
+  # Appendix B has the inn raided in the small hours of 30 September, the hobbits leaving that
+  # morning, Gandalf at Crickhollow that night, and Gandalf leaving Bree on 1 October: so he
+  # reaches the Pony late on the 30th, which is where his road already puts him.
+  start: { age: third-age, year: 3018, month: 9, day: 30 }
+  precision: day
+place: prancing-pony
+characters: [ gandalf, butterbur ]
+arcs: [ the-war-of-the-ring, the-road-to-rivendell ]
+journeys: [ gandalfs-road-3018 ]
+tags: [ lord-of-the-rings ]
+status: scripted
+source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
+title: { en: "Gandalf Comes to Bree", es: "Gandalf llega a Bree" }
+summary:
+  en: "Gandalf reaches the Pony at the end of the day the hobbits left it. The inn has been raided, his letter was never sent, and the only good news is the name of the guide who went with them."
+  es: "Gandalf llega al Pony al final del día en que los hobbits se marcharon. La posada ha sido asaltada, su carta nunca se envió, y la única buena noticia es el nombre del guía que se fue con ellos."
+links:
+  - to: the-black-riders-raid-bree
+    type: crossing
+    note:
+      en: "He comes to the inn the same day it was broken into, and misses both the Riders and his friends by hours."
+      es: "Llega a la posada el mismo día en que fue asaltada, y se pierde por horas tanto a los Jinetes como a sus amigos."
+  - to: gandalf-at-amon-sul
+    type: causes
+    note:
+      en: "What he learns at the Pony sends him east along the Road after them, and three days later he is fighting on Weathertop."
+      es: "Lo que averigua en el Pony lo lanza al este por el Camino tras ellos, y tres días después está luchando en la Cima de los Vientos."

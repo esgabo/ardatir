@@ -1,0 +1,7 @@
+id: beleg-of-arthedain
+name: { en: "Beleg of Arthedain", es: "Beleg de Arthedain" }
+kind: man
+summary:
+  en: "King of Arthedain, Amlaith's son; not Beleg Strongbow of Doriath, who bore the name an age before."
+  es: "Rey de Arthedain, hijo de Amlaith; no es Beleg Arcofirme de Doriath, que llevó el nombre una edad antes."
+parents: [ amlaith-of-fornost ]

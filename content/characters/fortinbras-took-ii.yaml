@@ -1,0 +1,8 @@
+id: fortinbras-took-ii
+name: { en: "Fortinbras Took II", es: "Fortinbras Tuk II" }
+kind: hobbit
+summary:
+  en: "Thain of the Shire, remembered chiefly for his formidable wife."
+  es: "Thain de la Comarca, recordado sobre todo por su formidable esposa."
+parents: [ isumbras-took-iv ]
+spouse: [ lalia-clayhanger ]

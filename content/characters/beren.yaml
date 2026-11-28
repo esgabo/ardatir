@@ -6,3 +6,4 @@ summary:
   es: "Hijo de Barahir, un proscrito de Dorthonion que ganó el amor de Lúthien y arrancó un Silmaril de la corona de Morgoth."
 color: "#7a6a4a"
 scale: 1.8
+parents: [ barahir, emeldir ]

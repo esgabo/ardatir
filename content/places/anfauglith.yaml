@@ -3,3 +3,4 @@ name: { en: "Anfauglith", es: "Anfauglith" }
 summary:
   en: "The Gasping Dust, the plain of Ard-galen burned by Morgoth."
   es: "El Polvo Sofocante, la llanura de Ard-galen calcinada por Morgoth."
+map: { on: beleriand, x: 2, z: 10, radius: 10 }   # Ard-galen, the plain south of Angband

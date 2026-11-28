@@ -1,0 +1,7 @@
+id: arahad-ii
+name: { en: "Arahad II", es: "Arahad II" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain of the North, the second to bear the name."
+  es: "Caudillo de los Dúnedain del Norte, el segundo que llevó ese nombre."
+parents: [ aravorn ]

@@ -1,0 +1,11 @@
+id: miriel-therinde
+name: { en: "Míriel Þerindë", es: "Míriel Þerindë" }
+kind: elf
+summary:
+  en: "Finwë's first wife, the broideress whose skill no other Noldo matched; she spent her strength bearing Fëanor and would not return from the Halls of Mandos."
+  es: "La primera esposa de Finwë, bordadora cuya destreza no igualó ningún otro Noldo; gastó sus fuerzas al dar a luz a Fëanor y no quiso regresar de las Estancias de Mandos."
+spouse: [ finwe ]
+pronounce: { en: MEE-ree-el theh-RIN-deh, es: MÍ-ri-el ze-RIN-de }
+fate:
+  en: "She did not die as mortals die: her spirit stayed in Mandos and her body lay unwithering in the gardens of Lórien."
+  es: "No murió como mueren los mortales: su espíritu quedó en Mandos y su cuerpo yació sin marchitarse en los jardines de Lórien."

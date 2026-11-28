@@ -6,6 +6,7 @@ when:
 place: pelargir
 characters: [ aragorn, legolas, gimli ]
 arcs: [ the-war-of-the-ring ]
+journeys: [ aragorn-legolas-and-gimlis-road ]
 tags: [ lord-of-the-rings, battle ]
 status: scripted
 source: { book: the-return-of-the-king, chapter: The Last Debate }

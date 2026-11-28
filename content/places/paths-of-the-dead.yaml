@@ -3,3 +3,4 @@ name: { en: "The Paths of the Dead", es: "Las Sendas de los Muertos" }
 summary:
   en: "The haunted road under the mountain, where the oathbreakers wait."
   es: "El camino encantado bajo la montaña, donde aguardan los traidores."
+map: { on: middle-earth, x: 31, z: 66 }   # the Dark Door under the Dwimorberg

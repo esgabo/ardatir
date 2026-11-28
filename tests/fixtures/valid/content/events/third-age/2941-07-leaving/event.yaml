@@ -5,7 +5,7 @@ when:
   precision: season
 place: rivendell
 characters: [ bilbo, gandalf ]
-arcs: [ the-quest ]
+arcs: [ the-quest, the-ride ]
 journeys: [ the-road ]
 status: outline
 title: { en: Leaving, es: La partida }

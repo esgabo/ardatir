@@ -1,0 +1,8 @@
+id: tar-meneldur
+name: { en: "Tar-Meneldur", es: "Tar-Meneldur" }
+kind: man
+summary:
+  en: "King of Númenor, a star-gazer who would rather have watched the heavens than ruled, and who laid down the sceptre early for his son."
+  es: "Rey de Númenor, observador de los astros que habría preferido mirar los cielos antes que gobernar, y que dejó pronto el cetro a su hijo."
+parents: [ tar-elendil ]
+spouse: [ almarian ]

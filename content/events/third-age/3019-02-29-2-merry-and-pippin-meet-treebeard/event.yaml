@@ -14,3 +14,9 @@ title: { en: "Merry and Pippin Meet Treebeard", es: "Merry y Pippin conocen a B�
 summary:
   en: "Deep in Fangorn the hobbits meet a slow-speaking tree-shepherd, Treebeard, who carries them to his home to hear their story."
   es: "En lo profundo de Fangorn, los hobbits encuentran a un lento pastor de árboles, Bárbol, que los lleva a su morada para oír su historia."
+links:
+  - to: the-uruk-hai-are-destroyed
+    type: enabled-by
+    note:
+      en: "The Riders' attack at dawn is what lets the two hobbits crawl away into the trees."
+      es: "El ataque de los Jinetes al alba es lo que permite a los dos hobbits arrastrarse entre los árboles."

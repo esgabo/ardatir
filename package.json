@@ -15,6 +15,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "content": "node scripts/content/cli.ts",
+    "graph": "node scripts/content/graph.ts",
     "test": "vitest run",
     "narration:export": "node scripts/narration/export.ts",
     "narration:render": "node scripts/narration/render-cli.ts",

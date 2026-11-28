@@ -1,0 +1,7 @@
+id: eldacar-of-arnor
+name: { en: "Eldacar of Arnor", es: "Eldacar de Arnor" }
+kind: man
+summary:
+  en: "King of Arnor, Valandil's son, of the Northern Line of Isildur's heirs."
+  es: "Rey de Arnor, hijo de Valandil, de la Línea del Norte de los herederos de Isildur."
+parents: [ valandil-of-arnor ]

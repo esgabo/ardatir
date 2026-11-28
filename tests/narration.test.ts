@@ -1,7 +1,8 @@
-// The textHash that ties a recording to the words it reads (scripts/narration/text.ts).
+// The textHash that ties a recording to the words it reads, and the one namespace events and
+// arcs that tell their own story share (scripts/narration/text.ts).
 
 import { describe, expect, it } from 'vitest';
-import { narrationHash, passageHash, TEXT_HASH, type Passage } from '../scripts/narration/text.ts';
+import { narrationHash, passageHash, scriptId, TEXT_HASH, type Passage } from '../scripts/narration/text.ts';
 
 const script: Passage[] = [
   { id: 'fire', text: { en: 'Cold and lost, the company spotted a light among the trees.', es: 'Vieron una luz entre los árboles.' } },
@@ -52,5 +53,16 @@ describe('passageHash', () => {
   it('changes with the words or the id', () => {
     expect(passageHash({ id: 'fire', text: { en: 'Warm and found.' } }, 'en')).not.toBe(passageHash(p, 'en'));
     expect(passageHash({ ...p, id: 'flame' }, 'en')).not.toBe(passageHash(p, 'en'));
+  });
+});
+
+describe('scriptId', () => {
+  it('leaves an event alone and puts an arc in its own namespace', () => {
+    expect(scriptId('event', 'the-party')).toBe('the-party');
+    expect(scriptId('arc', 'the-ride')).toBe('arc/the-ride');
+  });
+
+  it('keeps an arc and an event of the same name apart', () => {
+    expect(scriptId('arc', 'the-ride')).not.toBe(scriptId('event', 'the-ride'));
   });
 });

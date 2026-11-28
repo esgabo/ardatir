@@ -1,0 +1,11 @@
+id: nimloth
+name: { en: "Nimloth", es: "Nimloth" }
+kind: elf
+summary:
+  en: "An elf-lady of Doriath, kinswoman of Celeborn, who wed Dior and was slain with him in Menegroth when the sons of Fëanor came for the Silmaril."
+  es: "Una dama elfa de Doriath, parienta de Celeborn, que se casó con Dior y fue muerta con él en Menegroth cuando los hijos de Fëanor vinieron por el Silmaril."
+# The texts call her a kinswoman of Celeborn and name no parent of hers.
+spouse: [ dior ]
+kin:
+  - { id: celeborn, as: kin }
+pronounce: { en: NIM-loth, es: NIM-loz }

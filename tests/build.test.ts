@@ -8,6 +8,7 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { buildContent, type BuildResult } from '../scripts/content/build.ts';
 import { narrationHash, passageHash } from '../scripts/narration/text.ts';
 import { nearness } from '../src/data/calendar.ts';
+import { KIN_WORDS } from '../src/data/types.ts';
 
 const root = path.resolve(import.meta.dirname, '..');
 const FIXTURE = path.join(import.meta.dirname, 'fixtures/valid/content');
@@ -36,7 +37,37 @@ const FORETOLD: Change[] = [
   ].join('\n') },
 ];
 
+/** The fixture's arc that tells its own story over the map (docs/DESIGN.md §4.10). */
+const RIDE = 'arcs/the-ride/arc.yaml';
+const RIDE_STAGING = 'arcs/the-ride/staging.yaml';
+
+/**
+ * The fixture without its telling: for the cases that take a place off the map, which an arc
+ * played over that map is right to refuse (§4.10).
+ */
+const NO_TELLING: Change[] = [
+  { file: RIDE, remove: true },
+  { file: 'arcs/the-ride/narration.yaml', remove: true },
+  { file: RIDE_STAGING, remove: true },
+  { file: `${PARTY}/event.yaml`, replace: ['arcs: [ the-quest, the-ride ]', 'arcs: [ the-quest ]'] },
+  { file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['arcs: [ the-quest, the-ride ]', 'arcs: [ the-quest ]'] },
+];
+
 const GANDALF = 'characters/gandalf.yaml';
+// Parentage (#89, docs/DESIGN.md §4.11). The fixture's hobbits carry a small family: Mungo →
+// Bungo and Longo, Bungo married to Belladonna, and Bilbo their child. The extra relations the
+// cases below add (a second marriage, a pair of twins) are invented for the fixture.
+const BILBO = 'characters/bilbo.yaml';
+const BUNGO = 'characters/bungo.yaml';
+const MUNGO = 'characters/mungo.yaml';
+const char = (id: string, yaml: string): Change => ({
+  file: `characters/${id}.yaml`,
+  write: `id: ${id}\nname: { en: ${id}, es: ${id} }\nkind: hobbit\nsummary: { en: A hobbit., es: Un hobbit. }\n${yaml}`,
+});
+/** A half-sibling for Bilbo: a second marriage of Bungo's, and a child of it. */
+const HALF: Change[] = [char('laura', 'spouse: [ bungo ]\n'), char('dudo', 'parents: [ bungo, laura ]\n')];
+/** A pair of twins, which parentage cannot reach: the one fact that must be authored. */
+const TWINS: Change[] = [char('ponto', 'parents: [ bungo, belladonna ]\ntwin: porto\n'), char('porto', 'parents: [ bungo, belladonna ]\n')];
 const TEST_KIT = 'kits/test-place/test-place.glb';
 const SET_AND_LIGHT = `set: ${TEST_KIT}\nlight:\n  - { t: 0, preset: morning }\n  - { t: 0.6, preset: dusk }\n`
   + 'camera:\n  - { t: 0, x: 0, z: 0, width: 12 }\n  - { t: 0.5, x: -1.5, z: -1, width: 3.4 }\n'
@@ -66,7 +97,13 @@ function buildWith(changes: Change[]): BuildResult {
   fs.cpSync(ASSETS, path.join(dir, '../assets'), { recursive: true });
   for (const c of changes) {
     const f = path.join(dir, c.file);
-    if ('remove' in c) fs.rmSync(f);
+    if ('remove' in c) {
+      fs.rmSync(f);
+      // An empty folder would still be read (an arc folder with no arc.yaml is an error), so a
+      // case that removes the last file in one removes the folder with it.
+      const d = path.dirname(f);
+      if (d !== dir && !fs.readdirSync(d).length) fs.rmdirSync(d);
+    }
     else if ('write' in c) { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, c.write); }
     else {
       const s = fs.readFileSync(f, 'utf8');
@@ -90,6 +127,43 @@ describe('the real content', () => {
     expect(r.warnings).toEqual([]);
   });
 
+  it('has migrated every `kin` word, and derives what those words used to state (#89)', () => {
+    // The closed vocabulary (docs/DESIGN.md §4.11) is an error now that the 36 files are migrated,
+    // so the only words left are the ones parentage cannot say.
+    for (const c of r.index.characters) for (const k of c.kin ?? []) {
+      expect(KIN_WORDS as readonly string[], `${c.id} → ${k.id}`).toContain(k.as);
+    }
+    expect(r.warnings.filter((w) => /\bkin\b/.test(w))).toEqual([]);
+    const f = r.index.family;
+    // Thorin's brother and his sister Dís, who used to be `brother` and nothing at all.
+    expect(f.thorin.siblings.map((s) => s.id).sort()).toEqual(['dis', 'frerin']);
+    // Fíli and Kíli reach Thorin only through Dís, and their father is unnamed in any source.
+    expect(f.fili.parents).toEqual(['dis']);
+    expect(f.fili.siblings.map((s) => s.id)).toEqual(['kili']);
+    expect(f.dis.children.sort()).toEqual(['fili', 'kili']);
+    // Éomer's `uncle` ran through Théodwyn, who had no file; now it is two sibling edges.
+    expect(f.theoden.siblings.map((s) => s.id)).toEqual(['theodwyn']);
+    expect(f.eomer.parents.sort()).toEqual(['eomund', 'theodwyn']);
+    // The marriages the old `kin` could not hold, with the reverse derived on the other side.
+    expect(f.turin.spouses).toEqual([{ id: 'nienor' }]);
+    expect(f.nienor.spouses).toEqual([{ id: 'turin', reverse: true }]);
+    expect(f.nienor.siblings.map((s) => s.id)).toContain('turin');
+    expect(f.aragorn.spouses).toEqual([{ id: 'arwen', reverse: true }]);
+    // Bofur and Bombur: brothers in the published Hobbit, and no source names a parent of either.
+    expect(f.bofur.kin).toEqual([{ id: 'bombur', as: 'sibling' }, { id: 'bifur', as: 'cousin' }]);
+    // Durin's line is one house. Asserted by membership rather than by the whole list, because
+    // the list grows every time somebody authors another dwarf and a test that has to be edited
+    // to add content stops being a test of anything.
+    const durin = r.index.houses.find((h) => h.members.includes('thorin'))!;
+    expect(durin.members).toEqual(expect.arrayContaining(['dis', 'fili', 'frerin', 'kili', 'thorin', 'thrain', 'thror']));
+    expect(durin.members).not.toContain('bilbo');
+    // Generation depth counts rows from the house's root, not years: Fíli stands three below
+    // Thrór whatever is authored above him, and the whole line is one unbroken descent.
+    expect(f.fili.generation - f.thror.generation).toBe(3);
+    expect(f.thror.generation).toBeGreaterThanOrEqual(0);
+    // A character no parentage edge touches stands in no house at all.
+    expect(f.gandalf.house).toBeUndefined();
+  });
 
   it('places every best guess inside its honest range', () => {
     for (const e of r.index.events) if (e.span) {
@@ -207,9 +281,82 @@ describe('the valid fixture', () => {
     expect(r.index.places.find((p) => p.id === 'bag-end')!.pronounce).toBeUndefined();
   });
 
+  it('carries a place\'s map coordinates through to the index', () => {
+    expect(r.index.places.find((p) => p.id === 'bag-end')!.map).toEqual([{ on: 'middle-earth', x: -12.2, z: -1.3 }]);
+    expect(r.index.places.find((p) => p.id === 'rivendell')!.map).toEqual([{ on: 'middle-earth', x: 34, z: -7, radius: 1 }]);
+  });
+
   it('keeps a character\'s home', () => {
     expect(r.index.characters.find((c) => c.id === 'bilbo')!.home).toBe('bag-end');
     expect(r.index.characters.find((c) => c.id === 'gandalf')!.home).toBeUndefined();
+  });
+
+  it('derives the family from the one authored edge, with the reverses marked (#89)', () => {
+    const f = r.index.family;
+    expect(f.bilbo.parents).toEqual(['bungo', 'belladonna']);
+    expect(f.bungo.children).toEqual(['bilbo']);
+    expect(f.bungo.siblings).toEqual([{ id: 'longo', half: false, shared: ['mungo'] }]);
+    expect(f.bungo.spouses).toEqual([{ id: 'belladonna' }]);
+    expect(f.belladonna.spouses).toEqual([{ id: 'bungo', reverse: true }]);
+    expect(f.bilbo.siblings).toEqual([]);
+    // Generation rows, counted from the people the content gives no parents: never a date.
+    expect(f.mungo.generation).toBe(0);
+    expect(f.bungo.generation).toBe(1);
+    expect(f.bilbo.generation).toBe(2);
+    // The house is the part of the graph, named where the books name it (`house:` on the founder).
+    expect(r.index.houses).toEqual([{ id: 'mungo', name: { en: 'The Bagginses', es: 'Los Bolsón' }, members: ['belladonna', 'bilbo', 'bungo', 'longo', 'mungo'] }]);
+    expect(f.bilbo.house).toBe('mungo');
+    // Gandalf stands in no tree, and still has an entry.
+    expect(f.gandalf).toMatchObject({ parents: [], children: [], siblings: [], generation: 0 });
+  });
+
+  it('derives half-siblings as half-siblings, and says which parent they share', () => {
+    const ok = buildWith(HALF);
+    expect(ok.errors).toEqual([]);
+    expect(ok.warnings).toEqual([]);
+    expect(ok.index.family.bilbo.siblings).toEqual([{ id: 'dudo', half: true, shared: ['bungo'] }]);
+    expect(ok.index.family.dudo.siblings).toEqual([{ id: 'bilbo', half: true, shared: ['bungo'] }]);
+  });
+
+  it('carries a twin both ways, as a refinement of the sibling edge', () => {
+    const ok = buildWith(TWINS);
+    expect(ok.errors).toEqual([]);
+    expect(ok.warnings).toEqual([]);
+    const f = ok.index.family;
+    expect(f.ponto.twin).toEqual({ id: 'porto' });
+    expect(f.porto.twin).toEqual({ id: 'ponto', reverse: true });
+    expect(f.ponto.siblings.find((s) => s.id === 'porto')).toMatchObject({ twin: true, half: false });
+    expect(f.bilbo.siblings.find((s) => s.id === 'ponto')!.twin).toBeUndefined();
+  });
+
+  it('takes a character\'s dates from the event that declares them, at the event\'s honest range', () => {
+    const ok = buildWith([{ file: LETTERS, replace: ['status: outline', 'status: outline\nborn: [ bilbo ]'] }]);
+    expect(ok.errors).toEqual([]);
+    const bilbo = ok.index.characters.find((c) => c.id === 'bilbo')!;
+    expect(bilbo.born!.event).toBe('moon-letters');
+    expect(bilbo.born!.precision).toBe('day');
+    expect(bilbo.born!.span).toEqual(ok.index.events.find((e) => e.id === 'moon-letters')!.span);
+    // Silence is silence: nothing infers a death.
+    expect(bilbo.died).toBeUndefined();
+  });
+
+  it('keeps a date the character states for a life no scene of ours tells', () => {
+    const bungo = r.index.characters.find((c) => c.id === 'bungo')!;
+    expect(bungo.born!.date).toEqual({ age: 'third-age', year: 2846 });
+    expect(bungo.born!.event).toBeUndefined();
+    expect(bungo.died!.precision).toBe('year');
+    expect(bungo.born!.span!.to).toBeLessThan(bungo.died!.span!.from);
+    // An elf nobody says died is never given an end.
+    expect(r.index.characters.find((c) => c.id === 'belladonna')!.died).toBeUndefined();
+  });
+
+  it('lets a genealogy character have no scene at all', () => {
+    // Mungo is in no event and on no journey, and that is the whole point of his file.
+    expect(r.index.byCharacter.mungo).toEqual([]);
+    expect(r.warnings).toEqual([]);
+    // Take him out of the tree and the warning comes back.
+    const off = buildWith([{ file: 'characters/longo.yaml', replace: ['parents: [ mungo ]\n', ''] }, { file: BUNGO, replace: ['parents: [ mungo ]\n', ''] }]);
+    expect(off.warnings.some((w) => w.includes('characters/mungo.yaml: appears in no event or journey')), off.warnings.join('\n')).toBe(true);
   });
 
   it('adds reverse links and derived lookups', () => {
@@ -227,7 +374,8 @@ describe('the valid fixture', () => {
   });
 
   it('writes a readable script for every event with narration, staged or not', () => {
-    expect(r.scripts.map((s) => s.id)).toEqual(['the-party']);
+    // An arc that tells is read as text the same way, under its own namespace (§4.10).
+    expect(r.scripts.map((s) => s.id)).toEqual(['the-party', 'arc/the-ride']);
     const ok = buildWith([
       { file: LETTERS, replace: ['status: outline', 'status: scripted'] },
       { file: 'events/third-age/2941-06-moon-letters/narration.yaml', write: '- id: runes\n  en: The runes shine under the moon.\n  es: Las runas brillan bajo la luna.\n- id: door\n  en: A door, on Durin\'s Day.\n  es: Una puerta, el Día de Durin.\n' },
@@ -323,6 +471,67 @@ describe('the valid fixture', () => {
     expect(d.armies).toEqual([{ faction: 'bagginses', size: 'small', keyframes: [{ t: 0, x: -3, z: 2 }, { t: 0.5, x: -1, z: 1, action: 'walk' }] }]);
   });
 
+  // Arcs that tell their own story over the map (docs/DESIGN.md §4.10).
+  it('reads an arc that tells: its map, its framing, its scenes, hosts and roads', () => {
+    const arc = r.index.arcs.find((a) => a.id === 'the-ride')!;
+    expect(arc.status).toBe('staged');
+    expect(arc.map).toBe('middle-earth');
+    // A voice belongs to an age, and both of this arc's events are in one.
+    expect(arc.voiceOf).toBe('third-age');
+    expect(arc.narratedBy).toBeUndefined();
+    expect(arc.sources).toEqual([{ book: 'the-hobbit', chapter: 3 }]);
+    // The events are derived, exactly as a grouping arc's are.
+    expect(arc.events).toEqual(['the-party', 'leaving']);
+    // A grouping stays an outline with nothing more to read.
+    expect(r.index.arcs.find((a) => a.id === 'the-quest')!.status).toBe('outline');
+
+    const d = r.arcDetails.find((a) => a.id === 'the-ride')!;
+    expect(r.arcDetails).toHaveLength(1);
+    expect(d.durationSeconds).toBe(30);
+    expect(d.narration.map((x) => [x.id, x.t])).toEqual([['start', 0], ['east', 0.5]]);
+    expect(d.beats).toEqual([{ id: 'out', t: 0.2, label: { en: 'Out of the Shire', es: 'Fuera de la Comarca' } }]);
+    expect(d.camera).toEqual([{ t: 0, x: 0, z: 0, width: 80 }, { t: 0.6, x: 34, z: -7, width: 20 }]);
+    // `scenes` says only when the telling reaches each event, and comes back in story order.
+    expect(d.scenes).toEqual([{ event: 'the-party', t: 0.1 }, { event: 'leaving', t: 0.6 }]);
+    expect(d.hosts[0]).toEqual({
+      faction: 'bagginses', mark: 'column', weight: 2,
+      keyframes: [
+        { t: 0.1, at: 'bag-end', action: 'hold' },
+        { t: 0.5, x: 10, z: -4, action: 'march', mark: 'trickle', weight: 1 },
+        { t: 0.6, at: 'rivendell', action: 'hold' },
+      ],
+    });
+    expect(d.hosts[1]).toEqual({
+      label: { en: 'The guests', es: 'Los invitados' }, color: '#8fb6c8', mark: 'trickle', weight: 1,
+      keyframes: [{ t: 0, at: 'bag-end', action: 'hold' }],
+    });
+    expect(d.roads).toEqual([{ journey: 'the-road', from: 0.2, to: 0.8 }]);
+    expect(d.audioFiles).toEqual({});
+  });
+
+  it('writes an arc\'s script in its own namespace, so no recording can land on an event\'s', () => {
+    const script = r.scripts.find((x) => x.id === 'arc/the-ride')!;
+    expect(script.passages.map((p) => p.id)).toEqual(['start', 'east']);
+    expect(r.arcDirs['the-ride']).toMatch(/arcs[/\\]the-ride$/);
+  });
+
+  it('reads an arc\'s recording through the same pipeline an event\'s goes through', () => {
+    const ok = buildWith([
+      { file: 'arcs/the-ride/audio/en.yaml', write: 'duration: 40\nstarts: { start: 0.5, east: 21 }\n' },
+      { file: 'arcs/the-ride/audio/en.mp3', write: '' }, // created for the test only; never committed
+    ]);
+    expect(ok.errors).toEqual([]);
+    const d = ok.arcDetails.find((a) => a.id === 'the-ride')!;
+    expect(d.audioFiles.en).toEqual({ src: 'data/audio/arc/the-ride/en.mp3', duration: 40, starts: [0.5, 21] });
+    expect(d.audio).toEqual(['en']);
+  });
+
+  it('keeps an arc\'s telling off the time axis and out of the lanes', () => {
+    // An arc's `t` is narration time, not history (§4.10), so nothing of it reaches either.
+    expect(JSON.stringify(r.index.lanes)).not.toContain('the-ride');
+    expect(r.index.events.some((e) => (e as unknown as { arc?: string }).arc !== undefined)).toBe(false);
+  });
+
   it('links the test model to its character and per-event overrides, and copies it once', () => {
     const url = 'data/models/characters/test-figure/test-figure.glb';
     expect(r.index.characters.find((c) => c.id === 'gandalf')!.model).toBe(url);
@@ -382,7 +591,16 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'pronunciation without a stressed syllable', changes: [{ file: 'places/rivendell.yaml', replace: ['en: RIV-en-del', 'en: riv-en-del'] }], error: 'pronounce.en: "riv-en-del": needs exactly one stressed syllable in CAPITALS' },
   { name: 'pronunciation with stray marks', changes: [{ file: 'places/rivendell.yaml', replace: ['es: RI-ven-del', 'es: RI/ven/del'] }], error: 'pronounce.es: only letters' },
   { name: 'pronunciation without English', changes: [{ file: 'characters/gandalf.yaml', replace: ['kind: wizard\n', 'kind: wizard\npronounce: { es: GAN-dalf }\n'] }], error: 'pronounce: needs an English text (en)' },
-  { name: 'age with neither axis nor timeless', changes: [{ file: 'ages/third-age.yaml', replace: ['axis: { start: 4032 }', ''] }], error: 'needs either `timeless: true` or `axis: { start }`' },
+  // Map coordinates (docs/MAP.md): the world view puts an event where its place is.
+  { name: 'a position on an unknown map', changes: [{ file: 'places/rivendell.yaml', replace: ['on: middle-earth', 'on: arda'] }], error: 'map.on: one of middle-earth, beleriand, aman, numenor (got "arda")' },
+  { name: 'a position without x', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map: { on: middle-earth, z: -7 }'] }], error: 'map.x: required' },
+  { name: 'a position that is not a number', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map: { on: middle-earth, x: east, z: -7 }'] }], error: 'map.x: a finite number' },
+  { name: 'a position off every map', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map: { on: middle-earth, x: 3400, z: -7 }'] }], error: 'map.x: 3400 is off every map' },
+  { name: 'a region with no size', changes: [{ file: 'places/rivendell.yaml', replace: ['radius: 1', 'radius: 0'] }], error: 'map.radius: a positive number' },
+  { name: 'a place on one map twice', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map:\n  - { on: middle-earth, x: 34, z: -7 }\n  - { on: middle-earth, x: 1, z: 2 }'] }], error: 'map[1].on: "middle-earth" twice (one position per map)' },
+  { name: 'a position that is not a mapping', changes: [{ file: 'places/rivendell.yaml', replace: ['map: { on: middle-earth, x: 34, z: -7, radius: 1 }', 'map: somewhere'] }], error: 'map: expected { on, x, z }, a list of those, or the word `nowhere`' },
+
+    { name: 'age with neither axis nor timeless', changes: [{ file: 'ages/third-age.yaml', replace: ['axis: { start: 4032 }', ''] }], error: 'needs either `timeless: true` or `axis: { start }`' },
 
   // Events: references and status
   { name: 'unknown character', changes: [{ file: LETTERS, replace: ['[ bilbo, gandalf ]', '[ bilbo, elrond ]'] }], error: 'characters: unknown character "elrond"' },
@@ -420,6 +638,50 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'unknown extra day', changes: [{ file: LETTERS, replace: ['day: 1-lithe', 'day: midsummer'] }], error: 'day: 1–30, or one of 2-yule, 1-lithe, midyear, overlithe, 2-lithe, 1-yule' },
   { name: 'extra day with a month', changes: [{ file: LETTERS, replace: ['day: 1-lithe', 'month: 6, day: 1-lithe'] }], error: '"1-lithe" is outside the months; remove the month or season' },
   { name: 'Overlithe in a common year', changes: [{ file: LETTERS, replace: ['day: 1-lithe', 'day: overlithe'] }], error: '2941 is not a leap year, so it has no Overlithe' },
+
+  // Arcs that tell their own story over the map (docs/DESIGN.md §4.10)
+  { name: 'an arc that is both a flat file and a folder', changes: [{ file: 'arcs/the-ride.yaml', write: 'id: the-ride\ntitle: { en: The Ride, es: La Cabalgada }\nsummary: { en: X., es: X. }\n' }], error: 'also exists as arcs/the-ride.yaml: an arc is either one flat file or a folder' },
+  { name: 'an arc folder with no arc.yaml', changes: [{ file: RIDE, remove: true }], error: 'an arc folder needs an arc.yaml' },
+  { name: 'an arc status the pipeline has not got', changes: [{ file: RIDE, replace: ['status: staged', 'status: finished'] }], error: 'status: one of outline, scripted, staged, animated' },
+  { name: 'a scripted arc with no narration.yaml', changes: [{ file: 'arcs/the-quest.yaml', replace: ['summary:', 'status: scripted\nsummary:'] }], error: 'status "scripted" needs a narration.yaml' },
+  { name: 'a staged arc with no staging.yaml', changes: [{ file: RIDE_STAGING, remove: true }], error: 'status "staged" needs a staging.yaml' },
+  { name: 'an arc narrated by an age that does not exist', changes: [{ file: RIDE, replace: ['status: staged', 'status: staged\nnarratedBy: fifth-age'] }], error: 'narratedBy: unknown age "fifth-age"' },
+  { name: 'an arc id that collides with an event id', changes: [{ file: RIDE, replace: ['id: the-ride', 'id: leaving'] }], error: 'an arc that tells cannot share an id with an event ("leaving")' },
+  { name: 'an arc beat with no time', changes: [{ file: RIDE_STAGING, replace: ['beats: { out: 0.2 }', 'beats: { away: 0.2 }'] }], error: 'beats: no beat "away" in arc.yaml' },
+  { name: 'an arc on no map we draw', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: arda'] }], error: 'map: one of middle-earth, beleriand, aman, numenor (got "arda")' },
+  { name: 'an arc telling with no duration', changes: [{ file: RIDE_STAGING, replace: ['duration: 30', 'duration: 0'] }], error: 'duration: seconds, a positive number' },
+  { name: 'light at map scale', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: middle-earth\nlight:\n  - { t: 0, preset: dawn }'] }], error: 'light: not at map scale' },
+  { name: 'sound at map scale', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: middle-earth\nsound:\n  - { t: 0, cue: knock }'] }], error: 'sound: not at map scale' },
+  { name: 'reveal at map scale', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: middle-earth\nreveal:\n  - { t: 0, cover: roof, amount: 1 }'] }], error: 'reveal: not at map scale' },
+  { name: 'armies at map scale', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: middle-earth\narmies: []'] }], error: 'armies: not at map scale' },
+  // `camera` is the event's framing at a different scale, so only its limits change.
+  { name: 'an arc camera pointed off every map', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0, x: 0, z: 0, width: 80 }', '{ t: 0, x: 900, z: 0, width: 80 }'] }], error: 'camera[0]: x and z are a point on the map, within ±500 units' },
+  { name: 'an arc camera holding no ground', changes: [{ file: RIDE_STAGING, replace: ['width: 80', 'width: 0'] }], error: 'camera[0].width: how much ground to hold in frame, 1 to 1000 map units' },
+  // `scenes`: the arc's own events, when the telling reaches each
+  { name: 'a scene that is not an event of the arc', changes: [{ file: RIDE_STAGING, replace: ['the-party: 0.1', 'moon-letters: 0.1'] }], error: 'scenes: "moon-letters" is not an event of this arc' },
+  { name: 'a scene at no time', changes: [{ file: RIDE_STAGING, replace: ['the-party: 0.1', 'the-party: 1.4'] }], error: 'scenes.the-party: needs a time 0–1' },
+  { name: 'scenes out of the arc\'s story order', changes: [{ file: RIDE_STAGING, replace: ['scenes: { the-party: 0.1, leaving: 0.6 }', 'scenes: { the-party: 0.6, leaving: 0.1 }'] }], error: 'scenes.leaving: at 0.1, before "the-party" at 0.6, which comes earlier in the arc\'s story order' },
+  { name: 'an arc event whose place is on another map', changes: [{ file: RIDE_STAGING, replace: ['map: middle-earth', 'map: beleriand'] }], error: 'the arc\'s event "the-party": "bag-end" has no position on the beleriand map' },
+  { name: 'an arc event with no place at all', changes: [{ file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['place: rivendell\n', ''] }], error: 'the arc\'s event "leaving" has no place, so the map cannot pin it' },
+  // `hosts`: a body of people as a mark on the map
+  { name: 'a host that is both a faction and a label', changes: [{ file: RIDE_STAGING, replace: ['  - faction: bagginses\n', '  - faction: bagginses\n    label: { en: X, es: X }\n    color: "#8fb6c8"\n'] }], error: 'hosts[0]: a faction, or a label and a color of its own — never both' },
+  { name: 'a host that is neither', changes: [{ file: RIDE_STAGING, replace: ['  - faction: bagginses\n', '  - \n'] }], error: 'hosts[0]: needs a faction, or a label and a color of its own' },
+  { name: 'a host of an unknown faction', changes: [{ file: RIDE_STAGING, replace: ['faction: bagginses', 'faction: tooks'] }], error: 'hosts[0].faction: unknown faction "tooks"' },
+  { name: 'a labelled host with no colour', changes: [{ file: RIDE_STAGING, replace: ['    color: "#8fb6c8"\n', ''] }], error: 'hosts[1].color: the colour to draw it in, as #rrggbb' },
+  { name: 'a mark the map cannot draw', changes: [{ file: RIDE_STAGING, replace: ['mark: column', 'mark: horde'] }], error: 'hosts[0].mark: one of column, mass, swarm, trickle, fleet, flight' },
+  { name: 'a host weight that is a count of soldiers', changes: [{ file: RIDE_STAGING, replace: ['weight: 2', 'weight: 8000'] }], error: 'hosts[0].weight: 1 to 5 — how much of the country the mark fills, never a number of soldiers' },
+  { name: 'a host with no weight', changes: [{ file: RIDE_STAGING, replace: ['    weight: 2\n', ''] }], error: 'hosts[0].weight: 1 to 5' },
+  { name: 'a host with no keyframes', changes: [{ file: RIDE_STAGING, replace: ['    keyframes:\n      - { t: 0.1, at: bag-end, action: hold }\n', '    keyframes: []\n'] }], error: 'hosts[0].keyframes: at least one { t, at | x + z, action }' },
+  { name: 'a host keyframe at a place and a point at once', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.1, at: bag-end, action: hold }', '{ t: 0.1, at: bag-end, x: 1, z: 2, action: hold }'] }], error: 'hosts[0].keyframes[0]: exactly one of `at` (a place) or `x`/`z`' },
+  { name: 'a host keyframe nowhere at all', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.1, at: bag-end, action: hold }', '{ t: 0.1, action: hold }'] }], error: 'hosts[0].keyframes[0]: exactly one of `at` (a place) or `x`/`z`' },
+  { name: 'a host keyframe at an unknown place', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.1, at: bag-end, action: hold }', '{ t: 0.1, at: hobbiton, action: hold }'] }], error: 'hosts[0].keyframes[0].at: unknown place "hobbiton"' },
+  { name: 'a host keyframe off every map', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.5, x: 10, z: -4, action: march, mark: trickle, weight: 1 }', '{ t: 0.5, x: 900, z: -4, action: march }'] }], error: 'hosts[0].keyframes[1].x: 900 is off every map' },
+  { name: 'a host doing something the map has no word for', changes: [{ file: RIDE_STAGING, replace: ['action: march', 'action: walk'] }], error: 'hosts[0].keyframes[1].action: one of march, ride, sail, fly, flee, hold, fight, fade' },
+  { name: 'host keyframes out of order', changes: [{ file: RIDE_STAGING, replace: ['{ t: 0.6, at: rivendell, action: hold }', '{ t: 0.2, at: rivendell, action: hold }'] }], error: 'hosts[0].keyframes[2]: t must rise from 0 to 1' },
+  // `roads`: a journey painted along its waypoints
+  { name: 'a road along an unknown journey', changes: [{ file: RIDE_STAGING, replace: ['journey: the-road', 'journey: the-sea'] }], error: 'roads[0].journey: unknown journey "the-sea"' },
+  { name: 'a road that ends before it starts', changes: [{ file: RIDE_STAGING, replace: ['from: 0.2, to: 0.8', 'from: 0.8, to: 0.2'] }], error: 'roads[0]: from (0.8) must come before to (0.2)' },
+  { name: 'a road outside the telling', changes: [{ file: RIDE_STAGING, replace: ['from: 0.2, to: 0.8', 'from: 0.2, to: 1.8'] }], error: 'roads[0].to: a time 0–1' },
 
   // Journeys
   { name: 'journey with one waypoint', changes: [{ file: ROAD, replace: ['  - { place: bag-end, date: { age: third-age, year: 2941, month: 4, day: 26 }, precision: day }\n', ''] }], error: 'a journey needs at least two waypoints' },
@@ -492,6 +754,31 @@ const BROKEN: { name: string; changes: Change[]; error: string | RegExp }[] = [
   { name: 'a sound without a time', changes: [withSet('sound:\n  - { cue: knock }\n')], error: 'sound[0]: needs a time t, 0–1' },
   { name: 'sound keys out of order', changes: [withSet('sound:\n  - { t: 0.6, cue: knock }\n  - { t: 0.2, cue: door }\n')], error: 'sound[1]: t must rise' },
   { name: 'a sound louder than anything should be', changes: [withSet('sound:\n  - { t: 0.3, cue: knock, gain: 4 }\n')], error: "sound[0].gain: louder or softer than the cue's own level, 0–2" },
+  // Parentage: the one authored edge, and everything checked about it (docs/DESIGN.md §4.11).
+  { name: 'an unknown parent', changes: [{ file: BILBO, replace: ['[ bungo, belladonna ]', '[ bungo, bilba ]'] }], error: 'parents: unknown character "bilba"' },
+  { name: 'three parents', changes: [{ file: BILBO, replace: ['[ bungo, belladonna ]', '[ bungo, belladonna, mungo ]'] }], error: 'parents: at most two' },
+  { name: 'the same parent twice', changes: [{ file: BILBO, replace: ['[ bungo, belladonna ]', '[ bungo, bungo ]'] }], error: 'parents: "bungo" is listed twice' },
+  { name: 'a character who is their own parent', changes: [{ file: BILBO, replace: ['[ bungo, belladonna ]', '[ bilbo ]'] }], error: 'parents: a character cannot be their own parents' },
+  { name: 'a parentage cycle', changes: [{ file: MUNGO, replace: ['kind: hobbit', 'kind: hobbit\nparents: [ bilbo ]'] }], error: 'a parentage cycle (' },
+  { name: 'a spouse who is also a parent', changes: [{ file: BILBO, replace: ['home: bag-end', 'spouse: [ bungo ]\nhome: bag-end'] }], error: 'spouse: "bungo" is also a parent or child of "bilbo"' },
+  { name: 'an unknown spouse', changes: [{ file: BUNGO, replace: ['spouse: [ belladonna ]', 'spouse: [ bellazonna ]'] }], error: 'spouse: unknown character "bellazonna"' },
+  { name: 'a twin who shares no parent', changes: [{ file: BILBO, replace: ['home: bag-end', 'twin: gandalf\nhome: bag-end'] }], error: 'twin: "gandalf" shares no parent with "bilbo"' },
+  { name: 'a twin who is not mutual', changes: [...TWINS, char('porto', 'parents: [ bungo, belladonna ]\ntwin: bilbo\n')], error: 'twin: "porto" is the twin of "bilbo", not of "ponto"' },
+  { name: 'a character who is their own twin', changes: [{ file: BILBO, replace: ['home: bag-end', 'twin: bilbo\nhome: bag-end'] }], error: 'twin: a character cannot be their own twin' },
+  { name: 'an unknown kin', changes: [{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: bungus, as: kin }\nhome: bag-end'] }], error: 'kin: unknown character "bungus"' },
+  { name: 'a birth declared for someone not in the scene', changes: [{ file: LETTERS, replace: ['status: outline', 'status: outline\nborn: [ bungo ]'] }], error: 'born: "bungo" is not in the event\'s characters' },
+  { name: 'a death declared for someone not in the scene', changes: [{ file: LETTERS, replace: ['status: outline', 'status: outline\ndied: [ bungo ]'] }], error: 'died: "bungo" is not in the event\'s characters' },
+  { name: 'two events declaring one birth', changes: [
+    { file: LETTERS, replace: ['status: outline', 'status: outline\nborn: [ bilbo ]'] },
+    { file: `${PARTY}/event.yaml`, replace: ['status: staged', 'status: staged\nborn: [ bilbo ]'] },
+  ], error: 'already declares this birth of "bilbo"' },
+  { name: 'a stated date outside the event that declares it', changes: [
+    { file: LETTERS, replace: ['status: outline', 'status: outline\nborn: [ bilbo ]'] },
+    { file: BILBO, replace: ['home: bag-end', 'born: { date: { age: third-age, year: 2890 }, precision: year }\nhome: bag-end'] },
+  ], error: 'born: outside the honest range of "moon-letters", which declares this birth' },
+  { name: 'a `kin` word the closed list has not got', changes: [{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: bungo, as: father }\nhome: bag-end'] }], error: 'kin[0].as: "father" is derived from `parents:` now — put the parentage on the child' },
+  { name: 'a `kin` word nothing can draw', changes: [{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: gandalf, as: friend }\nhome: bag-end'] }], error: 'kin[0].as: "friend" is not one of ancestor, descendant, cousin, sibling, kin, foster-parent, fosterling' },
+  { name: 'born after died', changes: [{ file: BUNGO, replace: ['year: 2846', 'year: 2990'] }], error: 'born: after `died`' },
   { name: 'recording start past its end', changes: [{ file: `${PARTY}/audio/en.yaml`, write: 'duration: 20\nstarts: { door: 0, tea: 25 }\n' }, { file: `${PARTY}/audio/en.mp3`, write: '' }], error: 'starts.tea: needs a second within the recording' },
 ];
 
@@ -502,6 +789,82 @@ describe('broken content', () => {
       expect(r.errors.some((e) => (typeof c.error === 'string' ? e.includes(c.error) : c.error.test(e))), r.errors.join('\n') || '(no errors)').toBe(true);
     });
   }
+
+  it('warns when a `kin` entry says what the parentage already says', () => {
+    const r = buildWith([{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: mungo, as: ancestor }\nhome: bag-end'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('kin[0]: "mungo" is already the grandparent of "bilbo" by `parents:`; delete this entry')), r.warnings.join('\n')).toBe(true);
+  });
+
+  it('keeps a `kin` entry the parentage cannot reach', () => {
+    const r = buildWith([{ file: BILBO, replace: ['home: bag-end', 'kin:\n  - { id: gandalf, as: kin }\nhome: bag-end'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings).toEqual([]);
+  });
+
+  it('warns when a parent is born after their child, rather than refusing it', () => {
+    const r = buildWith([{ file: BUNGO, replace: ['year: 2846', 'year: 2920'] }, { file: BILBO, replace: ['home: bag-end', 'born: { date: { age: third-age, year: 2890 }, precision: year }\nhome: bag-end'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('parents: "bungo" is born after "bilbo"')), r.warnings.join('\n')).toBe(true);
+  });
+
+  it('warns when a telling arc\'s events cross ages and it names no voice', () => {
+    // A voice belongs to an age (§5), so an arc whose scenes span two has to choose.
+    const crossing: Change[] = [{ file: 'events/before-time/0000-the-music/event.yaml', replace: ['characters: []', 'characters: []\nplace: bag-end\narcs: [ the-ride ]'] }];
+    const r = buildWith(crossing);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('its events cross ages (before-time, third-age), so say whose voice tells it')), r.warnings.join('\n')).toBe(true);
+    // Naming the age settles it, and that is the voice the telling is read in.
+    const named = buildWith([...crossing, { file: RIDE, replace: ['status: staged', 'status: staged\nnarratedBy: third-age'] }]);
+    expect(named.warnings.filter((w) => w.includes('cross ages'))).toEqual([]);
+    expect(named.index.arcs.find((a) => a.id === 'the-ride')!.voiceOf).toBe('third-age');
+  });
+
+  it('counts being named by an arc\'s telling as a reason for a faction to exist', () => {
+    // Being in a telling is a reason to exist, exactly as being on a battle's sides is (§4.10).
+    const faction: Change = { file: 'factions/the-watch.yaml', write: 'id: the-watch\nname: { en: The Watch, es: La Guardia }\ncolor: "#404a5a"\nkind: hobbit\nsummary: { en: Shirriffs., es: Alguaciles. }\n' };
+    const alone = buildWith([faction]);
+    expect(alone.warnings.some((w) => w.includes('factions/the-watch.yaml: fights in no battle yet'))).toBe(true);
+    const inArc = buildWith([faction, { file: RIDE_STAGING, replace: ['  - faction: bagginses\n', '  - faction: the-watch\n'] }]);
+    expect(inArc.errors).toEqual([]);
+    expect(inArc.warnings).toEqual([]);
+  });
+
+  it('warns, rather than refusing, when a painted road runs through a place nobody has placed', () => {
+    // The scenes and the hosts are the telling's own; a journey is written for its own sake.
+    const r = buildWith([{ file: ROAD, replace: ['place: rivendell', 'place: woody-end'] }, { file: 'places/woody-end.yaml', write: 'id: woody-end\nname: { en: Woody End, es: Frontera del Bosque }\nsummary: { en: Woods., es: Bosques. }\n' }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('roads[0]: waypoints[1]: "woody-end" has no position on the middle-earth map')), r.warnings.join('\n')).toBe(true);
+  });
+
+  it('warns when an arc folder is not named after its id', () => {
+    const r = buildWith([
+      { file: RIDE, replace: ['id: the-ride', 'id: the-walk'] },
+      { file: `${PARTY}/event.yaml`, replace: ['the-quest, the-ride', 'the-quest, the-walk'] },
+      { file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['the-quest, the-ride', 'the-quest, the-walk'] },
+    ]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('folder "the-ride" should be named after its id "the-walk"')), r.warnings.join('\n')).toBe(true);
+  });
+
+  it('warns when a told event\'s place has no position on any map', () => {
+    const r = buildWith([...NO_TELLING, { file: 'places/bag-end.yaml', replace: ['map: { on: middle-earth, x: -12.2, z: -1.3 }\n', ''] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('places/bag-end.yaml: has no map: position, but 1 told event happens here')), r.warnings.join('\n')).toBe(true);
+  });
+
+  it('does not warn about a place deliberately on no map', () => {
+    const r = buildWith([...NO_TELLING, { file: 'places/bag-end.yaml', replace: ['map: { on: middle-earth, x: -12.2, z: -1.3 }', 'map: nowhere'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings).toEqual([]);
+    expect(r.index.places.find((p) => p.id === 'bag-end')!.map).toBeUndefined();
+  });
+
+  it('warns when a position has a typo in a field', () => {
+    const r = buildWith([{ file: 'places/rivendell.yaml', replace: ['radius: 1', 'radius: 1, y: 3'] }]);
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some((w) => w.includes('unknown field "y" in map'))).toBe(true);
+  });
 
   it('warns when a sort key contradicts the dates', () => {
     const r = buildWith([{ file: 'events/third-age/2941-07-leaving/event.yaml', replace: ['year: 2941, season: summer', 'year: 2940, season: summer'] }]);
@@ -689,7 +1052,7 @@ describe('broken content', () => {
   });
 
   it('warns about missing Spanish and unknown fields', () => {
-    const r = buildWith([{ file: 'places/rivendell.yaml', write: 'id: rivendell\nname: { en: Rivendell }\nsummary: { en: A house., es: Una casa. }\nheight: 3\n' }]);
+    const r = buildWith([...NO_TELLING, { file: 'places/rivendell.yaml', write: 'id: rivendell\nname: { en: Rivendell }\nsummary: { en: A house., es: Una casa. }\nheight: 3\n' }]);
     expect(r.errors).toEqual([]);
     expect(r.missing.es).toBe(1);
     expect(r.warnings.some((w) => w.includes('unknown field "height"'))).toBe(true);

@@ -1,0 +1,9 @@
+id: faramir-took
+name: { en: "Faramir Took I", es: "Faramir Tuk I" }
+kind: hobbit
+summary:
+  en: "Pippin's son, Thain after him, who married Sam's daughter Goldilocks and so joined the Tooks to the Gamgees."
+  es: "Hijo de Pippin, Thain después de él, que se casó con Goldilocks, la hija de Sam, y unió así a los Tuk con los Gamyi."
+# Named for the Steward of Gondor his father served.
+parents: [ pippin, diamond-of-long-cleeve ]
+spouse: [ goldilocks-gamgee ]

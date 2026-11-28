@@ -1,0 +1,7 @@
+id: tar-amandil
+name: { en: "Tar-Amandil", es: "Tar-Amandil" }
+kind: man
+summary:
+  en: "King of Númenor, grandson of Elros, in the island's first quiet centuries."
+  es: "Rey de Númenor, nieto de Elros, en los primeros siglos tranquilos de la isla."
+parents: [ vardamir ]

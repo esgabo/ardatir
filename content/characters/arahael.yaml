@@ -1,0 +1,7 @@
+id: arahael
+name: { en: "Arahael", es: "Arahael" }
+kind: man
+summary:
+  en: "The second Chieftain of the Dúnedain, fostered in Rivendell as his heirs would be after him."
+  es: "El segundo Caudillo de los Dúnedain, criado en Rivendel como lo serían sus herederos tras él."
+parents: [ aranarth ]

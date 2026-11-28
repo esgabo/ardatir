@@ -6,3 +6,6 @@ summary:
   es: "Rey de Nargothrond tras Finrod, padre de Finduilas."
 color: "#5a7a9a"
 scale: 1.85
+# The published Silmarillion makes him a son of Finarfin, and that is the version we tell; the
+# later writings instead make him the son of Angrod, and so Gil-galad's father.
+parents: [ finarfin, earwen ]

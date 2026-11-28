@@ -1,0 +1,7 @@
+id: pearl-took
+name: { en: "Pearl Took", es: "Pearl Tuk" }
+kind: hobbit
+summary:
+  en: "Pippin's eldest sister."
+  es: "La hermana mayor de Pippin."
+parents: [ paladin-took-ii, eglantine-banks ]

@@ -1,0 +1,7 @@
+id: haleth
+name: { en: "Haleth the Lady", es: "Haleth la Dama" }
+kind: man
+summary:
+  en: "Haldad's daughter, who held the stockade after her father and brother fell and then led her people west to the Forest of Brethil; she never wed, and the house is named for her."
+  es: "Hija de Haldad, que mantuvo la estacada después de que cayeran su padre y su hermano y luego condujo a su pueblo al oeste, al Bosque de Brethil; nunca se casó, y la casa lleva su nombre."
+parents: [ haldad ]

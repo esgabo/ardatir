@@ -1,0 +1,7 @@
+id: goldilocks-gamgee
+name: { en: "Goldilocks Gamgee", es: "Goldilocks Gamyi" }
+kind: hobbit
+summary:
+  en: "A daughter of Sam and Rosie, who married Faramir Took and became the Thain's wife."
+  es: "Una hija de Sam y Rosita, que se casó con Faramir Tuk y fue la esposa del Thain."
+parents: [ sam, rosie ]

@@ -24,3 +24,8 @@ links:
     note:
       en: "It sets the stage for the dragon's revelation."
       es: "Prepara la revelación del dragón."
+  - to: turin-comes-to-brethil
+    type: enabled-by
+    note:
+      en: "He is living among the woodmen of Brethil under a new name, which is why the woman they find in the forest is brought to him."
+      es: "Vive entre los hombres del bosque de Brethil con un nombre nuevo, y por eso le llevan a la mujer que encuentran en el bosque."

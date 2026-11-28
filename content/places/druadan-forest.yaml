@@ -3,3 +3,4 @@ name: { en: "The Drúadan Forest", es: "El Bosque Drúadan" }
 summary:
   en: "A forest on the road to Minas Tirith, home of the Wild Men."
   es: "Un bosque junto al camino a Minas Tirith, hogar de los Hombres Salvajes."
+map: { on: middle-earth, x: 44, z: 64, radius: 4 }   # under the White Mountains on the road to the City

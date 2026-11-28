@@ -1,0 +1,7 @@
+id: saradoc-brandybuck
+name: { en: "Saradoc Brandybuck", es: "Saradoc Brandigamo" }
+kind: hobbit
+summary:
+  en: "Master of Buckland, called Scattergold for his open hand; Merry's father."
+  es: "Señor de Los Gamos, llamado Scattergold por su mano abierta; el padre de Merry."
+parents: [ rorimac-brandybuck, menegilda-goold ]

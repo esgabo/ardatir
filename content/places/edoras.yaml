@@ -3,3 +3,4 @@ name: { en: "Edoras", es: "Edoras" }
 summary:
   en: "The hill-city and golden hall of the kings of Rohan."
   es: "La ciudad en la colina y el salón dorado de los reyes de Rohan."
+map: { on: middle-earth, x: 34, z: 62 }   # in a valley of the White Mountains

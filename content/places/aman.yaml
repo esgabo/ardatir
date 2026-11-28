@@ -3,3 +3,4 @@ name: { en: "Aman", es: "Aman" }
 summary:
   en: "The Undying Lands in the far west, home of the Valar."
   es: "Las Tierras Imperecederas en el lejano oeste, hogar de los Valar."
+map: { on: aman, x: -20, z: 0, radius: 40 }   # the whole continent

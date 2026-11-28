@@ -1,0 +1,7 @@
+id: valandil-of-arnor
+name: { en: "Valandil, King of Arnor", es: "Valandil, rey de Arnor" }
+kind: man
+summary:
+  en: "Isildur's youngest son, left a child in Rivendell while his father and brothers rode north; he became the third King of Arnor, and every Chieftain of the Dúnedain after him came of his line."
+  es: "El hijo menor de Isildur, dejado de niño en Rivendel mientras su padre y sus hermanos cabalgaban al norte; fue el tercer rey de Arnor, y todos los Caudillos de los Dúnedain tras él vinieron de su linaje."
+parents: [ isildur ]

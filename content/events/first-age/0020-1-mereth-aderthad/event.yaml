@@ -19,3 +19,8 @@ links:
     note:
       en: "Maedhros' release makes reconciliation possible."
       es: "La liberación de Maedhros hace posible la reconciliación."
+  - to: fingolfins-host-enters-middle-earth
+    type: enabled-by
+    note:
+      en: "Fingolfin can call a feast of reunion only once his own host has come over the Ice into Beleriand."
+      es: "Fingolfin solo puede convocar una fiesta de la reunión una vez que su propia hueste ha cruzado el Hielo hasta Beleriand."

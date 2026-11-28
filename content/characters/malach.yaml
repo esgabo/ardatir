@@ -1,0 +1,7 @@
+id: malach
+name: { en: "Malach Aradan", es: "Malach Aradan" }
+kind: man
+summary:
+  en: "Marach's son, who dwelt long among the Noldor and was given the Elvish name Aradan."
+  es: "Hijo de Marach, que habitó largo tiempo entre los Noldor y recibió el nombre élfico de Aradan."
+parents: [ marach ]

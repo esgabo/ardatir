@@ -6,6 +6,5 @@ summary:
   es: Hija de Húrin, hermana de Túrin, que no lo conoció hasta que fue demasiado tarde.
 color: "#b8b0c8"
 scale: 1.72
-kin:
-  - { id: turin, as: brother }
+parents: [ hurin, morwen ]
 pronounce: { en: NEE-eh-nor, es: NI-e-nor }   # how to say it: syllables, the stressed one in capitals

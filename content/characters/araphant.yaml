@@ -1,0 +1,7 @@
+id: araphant
+name: { en: "Araphant", es: "Araphant" }
+kind: man
+summary:
+  en: "King of Arthedain, who saw his kingdom failing and sought friendship with Gondor against the common enemy."
+  es: "Rey de Arthedain, que vio fracasar su reino y buscó la amistad de Gondor contra el enemigo común."
+parents: [ araval ]

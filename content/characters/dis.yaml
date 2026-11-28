@@ -1,0 +1,7 @@
+id: dis
+name: { en: Dís, es: Dís }
+kind: dwarf
+summary:
+  en: "Thráin's daughter and Thorin's sister, mother of Fíli and Kíli; the only dwarf-woman the histories name. Her husband is never named."
+  es: "Hija de Thráin y hermana de Thorin, madre de Fíli y Kíli; la única mujer enana que nombran las crónicas. Su esposo nunca es nombrado."
+parents: [ thrain ]

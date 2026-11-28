@@ -1,0 +1,7 @@
+id: earendur-of-arnor
+name: { en: "Eärendur of Arnor", es: "Eärendur de Arnor" }
+kind: man
+summary:
+  en: "The last king to rule all Arnor: at his death his sons could not agree, and the North-kingdom broke into Arthedain, Rhudaur and Cardolan."
+  es: "El último rey que gobernó toda Arnor: a su muerte sus hijos no lograron concordar, y el Reino del Norte se quebró en Arthedain, Rhudaur y Cardolan."
+parents: [ elendur-of-arnor ]

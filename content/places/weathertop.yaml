@@ -3,3 +3,4 @@ name: { en: "Weathertop", es: "La Cima de los Vientos" }
 summary:
   en: "The ruined watchtower of Amon Sûl on the Great Road east of Bree."
   es: "La torre en ruinas de Amon Sûl, junto al Camino Grande, al este de Bree."
+map: { on: middle-earth, x: 12, z: -2 }   # about 120 miles east of Bree, north of the Road

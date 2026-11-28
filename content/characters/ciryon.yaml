@@ -1,0 +1,8 @@
+id: ciryon
+name: { en: "Ciryon", es: "Ciryon" }
+kind: man
+summary:
+  en: "A son of Isildur, slain with him at the Gladden Fields."
+  es: "Hijo de Isildur, muerto con él en los Campos Gladios."
+parents: [ isildur ]
+pronounce: { en: KIR-ee-on, es: KI-ri-on }

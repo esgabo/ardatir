@@ -1,0 +1,7 @@
+id: dora-baggins
+name: { en: "Dora Baggins", es: "Dora Bolsón" }
+kind: hobbit
+summary:
+  en: "Drogo's sister and Frodo's aunt, the oldest Baggins left in Hobbiton and a tireless writer of good advice."
+  es: "Hermana de Drogo y tía de Frodo, la Bolsón más anciana que quedaba en Hobbiton e incansable redactora de buenos consejos."
+parents: [ fosco-baggins, ruby-bolger ]

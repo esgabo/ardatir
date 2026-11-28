@@ -3,3 +3,4 @@ name: { en: "The Dead Marshes", es: "Las Ciénagas de los Muertos" }
 summary:
   en: "Fens of still pools where the faces of the fallen of an ancient war lie."
   es: "Ciénagas de aguas quietas donde yacen los rostros de los caídos de una antigua guerra."
+map: { on: middle-earth, x: 56, z: 58, radius: 5 }   # north-west of the Black Gate

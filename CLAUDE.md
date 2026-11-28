@@ -17,10 +17,11 @@ npm run typecheck  # tsc --noEmit
 npm run build      # typecheck + static build into dist/
 npm run preview    # serve dist/ at http://localhost:4173
 npm run content    # validate content/ and write public/data/ (dev and build also do this)
+npm run graph      # the stories content/ knows but doesn't tell yet → out/graph.md
 npm test           # vitest: calendar, best guesses, event clock, armies, content validation (tests/)
-npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event>, --lang es, --changed)
+npm run narration:export   # narration scripts for the Voice Studio → out/narration/ (--only <event or arc>, --lang es, --changed)
 npm run narration:render   # render passages on the Voice Studio, check them, write out/narration/report.html (--only, --age, --lang, --changed)
-npm run narration:publish  # join checked takes into audio/<lang>.mp3 + .yaml (--accept <event>/<passage> for a flagged take you listened to)
+npm run narration:publish  # join checked takes into audio/<lang>.mp3 + .yaml (--accept <event or arc>/<passage> for a flagged take you listened to)
 npm run model:pack -- <export.glb> characters/<id>/<id>.glb   # meshopt-compress a Blender export into assets/ (docs/MODELS.md)
 ```
 
@@ -62,18 +63,27 @@ Requires Node 22. Recording narration also needs `ffmpeg` and the homelab Voice 
 | **The time cursor is a page at a readable moment** (`#/time/third-age/3019-03-15`, `…/3019`, `…/before-time`): the ages as log-width segments (timeless ones apart, before the axis) and a finer scale down to a day; likely / possibly by `nearnessDuring`; whereabouts from journeys by company, honest first | Ages differ a hundredfold in length, so each needs room; a moment is said exactly as precisely as it was picked; "somewhere between" when the sources allow several stops, with our guess labelled. See `docs/DESIGN.md` §3.1. Decided 2026-11-09. |
 | **What is foretold is its own timeless age, after the Fourth Age** (`content/ages/foretold.yaml`, `foretold: true`): the Dagor Dagorath and the Second Music, never on the dated axis; every event in it cites its `source` and may name who foretold it (`foretoldBy`); marked as prophecy wherever it appears (a *Foretold* badge, *Foretold by Mandos, not told as history. Source: …* on its page, a dashed segment after the axis) | Prophecy must never read as history. The flag lives on the age so no event can forget it. We tell the fuller version from *The History of Middle-earth* (the 1937 *Quenta Silmarillion*, *The Lost Road*), one scene per event, so its strongest moments can each be animated. See `docs/DESIGN.md` §4.8. Decided 2026-11-09 (#57). |
 | **Wonder and learning** (#29): a first visit to the front door opens with a short guided opening over the Ainulindalë (`#/start`), then three ways in (a story, a moment, a life); skippable at once, shown once per visitor (localStorage), reopened from the sidebar's *Start here*. Hard names carry `pronounce: { en, es }` in the *AR-da* style; the stage has *About this scene*; event pages point to the book and chapter | A newcomer needs a door and a hand, not a control panel; nothing else appears unasked. Respellings per language, because English and Spanish readers sound letters differently. See `docs/DESIGN.md` §3.5. Decided 2026-11-09. |
+| **Places carry map coordinates** (`map: { on, x, z }`, optional `radius`; `docs/MAP.md`): four maps with their origin at a landmark the books measure from (Bree, the gates of Angband, Tirion, Armenelos), ground plane x/z, +x east, +z south, one unit ten miles; a place on no frame we draw says `map: nowhere` | The world view was blocked on one missing field. Coastlines change and Beleriand sinks, so one frame can't hold every age. Origins at measured-from landmarks make a new place hand-authorable: nearly every distance in the texts is quoted from Bree or from Angband. Ten miles per unit means a whole number is already as precise as the sources. **The published maps are never shipped, traced or scanned**: relative position is fact and only the drawing is anyone's, so we author numbers read off them as reference and our own geometry replaces the look later at the same coordinates. Decided 2026-11-26 (#88). |
+| **An arc can tell its own story over the map** (`arcs/<id>/` with `arc.yaml` + `narration.yaml` + `staging.yaml`): `hosts` (a body of people as a `mark`, weighted 1–5, never a troop count) and `roads` (a journey painted along its waypoints); scenes pinned from their places; no `light`, `sound` or `reveal` at map scale, and arcs stay off the time axis | The world level was a floor to cross, not a place with anything to say, while a map-scale overview — how a war moved across a country — is by definition not one scene and so cannot be an event. Giving it to the arc makes the three zoom levels three scales of storytelling on the event machinery unchanged (one clock, passages at `t`, the authored camera). A weight rather than a count because we don't know how many orcs came over the mountains. An arc's `t` is narration time, not history: one passage covers four centuries and the next one night. A journey drawn as a road makes an untold leg read as a stretch of road with nothing on it. See `docs/DESIGN.md` §4.10. Decided 2026-11-26 (#88). |
+| **A family tree is drawn from one authored edge, `parents`** (0–2 ids, order meaningless; `spouse` for couples, `kin` narrowed to a closed list for what descent can't say: fostering, an asserted descent across people we don't hold); siblings, cousins, uncles, generation depth and houses are **derived by the build, never authored**; birth and death come from an event's `born:`/`died:` or from the character, and must agree where both exist | `kin` recorded the derived relation instead of the primitive one, so nothing could place a cousin in a generation. A list rather than `father:`/`mother:` because characters have no gender field on purpose — Spanish takes gender from the relation word — and because "the sources never name her" and "we haven't written her file" must not be the same empty key. One layout with generation rows and no time axis: immortals break a time axis (Galadriel is contemporary with her great-great-nephews) and the lanes already own time. **Silence is silence**: no `died` draws no end, so an elf is never shown as dead, and `fate` says in one sentence a life that ended in something other than death. Appendix C's facts are readable as reference; its layout is not reproduced, down to the `=` between spouses. See `docs/DESIGN.md` §3.6 and §4.11. Decided 2026-11-26 (#89). |
 
 ## Architecture
 
 ```
 content/             THE SOURCE OF TRUTH (YAML); see content/README.md
   ages/ characters/ places/ arcs/ journeys/ factions/ narrators/   pronunciation.yaml   (factions: sides in battles)
+  places/<id>.yaml     `map:` coordinates on one of four maps: docs/MAP.md
+  arcs/<id>.yaml       an arc that only groups scenes; it promotes to a folder the day it tells
+  arcs/<id>/           an arc that tells its own story over the map: arc.yaml + narration.yaml + staging.yaml (+ audio/) (docs/DESIGN.md §4.10)
   events/<age>/<sort-key>-<id>/  event.yaml, narration.yaml, staging.yaml, audio/<lang>.{mp3,yaml}
 assets/              models: characters/<id>/<id>.glb (+ .blend source), kits/<kit>/, props/<id>/; see docs/MODELS.md
 scripts/content/
   build.ts           load + validate content/, place on the time axis, reverse links, lookups, character lanes
+  arcs.ts            arcs: a flat grouping or a folder that tells over the map — `map`, `camera`, `scenes`, `hosts`, `roads`, the status against the files, every place on the arc's map (read and checked for build.ts)
   factions.ts        factions, a battle's `sides` and its staging `armies` (read and checked for build.ts); byFaction
+  kin.ts             parentage: `parents`, `spouse`, `betrothed`, `twin`, the closed `kin` list, `born`/`died`/`fate`/`house` (read and checked for build.ts); derives children, siblings, half-siblings, generation depth and the houses into `index.family` (#89)
   models.ts          `model:` paths: exists, loadable .glb, MODEL_BUDGETS per asset type; copies into public/data/models/
+  graph.ts           `npm run graph`: the content as a graph — untold journey legs, a life's scenes left unjoined, two parties in one place, lives in pieces, threads let go; an authoring report to out/graph.md, no site weight (#88)
 scripts/models/
   pack.ts            `npm run model:pack`: gltfpack (meshopt) a Blender export into assets/, with the budget
   make-test-model.ts writes the fixture's test model (tests/fixtures/valid/assets/): tests only, never real content
@@ -81,17 +91,18 @@ scripts/models/
   cli.ts             `npm run content`
 tests/               `npm test` (vitest); fixtures/valid/content/ is a tiny valid content tree
 scripts/narration/
-  export.ts          `npm run narration:export`: scripts per event and language for the Voice Studio
-  text.ts            a passage's text per language; `textHash` and `passageHash` that mark a recording stale
+  export.ts          `npm run narration:export`: scripts per telling and language for the Voice Studio
+  text.ts            a passage's text per language; `textHash` and `passageHash` that mark a recording stale; `scriptId`, the one namespace an event and an arc's telling share (`arc/<id>`)
   render.ts, render-cli.ts   `npm run narration:render`: passages on the Voice Studio, cached, checked, retried
   publish.ts, publish-cli.ts `npm run narration:publish`: checked takes → audio/<lang>.mp3 + .yaml
+  (all three walk staged events and the arcs that tell their own story alike: one job per telling, an arc read by the narrator of the age its `voiceOf` names, exported and cached under `arc/<id>`, published into content/arcs/<id>/audio/; `--only` and `--accept` take the bare id)
   voicestudio.ts     the Voice Studio client (clone a narrator's reference, transcribe)
   checks.ts          the automatic checks on a take: words, names, pace, length, clipping, silence (pure)
   wav.ts             WAV in/out, joining with gaps, audio statistics (pure)
   pronounce.ts       respelling names from content/pronunciation.yaml (pure)
   report.ts, ffmpeg.ts       the listening page; ffmpeg for the CLIs only
 vite.config.ts       runs the content build on start (fails `npm run build` on errors) and on change in dev
-public/data/         GENERATED (gitignored): index.json, events/<id>.json, scripts/<id>.json, audio/<id>/<lang>.mp3, models/<path>.glb
+public/data/         GENERATED (gitignored): index.json, events/<id>.json, arcs/<id>.json, scripts/<id>.json (an arc's is scripts/arc/<id>.json), audio/<id>/<lang>.mp3 (an arc's is audio/arc/<id>/<lang>.mp3), models/<path>.glb
 src/
   data/types.ts      the compiled data model the site loads (EventSummary, EventDetail, ContentIndex)
   data/calendar.ts   the shared time axis: dates → spans, precision, overlaps (used by build and site)
@@ -127,6 +138,7 @@ src/
   reader.ts          an event's page, for events that can't be watched yet (DESIGN §3.4)
   lanes.ts           character lanes: lives side by side, crossings, kin suggestions (DESIGN §3.2)
   laneRows.ts        the lanes as rows (story order, legs, gaps), search ranking, initials: pure, tested
+  kinGraph.ts        the parentage graph: siblings, half-siblings, ancestors, descendants, cousins, uncles, generation depth, the nearest common ancestor, the houses: pure, tested
   timeCursor.ts      the time cursor page: the ages, the finer scale, likely / possibly, where everyone is (DESIGN §3.1)
   moment.ts          a moment: readable URL path ⇄ date and precision, its span, an event's moment: pure, tested
   timeAxis.ts        the control as data: age segments, scales and ticks, picking, keyboard steps: pure, tested
@@ -159,6 +171,8 @@ src/
 - **A covered place opens because the staging says so.** A kit names what can be lifted (`cover-<name>` objects); `reveal` in `staging.yaml` says how far each has lifted at `t` (`revealAt`, pure), and `sets.ts` raises it and fades it together. The build checks every name against the `cover-*` objects the kit's `.glb` actually has, so a typo is an error and not a scene that silently stays shut. Never make a reveal follow the camera. See `docs/DESIGN.md` §9.4.
 - **A figure stands where the staging puts it, and nowhere else.** `groundHeight` gives the kit's walkable `terrain` under (x, z); a keyframe's `y` adds whatever the author says they are standing *on* (a log, a bench, a doorstep). Nothing pushes figures apart at render time: that would make a figure's place depend on the other figures instead of on `t`, so two figures in one spot is a build warning (`crowding` in `src/timeline.ts`) and the author moves the keyframe. See `docs/DESIGN.md` §9.2.
 - **The sound is built, not played back.** A place's ambience is `heard(scapeFor(place), light)` and runs on the audio clock, as shimmer runs on `ambient`; everything the story does — a footstep, a knock — is a `Cue` decided purely from the pair of moments it falls between, so a scrub cannot double one and a deep link cannot miss one. A stage reports what is heard (`Stage.sound`) and makes no noise itself, exactly as it moves no camera. Nothing is fetched and no audio clock starts until somebody presses play unmuted.
+- **A family tree is derived, never authored.** `parents` is the only descent edge in `content/`; children, siblings, half-siblings, ancestors, descendants, cousins, uncles, generation depth and the houses are computed in `src/kinGraph.ts` (pure) and derived into `index.family` by `scripts/content/kin.ts`, exactly as `byCharacter` and `lanes` are. If a relation can be computed from parentage it is not a field, and the build errors on a `kin` word outside the closed list (`KIN_WORDS`), naming its replacement. `spouse`, `betrothed` and `twin` are symmetric: written once, reversed by the build and marked `reverse: true`. A birth or death comes from the event that declares it (`born:`/`died:` on `event.yaml`, at the event's honest range) or from the character's own `born:`/`died:`; where both exist they must agree, and no `died` means no end — nothing infers one. See `docs/DESIGN.md` §3.6 and §4.11.
+- **An arc that tells runs on the event machinery, unchanged.** `arcs/<id>/` is read like an event's folder (`arc.yaml` + `narration.yaml` + `staging.yaml` + `audio/`), through the same four-word status pipeline, the same `narration.yaml` shape and the same `textHash` discipline, so the recording pipeline sees no difference; its narration lives in its own namespace (`arc/<id>`), and an arc id that collides with an event id is an error. Everything visible is a pure function of `t` and the clock is the one clock, as for an event — but an arc's `t` is **narration time, not history**: nothing of a telling reaches the time axis or the lanes. At map scale there is no `light`, `sound`, `reveal`, `set` or `tracks` (a country has no hour and a map no lid); a body of people is a `hosts` mark with a `weight` of 1–5, never a count, and a place named by `scenes`, `hosts` or `roads` must carry coordinates for the map the arc names (`scripts/content/arcs.ts`, docs/DESIGN.md §4.10).
 - **New zoom levels or event kinds** implement `Stage` (`scene/stage.ts`) and are picked in `main.ts`'s `buildStage`, loaded there with a dynamic `import()` so each stage is its own chunk. Don't import a stage statically.
 - **New languages:** add the code to `LANGS` in `data/types.ts`, then the interface strings in `i18n.ts`. Missing content falls back to English.
 - **Never edit `public/data/`**: it is rebuilt from `content/` every time.
@@ -205,5 +219,6 @@ See [`content/README.md`](content/README.md) for the file formats and a template
 
 ## Open questions
 
-- Do long journeys (Frodo's road to Mordor) play only on the world map as a moving path, or do some legs get their own dioramas?
-- The world view (middle zoom level) isn't built yet; places have no map coordinates until the original world map exists.
+- Which legs of a long journey earn a diorama of their own? Answered in part by §4.10: inside an arc's telling a journey is a painted road with the legs we have told marked on it, and each of those is a diorama — so what is left is an authoring choice per journey (Moria probably, a week of walking probably not), not a design question.
+- The world view (middle zoom level) isn't built yet. Places now carry coordinates (`docs/MAP.md`), so what remains is the map geometry itself, drawn by us.
+- Family trees (#89): the format and the content are done — `parents` is authored, everything else is derived into `index.family`, and 402 characters stand in ten houses. What is left is the **view** (§3.6): generation rows at `#/kin/<id>`, drawn in our own visual language and never in Appendix C's.

@@ -6,5 +6,4 @@ summary:
   es: "El único hijo de Théoden, que cae defendiendo los Vados del Isen."
 color: "#8a7a4a"
 scale: 1.8
-kin:
-  - { id: theoden, as: father }
+parents: [ theoden, elfhild ]

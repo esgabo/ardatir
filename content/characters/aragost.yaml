@@ -1,0 +1,7 @@
+id: aragost
+name: { en: "Aragost", es: "Aragost" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain, son of Arahad I."
+  es: "Caudillo de los Dúnedain, hijo de Arahad I."
+parents: [ arahad-i ]

@@ -1,0 +1,7 @@
+id: aragorn-i
+name: { en: "Aragorn I", es: "Aragorn I" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain, killed by wolves out of the wild; the first of the two to bear the name."
+  es: "Caudillo de los Dúnedain, muerto por lobos venidos de las tierras salvajes; el primero de los dos que llevaron ese nombre."
+parents: [ aravir ]

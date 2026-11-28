@@ -1,0 +1,7 @@
+id: merry-gamgee
+name: { en: "Merry Gamgee", es: "Merry Gamyi" }
+kind: hobbit
+summary:
+  en: "A son of Sam and Rosie, named for Meriadoc Brandybuck."
+  es: "Un hijo de Sam y Rosita, llamado así por Meriadoc Brandigamo."
+parents: [ sam, rosie ]

@@ -1,0 +1,7 @@
+id: frodo-gamgee
+name: { en: "Frodo Gardner", es: "Frodo Gardner" }
+kind: hobbit
+summary:
+  en: "Sam and Rosie's eldest son, named for the master his father carried to Mordor; from him the family was known as the Gardners of the Hill."
+  es: "El hijo mayor de Sam y Rosita, llamado así por el amo a quien su padre llevó hasta Mordor; por él la familia fue conocida como los Jardineros de la Colina."
+parents: [ sam, rosie ]

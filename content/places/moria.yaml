@@ -3,3 +3,4 @@ name: { en: "Moria", es: "Moria" }
 summary:
   en: "The great Dwarf-mansion of Khazad-dûm beneath the Misty Mountains, long abandoned."
   es: "La gran mansión enana de Khazad-dûm bajo las Montañas Nubladas, abandonada desde hace largo tiempo."
+map: { on: middle-earth, x: 36, z: 24 }   # Khazad-dûm under the Misty Mountains

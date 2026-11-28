@@ -7,3 +7,6 @@ summary:
 color: "#5a7a9a"
 scale: 1.85
 pronounce: { en: keh-leh-BRIM-bor, es: ke-le-BRIM-bor }   # how to say it: syllables, the stressed one in capitals
+# The published Silmarillion makes him Curufin's son, and that is the version we tell; a late
+# note (1968) instead made him a Telerin craftsman of Aman with no descent from Fëanor at all.
+parents: [ curufin ]

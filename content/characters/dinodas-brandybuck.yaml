@@ -1,0 +1,7 @@
+id: dinodas-brandybuck
+name: { en: "Dinodas Brandybuck", es: "Dinodas Brandigamo" }
+kind: hobbit
+summary:
+  en: "The youngest son of Gorbadoc and Mirabella."
+  es: "El hijo menor de Gorbadoc y Mirabella."
+parents: [ gorbadoc-brandybuck, mirabella-took ]

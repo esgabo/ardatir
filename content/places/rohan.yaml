@@ -3,3 +3,4 @@ name: { en: "Rohan", es: "Rohan" }
 summary:
   en: "The grassland of the Horse-lords, between Isengard and the White Mountains."
   es: "Las llanuras de los Señores de los Caballos, entre Isengard y las Montañas Blancas."
+map: { on: middle-earth, x: 35, z: 58, radius: 15 }   # between the Isen, the Entwash and the mountains

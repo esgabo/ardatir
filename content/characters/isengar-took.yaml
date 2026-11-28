@@ -1,0 +1,7 @@
+id: isengar-took
+name: { en: "Isengar Took", es: "Isengar Tuk" }
+kind: hobbit
+summary:
+  en: "The youngest son of the Old Took, said in the family to have gone to sea in his youth."
+  es: "El hijo menor del Viejo Tuk; en la familia se decía que en su juventud se hizo a la mar."
+parents: [ gerontius-took, adamanta-chubb ]

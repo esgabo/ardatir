@@ -1,0 +1,8 @@
+id: borin
+name: { en: "Borin", es: "Borin" }
+kind: dwarf
+summary:
+  en: "A younger son of Náin II, from whom came Fundin and Gróin and so Balin, Dwalin, Óin and Glóin of Thorin's company."
+  es: "Hijo menor de Náin II, de quien vinieron Fundin y Gróin y por tanto Balin, Dwalin, Óin y Glóin de la compañía de Thorin."
+parents: [ nain-ii ]
+# No mother appears anywhere in Durin's line: Appendix A says Dís is the only dwarf-woman the histories name.

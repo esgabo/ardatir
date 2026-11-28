@@ -1,0 +1,7 @@
+id: valandur
+name: { en: "Valandur", es: "Valandur" }
+kind: man
+summary:
+  en: "King of Arnor of the Northern Line; Appendix A keeps little of him beyond his name."
+  es: "Rey de Arnor de la Línea del Norte; el Apéndice A guarda poco de él más que su nombre."
+parents: [ tarondor-of-arnor ]

@@ -1,0 +1,9 @@
+id: arvedui
+name: { en: "Arvedui", es: "Arvedui" }
+kind: man
+summary:
+  en: "The last King of Arthedain, whose name means Last-king; Fornost fell in his day, and he was lost in the ice of the northern bay."
+  es: "El último rey de Arthedain, cuyo nombre significa Último Rey; Fornost cayó en sus días, y él se perdió en el hielo de la bahía del norte."
+parents: [ araphant ]
+spouse: [ firiel ]
+pronounce: { en: ar-VED-wee, es: ar-VE-dui }

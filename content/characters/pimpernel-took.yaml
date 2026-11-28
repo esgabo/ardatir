@@ -1,0 +1,7 @@
+id: pimpernel-took
+name: { en: "Pimpernel Took", es: "Pimpernel Tuk" }
+kind: hobbit
+summary:
+  en: "One of Pippin's three elder sisters."
+  es: "Una de las tres hermanas mayores de Pippin."
+parents: [ paladin-took-ii, eglantine-banks ]

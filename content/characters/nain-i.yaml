@@ -1,0 +1,8 @@
+id: nain-i
+name: { en: "Náin I", es: "Náin I" }
+kind: dwarf
+summary:
+  en: "Son of Durin VI and king for one year, slain by the Balrog as the Dwarves fled Khazad-dûm."
+  es: "Hijo de Durin VI y rey durante un año, muerto por el Balrog cuando los Enanos huyeron de Khazad-dûm."
+parents: [ durin-vi ]
+# No mother appears anywhere in Durin's line: Appendix A says Dís is the only dwarf-woman the histories name.

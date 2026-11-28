@@ -1,0 +1,8 @@
+id: arathorn-ii
+name: { en: "Arathorn II", es: "Arathorn II" }
+kind: man
+summary:
+  en: "Aragorn's father, Chieftain of the Dúnedain for two short years, shot through the eye by an orc arrow while riding with Elrond's sons."
+  es: "El padre de Aragorn, Caudillo de los Dúnedain durante dos breves años, atravesado el ojo por una flecha de orco mientras cabalgaba con los hijos de Elrond."
+parents: [ arador ]
+spouse: [ gilraen ]

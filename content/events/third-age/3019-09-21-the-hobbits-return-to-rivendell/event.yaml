@@ -6,7 +6,7 @@ when:
 place: rivendell
 characters: [ frodo, sam, merry, pippin, gandalf, bilbo, elrond ]
 arcs: [ the-war-of-the-ring, after-the-war ]
-journeys: [ the-road-home ]
+journeys: [ the-road-home, elronds-road-home-from-gondor ]
 tags: [ lord-of-the-rings ]
 status: scripted
 source: { book: the-return-of-the-king, chapter: "Many Partings" }

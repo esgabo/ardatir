@@ -1,0 +1,7 @@
+id: rose-gamgee
+name: { en: "Rose Gamgee", es: "Rose Gamyi" }
+kind: hobbit
+summary:
+  en: "A daughter of Sam and Rosie, named for her mother."
+  es: "Una hija de Sam y Rosita, llamada así por su madre."
+parents: [ sam, rosie ]

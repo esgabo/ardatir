@@ -1,0 +1,8 @@
+id: ar-adunakhor
+name: { en: "Ar-Adûnakhôr", es: "Ar-Adûnakhôr" }
+kind: man
+summary:
+  en: "The first King of Númenor to take the sceptre with a title in the tongue of Men rather than in Elvish; the Faithful held the name itself for blasphemy."
+  es: "El primer rey de Númenor que tomó el cetro con un título en la lengua de los Hombres y no en élfico; los Fieles tuvieron el nombre mismo por blasfemia."
+parents: [ tar-ardamin ]
+pronounce: { en: ar-a-doo-na-KHOR, es: ar-a-du-na-JOR }

@@ -7,6 +7,6 @@ summary:
 color: "#c08a5a"
 scale: 1.24
 kin:
-  - { id: bofur, as: brother }
+  - { id: bofur, as: sibling }
   - { id: bifur, as: cousin }
 model: characters/bombur/bombur.glb

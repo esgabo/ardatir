@@ -20,3 +20,9 @@ beats:
   - { id: game, label: { en: "The riddle game", es: "El juego de acertijos" } }
   - { id: vanish, label: { en: "Bilbo vanishes", es: "Bilbo desaparece" } }
   - { id: mercy, label: { en: "Mercy at the exit", es: "Piedad en la salida" } }
+links:
+  - to: smeagol-takes-the-ring
+    type: enabled-by
+    note:
+      en: "The creature in the dark is Smeagol, five hundred years on, and the ring Bilbo picks up in the tunnel is the one he took out of the river."
+      es: "La criatura de la oscuridad es Sméagol, quinientos años después, y el anillo que Bilbo recoge en el túnel es el que él sacó del río."

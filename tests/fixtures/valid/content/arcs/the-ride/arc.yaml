@@ -1,0 +1,9 @@
+# An arc that tells its own story over the map (docs/DESIGN.md §4.10): a folder, not a flat file.
+id: the-ride
+title: { en: The Ride, es: La Cabalgada }
+summary: { en: The road east., es: El camino al este. }
+status: staged
+sources:
+  - { book: the-hobbit, chapter: 3 }
+beats:
+  - { id: out, label: { en: Out of the Shire, es: Fuera de la Comarca } }

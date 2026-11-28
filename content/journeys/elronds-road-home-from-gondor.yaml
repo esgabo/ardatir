@@ -1,0 +1,9 @@
+id: elronds-road-home-from-gondor
+title: { en: "Elrond's Road Home from Gondor", es: "El camino de vuelta de Elrond desde Gondor" }
+characters: [ elrond ]
+# He is at the wedding in Minas Tirith at Mid-year 3019 and at Rivendell on 21 September, when
+# the hobbits come back to it. The company broke up by stages along the way (Many Partings) and
+# the sources date none of its stops, so the road between is two waypoints and no more.
+waypoints:
+  - { place: minas-tirith, date: { age: third-age, year: 3019, day: midyear }, precision: day }
+  - { place: rivendell, date: { age: third-age, year: 3019, month: 9, day: 21 }, precision: day }

@@ -6,3 +6,5 @@ summary:
   es: "Hija de Turgon, sabia y previsora, esposa de Tuor y madre de Eärendil."
 color: "#5a7a9a"
 scale: 1.8
+parents: [ turgon, elenwe ]
+spouse: [ tuor ]

@@ -3,3 +3,4 @@ name: { en: "The Ford of Bruinen", es: "El Vado del Bruinen" }
 summary:
   en: "The river crossing before Rivendell, where the Nazgûl are swept away."
   es: "El paso del río ante Rivendel, donde los Nazgûl son arrastrados por las aguas."
+map: { on: middle-earth, x: 32, z: -6 }   # the crossing west of Rivendell

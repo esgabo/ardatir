@@ -1,13 +1,15 @@
 // narration:render against a fake Voice Studio: passage by passage, cached, checked,
 // retried (scripts/narration/render.ts). The fixture's staged event is "the-party", in the
-// Third Age, told by the fixture narrator "the-voice" (seed 7).
+// Third Age, told by the fixture narrator "the-voice" (seed 7); the fixture's arc that tells
+// its own story over the map is "the-ride", read by the same voice (DESIGN §4.10), so every
+// run here covers an event and an arc together, in that order.
 
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import { buildContent } from '../scripts/content/build.ts';
-import { cacheKey, render, type RenderOptions } from '../scripts/narration/render.ts';
+import { cacheKey, jobs, render, type RenderOptions } from '../scripts/narration/render.ts';
 import { writeReport } from '../scripts/narration/report.ts';
 import type { SynthRequest, VoiceStudio } from '../scripts/narration/voicestudio.ts';
 import { encodeWav } from '../scripts/narration/wav.ts';
@@ -56,6 +58,9 @@ const opts = (cacheDir: string, over: Partial<RenderOptions> = {}): RenderOption
   ({ lang: ['en'], changed: false, cacheDir, rejects: new Set(), ...over });
 const ref = () => Buffer.from('reference');
 const dropLast = (t: string) => t.split(' ').slice(0, -1).join(' ');
+const PARTY_TEXT = ['Someone knocks at the green door.', 'Tea is poured for far too many guests.'];
+const ARC_TEXT = ['They set out from the hill.', 'The road runs east.'];
+const ALL_TEXT = [...PARTY_TEXT, ...ARC_TEXT];
 
 describe('cacheKey', () => {
   const voice = { engine: 'omnivoice', engineVersion: '0.5.6', instruct: 'x', seed: 7, speed: 0.9, reference: 'r.flac', referenceHash: 'sha256:aa', refText: 'Words.', version: 1 };
@@ -77,10 +82,34 @@ describe('render', () => {
     const { content, cacheDir } = setup();
     const { vs, sent } = fakeStudio();
     const takes = await render(buildContent(content), vs, ref, opts(cacheDir));
-    expect(sent.map((r) => r.text)).toEqual(['Someone knocks at the green door.', 'Tea is poured for far too many guests.']);
+    expect(sent.map((r) => r.text)).toEqual(ALL_TEXT);
     expect(sent.every((r) => r.seed === 7 && r.voice.refText.length > 0)).toBe(true);
-    expect(takes.map((t) => [t.event, t.passage, t.flags.length, t.tries])).toEqual([['the-party', 'door', 0, 1], ['the-party', 'tea', 0, 1]]);
+    expect(takes.map((t) => [t.kind, t.id, t.passage, t.flags.length, t.tries])).toEqual([
+      ['event', 'the-party', 'door', 0, 1], ['event', 'the-party', 'tea', 0, 1],
+      ['arc', 'the-ride', 'start', 0, 1], ['arc', 'the-ride', 'east', 0, 1],
+    ]);
     expect(fs.existsSync(takes[0].file)).toBe(true);
+    // An arc's takes are cached under its own namespace, never beside an event of the same id.
+    expect(path.relative(cacheDir, takes[2].file).split(path.sep).slice(0, 3)).toEqual(['arc', 'the-ride', 'en']);
+  });
+
+  it('renders an arc on its own, and skips it when only an event is asked for', async () => {
+    const { content, cacheDir } = setup();
+    const arc = fakeStudio();
+    const takes = await render(buildContent(content), arc.vs, ref, opts(cacheDir, { only: ['the-ride'] }));
+    expect(arc.sent.map((r) => r.text)).toEqual(ARC_TEXT);
+    expect(takes.every((t) => t.kind === 'arc')).toBe(true);
+    // `arc/<id>` names the same arc, and the age its voice comes from picks it up as well.
+    expect(jobs(buildContent(content), { lang: ['en'], changed: false, only: ['arc/the-ride'] }).map((j) => j.id)).toEqual(['the-ride']);
+    expect(jobs(buildContent(content), { lang: ['en'], changed: false, age: ['third-age'] }).map((j) => [j.kind, j.id]))
+      .toEqual([['event', 'the-party'], ['arc', 'the-ride']]);
+    expect(jobs(buildContent(content), { lang: ['en'], changed: false, only: ['the-party'] }).map((j) => j.id)).toEqual(['the-party']);
+  });
+
+  it('leaves an arc that is only a grouping alone (no narration, nothing to read)', async () => {
+    const { content, cacheDir } = setup();
+    expect(jobs(buildContent(content), { lang: ['en'], changed: false }).map((j) => j.id)).not.toContain('the-quest');
+    expect(await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir, { only: ['the-quest'] }))).toEqual([]);
   });
 
   it('respells before sending', async () => {
@@ -109,7 +138,7 @@ describe('render', () => {
     const { content, cacheDir } = setup();
     const { vs, sent } = fakeStudio({ hear: (t, call) => (call === 0 ? dropLast(t) : t) });
     const takes = await render(buildContent(content), vs, ref, opts(cacheDir));
-    expect(sent.map((r) => r.seed)).toEqual([7, 1007, 7]);
+    expect(sent.map((r) => r.seed)).toEqual([7, 1007, 7, 7, 7]);
     expect(takes[0]).toMatchObject({ passage: 'door', seed: 1007, tries: 2, flags: [] });
   });
 
@@ -144,7 +173,7 @@ describe('render', () => {
       fs.writeFileSync(path.join(dir, `p${i}.k.json`), JSON.stringify({ narrator: 'the-voice', lang: 'en', flags: [], words: 100, stats: { duration: 1, leadSilence: 0 } }));
     }
     const takes = await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir, { lang: ['es'] }));
-    expect(takes.map((t) => [t.lang, t.flags.map((f) => f.kind)])).toEqual([['es', []], ['es', []]]);
+    expect(takes.map((t) => [t.lang, t.flags.map((f) => f.kind)])).toEqual([['es', []], ['es', []], ['es', []], ['es', []]]);
   });
 
   it('renders one engine per run: loading a second one beside the first exhausts the box', async () => {
@@ -158,7 +187,7 @@ describe('render', () => {
     await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir, { lang: ['en'] }));
     const es2 = fakeStudio();
     await render(buildContent(content), es2.vs, ref, opts(cacheDir, { lang: ['en', 'es'] }));
-    expect(es2.sent.map((r) => [r.lang, r.voice.engine])).toEqual([['es', 'voxcpm2'], ['es', 'voxcpm2']]);
+    expect(es2.sent.map((r) => [r.lang, r.voice.engine])).toEqual(ALL_TEXT.map(() => ['es', 'voxcpm2']));
   });
 
   it('resumes after a failed call', async () => {
@@ -166,7 +195,7 @@ describe('render', () => {
     await expect(render(buildContent(content), fakeStudio({ fail: (c) => c === 1 }).vs, ref, opts(cacheDir))).rejects.toThrow(/502/);
     const again = fakeStudio();
     await render(buildContent(content), again.vs, ref, opts(cacheDir));
-    expect(again.sent.map((r) => r.text)).toEqual(['Tea is poured for far too many guests.']);
+    expect(again.sent.map((r) => r.text)).toEqual(ALL_TEXT.slice(1));
   });
 
   it('re-renders a rejected take with the next seed', async () => {
@@ -215,5 +244,15 @@ describe('writeReport', () => {
     expect(html.indexOf('the-party/door')).toBeLessThan(html.indexOf('the-party/tea'));
     expect(html).toMatch(/1 flagged/);
     expect(html).toContain('rejects.txt');
+  });
+
+  it('names an arc\'s take by the id that rejects it, and says it is an arc', async () => {
+    const { content, cacheDir } = setup();
+    const takes = await render(buildContent(content), fakeStudio().vs, ref, opts(cacheDir, { only: ['the-ride'] }));
+    const out = path.join(cacheDir, 'arc-report.html');
+    writeReport(takes, out, () => 5);
+    const html = fs.readFileSync(out, 'utf8');
+    expect(html).toContain('the-ride/start');
+    expect(html).toContain('arc/the-ride ·');
   });
 });

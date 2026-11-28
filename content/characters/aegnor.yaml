@@ -1,0 +1,8 @@
+id: aegnor
+name: { en: "Aegnor", es: "Aegnor" }
+kind: elf
+summary:
+  en: "The youngest son of Finarfin, a swift and fiery lord who held Dorthonion with Angrod and fell beside him; he never wed."
+  es: "El hijo menor de Finarfin, un señor rápido y ardiente que guardó Dorthonion con Angrod y cayó a su lado; nunca se casó."
+parents: [ finarfin, earwen ]
+pronounce: { en: AYG-nor, es: EG-nor }

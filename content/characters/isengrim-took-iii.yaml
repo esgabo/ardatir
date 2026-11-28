@@ -1,0 +1,7 @@
+id: isengrim-took-iii
+name: { en: "Isengrim Took III", es: "Isengrim Tuk III" }
+kind: hobbit
+summary:
+  en: "The Old Took's eldest son, Thain after him, who left no children of his own."
+  es: "Hijo mayor del Viejo Tuk, Thain después de él, que no dejó hijos."
+parents: [ gerontius-took, adamanta-chubb ]

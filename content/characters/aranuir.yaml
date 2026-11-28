@@ -1,0 +1,7 @@
+id: aranuir
+name: { en: "Aranuir", es: "Aranuir" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain of the North, of the Northern Line of Isildur's heirs."
+  es: "Caudillo de los Dúnedain del Norte, de la Línea del Norte de los herederos de Isildur."
+parents: [ arahael ]

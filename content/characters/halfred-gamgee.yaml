@@ -1,0 +1,7 @@
+id: halfred-gamgee
+name: { en: "Halfred Gamgee", es: "Halfred Gamyi" }
+kind: hobbit
+summary:
+  en: "One of Sam's brothers, who left Hobbiton for the Northfarthing."
+  es: "Uno de los hermanos de Sam, que dejó Hobbiton por la Cuaderna del Norte."
+parents: [ hamfast-gamgee, bell-goodchild ]

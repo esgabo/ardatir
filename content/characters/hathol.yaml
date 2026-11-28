@@ -1,0 +1,7 @@
+id: hathol
+name: { en: "Hathol", es: "Hathol" }
+kind: man
+summary:
+  en: "Magor's son, of the line that held Dor-lómin."
+  es: "Hijo de Magor, del linaje que gobernó Dor-lómin."
+parents: [ magor ]

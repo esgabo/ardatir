@@ -1,0 +1,8 @@
+id: otho-sackville-baggins
+name: { en: "Otho Sackville-Baggins", es: "Otho Sacovilla-Bolsón" }
+kind: hobbit
+summary:
+  en: "Bilbo's cousin and, until Frodo was adopted, his nearest heir; he never forgave Bag End for slipping away from him."
+  es: "Primo de Bilbo y, hasta que Frodo fue adoptado, su heredero más cercano; nunca perdonó que Bolsón Cerrado se le escapara."
+parents: [ longo-baggins, camellia-sackville ]
+spouse: [ lobelia-sackville-baggins ]

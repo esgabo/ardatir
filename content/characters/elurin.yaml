@@ -1,0 +1,11 @@
+id: elurin
+name: { en: "Elurín", es: "Elurín" }
+kind: elf
+summary:
+  en: "A son of Dior and Nimloth, twin to Eluréd, abandoned with his brother in the woods after the sack of Menegroth."
+  es: "Hijo de Dior y Nimloth, gemelo de Eluréd, abandonado con su hermano en los bosques tras el saqueo de Menegroth."
+parents: [ dior, nimloth ]
+pronounce: { en: e-loo-REEN, es: e-lu-RÍN }
+fate:
+  en: "No source says that he died: the tale simply loses him in the woods, and so his end is unknown."
+  es: "Ninguna fuente dice que muriera: el relato simplemente lo pierde en los bosques, y así su final es desconocido."

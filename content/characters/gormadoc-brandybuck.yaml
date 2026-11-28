@@ -1,0 +1,8 @@
+id: gormadoc-brandybuck
+name: { en: "Gormadoc Brandybuck", es: "Gormadoc Brandigamo" }
+kind: hobbit
+summary:
+  en: "Master of Buckland, called Deepdelver for the tunnels he drove into the hill of Brandy Hall; the earliest Brandybuck the family records reach."
+  es: "Señor de Los Gamos, llamado Deepdelver por los túneles que abrió en la colina de Casa Brandi; el Brandigamo más antiguo al que llegan los registros de la familia."
+# Appendix C begins the Brandybuck tree with him: his own parents are simply unrecorded.
+spouse: [ malva-headstrong ]

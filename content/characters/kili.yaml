@@ -6,7 +6,5 @@ summary:
   es: "Sobrino de Thorin, hermano menor de Fíli."
 color: "#4a6aa0"
 scale: 1.25
-kin:
-  - { id: fili, as: brother }
-  - { id: thorin, as: uncle }
+parents: [ dis ]
 model: characters/kili/kili.glb

@@ -1,0 +1,7 @@
+id: tar-minastir
+name: { en: "Tar-Minastir", es: "Tar-Minastir" }
+kind: man
+summary:
+  en: "King of Númenor who sent a great fleet to Gil-galad's aid against Sauron in Eriador, and loved the Elves from afar all his days."
+  es: "Rey de Númenor que envió una gran flota en auxilio de Gil-galad contra Sauron en Eriador, y amó a los Elfos de lejos toda su vida."
+parents: [ isilmo ]

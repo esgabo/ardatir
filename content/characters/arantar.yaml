@@ -1,0 +1,7 @@
+id: arantar
+name: { en: "Arantar", es: "Arantar" }
+kind: man
+summary:
+  en: "King of Arnor in the quiet centuries, when the North-kingdom was still whole."
+  es: "Rey de Arnor en los siglos tranquilos, cuando el Reino del Norte seguía entero."
+parents: [ eldacar-of-arnor ]

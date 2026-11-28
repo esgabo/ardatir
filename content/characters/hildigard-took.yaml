@@ -1,0 +1,7 @@
+id: hildigard-took
+name: { en: "Hildigard Took", es: "Hildigard Tuk" }
+kind: hobbit
+summary:
+  en: "One of the twelve children of the Old Took; the records keep little beyond his name."
+  es: "Uno de los doce hijos del Viejo Tuk; los registros guardan poco más que su nombre."
+parents: [ gerontius-took, adamanta-chubb ]

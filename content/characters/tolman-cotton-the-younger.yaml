@@ -1,0 +1,7 @@
+id: tolman-cotton-the-younger
+name: { en: "Tolman Cotton the younger (Young Tom)", es: "Tolman Coto el joven (Tom el joven)" }
+kind: hobbit
+summary:
+  en: "Rosie's eldest brother, who fought at Bywater and married Sam's sister Marigold."
+  es: "El hermano mayor de Rosita, que luchó en Delagua y se casó con Marigold, la hermana de Sam."
+parents: [ tolman-cotton, lily-brown ]

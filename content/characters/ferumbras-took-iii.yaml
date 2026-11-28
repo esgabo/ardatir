@@ -1,0 +1,7 @@
+id: ferumbras-took-iii
+name: { en: "Ferumbras Took III", es: "Ferumbras Tuk III" }
+kind: hobbit
+summary:
+  en: "Thain of the Shire, who never married, so that the Thainship passed to his cousin Paladin's branch of the family."
+  es: "Thain de la Comarca, que nunca se casó, de modo que el cargo de Thain pasó a la rama de su primo Paladin."
+parents: [ fortinbras-took-ii, lalia-clayhanger ]

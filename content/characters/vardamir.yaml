@@ -1,0 +1,7 @@
+id: vardamir
+name: { en: "Vardamir Nólimon", es: "Vardamir Nólimon" }
+kind: man
+summary:
+  en: "Elros's son, a lover of lore who took the sceptre at his father's death and gave it over at once to his own son; he never truly reigned."
+  es: "Hijo de Elros, amante del saber, que tomó el cetro a la muerte de su padre y lo entregó de inmediato a su propio hijo; nunca reinó de verdad."
+parents: [ elros ]

@@ -6,6 +6,5 @@ summary:
   es: "El alegre primo joven de Frodo, que se une a la Compañía y entra al servicio de Gondor."
 color: "#7a8a5a"
 scale: 1
-kin:
-  - { id: merry, as: cousin }
-  - { id: frodo, as: cousin }
+parents: [ paladin-took-ii, eglantine-banks ]
+spouse: [ diamond-of-long-cleeve ]

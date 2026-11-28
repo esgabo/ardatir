@@ -7,6 +7,7 @@ when:
 place: tirion
 characters: [ melkor, feanor, fingolfin ]
 arcs: [ the-flight-of-the-noldor ]
+journeys: [ melkors-chaining-and-release ]
 tags: [ silmarillion ]
 status: scripted
 source: { book: the-silmarillion, chapter: "Of the Silmarils and the Unrest of the Noldor" }

@@ -3,3 +3,4 @@ name: { en: "The Woody End", es: "El Bosque Cerrado" }
 summary:
   en: "A wood in the east of the Shire, where the hobbits meet the Elves."
   es: "Un bosque en el este de la Comarca, donde los hobbits se encuentran con los Elfos."
+map: { on: middle-earth, x: -7, z: 1, radius: 2 }   # the wood in the Eastfarthing

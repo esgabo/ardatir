@@ -1,0 +1,7 @@
+id: emeldir
+name: { en: "Emeldir the Manhearted", es: "Emeldir la de Corazón de Hombre" }
+kind: man
+summary:
+  en: "Barahir's wife and Beren's mother, called the Manhearted, who led the women and children of her people over the mountains out of ruined Dorthonion."
+  es: "Esposa de Barahir y madre de Beren, llamada la de Corazón de Hombre, que condujo a las mujeres y los niños de su pueblo por las montañas fuera de la arruinada Dorthonion."
+spouse: [ barahir ]

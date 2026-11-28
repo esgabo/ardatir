@@ -1,0 +1,11 @@
+id: annatar-and-the-forging-of-the-rings
+title: { en: "Annatar and the Forging of the Rings", es: "Annatar y la forja de los Anillos" }
+characters: [ sauron ]
+# Appendix B's dates, all of them given as approximate there: Barad-dur begun about 1000, the
+# Lord of Gifts welcomed in Eregion about 1200, the Seven and the Nine made in Ost-in-Edhil
+# between about 1500 and about 1590, and the One made in the fire of Orodruin about 1600.
+waypoints:
+  - { place: barad-dur, date: { age: second-age, year: 1000 }, precision: approximate }
+  - { place: eregion, date: { age: second-age, year: 1200 }, end: { age: second-age, year: 1500 }, precision: approximate }
+  - { place: ost-in-edhil, date: { age: second-age, year: 1500 }, end: { age: second-age, year: 1590 }, precision: approximate }
+  - { place: orodruin, date: { age: second-age, year: 1600 }, precision: approximate }

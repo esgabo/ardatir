@@ -1,0 +1,10 @@
+id: saurons-last-war
+title: { en: "Sauron's Last War", es: "La última guerra de Sauron" }
+characters: [ sauron ]
+# Appendix B: he returns to Mordor in 3320, is besieged in Barad-dur from 3434, and comes forth
+# at the last on the slopes of Orodruin in 3441. Minas Ithil was taken in 3429 by his host; the
+# sources do not say he went with it, so Mordor stands as his whereabouts until the siege.
+waypoints:
+  - { place: mordor, date: { age: second-age, year: 3320 }, end: { age: second-age, year: 3434 }, precision: year }
+  - { place: barad-dur, date: { age: second-age, year: 3434 }, end: { age: second-age, year: 3441 }, precision: year }
+  - { place: orodruin, date: { age: second-age, year: 3441 }, precision: year }

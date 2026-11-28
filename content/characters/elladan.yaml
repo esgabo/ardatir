@@ -1,0 +1,9 @@
+id: elladan
+name: { en: "Elladan", es: "Elladan" }
+kind: elf
+summary:
+  en: "Elrond's son, twin to Elrohir; the two rode with the Rangers of the North and hunted orcs in the mountains after their mother's hurt."
+  es: "Hijo de Elrond, gemelo de Elrohir; los dos cabalgaron con los Montaraces del Norte y persiguieron orcos en las montañas tras la herida de su madre."
+parents: [ elrond, celebrian ]
+twin: elrohir
+pronounce: { en: EL-la-dan, es: e-LLA-dan }

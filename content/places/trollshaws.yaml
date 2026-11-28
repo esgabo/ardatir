@@ -5,3 +5,4 @@ name:
 summary:
   en: Wooded hills east of the Last Bridge, haunted by trolls.
   es: Colinas boscosas al este del Último Puente, frecuentadas por trolls.
+map: { on: middle-earth, x: 25, z: -5, radius: 4 }   # the hills east of the Last Bridge

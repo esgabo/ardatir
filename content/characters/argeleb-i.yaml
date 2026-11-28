@@ -1,0 +1,7 @@
+id: argeleb-i
+name: { en: "Argeleb I", es: "Argeleb I" }
+kind: man
+summary:
+  en: "King of Arthedain, who claimed the lordship of all the North-kingdom and fell in the war with Rhudaur."
+  es: "Rey de Arthedain, que reclamó la soberanía de todo el Reino del Norte y cayó en la guerra contra Rhudaur."
+parents: [ malvegil ]

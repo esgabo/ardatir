@@ -3,7 +3,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import type { Take } from './render.ts';
+import { slug, type Take } from './render.ts';
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
 
@@ -24,7 +24,7 @@ export function writeReport(takes: Take[], outFile: string, sample: (narratorId:
 
   const card = (t: Take) => `
 <div class="c${t.flags.length ? ' f' : ''}">
-  <h2>${esc(`${t.event}/${t.passage}`)} <small>${esc(t.lang)} · ${esc(t.narrator)} · seed ${t.seed}${t.tries > 1 ? ` · ${t.tries} tries` : ''}</small></h2>
+  <h2>${esc(`${t.id}/${t.passage}`)} <small>${t.kind === 'arc' ? `${esc(slug(t))} · ` : ''}${esc(t.lang)} · ${esc(t.narrator)} · seed ${t.seed}${t.tries > 1 ? ` · ${t.tries} tries` : ''}</small></h2>
   <audio controls preload="none" src="${esc(path.relative(path.dirname(outFile), t.file))}"></audio>
   ${t.flags.length ? `<ul>${t.flags.map((f) => `<li><b>${esc(f.kind)}</b>: ${esc(f.detail)}</li>`).join('')}</ul>` : ''}
   <p class="h">Heard: “${esc(t.transcript)}”</p>
@@ -45,7 +45,7 @@ code{font-size:14px}
 <p class="s">${takes.length} passages: ${rendered} rendered, ${takes.length - rendered} reused, ${retried} retried, ${flagged.length} flagged.</p>
 <h3>Flagged (${flagged.length})</h3>${flagged.map(card).join('') || '<p class="s">None.</p>'}
 <h3>Sample of the rest (${sampled.length} of ${passed.length})</h3>${sampled.map(card).join('') || '<p class="s">None.</p>'}
-<p class="s">To reject a take, add its <code>event/passage</code> on its own line to <code>out/narration/rejects.txt</code> and run <code>npm run narration:render</code> again: it re-renders that passage with the next seed. Publish with <code>npm run narration:publish</code> (flagged takes need <code>--accept event/passage</code>).</p>
+<p class="s">To reject a take, add the <code>&lt;id&gt;/&lt;passage&gt;</code> in its heading on its own line to <code>out/narration/rejects.txt</code> and run <code>npm run narration:render</code> again: it re-renders that passage with the next seed. Publish with <code>npm run narration:publish</code> (flagged takes need <code>--accept &lt;id&gt;/&lt;passage&gt;</code>).</p>
 </main></body></html>
 `;
   fs.mkdirSync(path.dirname(outFile), { recursive: true });

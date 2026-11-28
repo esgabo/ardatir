@@ -6,5 +6,4 @@ summary:
   es: "Hijo de Azog, jefe del ejército de trasgos en la Batalla de los Cinco Ejércitos."
 color: "#4a4a3a"
 scale: 1.9
-kin:
-  - { id: azog, as: father }
+parents: [ azog ]

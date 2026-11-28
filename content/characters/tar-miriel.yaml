@@ -6,3 +6,5 @@ summary:
   es: "Reina legítima de Númenor, obligada a casarse con su primo Ar-Pharazôn."
 color: "#7a6a4a"
 scale: 1.75
+parents: [ tar-palantir ]
+spouse: [ ar-pharazon ]

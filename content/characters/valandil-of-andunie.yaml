@@ -1,0 +1,7 @@
+id: valandil-of-andunie
+name: { en: "Valandil, Lord of Andúnië", es: "Valandil, Señor de Andúnië" }
+kind: man
+summary:
+  en: "Silmariën's son, the first Lord of Andúnië, and the eldest of the house that kept faith with the Elves to the Downfall; not the Valandil who was king in Arnor long after."
+  es: "Hijo de Silmariën, el primer Señor de Andúnië, y el mayor de la casa que mantuvo la fe con los Elfos hasta la Caída; no es el Valandil que fue rey en Arnor mucho después."
+parents: [ elatan, silmarien ]

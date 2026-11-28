@@ -1,0 +1,8 @@
+id: ar-zimrathon
+name: { en: "Ar-Zimrathôn", es: "Ar-Zimrathôn" }
+kind: man
+summary:
+  en: "King of Númenor in the years when the kings turned further from the Valar."
+  es: "Rey de Númenor en los años en que los reyes se apartaron más de los Valar."
+parents: [ ar-adunakhor ]
+pronounce: { en: ar-zim-ra-THON, es: ar-zim-ra-TON }

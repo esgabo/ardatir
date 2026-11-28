@@ -1,0 +1,8 @@
+id: caranthir
+name: { en: "Caranthir", es: "Caranthir" }
+kind: elf
+summary:
+  en: "The fourth son of Fëanor, the harshest of the brothers, who held the march about Lake Helevorn and traded with the Dwarves of the east."
+  es: "El cuarto hijo de Fëanor, el más duro de los hermanos, que guardó la marca en torno al lago Helevorn y comerció con los Enanos del este."
+parents: [ feanor, nerdanel ]
+# No wife of any of Fëanor's seven sons is named in any source, save that Curufin's was Celebrimbor's mother.

@@ -12,7 +12,7 @@ journeys: [ gandalfs-road-3018 ]
 tags: [ lord-of-the-rings ]
 status: scripted
 source: { book: the-fellowship-of-the-ring, chapter: "The Council of Elrond" }
-title: { en: "Gandalf Tames Shadowfax", es: "Gandalf doma a Sombragris" }
+title: { en: "Gandalf Tames Shadowfax", es: "Gandalf doma a Sombragrís" }
 summary:
   en: "Gandalf chooses the proudest horse of the Mark, Shadowfax, and follows him over the plains until the great stallion lets him ride."
-  es: "Gandalf elige al caballo más orgulloso de la Marca, Sombragris, y lo sigue por las llanuras hasta que el gran corcel le deja montar."
+  es: "Gandalf elige al caballo más orgulloso de la Marca, Sombragrís, y lo sigue por las llanuras hasta que el gran corcel le deja montar."

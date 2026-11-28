@@ -1,0 +1,7 @@
+id: celepharn
+name: { en: "Celepharn", es: "Celepharn" }
+kind: man
+summary:
+  en: "King of Arthedain, son of Mallor."
+  es: "Rey de Arthedain, hijo de Mallor."
+parents: [ mallor ]

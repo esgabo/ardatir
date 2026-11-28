@@ -1,0 +1,8 @@
+id: ar-sakalthor
+name: { en: "Ar-Sakalthôr", es: "Ar-Sakalthôr" }
+kind: man
+summary:
+  en: "King of Númenor, father of Ar-Gimilzôr, in the long decline of the island's friendship with the Elves."
+  es: "Rey de Númenor, padre de Ar-Gimilzôr, en el largo declive de la amistad de la isla con los Elfos."
+parents: [ ar-zimrathon ]
+pronounce: { en: ar-sa-kal-THOR, es: ar-sa-kal-TOR }

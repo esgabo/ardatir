@@ -1,0 +1,8 @@
+id: marigold-gamgee
+name: { en: "Marigold Gamgee", es: "Marigold Gamyi" }
+kind: hobbit
+summary:
+  en: "Sam's youngest sister, who married Tom Cotton the younger and so made the Gamgees and the Cottons kin twice over."
+  es: "La hermana menor de Sam, que se casó con Tom Coto el joven y emparentó así a los Gamyi y a los Coto por segunda vez."
+parents: [ hamfast-gamgee, bell-goodchild ]
+spouse: [ tolman-cotton-the-younger ]

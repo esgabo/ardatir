@@ -6,6 +6,7 @@ when:
 place: utumno
 characters: [ melkor, tulkas, manwe ]
 arcs: [ the-great-journey ]
+journeys: [ melkors-chaining-and-release ]
 tags: [ silmarillion ]
 status: scripted
 source: { book: the-silmarillion, chapter: "Of the Coming of the Elves and the Captivity of Melkor" }

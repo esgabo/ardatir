@@ -3,3 +3,4 @@ name: { en: "Amon Hen", es: "Amon Hen" }
 summary:
   en: "The Hill of Sight, with a great seat from which one sees far."
   es: "La Colina de la Vista, con un gran asiento desde donde se ve muy lejos."
+map: { on: middle-earth, x: 49, z: 50 }   # above the western shore of Nen Hithoel

@@ -1,0 +1,7 @@
+id: aravorn
+name: { en: "Aravorn", es: "Aravorn" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain, son of Aragost."
+  es: "Caudillo de los Dúnedain, hijo de Aragost."
+parents: [ aragost ]

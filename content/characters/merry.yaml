@@ -6,3 +6,4 @@ summary:
   es: Un hobbit de la Compañía, que ha jurado servir al rey Théoden.
 color: "#5f7a8a"
 scale: 1
+parents: [ saradoc-brandybuck, esmeralda-took ]

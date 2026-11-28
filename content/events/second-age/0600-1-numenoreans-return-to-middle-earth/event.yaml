@@ -13,3 +13,9 @@ title: { en: "The Númenóreans return to Middle-earth", es: "Los númenóreanos
 summary:
   en: "After centuries of peace, Númenor's great ships begin to visit the shores of Middle-earth, where they meet the Elves of Lindon and learn what the war has left behind."
   es: "Tras siglos de paz, las grandes naves de Númenor empiezan a visitar las costas de la Tierra Media, donde se encuentran con los Elfos de Lindon y conocen lo que dejó la guerra."
+links:
+  - to: gil-galad-and-cirdan-settle-lindon
+    type: enabled-by
+    note:
+      en: "The ships make landfall on a friendly coast because Cirdan's havens and Gil-galad's kingdom are there to meet them."
+      es: "Las naves llegan a una costa amiga porque allí están los puertos de Círdan y el reino de Gil-galad para recibirlas."

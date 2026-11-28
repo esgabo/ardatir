@@ -1,0 +1,9 @@
+id: tar-ancalime
+name: { en: "Tar-Ancalimë", es: "Tar-Ancalimë" }
+kind: man
+summary:
+  en: "The first Ruling Queen of Númenor, daughter of Aldarion and Erendis, who grew up between them and trusted neither marriage nor men."
+  es: "La primera Reina Gobernante de Númenor, hija de Aldarion y Erendis, que creció entre ambos y no confió ni en el matrimonio ni en los hombres."
+parents: [ tar-aldarion, erendis ]
+spouse: [ hallacar ]
+pronounce: { en: tar-an-KA-li-meh, es: tar-an-KA-li-me }

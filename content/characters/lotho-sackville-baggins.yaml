@@ -1,0 +1,7 @@
+id: lotho-sackville-baggins
+name: { en: "Lotho Sackville-Baggins", es: "Lotho Sacovilla-Bolsón" }
+kind: hobbit
+summary:
+  en: "Otho and Lobelia's son, who bought up the Shire's mills and pipe-weed and styled himself Chief while Saruman's men ran the country."
+  es: "Hijo de Otho y Lobelia, que compró los molinos y la hierba de pipa de la Comarca y se hizo llamar Jefe mientras los hombres de Saruman gobernaban el país."
+parents: [ otho-sackville-baggins, lobelia-sackville-baggins ]

@@ -3,3 +3,4 @@ name: { en: "The Helcaraxë", es: "El Helcaraxë" }
 summary:
   en: "The grinding ice of the far north, crossed on foot by Fingolfin's host."
   es: "El hielo crujiente del extremo norte, que la hueste de Fingolfin cruzó a pie."
+map: nowhere   # the grinding ice of the far north, between Aman and Middle-earth and so in neither frame

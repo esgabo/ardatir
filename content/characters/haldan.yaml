@@ -1,0 +1,7 @@
+id: haldan
+name: { en: "Haldan", es: "Haldan" }
+kind: man
+summary:
+  en: "Haldar's son, who led the Haladin in Brethil after the Lady Haleth."
+  es: "Hijo de Haldar, que condujo a los Haladin en Brethil después de la Dama Haleth."
+parents: [ haldar ]

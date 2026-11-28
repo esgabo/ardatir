@@ -1,0 +1,7 @@
+id: asphodel-brandybuck
+name: { en: "Asphodel Brandybuck", es: "Asphodel Brandigamo" }
+kind: hobbit
+summary:
+  en: "A daughter of Gorbadoc and Mirabella, who married into the Burrows family."
+  es: "Hija de Gorbadoc y Mirabella, que se casó con los Madriguera."
+parents: [ gorbadoc-brandybuck, mirabella-took ]

@@ -1,0 +1,9 @@
+id: lothiriel
+name: { en: "Lothíriel", es: "Lothíriel" }
+kind: man
+summary:
+  en: "Imrahil's daughter, who married Éomer King of the Mark after the war; their son ruled Rohan after him."
+  es: "Hija de Imrahil, que se casó con Éomer, rey de la Marca, después de la guerra; su hijo gobernó Rohan tras él."
+parents: [ imrahil ]
+spouse: [ eomer ]
+pronounce: { en: lo-THEE-ree-el, es: lo-ZÍ-ri-el }

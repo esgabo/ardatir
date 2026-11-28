@@ -1,0 +1,8 @@
+id: rosa-baggins
+name: { en: "Rosa Baggins", es: "Rosa Bolsón" }
+kind: hobbit
+summary:
+  en: "Ponto's daughter, who married Hildigrim Took; the Baggins blood in Merry and Pippin comes down from her."
+  es: "Hija de Ponto, que se casó con Hildigrim Tuk; la sangre Bolsón de Merry y Pippin desciende de ella."
+parents: [ ponto-baggins ]
+spouse: [ hildigrim-took ]

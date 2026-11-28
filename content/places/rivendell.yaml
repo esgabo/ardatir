@@ -3,3 +3,4 @@ name: { en: Rivendell, es: Rivendel }
 summary:
   en: Elrond's hidden valley-house on the edge of the Misty Mountains.
   es: La casa oculta de Elrond en un valle al pie de las Montañas Nubladas.
+map: { on: middle-earth, x: 34, z: -7 }   # the hidden valley above the Ford

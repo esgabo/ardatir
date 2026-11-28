@@ -1,0 +1,7 @@
+id: elendur
+name: { en: "Elendur", es: "Elendur" }
+kind: man
+summary:
+  en: "Isildur's eldest son, whom his father loved best and who bade him flee with the Ring; he fell with his brothers at the Gladden Fields."
+  es: "Hijo mayor de Isildur, a quien su padre más amaba y que le rogó huir con el Anillo; cayó con sus hermanos en los Campos Gladios."
+parents: [ isildur ]

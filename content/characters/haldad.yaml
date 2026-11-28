@@ -1,0 +1,7 @@
+id: haldad
+name: { en: "Haldad", es: "Haldad" }
+kind: man
+summary:
+  en: "Chieftain of the Haladin, who fell holding the stockade at Thargelion against the orcs."
+  es: "Caudillo de los Haladin, que cayó defendiendo la estacada de Thargelion contra los orcos."
+# The table of the House of Haleth begins with him: his own parents are simply unrecorded.

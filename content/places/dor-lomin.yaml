@@ -3,3 +3,4 @@ name: { en: "Dor-lómin", es: "Dor-lómin" }
 summary:
   en: "The southern part of Hithlum, home of the House of Hador."
   es: "La parte sur de Hithlum, hogar de la Casa de Hador."
+map: { on: beleriand, x: -16, z: 16, radius: 5 }   # southern Hithlum, behind the Ered Wethrin

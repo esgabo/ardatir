@@ -2,10 +2,12 @@ id: arwen
 name: { en: "Arwen", es: "Arwen" }
 kind: elf
 summary:
-  en: "Elrond's daughter, betrothed to Aragorn, who chooses a mortal life for his sake."
-  es: "Hija de Elrond, prometida de Aragorn, que elige una vida mortal por él."
+  en: "Elrond's daughter, who weds Aragorn and chooses a mortal life for his sake."
+  es: "Hija de Elrond, que se casa con Aragorn y elige una vida mortal por él."
 color: "#4a4a6a"
 scale: 1.8
-kin:
-  - { id: elrond, as: father }
-  - { id: aragorn, as: betrothed }
+spouse: [ aragorn ]
+parents: [ elrond, celebrian ]
+fate:
+  en: "Given the Choice of the Half-elven, she took the fate of Men for Aragorn's sake, and gave up the ships into the West."
+  es: "Puesta ante ella la Elección de los Medio Elfos, tomó el destino de los Hombres por amor a Aragorn y renunció a los navíos del Oeste."

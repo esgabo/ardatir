@@ -1,0 +1,7 @@
+id: bregor
+name: { en: "Bregor", es: "Bregor" }
+kind: man
+summary:
+  en: "Lord of Ladros, father of Bregolas and Barahir, and so Beren's grandfather."
+  es: "Señor de Ladros, padre de Bregolas y Barahir, y por tanto abuelo de Beren."
+parents: [ boromir-of-ladros ]

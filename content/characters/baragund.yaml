@@ -1,0 +1,7 @@
+id: baragund
+name: { en: "Baragund", es: "Baragund" }
+kind: man
+summary:
+  en: "Bregolas's son, one of the twelve outlaws who held Dorthonion with Barahir; Morwen's father, and so Túrin's grandfather."
+  es: "Hijo de Bregolas, uno de los doce proscritos que resistieron en Dorthonion con Barahir; padre de Morwen y por tanto abuelo de Túrin."
+parents: [ bregolas ]

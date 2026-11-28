@@ -1,0 +1,8 @@
+id: firiel
+name: { en: "Fíriel", es: "Fíriel" }
+kind: man
+summary:
+  en: "Ondoher's daughter, who married Arvedui of Arthedain; on her right her husband claimed the crown of Gondor, and Gondor refused him."
+  es: "Hija de Ondoher, que se casó con Arvedui de Arthedain; por su derecho su esposo reclamó la corona de Gondor, y Gondor se la negó."
+parents: [ ondoher ]
+pronounce: { en: FEE-ree-el, es: FÍ-ri-el }

@@ -1,0 +1,7 @@
+id: tar-atanamir
+name: { en: "Tar-Atanamir", es: "Tar-Atanamir" }
+kind: man
+summary:
+  en: "The Great, the first King of Númenor to speak openly against the Ban of the Valar and to cling to his life until it was taken from him."
+  es: "El Grande, el primer rey de Númenor que habló abiertamente contra la Prohibición de los Valar y que se aferró a su vida hasta que le fue arrebatada."
+parents: [ tar-ciryatan ]

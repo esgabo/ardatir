@@ -3,3 +3,4 @@ name: { en: Azanulbizar, es: Azanulbizar }
 summary:
   en: The Dimrill Dale below the East-gate of Moria.
   es: "El Valle del Arroyo Sombrío, al pie de la Puerta Este de Moria."
+map: { on: middle-earth, x: 39, z: 25 }   # the Dimrill Dale below the East-gate

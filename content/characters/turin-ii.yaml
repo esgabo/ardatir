@@ -1,0 +1,7 @@
+id: turin-ii
+name: { en: "Túrin II", es: "Túrin II" }
+kind: man
+summary:
+  en: "Ruling Steward of Gondor, who built the refuges in Ithilien and fought the Haradrim at the crossings of the Poros; not Túrin Turambar of the First Age."
+  es: "Senescal Regente de Gondor, que construyó los refugios de Ithilien y luchó contra los haradrim en los vados del Poros; no es Túrin Turambar de la Primera Edad."
+# Appendix A lists the Stewards as a succession without spelling out every link, so no father is asserted for the earlier Stewards.

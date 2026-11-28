@@ -7,3 +7,8 @@ summary:
 color: "#5a7a9a"
 scale: 1.75
 pronounce: { en: LOO-thee-en, es: LÚ-zi-en }   # how to say it: syllables, the stressed one in capitals
+parents: [ thingol, melian ]
+spouse: [ beren ]
+fate:
+  en: "She chose a mortal life: released from the Halls of Mandos to live again with Beren, she became mortal as he was and died at last with him."
+  es: "Eligió una vida mortal: liberada de las Estancias de Mandos para vivir de nuevo con Beren, se hizo mortal como él y al fin murió con él."

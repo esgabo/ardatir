@@ -1,0 +1,9 @@
+id: rian
+name: { en: "Rían", es: "Rían" }
+kind: man
+summary:
+  en: "Belegund's daughter, who married Huor two months before he rode to the Nirnaeth and never came back; she bore Tuor in the wild and died of grief on the mound of the slain."
+  es: "Hija de Belegund, que se casó con Huor dos meses antes de que él partiera al Nirnaeth y no regresara; dio a luz a Tuor en tierra salvaje y murió de dolor sobre el túmulo de los caídos."
+parents: [ belegund ]
+spouse: [ huor ]
+pronounce: { en: REE-an, es: RÍ-an }

@@ -1,0 +1,7 @@
+id: tar-alcarin
+name: { en: "Tar-Alcarin", es: "Tar-Alcarin" }
+kind: man
+summary:
+  en: "King of Númenor, who came into his own at last after his father had held the sceptre that was his."
+  es: "Rey de Númenor, que al fin tomó lo suyo después de que su padre retuviera el cetro que le correspondía."
+parents: [ herucalmo, tar-vanimelde ]

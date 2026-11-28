@@ -3,3 +3,4 @@ name: { en: The Lonely Mountain, es: La Montaña Solitaria }
 summary:
   en: Erebor, the dwarf-kingdom under the mountain, taken by the dragon Smaug.
   es: Erebor, el reino enano bajo la montaña, tomado por el dragón Smaug.
+map: { on: middle-earth, x: 75, z: -13 }   # the Lonely Mountain

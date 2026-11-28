@@ -14,3 +14,14 @@ title: { en: "The Field of Cormallen", es: "Los Campos de Cormallen" }
 summary:
   en: "Frodo and Sam wake, healed, to find Gandalf and the Fellowship waiting. The host sings their praise, and the two hobbits are honoured as Ring-bearers."
   es: "Frodo y Sam despiertan, sanados, y hallan a Gandalf y a la Comunidad esperándolos. La hueste canta sus alabanzas, y los dos hobbits son honrados como Portadores del Anillo."
+links:
+  - to: the-eagles-rescue-frodo-and-sam
+    type: caused-by
+    note:
+      en: "The eagles carry the two hobbits out of the fire, and they are laid in Ithilien to be healed."
+      es: "Las águilas sacan del fuego a los dos hobbits, y los dejan en Ithilien para que sanen."
+  - to: battle-of-the-morannon
+    type: caused-by
+    note:
+      en: "The Host comes back from the Black Gate victorious and camps on this field while the Ring-bearers sleep."
+      es: "La Hueste regresa victoriosa de la Puerta Negra y acampa en este campo mientras los Portadores duermen."

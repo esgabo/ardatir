@@ -1,0 +1,7 @@
+id: hareth
+name: { en: "Hareth", es: "Hareth" }
+kind: man
+summary:
+  en: "Halmir's daughter, who married Galdor of Dor-lómin; the mother of Húrin and Huor, and the Haladin blood in Túrin and Tuor."
+  es: "Hija de Halmir, que se casó con Galdor de Dor-lómin; madre de Húrin y Huor, y la sangre haladin de Túrin y Tuor."
+parents: [ halmir ]

@@ -1,0 +1,7 @@
+id: bowman-cotton
+name: { en: "Bowman Cotton (Nick)", es: "Bowman Coto (Nick)" }
+kind: hobbit
+summary:
+  en: "One of Rosie's brothers, of the Cotton farm at Bywater."
+  es: "Uno de los hermanos de Rosita, de la granja de los Coto en Delagua."
+parents: [ tolman-cotton, lily-brown ]

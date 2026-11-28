@@ -1,0 +1,7 @@
+id: pervinca-took
+name: { en: "Pervinca Took", es: "Pervinca Tuk" }
+kind: hobbit
+summary:
+  en: "The youngest of Pippin's three elder sisters."
+  es: "La menor de las tres hermanas mayores de Pippin."
+parents: [ paladin-took-ii, eglantine-banks ]

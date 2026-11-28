@@ -6,7 +6,6 @@ summary:
   es: Hijo de Húrin, un gran guerrero cuya vida está ensombrecida por la maldición de Morgoth sobre su familia.
 color: "#3a3a4a"
 scale: 1.85
-kin:
-  - { id: tuor, as: cousin }
-  - { id: nienor, as: sister }
+parents: [ hurin, morwen ]
+spouse: [ nienor ]
 pronounce: { en: TOO-rin too-RAM-bar, es: TÚ-rin tu-RAM-bar }   # how to say it: syllables, the stressed one in capitals

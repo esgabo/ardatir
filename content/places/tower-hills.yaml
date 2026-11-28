@@ -4,3 +4,4 @@ summary:
   en: "Emyn Beraid, the green hills west of the Shire where Elendil's white towers stand and the westernmost of them holds a palantír that looks only out to Sea."
   es: "Emyn Beraid, las colinas verdes al oeste de la Comarca donde se alzan las torres blancas de Elendil, y la más occidental guarda un palantír que sólo mira hacia el Mar."
 pronounce: { en: EM-in BER-ied, es: E-min BE-ra-id }
+map: { on: middle-earth, x: -22, z: -1, radius: 2 }   # Emyn Beraid, between the Shire and Lindon

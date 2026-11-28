@@ -1,0 +1,7 @@
+id: arahad-i
+name: { en: "Arahad I", es: "Arahad I" }
+kind: man
+summary:
+  en: "Chieftain of the Dúnedain of the North; Appendix A keeps little of him beyond his name."
+  es: "Caudillo de los Dúnedain del Norte; el Apéndice A guarda poco de él más que su nombre."
+parents: [ araglas ]
